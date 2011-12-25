@@ -1,0 +1,336 @@
+BACKUP "TobEx/backup"
+
+AUTHOR "Ascension64"
+
+VERSION "Beta 0022"
+
+README "TobEx/tra/%LANGUAGE%/readme.htm" "TobEx/tra/english/readme.htm"
+
+LANGUAGE "English"
+         "english"
+         "TobEx/tra/english/setup.tra"
+
+LANGUAGE "Francais (French)"
+         "french"
+         "TobEx/tra/french/setup.tra"
+
+LANGUAGE ~Italiano (Italian)~
+         ~italian~
+         "TobEx/tra/italian/setup.tra"
+
+LANGUAGE ~ê„··™®© (Russian)~
+         ~russian~
+         "TobEx/tra/russian/setup.tra"
+
+LANGUAGE ~ºÚÃÂ÷–Œƒ - ∫∫ªØ£∫H'sD (Simplified Chinese)~
+         ~chineses~
+         "TobEx/tra/chineses/setup.tra"
+
+LANGUAGE %¡c≈È§§§Â - ∫~§∆°GH'sD (Traditional Chinese)%
+         ~chineset~
+         ~TobEx/tra/chineset/setup.tra~
+
+//////////////////////////////// CORE
+
+BEGIN @0
+DESIGNATED 100
+
+OUTER_SPRINT TOBEX_MOD_DIRECTORY "./TobEx"
+LOAD_TRA "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx.tra"
+ACTION_INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx.tpa"
+
+
+//////////////////////////////// EXTRAS
+
+BEGIN @101 DESIGNATED 101 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Apply Concentration Check On Damage=0~ ~Effect Opcodes:Apply Concentration Check On Damage=1~
+
+BEGIN @102 DESIGNATED 102 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Awaken On Damage=0~ ~Effect Opcodes:Awaken On Damage=1~
+
+BEGIN @103 DESIGNATED 103 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Blindness As Spell Description=0~ ~Effect Opcodes:Blindness As Spell Description=1~
+
+BEGIN @104 DESIGNATED 104 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Disable Stoneskin Grey Colour=0~ ~Effect Opcodes:Disable Stoneskin Grey Colour=1~
+
+BEGIN @105 DESIGNATED 105 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:No Spell Interruption On Zero Damage=0~ ~Effect Opcodes:No Spell Interruption On Zero Damage=1~
+
+BEGIN @106 DESIGNATED 106 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Use Caster Level On Mirror Image=0~ ~Effect Opcodes:Use Caster Level On Mirror Image=1~
+
+BEGIN @107 DESIGNATED 107 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Allow All Races to Dual Class=0~ ~Engine:Allow All Races to Dual Class=1~
+
+BEGIN @108 DESIGNATED 108 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Allow Equipping Armor in Combat=0~ ~Engine:Allow Equipping Armor in Combat=1~
+
+BEGIN @109 DESIGNATED 109 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Disable Experience Boost=0~ ~Engine:Disable Experience Boost=1~
+
+BEGIN @110 DESIGNATED 110 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Disable Force Inventory Pause=0~ ~Engine:Disable Force Inventory Pause=1~
+
+BEGIN @111 DESIGNATED 111 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Disable Silence On Charm=0~ ~Engine:Disable Silence On Charm=1~
+
+BEGIN @112 DESIGNATED 112 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Level One Proficiency Restrictions=0~ ~Engine:Level One Proficiency Restrictions=1~
+
+BEGIN @113 DESIGNATED 113 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Remain Hidden On Pickpocket Success=0~ ~Engine:Remain Hidden On Pickpocket Success=1~
+
+BEGIN @114 DESIGNATED 114 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Rest Spawns Advance Time=0~ ~Engine:Rest Spawns Advance Time=1~
+
+BEGIN @115 DESIGNATED 115 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Sound:Dialogue Greeting Subtitles=0~ ~Sound:Dialogue Greeting Subtitles=1~
+
+BEGIN @116 DESIGNATED 116 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Sound:Enable Animation Attack Sounds=0~ ~Sound:Enable Animation Attack Sounds=1~
+
+BEGIN @117 DESIGNATED 117 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~UI:Universal Four Inventory Weapon Slots=0~ ~UI:Universal Four Inventory Weapon Slots=1~
+
+////////////////////////////////
+
+BEGIN @118 DESIGNATED 118 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+
+//charsnd MALE
+STRING_SET 16235 @4809
+STRING_SET 16236 @4806
+STRING_SET 16237 @4807
+STRING_SET 16238 @4808
+STRING_SET 16239 @4820
+STRING_SET 16240 @4826
+STRING_SET 16241 @4827
+STRING_SET 16242 @4828
+STRING_SET 16243 @4832
+STRING_SET 16244 @4833
+STRING_SET 16245 @4834
+STRING_SET 16246 @4818
+STRING_SET 16247 @4819
+STRING_SET 61367 @4810
+STRING_SET 61368 @4811
+STRING_SET 61369 @4863
+STRING_SET 61370 @4864
+STRING_SET 61371 @4865
+STRING_SET 61372 @4866
+STRING_SET 61373 @4867
+STRING_SET 61374 @4868
+STRING_SET 61375 @4869
+STRING_SET 61376 @4870
+STRING_SET 61377 @4871
+STRING_SET 61378 @4872
+
+//charsnd FEMALE
+STRING_SET 16248 @4309
+STRING_SET 16249 @4306
+STRING_SET 16250 @4307
+STRING_SET 16251 @4308
+STRING_SET 16252 @4320
+STRING_SET 16253 @4326
+STRING_SET 16254 @4327
+STRING_SET 16255 @4328
+STRING_SET 16256 @4332
+STRING_SET 16257 @4333
+STRING_SET 16258 @4334
+STRING_SET 16259 @4318
+STRING_SET 16260 @4319
+STRING_SET 61379 @4310
+STRING_SET 61380 @4311
+STRING_SET 61381 @4363
+STRING_SET 61382 @4364
+STRING_SET 61383 @4365
+STRING_SET 61384 @4366
+STRING_SET 61385 @4367
+STRING_SET 61386 @4368
+STRING_SET 61387 @4369
+STRING_SET 61388 @4370
+STRING_SET 61389 @4371
+STRING_SET 61390 @4372
+
+COPY_EXISTING "csound.2da" "override/csound.2da"
+  COUNT_2DA_COLS nColumns
+  PATCH_IF nColumns == 2 THEN BEGIN
+    SET_2DA_ENTRY 31 1 2 "x"
+    SET_2DA_ENTRY 32 1 2 "y"
+    SET_2DA_ENTRY 40 1 2 "*"
+    SET_2DA_ENTRY 64 1 2 "_"
+    SET_2DA_ENTRY 65 1 2 "*"
+  END ELSE BEGIN
+    SET_2DA_ENTRY 32 1 2 "x"
+    SET_2DA_ENTRY 33 1 2 "y"
+    SET_2DA_ENTRY 41 1 2 "*"
+    SET_2DA_ENTRY 65 1 2 "_"
+    SET_2DA_ENTRY 66 1 2 "*"
+  END
+
+OUTER_FOR (i = 0; i < 9; i+=1) BEGIN
+  ACTION_IF (i = 0) BEGIN
+    APPEND_COL "csound.2da" "$ $ FEMALE1 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4000
+      SPRINT name @4099
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 1) BEGIN
+    APPEND_COL "csound.2da" "$ $ FEMALE2 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4100
+      SPRINT name @4199
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 2) BEGIN
+    APPEND_COL "csound.2da" "$ $ FEMALE3 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4200
+      SPRINT name @4299
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 3) BEGIN
+    APPEND_COL "csound.2da" "$ $ FEMALE4 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4300
+      SPRINT name @4399
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 4) BEGIN
+    APPEND_COL "csound.2da" "$ $ MALE001 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4400
+      SPRINT name @4499
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 5) BEGIN
+    APPEND_COL "csound.2da" "$ $ MALE002 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4500
+      SPRINT name @4599
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 6) BEGIN
+    APPEND_COL "csound.2da" "$ $ MALE003 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4600
+      SPRINT name @4699
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 7) BEGIN
+    APPEND_COL "csound.2da" "$ $ MALE004 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4700
+      SPRINT name @4799
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+  ACTION_IF (i = 8) BEGIN
+    APPEND_COL "csound.2da" "$ $ MALE005 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
+    COPY_EXISTING "csound.2da" "override/csound.2da"
+      COUNT_2DA_COLS nColumns
+      SET nCurrCol = nColumns - 1
+      SET start = 4800
+      SPRINT name @4899
+      SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
+  END
+
+  COPY_EXISTING "csound.2da" "override/csound.2da"
+    FOR (j = %start%; j < (%start% + 73); j+=1) BEGIN
+
+      //write strref into 2da
+      SPRINT "string" (AT "%j%")
+      PATCH_IF ("%string%" STRING_EQUAL "") BEGIN
+        SET_2DA_ENTRY (j - start) nCurrCol nColumns "*"
+      END ELSE BEGIN
+        SET_2DA_ENTRY (j - start) nCurrCol nColumns ___temp_strref___
+        REPLACE ___temp_strref___ ( AT j )
+      END
+    END
+END
+
+////////////////////////////////
+
+BEGIN @119 DESIGNATED 119 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+
+COPY_EXISTING ~clsrcreq.2da~ ~override/clsrcreq.2da~
+              ~mgsrcreq.2da~ ~override/mgsrcreq.2da~
+
+     COUNT_2DA_COLS num_cols
+     COUNT_2DA_ROWS %num_cols% num_rows
+     SET col = 0
+     FOR (col = 1; col < %num_cols%; col += 1) BEGIN
+         SET row = 0
+         FOR (row = 0; row < %num_rows%; row += 1) BEGIN
+             SET_2DA_ENTRY_LATER ~_#_#_#file~ %row% %col% 1
+         END
+     END
+     SET_2DA_ENTRIES_NOW ~_#_#_#file~ %num_cols%
+
+////////////////////////////////
+
+BEGIN @120 DESIGNATED 120 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Disintegrate=0~ ~Effect Opcodes:Drop Inventory on Disintegrate=1~
+
+BEGIN @121 DESIGNATED 121 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Frozen Death=0~ ~Effect Opcodes:Drop Inventory on Frozen Death=1~
+
+BEGIN @122 DESIGNATED 122 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Stone Death=0~ ~Effect Opcodes:Drop Inventory on Stone Death=1~

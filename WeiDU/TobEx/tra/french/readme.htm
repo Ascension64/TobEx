@@ -1,0 +1,518 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <style type="text/css">
+    /*<![CDATA[*/
+    <!-- 
+      body {
+        margin: 0;
+        padding: 0;
+        cursor: default;
+        text-align: center;
+        color: #000;
+        background: #e3e3db url('http://spellholdstudios.net/images/sh_bg_main.jpg');
+      }
+      
+      #wrap {
+        text-align: left;
+        margin: 0 auto;
+        margin-top: 20px;
+        width: 88%;
+        font-family: Verdana, Tahoma, Arial, sans-serif;
+        font-size: 12px;
+        color: #333;
+      }
+      
+      #header {
+        text-align: center;
+        background: #e5e5e5;
+        border: 1px solid #781808;
+        border-top: 5px solid #781808;
+        border-bottom: 5px solid #781808;
+        padding: 5px 0 13px 0;
+      }
+      
+      #header .about {
+        margin: 7px 0 0 0;
+        padding: 0;
+        font-style: italic;
+        color: #555;
+      }
+      
+      #header .menu {
+        font-weight: bold;
+        margin: 0;
+        color: #999;
+      }
+      
+      #header .menu a:link,
+      #header .menu a:visited {
+        color: #333;
+      }
+      
+      #maindiv {
+        margin: 0 auto;
+        margin-top: -20px;
+        width: 80%;
+      }
+      
+      #maindiv .content {
+        counter-increment: kman;
+        counter-reset: h2;
+        background-color: #e8e8e6;
+        padding: 0 0 25px 0;
+        margin: 50px auto;
+        border-width: 1px 1px 4px 10px;
+        border-style: solid;
+        border-color: #781808;
+        position: relative;
+        display: block;
+      }
+      
+      #maindiv .content::before {
+        content: counter(kman, lower-roman);
+        font-size: 100%;
+        font-weight: bold;
+        text-align: center;
+        color: #eee;
+        background-color: #781808;
+        width: 35px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: block;
+      }
+      
+      h2 {
+        display: block;
+        font-family: Verdana, Trebuchet MS, Arial, serif;
+        text-align: left;
+        text-indent: 30px;
+        padding: 0px;
+        margin: 20px 0 0 0;
+        border-bottom: dotted 2px #d0d0d0;
+        border-top: dotted 2px #d0d0d0;
+        background: #deded9;
+        font-size: 160%;
+      }
+      
+      h2::first-letter {
+        color: #781808;
+        background-color: transparent;
+      }
+      
+      #maindiv p {
+	font-size: 100%;
+	font-style: normal;
+	line-height: 150%;
+	padding: 0px;
+	margin: 10px auto;
+	width: 90%;
+	display: block;
+	text-align: justify;
+      }
+      
+      #maindiv address a:link,
+      #maindiv address a:visited {
+        font-weight: bold;
+        text-decoration: underline;
+        background-color: transparent;
+        color: #eaeaea !important;
+        padding-right: 5px;
+        padding-left: 6px;
+      }
+      
+      #maindiv address a:focus,
+      #maindiv address a:hover {
+        text-decoration: none;
+        color: #F1F1F1;
+        border: 0;
+      }
+      
+      #maindiv address a:active {
+        color: #fff;
+        text-decoration: line-through;
+        border: none;
+      }
+      
+      #maindiv address {
+        font-size: 95%;
+        font-style: normal;
+        font-weight: bold;
+        text-decoration: none;
+        color: #BBB;
+        background-color: #781808;
+        padding: 3px 0px 0px;
+        margin: 0px;
+        width: 100%;
+        position: absolute;
+        bottom: -1px;
+        left: 0px;
+        display: block;
+        text-align: right;
+      }
+      
+      #maindiv .important {
+        font-size: 95%;
+        font-family: Verdana;
+        text-align: left;
+        background-color: #F1F1F1;
+        border-top: solid 1px #aaa;
+        border-bottom: solid 1px #aaa;
+        border-left: solid 6px #aaa;
+        border-right: solid 6px #aaa;
+        padding: 10px;
+        margin: 20px auto;
+        width: 80%;
+        line-height: 160%;
+      }
+      
+      #maindiv .important::before {
+        display: none;
+      }
+      
+      #maindiv .important p {
+        font-size: 100%;
+        text-indent: 0px;
+        margin: 5px 0 10px 0;
+      }
+      
+      #maindiv ul {
+	margin: -10px 0 0 30px;
+        *margin-left: 65px;
+      }
+      
+      #maindiv ol {
+        margin: -10px 0 0 35px;
+        *margin-left: 70px;
+      }
+      
+      #maindiv .important ul {
+        margin: -10px 0 0 15px;
+      }
+      
+      #maindiv .important ol {
+        margin: -10px 0 0 20px;
+      }
+      
+      #maindiv ul li {
+	list-style-type: square;
+	line-height: 150%;
+	text-align: justify;
+	margin-right: 5%;
+      }
+      
+      #maindiv ol li {
+	line-height: 150%;
+	text-align: justify;
+	margin-right: 5%;
+      }
+      
+      .t1 {
+        font-weight: bold;
+        width: 26%;
+        text-align: right;
+        clear: right;
+        float: left;
+        *float: none;
+        *margin-left: 65px;
+        line-height: 22px;
+      }
+      
+      .t2 {
+        text-align: left;
+        width: 73%;
+        float: right;
+        *float: none;
+        line-height: 22px;
+      }
+      
+      hr {
+        margin: 10px 0 10px 0;
+        padding: 0;
+        height: 1px;
+        border: 0;
+        color: #aaa;
+        background-color: #aaa;
+      }
+      
+      hr.floatfix {
+        clear: both;
+        color: #e8e8e6;
+        background-color: #e8e8e6;
+        *margin: 0;
+        *padding: 0;
+      }
+      
+      h1 {
+        font-size: 225%;
+        color: #444;
+        padding: 5px 0 5px 0;
+        margin: 0;
+        width: 100%;
+      }
+      
+      h3,
+      h4,
+      h5 {
+        margin: 10px 40px 10px 40px;
+        padding: 0;
+      }
+      
+      h3 {
+        font-size: 125%;
+        font-style: italic;
+      }
+      
+      h4 {
+        font-size: 125%;
+      }
+      
+      h5 {
+        font-size: 100%;
+      }
+      
+      h6 {
+        width: 100%;
+        margin: 10px 0 15px 0;
+        background-color: #ECECEC;
+        text-align: left;
+        text-indent: 30px;
+        font-size: 100%;
+        padding-top: 1px;
+        padding-bottom: 1px;
+        border-bottom: solid 1px #bbb;
+        border-top: solid 1px #bbb;
+      }
+      
+      a:link,
+      a:visited {
+        color: #781808;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:active {
+        color: #222;
+        border-bottom: 1px solid black;
+      }
+
+    -->
+    /*]]>*/
+    </style>
+    <title>SPELLHOLD STUDIOS - Throne of Bhaal Extender Édition Autonome</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+  <body>
+    <a name="top" id="top"></a>
+    <div id="wrap">
+      <div id="header">
+        <h1>Throne of Bhaal Extender (TobEx) - Édition Autonome</h1>
+        <strong>Un mod Spellhold Studios pour Baldur's Gate 2 - Throne of Bhaal 26498</strong>
+        <p class="about">Auteur : Ascension64</p>
+        <p class="about">
+          <a href="http://www.spellholdstudios.net/">Site Web du mod</a> &#8226;
+          <a href="http://www.shsforums.net/forum/606-tobex/">Forum du mod</a>
+        </p>
+        <hr />
+        <p class="menu">
+          <a href="#intro">Introduction</a> &middot;
+          <a href="#requirements">Prérequis</a> &middot;
+          <a href="#installation">Installation</a> &middot;
+          <a href="#troubleshooting">Résolution de problème</a> &middot;
+          <a href="#compatibility">Compatibilité</a> &middot;
+          <a href="#credits">Remerciements</a> &middot;
+          <a href="#legalese">Aspect juridique</a>
+        </p>
+      </div>
+      <div id="maindiv">
+
+        <!-- ================== I n t r o d u c t i o n ================== -->
+        <a name="intro" id="intro"></a>
+        <div class="content">
+          <h2>Introduction</h2>
+          <h3>Résumé</h3>
+          <p>TobEx (Throne of Bhaal Extender) est une bibliothèque à édition de liens dynamique (DLL), écrite en C++, qui corrige des bugs du moteur de jeu et étend ce dernier en modifiant l'image virtuelle du BGMain.exe de Throne of Bhaal en mémoire.</p>
+          <p>TobEx est à la fois une modification pour les joueurs et une ressource pour les créateurs de mods. En bref, les caractéristiques de TobEx sont :</p>
+          <br />
+          <ul>
+            <li>Corrections de bug dans de nombreuses parties différentes du moteur de jeu</li>
+            <li>Davantage d'informations de debug</li>
+	    <li>Extension de l'interface utilisateur, telle que l'ajout de barres de défilement</li>
+	    <li>Altérations optionnelles du comportement du moteur</li>
+	    <li>(Modeurs) Externalisation de comportement codé en dur</li>
+            <li>(Modeurs) Déclencheurs (NdT : "triggers"), actions et effets nouveaux et modifiés</li>
+          </ul>
+          <hr />
+          <h3>Composants</h3>
+          <p>Le premier composant, intitulé "TobEx - Base" est le minimum requis pour utiliser TobEx. Pour les joueurs, ce composant :</p>
+          <br />
+          <ul>
+            <li>installe tous les fichiers requis pour utiliser TobEx et modifie l'exécutable du jeu BGMain.exe pour qu'il charge TobEx.dll quand le jeu démarre ;</li>
+            <li>active le type de jeu Arènes en multijoueur ;</li>
+            <li>enregistre les plantages du jeu codés en dur dans TobEx.log et affiche toujours une boîte de dialogue quand un tel plantage se produit ;</li>
+            <li>apporte des corrections au comportement de nombreux effets du jeu, tels que cécité, maladie, régénération et poison ;</li>
+            <li>corrige le compte-rendu de l'expérience acquise ;</li>
+            <li>corrige un bug dans l'attribution des facultés de haut niveau du Clerc-Rôdeur ;</li>
+            <li>corrige un défaut du moteur concernant le ciblage des animations de créature mourante ;</li>
+            <li>corrige un profit indu avec une arme de jet qui n'a pas besoin de munition, causant des dégâts supplémentaires quand on utilise des munitions ;</li>
+            <li>corrige des bugs du moteur avec les ensembles de sons ;</li>
+            <li>optimise le code de recherche dans les sacs pour réduire le ralentissement du jeu lorsqu'il y a trop d'objets à l'intérieur ;</li>
+            <li>augmente la quantité de texte stockée dans la barre de dialogue ;</li>
+            <li>agrandit le parchemin de bulle d'aide ;</li>
+            <li>autorise le défilement des sorts de mage et de prêtre, et de la sélection de kit.</li>
+          </ul>
+          <p>Les composants restants sont des "Extras", décrits ci-après :</p>
+          <br />
+          <ul>
+            <li><strong>Appliquer un jet de concentration en cas de dégâts [Travail en cours] :</strong> au lieu d'être toujours interrompus lorsqu'ils sont touchés, les jeteurs de sorts ont une chance que leur sort soit interrompu. Ceci est géré par un contrôle de concentration. Un jeteur de sort réussit le contrôle de concentration si (1D20 + chance) > (niveau du sort + dégâts subits). Les détails de ce composant sont susceptibles de changer.</li>
+            <li><strong>Réveiller en cas de dégâts :</strong> les créatures sortiront du sommeil quand elles seront touchées.</li>
+            <li><strong>Cécité telle que dans la description du sort :</strong> la cécité donne -4 au toucher et 4 points de pénalité d'armure tel qu'indiqué dans la description du sort Cécité dans le jeu.</li>
+            <li><strong>Désactiver la couleur grise de Peau de pierre [C] :</strong> supprime le changement de couleur en gris pour un personnage qui a lancé Peau de pierre. Ce composant est identique à tob_hacks, SCS et SCS II.</li>
+            <li><strong>Pas d'interruption de sort pour zéro dégât :</strong> le lancement de sort n'est pas interrompu si une créature ne subit pas de dégât (i.e. est immunisée).</li>
+            <li><strong>Utiliser le niveau du jeteur de sorts pour Image miroir [C] :</strong> lorsqu'on essaie de dissiper Image miroir, la chance de dissiper est modifiée par le niveau du jeteur de sorts. Ce composant est identique à tob_hacks, SCS, SCS II et Spell Revisions.</li>
+            <li><strong>Permettre le jumelage à toutes les races :</strong> autorise toutes les races à se jumuler, au lieu des seuls humains.</li>
+            <li><strong>Permettre de changer d'armure en cours de combat :</strong> autorise le changement d'armure au milieu d'un combat.</li>
+            <li><strong>Désactiver le surcroît d'expérience :</strong> supprime la fonctionnalité codée en dur qui accorde au groupe 110 % de l'expérience véritablement codée dans les créatures.</li>
+            <li><strong>Désactiver la mise en pause automatique dans l'inventaire :</strong> en mode un seul joueur, si le jeu n'est pas en pause avant d'entrer dans l'écran d'inventaire, le jeu ne se mettra plus automatiquement en pause.</li>
+            <li><strong>Désactiver le silence en cas de Charme :</strong> ce composant a deux effets ; i) il empêche les créatures de perdre leur doublage sonore quand elles sont charmées, et ii) il permet au joueur d'entamer le dialogue avec les créatures charmées.</li>
+            <li><strong>Restrictions sur les compétences au niveau un :</strong> restreint le nombre d'étoiles de compétence que l'on peut donner à une compétence pendant la création d'un personnage de niveau un. Ce composant n'a d'effet que pour les gens qui jouent à Baldur's Gate Trilogy-WeiDU.</li>
+            <li><strong>Rester caché en cas de succès du vol à la tire [C] :</strong> si un personnage est invisible ou sous invisibilité améliorée, un vol à la tire réussi n'interrompt pas l'invisibilité. Se cacher dans l'ombre s'interrompra quand même à la fin du round. Ce composant N'est PAS compatible avec tob_hacks.</li>
+            <li><strong>Une attaque lors du repos fait avancer le temps :</strong> si le repos est interrompu par des monstres errants, un temps aléatoire pouvant aller jusqu'à un peu moins de huit heures va s'écouler. Toutes les durées de repos d'une heure et plus vont s'afficher dans la barre de dialogue. Les durées de repos inférieures à une heure ne s'afficheront pas dans la barre de dialogue.</li>
+            <li><strong>Sous-titres des dialogues de salutation :</strong> Comme dans Baldur's Gate I, ce composant affiche le texte correspondant à la saluation orale dans la barre de dialogue au début du dialogue.</li>
+            <li><strong>Activer les sons d'attaque des animations :</strong> Ce composant active les sons d'attaque spécifiques des animations, ce qui rend les combats un peu plus polyphoniques... mélodieux peut-être, ou cacophoniques.</li>
+            <li><strong>Quatre emplacements d'arme dans l'inventaire pour tous :</strong> donne à toutes les classes jouables quatre emplacements d'arme dans l'inventaire, comme pour les guerriers. Cela change uniquement l'affichage de l'inventaire mais pas la barre rapide en bas de l'écran.</li>
+            <li><strong>Sous-titres pour les ensembles de sons d'origine :</strong> ajoute les sous-titres pour les ensembles de sons pour homme et femme livrés d'origine avec Baldur's Gate II - Throne of Bhaal.</li>
+            <li><strong>Supprimer toutes les restrictions de classe pour les races :</strong> autorise toutes les classes à toutes les races.</li>
+            <li><strong>Faire tomber l'inventaire au sol en cas de désintegration / mort due au froid / pétrification :</strong> en trois composants distincts ; quand une créature meurt par désintégration, froid ou pétrification fracassants, tout l'inventaire tombe au sol exactement comme pour une mort normale.</li>
+          </ul>
+          <hr />
+          <h3>Modeurs et développeurs</h3>
+          <p>Veuillez consulter ./TobEx/TobEx_redist/readme/readme.htm pour plus d'informations. Le code source du programme est inclus, avec des notes de compilation, dans le répertoire ./TobEx/src.</p>
+          <hr />
+          <h3>Historique des révisions</h3>
+          <p>Veuillez consulter TobEx/TobEx_redist/readme/revisions.txt.</p>
+          <address>
+            <span class="footer">TobEx &gt; Introduction</span> &#8226;<a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+
+        <!-- ================== R e q u i r e m e n t s ================== -->
+        <a name="requirements" id="requirements"></a>
+        <div class="content">
+          <h2>Prérequis</h2>
+          <p>TobEx requiert Baldur's Gate II : Throne of Bhaal version 26498. La modification ne fonctionnera pas avec les autres versions de Throne of Bhaal.</p>
+          <p>TobEx est programmé et testé avant tout sur des systèmes Windows. Il se pourrait qu'il fonctionne sur des systèmes Linux et il est peu probable qu'il fonctionne sur des systèmes Macintosh.</p>
+          <address>
+            <span class="footer">TobEx &gt; Prérequis</span> &#8226;<a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+
+        <!-- ================== I n s t a l l a t i o n ================== -->
+        <a name="installation" id="installation"></a>
+        <div class="content">
+          <h2>Installation et désinstallation</h2>
+	  <h3>Installation</h3>
+	  <ol>
+            <li>Décompressez l'archive TobEx dans le répertoire de votre jeu.</li>
+	    <li>Exécutez Setup-TobEx.exe dans le répertoire d'installation.</li>
+	    <li>Suivez les instructions à l'écran pour installer, réinstaller ou désinstaller des composants.</li>
+	    <li>Installez tous vos autres mods.</li>
+	    <li>Lancez le jeu normalement en exécutant BGMain.exe.</li>
+	    <li>Vous saurez que TobEx tourne en tâche de fond si une fenêtre console supplémentaire apparaît avant que le jeu ne démarre. Si cela ne se produit pas, lancez le jeu en utilisant TobExLoader.exe à la place.</li>
+          </ol>
+	  <hr />
+	  <h3>Mise à jour</h3>
+	  <ol>
+            <li>Exécutez Setup-TobEx.exe dans le répertoire d'installation.</li>
+	    <li>Suivez les instructions à l'écran pour désinstaller tous les composants.</li>
+	    <li>Supprimez le répertoire TobEx dans le répertoire d'installation.</li>
+	    <li>Suivez les instructions d'installation à partir de l'étape 1.</li>
+          </ol>
+          <address>
+            <span class="footer">TobEx &gt; Installation et désinstallation</span> <a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+
+        <!-- ================== T r o u b l e s h o o t i n g ================== -->
+        <a name="troubleshooting" id="troubleshooting"></a>
+	<div class="content">
+          <h2>Résolution de problème</h2>
+          <p>Tout d'abord, assurez-vous que TobEx soit vraiment la cause du problème. Vous pouvez énergiquement empêcher TobEx de s'exécuter en renommant le fichier TobEx.dll dans le répertoire de votre jeu.</p>
+          <p>Pour davantage d'information de debug :</p>
+          <br />
+          <ol>
+            <li>Ouvrez TobEx_ini/TobExCore.ini dans un simple éditeur de texte.</li>
+            <li>Dans la section [Debug], mettez à 1 toutes les valeurs qui sont à 0.</li>
+            <li>Essayez de reproduire votre erreur dans le jeu. TobEx pourra parfois signaler quelques informations supplémentaires à propos de l'erreur.</li>
+            <li>Signalez toute erreur que vous trouvez sur les forums Spellhold Studios. Préparez-vous à ce que l'on vous demande de joindre un .zip du répertoire de votre partie sauvegardée, de WeiDU.log, TobEx.log, TobExCore.ini et TobExTweak.ini.</li>
+          </ol>
+          <address>
+            <span class="footer">TobEx &gt; Résolution de problème</span> &#8226;<a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+		
+        <!-- ================== C o m p a b i l i t y ================== -->
+        <a name="compatibility" id="compatibility"></a>
+        <div class="content">
+          <h2>Compatibilité</h2>
+          <p>Une version redistribuable de TobEx, identique au composant "TobEx - Base" de cette modification, peut être incluse dans d'autres modifications. Si c'est le cas, l'installation détectera automatiquement si une mise à jour est nécessaire et mettra à jour en conséquence. L'installation se poursuivra sans changement si une mise à jour est inutile. Aucune action particulière de l'utilisateur n'est nécessaire.</p>
+          <p>Il est recommandé que TobEx soit installé en premier dans une installation destinée à de nombreuses modifications.</p>
+          <p>Il se peut que TobEx ait des problèmes de compatibilité avec des mods qui modifient directement l'exécutable. Veuillez suivre les indications de résolution de problème ci-dessus si vous rencontrez des problèmes et croyez qu'ils puissent être dûs à des problèmes de compatibilité avec d'autres modifications. La liste des modifications qui changent l'exécutable comprend (dans l'ordre alphabétique) :</p>
+          <ul>
+            <li>1PP Extended Palette Entries</li>
+            <li>1PP Female Dwarves</li>
+            <li>1PP Thieves Galore</li>
+            <li>A6CharmPatch</li>
+            <li>A6XPPatch</li>
+            <li>Aurora's Shoes and Boots</li>
+            <li>Fishing For Trouble</li>
+            <li>Baldur's Gate Trilogy-WeiDU (BGT-WeiDU)</li>
+            <li>Infinity Animations</li>
+            <li>Sword Coast Stratagems (SCS)</li>
+            <li>Sword Coast Stratagems II (SCSII)</li>
+            <li>Spell Revisions</li>
+            <li>tb#tweaks</li>
+            <li>tob_hacks</li>
+            <li>tob_inject</li>
+            <li>Mod Widescreen</li>
+            <li>Divers patchs de limite d'expérience</li>
+          </ul>
+          <address>
+            <span class="footer">TobEx &gt; Compatibilité</span> &#8226;<a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+		
+        <!-- ================== C r e d i t s ================== -->
+        <a name="credits" id="credits"></a>
+        <div class="content">
+          <h2>Remerciements</h2>
+          <br />
+          <ul>
+            <li>BioWare pour la création de l'Infinity Engine et de ses jeux</li>
+            <li>Les contributeurs au Projet de Description des Structures de l'Infinity Engine (IESDP) pour les informations sur les structures de données</li>
+            <li>Les développeurs de GemRB pour l'apport d'informations supplémentaires sur les structures de données</li>
+            <li>Taimon pour ToB_hacks et ses recherches</li>
+            <li>La communauté de modification pour l'Infinity Engine pour son support</li>
+          </ul>
+          <address>
+            <span class="footer">TobEx &gt; Remerciements</span> &#8226;<a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+                <!-- ================== L e g a l e s e ================== -->
+        <a name="legalese" id="legalese"></a>
+        <div class="content">
+          <h2>Aspect juridique</h2>
+	  <p>BALDUR'S GATE II : SHADOWS OF AMN, BALDUR'S GATE II : THRONE OF BHAAL : © 2000, 2001 BioWare Corp. Tous droits réservés. Baldur's Gate, Throne of Bhaal, et Shadows of Amn sont des marques déposées de Wizards of the Coast, Inc. et sont utilisées par Interplay sous licence. Tous droits réservés. BioWare Infinity Engine est une marque déposée de BioWare Corp. Tous droits réservés.</p>
+	  <p><strong>UTILISEZ CETTE MODIFICATION A VOS RISQUES ET PERILS. Cette modification n'est ni développée, ni supportée, ni approuvée par BioWare Corp., Interplay, ou Black Isle. Toutes les images et le contenu de ce mod sont © BioWare Corp., Interplay, Black Isle ou Wizards of the Coast, Inc.</strong></p>
+	  <p>Ceci est une modification faite par la communauté, créée en tant que loisir, gratuitement. Vous pouvez la diffuser à vos proches autant que vous le souhaitez. Cependant, faites preuve de bonne foi et créditez les auteurs de cette modification si vous avez l'intention d'en changer le contenu d'une façon ou d'une autre ou si vous employez une partie de cette modification comme modèle pour créer une modification que vous avez l'intention de diffuser à la communauté.</p>
+          <address>
+            <span class="footer">TobEx &gt; Aspect juridique</span> &#8226;<a href="#top">REVENIR AU DEBUT</a>
+          </address>
+        </div>
+
+      </div>
+    </div>
+
+</body>
+</html>

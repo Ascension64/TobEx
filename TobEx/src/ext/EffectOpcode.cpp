@@ -14,11 +14,11 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	(this->*CEffectDamage_ApplyEffect)(creTarget);
 
 	//CEffectAwaken::ApplyEffect(creTarget)
-	creTarget.m_BaseStats.stateFlags &= (!STATE_SLEEPING);
-	creTarget.cdsCurrent.stateFlags &= (!STATE_SLEEPING);
-	creTarget.EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_AWAKEN, creTarget.EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
-	creTarget.EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_AWAKEN, creTarget.EffectsMain.posItrPrev, -1, ResRef(), FALSE);
-	bPurge = TRUE;
+	creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
+	creTarget.cdsCurrent.stateFlags &= ~STATE_SLEEPING;
+	creTarget.EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
+	creTarget.EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.EffectsMain.posItrPrev, -1, ResRef(), FALSE);
+	//bPurge = TRUE;
 
 	return TRUE;
 };

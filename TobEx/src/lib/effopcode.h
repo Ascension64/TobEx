@@ -7,7 +7,8 @@
 #include "objcre.h"
 
 //effect opcodes
-#define CEFFECT_OPCODE_AWAKEN 0x002
+#define CEFFECT_OPCODE_AWAKEN	0x002
+#define CEFFECT_OPCODE_SLEEP	0x027
 
 class CEffectAwaken: public CEffect { //opcode 2h
 public:

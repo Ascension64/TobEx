@@ -84,3 +84,42 @@ int DETOUR_Stats::DETOUR_CalculateBonus(int a, int b) {
 
   return (this->*Tramp_Stats_CalculateBonus)(a, b);
 }
+
+
+4. Constructing and deconstructing game objects
+
+The implementation of ctors and dtors includes the ctors and dtors, respectively, of any member objects. Therefore, one needs to be very careful when detouring ctors and dtors of game objects that contain member objects, because you will end up duplicating the ctors and dtors of the member objects.
+
+For example,
+
+struct Action {
+public:
+  void* operator new(size_t size);
+  void operator delete(void* mem);
+
+  Action();
+  ~Action();
+
+  short opcode;
+  Object oOverride;
+  Object oObject;
+  Object oTarget;
+  int i;
+  int i2;
+  int i3;
+  IECString sName1;
+  IECString sName2;
+  POINT pt;
+  unsigned int dwFlags;
+};
+
+In the Action object, the program's Action() ctor will call the Object ctor and the IECString ctor. If Action() is detoured, it should not point to a program function that also calls the Object ctors and the IECstring ctors (which unfortunately is the case in the machine code), otherwise they will be called twice. If any of the member object ctors invokes operator new, double new occurs.
+
+The same applies to the Action() dtor. This presents more of a problem than the ctor, because if any of the member object dtors invokes operator delete, double delete occurs.
+
+In order to avoid this, the full ctor and dtor of all objects containing other member objects should ideally be reversed.
+
+However, if this cannot be done, particular attention should be paid to whether the member objects' ctors and dtors invokes operator new or operator delete, resectively. If so, objects containing such members must have manually coded ctors or dtors.
+
+Objects of note:
+-IECString dtor

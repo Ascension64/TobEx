@@ -46,9 +46,9 @@ public:
 	virtual UINT GetStringBitDepth() { return 10; } //v20, Can not set game bit depth, user must change desktop bit depth through Control Panel.
 	virtual UINT GetString3D() { return 11; } //v24, Can not run 3d when desktop bit depth is less than 16 bit (65535 colors), running 2d instead.
 	virtual UINT GetString3DFont() { return 12; } //v28, Window's fonts do not work with 3d, running 2d instead.
-	virtual void v2c() {} //ProcMain for threadDF4h (multiplayer?)
-	virtual void v30() {} //0x436359, ProcMain for threadE14h (CResHandler loop)
-	virtual void v34() {} //0x4363A6, ProcMain for threadF24h (Timer loop) - calls v8c
+	virtual void v2c() {} //0x4362A1, ProcMain for multiplayer loop (NetworkProcMain)
+	virtual void v30() {} //0x436359, ProcMain for CResHandler loop (ResHandlerProcMain)
+	virtual void v34() {} //0x4363A6, ProcMain for timer loop - calls v8c (WindowProcMain)
 	virtual void CreateResObject(int fileType) {} //v38, 0x434D1C
 	virtual IECString GetChitinIcon() { return IECString("IDI_BIOWARE"); } //v3c, 0x43C8D0
 	virtual void v40(IECString* pStr) { pStr->operator =("Baldr"); return; } //Baldr (0xB77238)
@@ -63,14 +63,14 @@ public:
 	virtual void v64() {} //?
 	virtual void Set6B10(int dw) {}
 	virtual void v6c() {} //some multiplayer stuff? Uses GameSpy and RogerWilco
-	virtual void v70() {} //sets Obj+6C44h to 1 (char)
+	virtual void SetCloseNetworkSession() {} //70h, sets 6C44h to true
 	virtual void v74() {} //uses RogerWilco
 	virtual void v78() {} //?
 	virtual void v7c() {} //multiplayer thing
 	virtual void v80() {} //OnMultiplayerLeave
 	virtual void v84() {} //?
 	virtual void v88() {} //DebugBaldurMessage(dwDebugLevel, char*, pnLength)
-	virtual void v8c() {} //0x43544C ? WindowUpdateProc - Executes all messages
+	virtual void v8c() {} //0x43544C ? WindowUpdateProc(5 ints) - Executes all messages
 	virtual void v90() {} //WriteWindowSettings
 	virtual void v94() {} //0x9A5C17, LoadEngine(pEngine)
 	virtual void v98() {} //ShowErrorAndQuit
@@ -114,8 +114,8 @@ public:
 	int DoubleClickTime; //3ch
 	int nDoubleClkWidth; //40h, GetSystemMetrics(SM_CXDOUBLECLK)
 	int nDoubleClkHeight; //44h, GetSystemMetrics(SM_CYDOUBLECLK)
-	BOOL bChitinLoaded; //48h, EngineLoaded
-	int u4c; //CResHandlerLoopThreadLoaded
+	BOOL m_bEngineLoaded; //48h
+	BOOL m_bResHandlerThreadLoad; //4ch
 	int u50;
 	CObList engines; //0x54
 	int u70;
@@ -174,13 +174,13 @@ public:
 	char m_bOverConfirmEverything; //19eh
 	char m_bAlternateSRCurve; //19fh
 	int nSRCurveRadius; //1a0h, SR = spectral recording
-	int u1a4;
-	int u1a8; //cmp 24, assoc timer loop
-	int u1ac;
+	int m_nTickCountRef; //1a4h, stores the GetTickCount() every second
+	int u1a8; //cmp 24, assoc window loop, copied from 1ach when reference passes 1 sec
+	int m_nTicksSinceRef; //1ach, stores the number of ticks since the reference count
 	int u1b0;
-	int u1b4; //cmp 15, assoc timer loop
+	int u1b4; //cmp 15, assoc window loop
 	int u1b8;
-	int u1bc; //cmp 30, assoc timer loop
+	int u1bc; //cmp 30, assoc window loop
 	BOOL m_bDoubleByteCharSupport; //1c0h
 	int u1c4; //copy of 1c0h
 
@@ -209,14 +209,14 @@ public:
 	CRITICAL_SECTION u330; //for CResHandler::pResTemp
 	CRITICAL_SECTION u348;
 	int u360[6]; //unused
-	CRITICAL_SECTION u378;
+	CRITICAL_SECTION csFileWrite; //378h, used when writing to files
 	CRITICAL_SECTION u390;
-	int u3a8; //if 1, terminates thread E14 (v30)
-	HANDLE u3ac; //hThread for CResHandler loop
-	int u3b0;
-	HANDLE u3b4; //hThread for multiplayer?
-	HANDLE u3b8; //hThread for Timer loop
-	int u3bc; //if 1, terminates thread DF4 and F24 (v2c)
+	BOOL m_bTerminateResHandlerThread; //3a8h
+	HANDLE m_hThreadResHandler; //3ach
+	BOOL m_bTerminateNetworkThread; //3b0h
+	HANDLE m_hThreadNetwork; //3b4h
+	HANDLE m_hThreadWindow; //3b8h
+	BOOL m_bTerminateWindowThread; //3bch
 	CEngine* pEngineActive; //3c0h
 	CSoundMixer mixer; //3c4h
 	CResHandler ResHandler; //2c9eh
@@ -244,7 +244,7 @@ public:
 	int u4026;
 	POINT ptCursor; //402ah
 	int nChitinUpdates; //4032h
-	int u4036;
+	BOOL m_bRunningWindowUpdateProc; //4036h
 	CObList GameDirectories; //403ah, Contains 0x8 CObjects (vt, dwLoaded, IECString* directoryName) for directories for the game, AB8ED0
 	int u4056;
 	int u405a;
@@ -281,7 +281,7 @@ public:
 	int m_threadID[10]; //40fah
 	HANDLE m_hThread[10]; //4122h
 	short m_nThreads; //414ah, note CHITIN_MAX_THREADS = 10
-	short u414c;
+	short m_bCheckedWindowThreadPriority; //414ch
 	int u414e;
 	int u4152;
 	int u4156[16]; //init to 1000
@@ -323,7 +323,7 @@ public:
 	void* u4306; //size 0x1a44, GUIWMAP
 	void* pChapter; //430ah, size 0x70a, GUICHAP, 0x138 nDreamIdx, 0x13C rDrmTxtFileName, 0x144 m_pTextList (CStrRefList), 0x148 m_pBmpList, 0x1FE rPower
 	void* pMovies; //430eh, size 0x7a4, GUIMOVIE
-	CTlkTbl TlkTbl; //4312h
+	CTlkTbl m_TlkTbl; //4312h
 			
 	struct CGUIMain { //Size 19E8h
 	//Constructor: 0x4659F0
@@ -445,7 +445,7 @@ public:
 	BOOL m_bDisableMovies; //6cfch
 	int u6d00;
 	CVidFont u6d04; //NORMAL.BAM
-	int u7200;
+	BOOL u7200;
 	BOOL m_bFirstRun; //7204h
 	int nInstallType; //7208h
 };

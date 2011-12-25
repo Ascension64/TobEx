@@ -63,9 +63,9 @@ struct CreFileData { //Size 268h
 	char numAttacks;
 	char saveDeath;
 	char saveWands;
-	char savePolymorph;
+	char savePoly;
 	char saveBreath;
-	char saveSpells; //50h
+	char saveSpell; //50h
 	char resistFire;
 	char resistCold;
 	char resistElectricity;
@@ -86,8 +86,8 @@ struct CreFileData { //Size 268h
 	char pickPockets;
 	char fatigueLimit; //63h, fatigue above this value results in fatigue
 	char intoxication;
-	char luck;
-	char BG1ProfLSword; //unused
+	char luck; //65h
+	char BG1ProfLSword; //66h, unused
 	char BG1ProfSSword; //unused
 	char BG1ProfBows; //unused
 	char BG1ProfSpears; //unused
@@ -141,7 +141,7 @@ struct CreFileMemSpellLevel { //Size 10h
 	short wCurrMemSpells; //4h
 	short type; //6h, 0 = priest, 1 = wizard, 2 = innate
 	int index; //8h, of spell table
-	int num; //ch, count of spells
+	int nNumSpells; //ch, count of spells
 };
 
 struct CreFileKnownSpell { //Size Ch
@@ -155,7 +155,7 @@ struct CreFileMemSpell { //Size Ch
 
 	//bit0: memorised
 	//bit1: is a SPIN107, 108, 109, 110, 111 (a Paladin, Ranger, Druid special innate)
-	unsigned short wFlags; //8h
+	unsigned short wFlags; //8h, bit0: MEMSPELL_MEMORIZED
 	short ua; //pad
 };
 
@@ -306,14 +306,14 @@ struct SplFileAbility { //Size 28h
 	char targetType; //ch
 	char targetNum; //dh
 	short range; //eh
-	short levelReq; //10h
+	short wMinLevel; //10h
 	int castSpeed; //12h
 	short sizeDice; //16h
 	short nDice; //18h
 	short enchanted; //1ah
 	short damType; //1ch
-	short nEffects; //1eh
-	short offEffects; //20h
+	short wNumEffects; //1eh
+	short wEffectIdx; //20h
 	short nCharges; //22h
 	short chargeType; //24h
 	short projIdx; //26h
@@ -365,13 +365,13 @@ struct StoFileDrink { //Size 14h
 struct StoFileItem { //Size 1Ch
 //corresponds to 'Item for sale' extended header
 	ResRef name; //0h
-	short arg6; //8h
-	short usage1; //ah
-	short usage2; //ch
-	short usage3; //eh
-	unsigned int flags; //10h
-	int nInStock; //14h
-	BOOL bInfinite; //18h
+	short m_wWear; //8h, 0xFF + time until recharge in absolute game hours
+	short m_wUsage1; //ah
+	short m_wUsage2; //ch
+	short m_wUsage3; //eh
+	unsigned int dwFlags; //10h
+	int m_nNumInStock; //14h
+	BOOL m_bInfinite; //18h
 };
 
 struct StoFileSpell { //Size 10h

@@ -41,19 +41,21 @@ public:
 class CPtrListMessage : public IECPtrList { //Size 1Eh
 public:
 	//AAB854
+	void ExecuteMessages();
 	short Send(CMessage& msg, BOOL bForceAddToQueue);
 
 	char u1c; //gets u90 from CMultiplayerSettings
 	char u1d; //pad
 };
 
+extern void (CPtrListMessage::*CPtrListMessage_ExecuteMessages)();
 extern short (CPtrListMessage::*CPtrListMessage_Send)(CMessage&, BOOL);
 
-class CMessageAddAction: public CMessage { //Size 6Ah
+class CMessageAddActionHead: public CMessage { //Size 6Ah
 public:
 	//AA5BF4
-	CMessageAddAction();
-	virtual ~CMessageAddAction() {} //v0
+	CMessageAddActionHead();
+	virtual ~CMessageAddActionHead() {} //v0
 	virtual short GetMsgType(void) {return 0;} //v4, ?
 	virtual char GetNetworkType1(void) {return 0;} //v8, ?
 	virtual char GetNetworkType2(void) {return 0;} //vc, ?
@@ -63,6 +65,32 @@ public:
 
 	Action a;
 };
+
+class CMessageAddActionTailInterrupt : public CMessage { //Size 6Ah
+public:
+	CMessageAddActionTailInterrupt();
+
+	//AA6ACC
+	virtual ~CMessageAddActionTailInterrupt(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	Action a; //ch
+};
+
+extern void (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_Deconstruct)();
+extern short (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_GetMsgType)(void);
+extern char (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_GetNetworkType1)(void);
+extern char (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_GetNetworkType2)(void);
+extern void (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_Marshal)(void*, int*);
+extern BOOL (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_Unmarshal)(void*, int*);
+extern void (CMessageAddActionTailInterrupt::*CMessageAddActionTailInterrupt_DoMessage)(void);
 
 class CMessageApplyEffect : public CMessage { //Size 12h
 //used for Invisible, Sparkle, Casting Glow, Global Effects
@@ -81,6 +109,33 @@ public:
 	bool u10; //0 (sparkle, casting glow, any global effect), 1
 	char u11; //pad
 };
+
+class CMessageCastSpell : public CMessage { //Size 14h
+public:
+	CMessageCastSpell();
+
+	//AA9970
+	virtual ~CMessageCastSpell(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	IECString sSpell; //ch
+	Enum eSpellTarget; //10h
+};
+
+extern void (CMessageCastSpell::*CMessageCastSpell_Deconstruct)();
+extern short (CMessageCastSpell::*CMessageCastSpell_GetMsgType)(void);
+extern char (CMessageCastSpell::*CMessageCastSpell_GetNetworkType1)(void);
+extern char (CMessageCastSpell::*CMessageCastSpell_GetNetworkType2)(void);
+extern void (CMessageCastSpell::*CMessageCastSpell_Marshal)(void*, int*);
+extern BOOL (CMessageCastSpell::*CMessageCastSpell_Unmarshal)(void*, int*);
+extern void (CMessageCastSpell::*CMessageCastSpell_DoMessage)(void);
 
 class CMessageCreatureOverlay : public CMessage { //Size Eh
 public:
@@ -166,6 +221,62 @@ public:
 	bool u22;
 	bool u23; //pad
 };
+
+class CMessageHostReleaseServerStore : public CMessage { //Size 14h
+public:
+	CMessageHostReleaseServerStore();
+
+	//AA7298
+	virtual ~CMessageHostReleaseServerStore(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	ResRef rStoreName; //ch
+};
+
+extern void (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Deconstruct)();
+extern short (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_GetMsgType)(void);
+extern char (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_GetNetworkType1)(void);
+extern char (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_GetNetworkType2)(void);
+extern void (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Marshal)(void*, int*);
+extern BOOL (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Unmarshal)(void*, int*);
+extern void (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_DoMessage)(void);
+
+class CMessageModifyVariable : public CMessage { //Size 1Ah
+public:
+	CMessageModifyVariable();
+
+	//AA6CE0
+	virtual ~CMessageModifyVariable(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	IECString sScope; //ch
+	IECString sVariable; //10h
+	int nValue; //14h
+	unsigned char nBehaviour; //18h, 0 = set, 1 = sum
+	char u19; //pad
+};
+
+extern void (CMessageModifyVariable::*CMessageModifyVariable_Deconstruct)();
+extern short (CMessageModifyVariable::*CMessageModifyVariable_GetMsgType)(void);
+extern char (CMessageModifyVariable::*CMessageModifyVariable_GetNetworkType1)(void);
+extern char (CMessageModifyVariable::*CMessageModifyVariable_GetNetworkType2)(void);
+extern void (CMessageModifyVariable::*CMessageModifyVariable_Marshal)(void*, int*);
+extern BOOL (CMessageModifyVariable::*CMessageModifyVariable_Unmarshal)(void*, int*);
+extern void (CMessageModifyVariable::*CMessageModifyVariable_DoMessage)(void);
 
 class CMessagePlaySound : public CMessage { //Size 1Ah
 //Constructor: 0x5684E0
@@ -302,6 +413,34 @@ extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Marshal
 extern BOOL (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Unmarshal)(void*, int*);
 extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_DoMessage)(void);
 
+//CMessageSetAnimationSequence
+class CMessageSetAnimationSequence : public CMessage { //Size Eh
+public:
+	//AA6D6C
+	CMessageSetAnimationSequence();
+
+	virtual ~CMessageSetAnimationSequence(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	unsigned char nSeq; //ch, SEQ.IDS
+	char ud; //pad
+};
+
+extern void (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_Deconstruct)();
+extern short (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_GetMsgType)(void);
+extern char (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_GetNetworkType1)(void);
+extern char (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_GetNetworkType2)(void);
+extern void (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_Marshal)(void*, int*);
+extern BOOL (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_Unmarshal)(void*, int*);
+extern void (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_DoMessage)(void);
+
 class CMessageSetTrigger : public CMessage { //Size 3Ah
 public:
 	//AA5C84
@@ -374,6 +513,8 @@ extern short (CMessageSpriteUpdate::*CMessageSpriteUpdate_GetMsgType)(void);
 
 struct CMessageHandler { //Size 114h
 //Constructor: 0x43CD30
+	bool RequestHostFile(IECString& sResName, int nCResType, BOOL bSendMsgToHost, BOOL bWaitUntilResponse, bool bUseTempPath);
+
 	char u0;
 	char u1;
 	char u2;
@@ -383,11 +524,11 @@ struct CMessageHandler { //Size 114h
 	char u6;
 	char u7;
 
-	struct _u8 {
-		IECPtrList u0; //AA63B4
-		IECPtrList u1c; //AA63B4
-		int u38;
-	} u8;
+	struct CUserMessages {
+		CIECStringList m_names; //0h
+		CIECStringList m_texts; //1ch
+		int m_nNumMessages; //38h
+	} m_UserMessages; //8h
 
 	char u44; //24, nObjects?
 	char u45;
@@ -427,10 +568,12 @@ struct CMessageHandler { //Size 114h
 	IECString u106;
 	short u10a;
 	int u10c; //ClientTimout
-	char u110;
+	bool m_bCloseNetworkSession; //110h
 	char u111;
 	char u112;
 	char u113; //pad
 };
+
+extern bool (CMessageHandler::*CMessageHandler_RequestHostFile)(IECString&, int, BOOL, BOOL, bool);
 
 #endif //MSGCORE_H

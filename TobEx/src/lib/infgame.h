@@ -2,11 +2,13 @@
 #define INFGAME_H
 
 #include "stdafx.h"
+#include "infbtarr.h"
 #include "rescore.h"
 #include "objcore.h"
 #include "objcre.h"
 #include "vidcore.h"
 #include "arecore.h"
+#include "scrcore.h"
 #include "sndcore.h"
 #include "stocore.h"
 #include "itmcore.h"
@@ -31,6 +33,16 @@ struct CWorldTimer { //Size 6h
 
 extern void (CWorldTimer::*CWorldTimer_UnpauseGame)();
 extern void (CWorldTimer::*CWorldTimer_PauseGame)();
+
+struct CPartySelection { //Size 22h
+	Enum GetFirstSelected();
+
+	short u0; //ffff
+	int u2; //always set to 1 on remove
+	CEnumList celSelected; //6h, party members first in number order, then non-members
+};
+
+extern Enum (CPartySelection::*CPartySelection_GetFirstSelected)();
 
 struct CRuleTable { //Size 24h
 	CRuleTable(); //63E230
@@ -85,8 +97,9 @@ struct CRuleTables { //Size 1DB0h
 	ResRef GetMageSpellRef(int nSpellLevel, int nIndex);
 	STRREF GetCharSndStrRef(int dwCustom, int dwRow, char sex);
 	void GetDetailedClassString(char Class, unsigned int dwKit, unsigned int dwFlags, IECString& ptr, CCreatureObject& cre);
-	int GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit);
+	int GetWeapProfMax(char nClassId, char nClassPrimary, char nClassSecondary, BOOL bTwoClasses, int nWeapProfId, unsigned int dwKit);
 	BOOL IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace);
+	int GetIntModMaxSpellsPerLevel(CDerivedStats& cds);
 	char GetMageSchool(short wKitLow);
 	bool GetContingencyConditionTexts(STRREF* pStrref, STRREF* pDescription, short wIndex);
 	bool GetContingencyTargetTexts(STRREF* pStrref, STRREF* pDescription, short wIndex);
@@ -285,6 +298,7 @@ extern STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char);
 extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned int, unsigned int, IECString&, CCreatureObject&);
 extern int (CRuleTables::*CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int);
 extern BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char);
+extern int (CRuleTables::*CRuleTables_GetIntModMaxSpellsPerLevel)(CDerivedStats&);
 extern char (CRuleTables::*CRuleTables_GetMageSchool)(short);
 extern bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, STRREF*, short);
 extern bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short);
@@ -292,9 +306,13 @@ extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
+	int GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly);
+	void DemandServerStore(ResRef& rName, BOOL bAlsoUpdateTemp);
+	void ReleaseServerStore(ResRef& rName);
 	short GetPartyMemberSlot(Enum e);
 	CArea& GetLoadedArea(IECString sAreaName);
 	void AddExperienceParty(int n);
+	void SetLoseCutscene();
 	void StorePartyLocations(BOOL);
 	
 #ifdef _DEBUG
@@ -312,7 +330,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char u1de5;
 	char u1de6;
 	char u1de7;
-	int u1de8;
+	BOOL u1de8; //set when preparing to show end cutscene
 	CEnumList u1dec; //AA5C50
 	IECPtrList u1e08; //AA9CD0
 	short u1e24; //2: thieving mode
@@ -341,7 +359,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	//Constructor: 0x5F0150
 		CGamePermission u0[6]; //by PlayerIdx
 		CGamePermission u30; //SoloServer
-		int u38[6];
+		int nPlayerID[6]; //38h
 		int u50[6];
 		bool bCharacterReady[6]; //68h, by PlayerIdx
 		char bCharacterStatus[6]; //6eh, by PlayerIdx
@@ -372,39 +390,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		int mode[6]; //0h, init to -1, set to 0x502 or 0x182
 	} m_CRemoteGameMode; //1ef4h
 
-	struct CButtonArray { //Size 1820h
-	//Constructor: 0x6607EF
-	//To do with the 12 quick bar buttons in GUI
-		struct CButtonArrayButton { //Size 1D4h
-			int u0;
-			int u4;
-			int u8;
-			int uc;
-			int u10;
-			CVidCell u14;
-			CVidCell uea;
-			int u1c0;
-			BOOL bActive; //1c4h
-			int u1c8;
-			int u1cc;
-			BOOL bDisabled; //1d0h
-		};
-
-		CButtonArrayButton buttons[12]; //0h
-		int u15f0[12]; //unused?
-		int nButtonIdx[12]; //1620h
-		int u1650;
-		int nButtonArrayTypeCurrentIdx; //1654h
-		int nButtonArrayTypePreviousIdx; //1658h
-		int u165c;
-		CVidCell cvcBackgrounds; //1660h, GUIWDBUT
-		CVidCell cvcActions; //1736h, GUIBTACT
-		int nItemSlotIdx; //180ch
-		int u1810;
-		int nActiveButtonIdx; //1814h
-		int nIndexMageSpellStart; //1818h, of CQuickObjectList
-		int u181c; //0 = showing priest spells, 1 = showing mage spells
-	} m_CButtonArray; //1f0ch
+	CButtonArray m_CButtonArray; //1f0ch
 
 	struct _6C2B7B { //Size Ch
 	//Constructor: 0x6C2B7B
@@ -432,13 +418,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	short nReputation; //394eh, 10*that displayed in game
 	int* u3950; //CPathSearch* (18h size)
 	int* u3954; //ListGrid* (x*y/2 size)
-	
-	struct CPartySelection {
-		short u0; //ffff
-		int u2; //always set to 1 on remove
-		CEnumList celSelected; //6h, party members first in number order, then non-members
-	} m_PartySelection; //3958h
-
+	CPartySelection m_PartySelection; //3958h
 	CEnumList celControlledObjects; //397ah
 	CEnumList celFamiliars; //3996h, treated as if party-like
 	ResRef u39b2[9]; //array of familiar names
@@ -478,7 +458,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	short u4316;
 	int u4318[5];
 	char u432c[390];
-	int u44b2; //FX affecting entire area always affect entire party too (even if excluded)
+	BOOL m_bArenaMode; //44b2h, arena mode? FX affecting entire area always affect entire party too (even if excluded), when dropping items on death drop inventory only
 	int u44b6;
 	short u44ba;
 	int u44bc; //bInCutscene?
@@ -610,8 +590,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char m_Keymap[387]; //467ah
 	bool m_bCtrl[387]; //47fdh, for each array entry as above for keymap, is Ctrl- required?
 
-	CVariableArray GlobalVariables; //4980h
-	CVariableArray u4988; //4988h, global object names?
+	CVariableArray m_GlobalVariables; //4980h
+	CVariableArray u4988; //4988h, global death variables?
 
 	struct u4990 {
 		IECString u0;
@@ -656,7 +636,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	short u4c34;
 	VidPal u4c36;
 	VidPal u4c5a;
-	int u4c7e;
+	int m_nDeathTimer; //4c7eh, ticks until ending game on player1 death
 	int u4c82; //to do with dreams
 	char u4c86;
 	char u4c87;
@@ -675,12 +655,12 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4ce4;
 	BOOL m_bTutorialGame; //4ce8h
 	BOOL m_bThroneOfBhaalGame; //4cech - used to determine which song to play at start screen, 1 = use MP in STARTARE.2DA
-	Enum eBaldurObject; //4cf0h, BALDUR.BCS CBaldurObject
-	int nTimeStopObjectsTicksLeft; //4cf4h, remaining timestop (area sprites) ticks
-	Enum eTimeStopExempt; //4cf8h, exempt from timestop (area sprites)
-	int nTimeStopGreyscaleTicksLeft; //4cfch, remaining timestop (Greyscale) ticks
-	int nDreamSepiaTicksLeft; //4d00h, remaining dream (Sepia) ticks
-	int* u4d04; //pScriptParser, 0xee size
+	Enum m_eBaldurObject; //4cf0h, BALDUR.BCS CBaldurObject
+	int m_nTimeStopObjectsTicksLeft; //4cf4h, remaining timestop (area sprites) ticks
+	Enum m_eTimeStopExempt; //4cf8h, exempt from timestop (area sprites)
+	int m_nTimeStopGreyscaleTicksLeft; //4cfch, remaining timestop (Greyscale) ticks
+	int m_nDreamSepiaTicksLeft; //4d00h, remaining dream (Sepia) ticks
+	CScriptParser* m_pScriptParser; //4d04h
 	CServerStore* m_aServerStore[12]; //4d08h
 	char m_nServerStoreDemands[12]; //4d38h
 	IECString u4d44;
@@ -707,9 +687,13 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4dc4; //? compared with CVisualEffectVidCell.u39c*/
 };
 
+extern int (CInfGame::*CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL);
+extern void (CInfGame::*CInfGame_DemandServerStore)(ResRef&, BOOL);
+extern void (CInfGame::*CInfGame_ReleaseServerStore)(ResRef&);
 extern short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum);
 extern CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString);
 extern void (CInfGame::*CInfGame_AddExperienceParty)(int);
+extern void (CInfGame::*CInfGame_SetLoseCutscene)();
 extern void (CInfGame::*CInfGame_StorePartyLocations)(BOOL);
 
 #endif //INFGAME_H

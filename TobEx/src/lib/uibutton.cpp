@@ -205,6 +205,69 @@ unsigned char CUICheckButtonChargenMulticlass::GetClass()			{ return (this->*CUI
 CUICheckButtonChargenMulticlass::~CUICheckButtonChargenMulticlass()	{ (this->*CUICheckButtonChargenMulticlass_Deconstruct)(); }
 void CUICheckButtonChargenMulticlass::OnLClicked(POINT pt)			{ return (this->*CUICheckButtonChargenMulticlass_OnLClicked)(pt); }
 
+//CUICheckButtonMageBookContChoice
+CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
+	SetFP(static_cast<CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*)(CPanel&, ChuFileControlInfoBase&)>
+																					(&CUICheckButtonMageBookContChoice::Construct),			0x7C124D);
+void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Deconstruct)() =
+	SetFP(static_cast<void (CUICheckButtonMageBookContChoice::*)()>					(&CUICheckButtonMageBookContChoice::Deconstruct),		0x7C3640);
+void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLMouseBtUp)(POINT) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContChoice::*)(POINT)>			(&CUICheckButtonMageBookContChoice::OnLMouseBtUp),		0x7C16FF);
+BOOL (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLMouseDblClk)(POINT) =
+	SetFP(static_cast<BOOL (CUICheckButtonMageBookContChoice::*)(POINT)>			(&CUICheckButtonMageBookContChoice::OnLMouseDblClk),	0x7C1763);
+BOOL (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Redraw)(BOOL) =
+	SetFP(static_cast<BOOL (CUICheckButtonMageBookContChoice::*)(BOOL)>				(&CUICheckButtonMageBookContChoice::Redraw),			0x7C1A4C);
+void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLClicked)(POINT) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContChoice::*)(POINT)>			(&CUICheckButtonMageBookContChoice::OnLClicked),		0x7C1304);
+void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_SetSpell)(ResRef, short) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContChoice::*)(ResRef, short)>	(&CUICheckButtonMageBookContChoice::SetSpell),			0x7C17C5);
+void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_SetArrowIcon)(BOOL) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContChoice::*)(BOOL)>				(&CUICheckButtonMageBookContChoice::SetArrowIcon),		0x7C19E6);
+
+CUICheckButtonMageBookContChoice::CUICheckButtonMageBookContChoice(CPanel& panel, ChuFileControlInfoBase& controlInfo)
+																				{ (this->*CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
+CUICheckButtonMageBookContChoice::~CUICheckButtonMageBookContChoice()			{ (this->*CUICheckButtonMageBookContChoice_Deconstruct)(); }
+void CUICheckButtonMageBookContChoice::OnLMouseBtUp(POINT pt)					{ return (this->*CUICheckButtonMageBookContChoice_OnLMouseBtUp)(pt); }
+BOOL CUICheckButtonMageBookContChoice::OnLMouseDblClk(POINT pt)					{ return (this->*CUICheckButtonMageBookContChoice_OnLMouseDblClk)(pt); }
+BOOL CUICheckButtonMageBookContChoice::Redraw(BOOL bForceRedraw)				{ return (this->*CUICheckButtonMageBookContChoice_Redraw)(bForceRedraw); }
+void CUICheckButtonMageBookContChoice::OnLClicked(POINT pt)						{ return (this->*CUICheckButtonMageBookContChoice_OnLClicked)(pt); }
+void CUICheckButtonMageBookContChoice::SetSpell(ResRef rSpell, short wNumber)	{ return (this->*CUICheckButtonMageBookContChoice_SetSpell)(rSpell, wNumber); }
+void CUICheckButtonMageBookContChoice::SetArrowIcon(BOOL bDirection)			{ return (this->*CUICheckButtonMageBookContChoice_SetArrowIcon)(bDirection); }
+
+//CUICheckButtonMageBookContSelected
+CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
+	SetFP(static_cast<CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*)(CPanel&, ChuFileControlInfoBase&)>
+																			(&CUICheckButtonMageBookContSelected::Construct),	0x7C0CAC);
+void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Deconstruct)() =
+	SetFP(static_cast<void (CUICheckButtonMageBookContSelected::*)()>		(&CUICheckButtonMageBookContSelected::Deconstruct),	0x7C34F0);
+BOOL (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Redraw)(BOOL) =
+	SetFP(static_cast<BOOL (CUICheckButtonMageBookContSelected::*)(BOOL)>	(&CUICheckButtonMageBookContSelected::Redraw),		0x7C0DC4);
+void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_OnLClicked)(POINT) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContSelected::*)(POINT)>	(&CUICheckButtonMageBookContSelected::OnLClicked),	0x7C0D56);
+void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_SetSpell)(ResRef) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContSelected::*)(ResRef)>	(&CUICheckButtonMageBookContSelected::SetSpell),	0x7C1053);
+
+CUICheckButtonMageBookContSelected::CUICheckButtonMageBookContSelected(CPanel& panel, ChuFileControlInfoBase& controlInfo)
+																			{ (this->*CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
+CUICheckButtonMageBookContSelected::~CUICheckButtonMageBookContSelected()	{ (this->*CUICheckButtonMageBookContSelected_Deconstruct)(); }
+BOOL CUICheckButtonMageBookContSelected::Redraw(BOOL bForceRedraw)			{ return (this->*CUICheckButtonMageBookContSelected_Redraw)(bForceRedraw); }
+void CUICheckButtonMageBookContSelected::OnLClicked(POINT pt)				{ return (this->*CUICheckButtonMageBookContSelected_OnLClicked)(pt); }
+void CUICheckButtonMageBookContSelected::SetSpell(ResRef rSpell)			{ return (this->*CUICheckButtonMageBookContSelected_SetSpell)(rSpell); }
+
+//CUICheckButtonMageBookContSwitch
+CUICheckButtonMageBookContSwitch& (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
+	SetFP(static_cast<CUICheckButtonMageBookContSwitch& (CUICheckButtonMageBookContSwitch::*)(CPanel&, ChuFileControlInfoBase&)>
+																		(&CUICheckButtonMageBookContSwitch::Construct),		0x7C0AEC);
+void (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_Deconstruct)() =
+	SetFP(static_cast<void (CUICheckButtonMageBookContSwitch::*)()>		(&CUICheckButtonMageBookContSwitch::Deconstruct),	0x7C3250);
+void (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_OnLClicked)(POINT) =
+	SetFP(static_cast<void (CUICheckButtonMageBookContSwitch::*)(POINT)>(&CUICheckButtonMageBookContSwitch::OnLClicked),	0x7C0B82);
+
+CUICheckButtonMageBookContSwitch::CUICheckButtonMageBookContSwitch(CPanel& panel, ChuFileControlInfoBase& controlInfo)
+																		{ (this->*CUICheckButtonMageBookContSwitch_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
+CUICheckButtonMageBookContSwitch::~CUICheckButtonMageBookContSwitch()	{ (this->*CUICheckButtonMageBookContSwitch_Deconstruct)(); }
+void CUICheckButtonMageBookContSwitch::OnLClicked(POINT pt)				{ return (this->*CUICheckButtonMageBookContSwitch_OnLClicked)(pt); }
+
 //CUICheckButtonRecMageSpell
 CUICheckButtonRecMageSpell& (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
 	SetFP(static_cast<CUICheckButtonRecMageSpell& (CUICheckButtonRecMageSpell::*)(CPanel&, ChuFileControlInfoBase&)>

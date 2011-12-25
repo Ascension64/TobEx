@@ -8,6 +8,21 @@ Enum (CGameObject::*CGameObject_GetEnum)() =
 
 Enum CGameObject::GetEnum()	{ return (this->*CGameObject_GetEnum)(); }
 
+//CGameSprite
+BOOL (CGameSprite::*CGameSprite_EvaluateTrigger)(Trigger&) =
+	SetFP(static_cast<BOOL (CGameSprite::*)(Trigger&)>	(&CGameSprite::EvaluateTrigger),	0x47F4F2);
+ACTIONRESULT (CGameSprite::*CGameSprite_ExecuteAction)() =
+	SetFP(static_cast<ACTIONRESULT (CGameSprite::*)()>	(&CGameSprite::ExecuteAction),		0x47891B);
+void (CGameSprite::*CGameSprite_SetCurrentAction)(Action&) =
+	SetFP(static_cast<void (CGameSprite::*)(Action&)>	(&CGameSprite::SetCurrentAction),	0x48F85F);
+Action& (CGameSprite::*CGameSprite_GetTopAction)(Action*) =
+	SetFP(static_cast<Action& (CGameSprite::*)(Action*)>		(&CGameSprite::GetTopAction),		0x48CC65);
+
+BOOL CGameSprite::EvaluateTrigger(Trigger& t)		{ return (this->*CGameSprite_EvaluateTrigger)(t); }
+ACTIONRESULT CGameSprite::ExecuteAction()			{ return (this->*CGameSprite_ExecuteAction)(); }
+void CGameSprite::SetCurrentAction(Action& a)		{ return (this->*CGameSprite_SetCurrentAction)(a); }
+Action& CGameSprite::GetTopAction(Action* pAction)	{ return (this->*CGameSprite_GetTopAction)(pAction); }
+
 //CGameObjectArrayHandler
 char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, char, void*, int) =
 	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, void*, int)>	(&CGameObjectArrayHandler::GetGameObjectShare),		0x67626B);

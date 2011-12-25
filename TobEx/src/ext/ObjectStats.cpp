@@ -20,6 +20,8 @@ void (CDerivedStats::*Tramp_CDerivedStats_ClearStats)() =
 	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::ClearStats),				0x46FCF5);
 CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_OpAdd)(CDerivedStats&) =
 	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAdd),					0x470945);
+void (CDerivedStats::*Tramp_CDerivedStats_LimitStats)() =
+	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::LimitStats),				0x471B36);
 int (CDerivedStats::*Tramp_CDerivedStats_GetStat)(short) =
 	SetFP(static_cast<int (CDerivedStats::*)(short)>						(&CDerivedStats::GetStat),					0x473162);
 void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*) =
@@ -263,6 +265,103 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
 
 	return *this;
 
+}
+
+void DETOUR_CDerivedStats::DETOUR_LimitStats() {
+	proficiencyBastardSword = max(0, proficiencyBastardSword & 0x00000007) | (proficiencyBastardSword & 0xFFFFFFF8);
+	proficiencyBastardSword = min(5, proficiencyBastardSword & 0x00000007) | (proficiencyBastardSword & 0xFFFFFFF8);
+	proficiencyLongSword = max(0, proficiencyLongSword & 0x00000007) | (proficiencyLongSword & 0xFFFFFFF8);
+	proficiencyLongSword = min(5, proficiencyLongSword & 0x00000007) | (proficiencyLongSword & 0xFFFFFFF8);
+	proficiencyShortSword = max(0, proficiencyShortSword & 0x00000007) | (proficiencyShortSword & 0xFFFFFFF8);
+	proficiencyShortSword = min(5, proficiencyShortSword & 0x00000007) | (proficiencyShortSword & 0xFFFFFFF8);
+	proficiencyAxe = max(0, proficiencyAxe & 0x00000007) | (proficiencyAxe & 0xFFFFFFF8);
+	proficiencyAxe = min(5, proficiencyAxe & 0x00000007) | (proficiencyAxe & 0xFFFFFFF8);
+	proficiencyTwoHandedSword = max(0, proficiencyTwoHandedSword & 0x00000007) | (proficiencyTwoHandedSword & 0xFFFFFFF8);
+	proficiencyTwoHandedSword = min(5, proficiencyTwoHandedSword & 0x00000007) | (proficiencyTwoHandedSword & 0xFFFFFFF8);
+	proficiencyKatana = max(0, proficiencyKatana & 0x00000007) | (proficiencyKatana & 0xFFFFFFF8);
+	proficiencyKatana = min(5, proficiencyKatana & 0x00000007) | (proficiencyKatana & 0xFFFFFFF8);
+	proficiencyScimitarWakizashiNinjato = max(0, proficiencyScimitarWakizashiNinjato & 0x00000007) | (proficiencyScimitarWakizashiNinjato & 0xFFFFFFF8);
+	proficiencyScimitarWakizashiNinjato = min(5, proficiencyScimitarWakizashiNinjato & 0x00000007) | (proficiencyScimitarWakizashiNinjato & 0xFFFFFFF8);
+	proficiencyDagger = max(0, proficiencyDagger & 0x00000007) | (proficiencyDagger & 0xFFFFFFF8);
+	proficiencyDagger = min(5, proficiencyDagger & 0x00000007) | (proficiencyDagger & 0xFFFFFFF8);
+	proficiencyWarhammer = max(0, proficiencyWarhammer & 0x00000007) | (proficiencyWarhammer & 0xFFFFFFF8);
+	proficiencyWarhammer = min(5, proficiencyWarhammer & 0x00000007) | (proficiencyWarhammer & 0xFFFFFFF8);
+	proficiencySpear = max(0, proficiencySpear & 0x00000007) | (proficiencySpear & 0xFFFFFFF8);
+	proficiencySpear = min(5, proficiencySpear & 0x00000007) | (proficiencySpear & 0xFFFFFFF8);
+	proficiencyHalberd = max(0, proficiencyHalberd & 0x00000007) | (proficiencyHalberd & 0xFFFFFFF8);
+	proficiencyHalberd = min(5, proficiencyHalberd & 0x00000007) | (proficiencyHalberd & 0xFFFFFFF8);
+	proficiencyFlailMorningstar = max(0, proficiencyFlailMorningstar & 0x00000007) | (proficiencyFlailMorningstar & 0xFFFFFFF8);
+	proficiencyFlailMorningstar = min(5, proficiencyFlailMorningstar & 0x00000007) | (proficiencyFlailMorningstar & 0xFFFFFFF8);
+	proficiencyMace = max(0, proficiencyMace & 0x00000007) | (proficiencyMace & 0xFFFFFFF8);
+	proficiencyMace = min(5, proficiencyMace & 0x00000007) | (proficiencyMace & 0xFFFFFFF8);
+	proficiencyQuarterstaff = max(0, proficiencyQuarterstaff & 0x00000007) | (proficiencyQuarterstaff & 0xFFFFFFF8);
+	proficiencyQuarterstaff = min(5, proficiencyQuarterstaff & 0x00000007) | (proficiencyQuarterstaff & 0xFFFFFFF8);
+	proficiencyCrossbow = max(0, proficiencyCrossbow & 0x00000007) | (proficiencyCrossbow & 0xFFFFFFF8);
+	proficiencyCrossbow = min(5, proficiencyCrossbow & 0x00000007) | (proficiencyCrossbow & 0xFFFFFFF8);
+	proficiencyLongbow = max(0, proficiencyLongbow & 0x00000007) | (proficiencyLongbow & 0xFFFFFFF8);
+	proficiencyLongbow = min(5, proficiencyLongbow & 0x00000007) | (proficiencyLongbow & 0xFFFFFFF8);
+	proficiencyShortbow = max(0, proficiencyShortbow & 0x00000007) | (proficiencyShortbow & 0xFFFFFFF8);
+	proficiencyShortbow = min(5, proficiencyShortbow & 0x00000007) | (proficiencyShortbow & 0xFFFFFFF8);
+	proficiencyDart = max(0, proficiencyDart & 0x00000007) | (proficiencyDart & 0xFFFFFFF8);
+	proficiencyDart = min(5, proficiencyDart & 0x00000007) | (proficiencyDart & 0xFFFFFFF8);
+	proficiencySling = max(0, proficiencySling & 0x00000007) | (proficiencySling & 0xFFFFFFF8);
+	proficiencySling = min(5, proficiencySling & 0x00000007) | (proficiencySling & 0xFFFFFFF8);
+	/*proficiencyBlackjack = max(0, proficiencyBlackjack & 0x00000007) | (proficiencyBlackjack & 0xFFFFFFF8);
+	proficiencyBlackjack = min(5, proficiencyBlackjack & 0x00000007) | (proficiencyBlackjack & 0xFFFFFFF8);
+	proficiencyGun = max(0, proficiencyGun & 0x00000007) | (proficiencyGun & 0xFFFFFFF8);
+	proficiencyGun = min(5, proficiencyGun & 0x00000007) | (proficiencyGun & 0xFFFFFFF8);
+	proficiencyMartialArts = max(0, proficiencyMartialArts & 0x00000007) | (proficiencyMartialArts & 0xFFFFFFF8);
+	proficiencyMartialArts = min(5, proficiencyMartialArts & 0x00000007) | (proficiencyMartialArts & 0xFFFFFFF8);*/
+	proficiencyTwoHanded = max(0, proficiencyTwoHanded & 0x00000007) | (proficiencyTwoHanded & 0xFFFFFFF8);
+	proficiencyTwoHanded = min(5, proficiencyTwoHanded & 0x00000007) | (proficiencyTwoHanded & 0xFFFFFFF8);
+	proficiencySwordAndShield = max(0, proficiencySwordAndShield & 0x00000007) | (proficiencySwordAndShield & 0xFFFFFFF8);
+	proficiencySwordAndShield = min(5, proficiencySwordAndShield & 0x00000007) | (proficiencySwordAndShield & 0xFFFFFFF8);
+	proficiencySingleWeapon = max(0, proficiencySingleWeapon & 0x00000007) | (proficiencySingleWeapon & 0xFFFFFFF8);
+	proficiencySingleWeapon = min(5, proficiencySingleWeapon & 0x00000007) | (proficiencySingleWeapon & 0xFFFFFFF8);
+	proficiencyTwoWeapon = max(0, proficiencyTwoWeapon & 0x00000007) | (proficiencyTwoWeapon & 0xFFFFFFF8);
+	proficiencyTwoWeapon = min(5, proficiencyTwoWeapon & 0x00000007) | (proficiencyTwoWeapon & 0xFFFFFFF8);
+	/*proficiencyExtra1 = max(0, proficiencyExtra1 & 0x00000007) | (proficiencyExtra1 & 0xFFFFFFF8);
+	proficiencyExtra1 = min(5, proficiencyExtra1 & 0x00000007) | (proficiencyExtra1 & 0xFFFFFFF8);
+	proficiencyExtra2 = max(0, proficiencyExtra2 & 0x00000007) | (proficiencyExtra2 & 0xFFFFFFF8);
+	proficiencyExtra2 = min(5, proficiencyExtra2 & 0x00000007) | (proficiencyExtra2 & 0xFFFFFFF8);
+	proficiencyExtra3 = max(0, proficiencyExtra3 & 0x00000007) | (proficiencyExtra3 & 0xFFFFFFF8);
+	proficiencyExtra3 = min(5, proficiencyExtra3 & 0x00000007) | (proficiencyExtra3 & 0xFFFFFFF8);
+	proficiencyExtra4 = max(0, proficiencyExtra4 & 0x00000007) | (proficiencyExtra4 & 0xFFFFFFF8);
+	proficiencyExtra4 = min(5, proficiencyExtra4 & 0x00000007) | (proficiencyExtra4 & 0xFFFFFFF8);
+	proficiencyExtra5 = max(0, proficiencyExtra5 & 0x00000007) | (proficiencyExtra5 & 0xFFFFFFF8);
+	proficiencyExtra5 = min(5, proficiencyExtra5 & 0x00000007) | (proficiencyExtra5 & 0xFFFFFFF8);
+	proficiencyExtra6 = max(0, proficiencyExtra6 & 0x00000007) | (proficiencyExtra6 & 0xFFFFFFF8);
+	proficiencyExtra6 = min(5, proficiencyExtra6 & 0x00000007) | (proficiencyExtra6 & 0xFFFFFFF8);
+	proficiencyExtra7 = max(0, proficiencyExtra7 & 0x00000007) | (proficiencyExtra7 & 0xFFFFFFF8);
+	proficiencyExtra7 = min(5, proficiencyExtra7 & 0x00000007) | (proficiencyExtra7 & 0xFFFFFFF8);
+	proficiencyExtra8 = max(0, proficiencyExtra8 & 0x00000007) | (proficiencyExtra8 & 0xFFFFFFF8);
+	proficiencyExtra8 = min(5, proficiencyExtra8 & 0x00000007) | (proficiencyExtra8 & 0xFFFFFFF8);
+	proficiencyExtra9 = max(0, proficiencyExtra9 & 0x00000007) | (proficiencyExtra9 & 0xFFFFFFF8);
+	proficiencyExtra9 = min(5, proficiencyExtra9 & 0x00000007) | (proficiencyExtra9 & 0xFFFFFFF8);
+	proficiencyExtra10 = max(0, proficiencyExtra10 & 0x00000007) | (proficiencyExtra10 & 0xFFFFFFF8);
+	proficiencyExtra10 = min(5, proficiencyExtra10 & 0x00000007) | (proficiencyExtra10 & 0xFFFFFFF8);
+	proficiencyExtra11 = max(0, proficiencyExtra11 & 0x00000007) | (proficiencyExtra11 & 0xFFFFFFF8);
+	proficiencyExtra11 = min(5, proficiencyExtra11 & 0x00000007) | (proficiencyExtra11 & 0xFFFFFFF8);
+	proficiencyExtra12 = max(0, proficiencyExtra12 & 0x00000007) | (proficiencyExtra12 & 0xFFFFFFF8);
+	proficiencyExtra12 = min(5, proficiencyExtra12 & 0x00000007) | (proficiencyExtra12 & 0xFFFFFFF8);
+	proficiencyExtra13 = max(0, proficiencyExtra13 & 0x00000007) | (proficiencyExtra13 & 0xFFFFFFF8);
+	proficiencyExtra13 = min(5, proficiencyExtra13 & 0x00000007) | (proficiencyExtra13 & 0xFFFFFFF8);
+	proficiencyExtra14 = max(0, proficiencyExtra14 & 0x00000007) | (proficiencyExtra14 & 0xFFFFFFF8);
+	proficiencyExtra14 = min(5, proficiencyExtra14 & 0x00000007) | (proficiencyExtra14 & 0xFFFFFFF8);
+	proficiencyExtra15 = max(0, proficiencyExtra15 & 0x00000007) | (proficiencyExtra15 & 0xFFFFFFF8);
+	proficiencyExtra15 = min(5, proficiencyExtra15 & 0x00000007) | (proficiencyExtra15 & 0xFFFFFFF8);
+	proficiencyExtra16 = max(0, proficiencyExtra16 & 0x00000007) | (proficiencyExtra16 & 0xFFFFFFF8);
+	proficiencyExtra16 = min(5, proficiencyExtra16 & 0x00000007) | (proficiencyExtra16 & 0xFFFFFFF8);
+	proficiencyExtra17 = max(0, proficiencyExtra17 & 0x00000007) | (proficiencyExtra17 & 0xFFFFFFF8);
+	proficiencyExtra17 = min(5, proficiencyExtra17 & 0x00000007) | (proficiencyExtra17 & 0xFFFFFFF8);
+	proficiencyExtra18 = max(0, proficiencyExtra18 & 0x00000007) | (proficiencyExtra18 & 0xFFFFFFF8);
+	proficiencyExtra18 = min(5, proficiencyExtra18 & 0x00000007) | (proficiencyExtra18 & 0xFFFFFFF8);
+	proficiencyExtra19 = max(0, proficiencyExtra19 & 0x00000007) | (proficiencyExtra19 & 0xFFFFFFF8);
+	proficiencyExtra19 = min(5, proficiencyExtra19 & 0x00000007) | (proficiencyExtra19 & 0xFFFFFFF8);
+	proficiencyExtra20 = max(0, proficiencyExtra20 & 0x00000007) | (proficiencyExtra20 & 0xFFFFFFF8);
+	proficiencyExtra20 = min(5, proficiencyExtra20 & 0x00000007) | (proficiencyExtra20 & 0xFFFFFFF8);*/
+
+	return (this->*Tramp_CDerivedStats_LimitStats)();
 }
 
 int DETOUR_CDerivedStats::DETOUR_GetStat(short nOpcode) {

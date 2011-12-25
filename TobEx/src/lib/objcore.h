@@ -96,7 +96,7 @@ public:
 	virtual ~CGameObject() {} //v0
 	virtual char GetType() { return 0; } //v4
 	virtual void v8() {} //AddToArea(pArea, POINT, zPos, type)
-	virtual void vc() {} //AIUpdate()
+	virtual void AIUpdate() {} //vc
 	virtual Object& GetCurrentObject() { return o; } //return a value
 	virtual void v14() {} //v14 (dw 3738h) - get some enum?
 	virtual void v18() {} //v18 void GetCurrentPoint(POINT* ptr)
@@ -112,7 +112,7 @@ public:
 	virtual void v40() {} //v40 PlaySound? to do with modal states
 	virtual void RemoveFromArea() {} //v44
 	virtual void v48() {} //v48 void DrawAnimation(pArea, pCVideoMode, int)
-	virtual void v4c() {} //v4c bool NeedsAIUpdate/Refresh(CWorldTimer->bRun, CBaldurChitin->nChitinUpdates)
+	virtual bool NeedsAIUpdate(bool bRun, int nChitinUpdates) { return false; } //v4c
 	virtual void v50() {} //v50 void SetObject(Object*)
 	virtual void v54() {} //v54 ?
 	virtual void v58() {} //v58 DoNothing
@@ -148,12 +148,18 @@ public:
 	char u1b; //pad
 	Object o;  //1ch, this o (main Object used in script triggers)
 	Enum e; //30h, this e
-	short u34;
+	short u34; // = 7 * 4 + 4
 	int nPlayerNetworkId; //36h, remotePlayerID
 	Enum u3a; //another enum
-	char u3e;
+	
+	//which modulus of the tick depends on m_nAIUpdateInterval & e == m_nAIUpdateInterval & nChitinUpdates
+	//0: every tick
+	//1: every 2nd tick (default)
+	//3: every 4th tick
+	char m_nAIUpdateInterval; //3eh
+
 	bool bIgnoreMessagesToSelf; //3fh, network
-	char u40; // gets +1 then %3, set to 1 when there are no triggers
+	char u40; // increment modulo of 3 (range: 0-2), set to 1 when there are no triggers
 	char u41; //padding?
 };
 
@@ -165,24 +171,26 @@ public:
 	//AA6778
 	virtual ~CGameSprite() {} //v0
 
-	virtual BOOL EvaluateTrigger(Trigger& t) { return TRUE; } //v60
+	virtual BOOL EvaluateTrigger(Trigger& t); //v60
 	virtual void v64() {} //v64, void ClearAllActions(BOOL bExceptFlagged)
 	virtual void v68() {} //v68, void SetTarget(creTarget)
-	virtual void v6c() {} //v6c, void AddActionHead(pAction)
+	virtual void AddActionHead(Action& a) {} //v6c
 	virtual void ApplyEffect(CEffect& eff, bool bCheckEffectListType, BOOL bDelayFinished, BOOL bUpdateCre) {} //v70
 	virtual void v74() {} //v74, update for new round? (BOOL) calls v64, v88
 	virtual void ExecuteOneAction() {}//v78, calls v7c
-	virtual short ExecuteAction() { return 0; } //v7c
+	virtual ACTIONRESULT ExecuteAction(); //v7c
 	virtual void AddActionTail(Action& a) {} //v80
 	virtual void AIUpdateActions() {} //v84, called from AIUpdate
-	virtual void SetCurrentAction(Action& a) {} //v88, calls vb0
+	virtual void SetCurrentAction(Action& a); //v88, calls vb0
 	virtual void SetScript(int nScriptIdx, CScript& script) {} //v8c
 	virtual int GetSightRadius() { return 0; } //v90, returned in pixels
 	virtual void GetTerrainTable2() {} //v94, TerrainTable& GetTerrainTable2()
 	virtual void GetTerrainTable() {} //v98, TerrainTable& GetTerrainTable()
-	virtual BOOL GetTargetOfTrigger(Trigger& t, CGameSprite& spriteTarget) { return FALSE; } //v9c
+	virtual int FindTargetCreature(Trigger& t, CCreatureObject** ppCre) { return 0; } //v9c
 	virtual int GetVisualRange() { return 0; } //va0, m_SightRadius x 48
 	virtual void ExecuteTriggers() {} //va4
+
+	Action& GetTopAction(Action* pAction);
 		
 	//va8, void SetAutoPauseInfo(int type)
 	/* type
@@ -200,7 +208,7 @@ public:
 	default UNKNOWN_REASON*/
 
 	//vac, BOOL GetSeeInvisible(), returns TRUE if cdsCurrent->seeInivisible is set, or game is in CutSceneMode
-	//vb0
+	//vb0, void DoPostAction(Action& a), for every ACTIONRESULT except no action taken
 	//END CGAMESPRITE
 
 	Object oAttacker; //42h, for AttackedBy() trigger, for LastAttackerOf triggerid
@@ -264,15 +272,20 @@ public:
 	int u350; //random number 0-37627
 	char nReactionBase; //354h
 	char u355; //pad?
-	short u356; //the return value of ExecuteAction()
+	ACTIONRESULT arCurrent; //356h, the return value of ExecuteAction()
 	char u358;
 	char u359; //pad?
 	Enum eGameTextOverHead; //35ah
-	BOOL u35e; //exeucting an action?
+	BOOL bExecutingAction; //35eh, set during the ExecuteAction() function
 	BOOL u362; //has stored triggers?
-	BOOL u366;
+	BOOL m_bInterruptState; //366h, SetInterrupt() for sprite
 	CSound u36a;
 };
+
+extern BOOL (CGameSprite::*CGameSprite_EvaluateTrigger)(Trigger&);
+extern ACTIONRESULT (CGameSprite::*CGameSprite_ExecuteAction)();
+extern void (CGameSprite::*CGameSprite_SetCurrentAction)(Action&);
+extern Action& (CGameSprite::*CGameSprite_GetTopAction)(Action*);
 
 struct CGameObjectEntry { //Size Ch
 public:

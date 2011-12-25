@@ -15,7 +15,7 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 		for (int nRow = 0; nRow < 100; nRow++) {
 			STRREF ref = g_pChitin->pGame->GetCharSndStrRef(0, nRow, sex);
 			cre.m_BaseStats.soundset[nRow] = ref;
-			g_pChitin->TlkTbl.GetTlkString(ref, cre.soundset[nRow]);
+			g_pChitin->m_TlkTbl.GetTlkString(ref, cre.soundset[nRow]);
 		}
 
 	} else {
@@ -40,10 +40,10 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 
 							if (ref) {
 								cre.m_BaseStats.soundset[j] = ref;
-								g_pChitin->TlkTbl.GetTlkString(ref, cre.soundset[j]);
+								g_pChitin->m_TlkTbl.GetTlkString(ref, cre.soundset[j]);
 							} else {
 								cre.m_BaseStats.soundset[j] = -1;
-								g_pChitin->TlkTbl.GetTlkString(-1, cre.soundset[j]);
+								g_pChitin->m_TlkTbl.GetTlkString(-1, cre.soundset[j]);
 							}
 
 						} //atoi

@@ -113,6 +113,7 @@
     <ClCompile Include="src\ext\AnimationE000.cpp" />
     <ClCompile Include="src\ext\AreaCommon.cpp" />
     <ClCompile Include="src\ext\ChitinCore.cpp" />
+    <ClCompile Include="src\ext\DialogCore.cpp" />
     <ClCompile Include="src\ext\EffectCommon.cpp" />
     <ClCompile Include="src\ext\EffectOpcode.cpp" />
     <ClCompile Include="src\ext\EngineChargen.cpp" />
@@ -121,23 +122,29 @@
     <ClCompile Include="src\ext\EngineMageBook.cpp" />
     <ClCompile Include="src\ext\EnginePriestBook.cpp" />
     <ClCompile Include="src\ext\EngineWorld.cpp" />
+    <ClCompile Include="src\ext\InfButtonArray.cpp" />
     <ClCompile Include="src\ext\InfGameCommon.cpp" />
     <ClCompile Include="src\ext\ItemCommon.cpp" />
     <ClCompile Include="src\ext\ItemCore.cpp" />
     <ClCompile Include="src\ext\LogCommon.cpp" />
     <ClCompile Include="src\ext\MessageExt.cpp" />
+    <ClCompile Include="src\ext\NetworkCore.cpp" />
     <ClCompile Include="src\ext\ObjectCommon.cpp" />
+    <ClCompile Include="src\ext\ObjectCore.cpp" />
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
     <ClCompile Include="src\ext\ObjectStats.cpp" />
     <ClCompile Include="src\ext\options.cpp" />
     <ClCompile Include="src\ext\ScriptCore.cpp" />
     <ClCompile Include="src\ext\ScriptTrigger.cpp" />
+    <ClCompile Include="src\ext\SpellCore.cpp" />
     <ClCompile Include="src\ext\UserButton.cpp" />
     <ClCompile Include="src\include\globals.cpp" />
     <ClCompile Include="src\lib\animext.cpp" />
     <ClCompile Include="src\lib\chitin.cpp" />
+    <ClCompile Include="src\lib\cmapstrstrex.cpp" />
     <ClCompile Include="src\lib\cptrlistex.cpp" />
     <ClCompile Include="src\lib\cstringex.cpp" />
+    <ClCompile Include="src\lib\dlgcore.cpp" />
     <ClCompile Include="src\lib\effcore.cpp" />
     <ClCompile Include="src\lib\effopcode.cpp" />
     <ClCompile Include="src\lib\engchargen.cpp" />
@@ -147,19 +154,23 @@
     <ClCompile Include="src\lib\engpriestbk.cpp" />
     <ClCompile Include="src\lib\engrecord.cpp" />
     <ClCompile Include="src\lib\engworld.cpp" />
+    <ClCompile Include="src\lib\infbtarr.cpp" />
     <ClCompile Include="src\lib\infgame.cpp" />
     <ClCompile Include="src\lib\itmcore.cpp" />
+    <ClCompile Include="src\lib\network.cpp" />
     <ClCompile Include="src\lib\objcore.cpp" />
     <ClCompile Include="src\lib\objcre.cpp" />
     <ClCompile Include="src\lib\objstats.cpp" />
     <ClCompile Include="src\lib\rescore.cpp" />
     <ClCompile Include="src\lib\scrcore.cpp" />
     <ClCompile Include="src\lib\splcore.cpp" />
+    <ClCompile Include="src\lib\stocore.cpp" />
     <ClCompile Include="src\lib\tlkcore.cpp" />
     <ClCompile Include="src\lib\uibutton.cpp" />
     <ClCompile Include="src\lib\uicore.cpp" />
     <ClCompile Include="src\lib\uiscroll.cpp" />
     <ClCompile Include="src\lib\uitext.cpp" />
+    <ClCompile Include="src\lib\varname.cpp" />
     <ClCompile Include="src\TobEx.cpp" />
     <ClCompile Include="src\lib\animcore.cpp" />
     <ClCompile Include="src\lib\arecore.cpp" />
@@ -192,7 +203,6 @@
     <ClCompile Include="src\ext\UserRecMageSpell.cpp" />
     <ClCompile Include="src\ext\EngineRecord.cpp" />
     <ClCompile Include="src\ext\VideoCommon.cpp" />
-    <ClCompile Include="src\ext\VideoCore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ext\Animation1000.h" />
@@ -211,6 +221,7 @@
     <ClInclude Include="src\ext\AnimationE000.h" />
     <ClInclude Include="src\ext\AreaCommon.h" />
     <ClInclude Include="src\ext\ChitinCore.h" />
+    <ClInclude Include="src\ext\DialogCore.h" />
     <ClInclude Include="src\ext\EffectCommon.h" />
     <ClInclude Include="src\ext\EffectCore.h" />
     <ClInclude Include="src\ext\EffectOpcode.h" />
@@ -220,19 +231,25 @@
     <ClInclude Include="src\ext\EngineMageBook.h" />
     <ClInclude Include="src\ext\EnginePriestBook.h" />
     <ClInclude Include="src\ext\EngineWorld.h" />
+    <ClInclude Include="src\ext\InfButtonArray.h" />
     <ClInclude Include="src\ext\InfGameCommon.h" />
     <ClInclude Include="src\ext\InfGameCore.h" />
     <ClInclude Include="src\ext\ItemCommon.h" />
     <ClInclude Include="src\ext\ItemCore.h" />
     <ClInclude Include="src\ext\LogCommon.h" />
     <ClInclude Include="src\ext\MessageExt.h" />
+    <ClInclude Include="src\ext\NetworkCore.h" />
     <ClInclude Include="src\ext\ObjectCommon.h" />
+    <ClInclude Include="src\ext\ObjectCore.h" />
     <ClInclude Include="src\ext\ObjectCreature.h" />
     <ClInclude Include="src\ext\ObjectStats.h" />
     <ClInclude Include="src\ext\options.h" />
     <ClInclude Include="src\ext\ScriptCore.h" />
     <ClInclude Include="src\ext\ScriptTrigger.h" />
+    <ClInclude Include="src\ext\SpellCore.h" />
     <ClInclude Include="src\ext\UserButton.h" />
+    <ClInclude Include="src\include\datacons.h" />
+    <ClInclude Include="src\lib\cmapstrstrex.h" />
     <ClInclude Include="src\lib\cptrlistex.h" />
     <ClInclude Include="src\lib\cstringex.h" />
     <ClInclude Include="src\lib\datatypes.h" />
@@ -245,6 +262,7 @@
     <ClInclude Include="src\lib\engproj.h" />
     <ClInclude Include="src\lib\engrecord.h" />
     <ClInclude Include="src\lib\engworld.h" />
+    <ClInclude Include="src\lib\infbtarr.h" />
     <ClInclude Include="src\lib\infcursor.h" />
     <ClInclude Include="src\lib\objare.h" />
     <ClInclude Include="src\lib\objstats.h" />
@@ -255,6 +273,7 @@
     <ClInclude Include="src\lib\uibutton.h" />
     <ClInclude Include="src\lib\uiscroll.h" />
     <ClInclude Include="src\lib\uitext.h" />
+    <ClInclude Include="src\lib\varname.h" />
     <ClInclude Include="src\lib\win32def.h" />
     <ClInclude Include="src\template.h" />
     <ClInclude Include="src\TobEx.h" />
@@ -318,7 +337,6 @@
     <ClInclude Include="src\ext\UserRecMageSpell.h" />
     <ClInclude Include="src\ext\EngineRecord.h" />
     <ClInclude Include="src\ext\VideoCommon.h" />
-    <ClInclude Include="src\ext\VideoCore.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\TobEx.rc" />

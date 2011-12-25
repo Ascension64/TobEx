@@ -6,6 +6,8 @@
 #include "infgame.h"
 
 void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
+	if (0) IECString("CArea_RemoveAreaAirEffectSpecific");
+
 	bool bUseResource = true;
 	CRuleTable crtResource;
 	crtResource.LoadTable(rResource);

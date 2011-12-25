@@ -2,7 +2,6 @@
 #define TLKCORE_H
 
 #include "stdafx.h"
-#include "cstringex.h"
 #include "sndcore.h"
 
 extern IECString (__cdecl *GetTlkString)(STRREF);
@@ -25,8 +24,8 @@ class CTlkTbl { //Size A6h
 public:
 	bool GetTlkString(STRREF strref, CStrRef& ptr);
 
-	CMapWordToPtr files; //0h, key->CFileTlk
-	CMapStringToString u1c;
+	CMapWordToPtr m_FileMap; //0h, key->CFileTlk
+	IECMapStringToString m_StringMap; //1ch
 #ifdef _DEBUG
 	_CCriticalSection ccs; //38h
 #else

@@ -8,6 +8,9 @@ struct CGameOptionsEx {
 
 	BOOL bActionAddKitFix;
 	BOOL bActionEquipRangedFix;
+	BOOL bActionExpandedActions;
+
+	BOOL bArenasEnable;
 	
 	BOOL bDebugCriticalMsgBoxFix;
 	BOOL bDebugExternalLogging;
@@ -16,8 +19,11 @@ struct CGameOptionsEx {
 	BOOL bDebugLogWarnings;
 	BOOL bDebugLogMissingRes;
 	BOOL bDebugLogMore;
+	BOOL bDebugLogNetworkErrors;
 	BOOL bDebugRestoreCombatInfoText;
 	BOOL bDebugVerbose;
+
+	BOOL bDlgInstantVars;
 
 	BOOL bEffApplyConcCheckDamage;
 	BOOL bEffApplyEffItemFix;
@@ -27,31 +33,43 @@ struct CGameOptionsEx {
 	BOOL bEffDamageAwaken;
 	BOOL bEffBlindnessAsSpellDesc;
 	BOOL bEffBlindnessFix;
+	BOOL bEffButtonFXMod;
 	BOOL bEffCastSpellConditionMod;
 	BOOL bEffCastingLevelModFix;
 	BOOL bEffBackstabEveryHitConfig;
 	BOOL bEffDamageBypassMirrorImageConfig;
 	BOOL bEffDispelMagicalItemConfig;
+	BOOL bEffContainerUseEffFileFix;
 	BOOL bEffCureDrunkFix;
+	BOOL bEffCutScene2Mod;
 	BOOL bEffDamageFix;
+	BOOL bEffDexterityMod;
 	BOOL bEffStoneskinDisableColour;
 	BOOL bEffDiseaseFix;
 	BOOL bEffDisintegrateFix;
 	BOOL bEffDispelFix;
-	BOOL bEffCutScene2Extend;
+	BOOL bEffDropInvDisintegrate;
+	BOOL bEffDropInvFrozenDeath;
+	BOOL bEffDropInvStoneDeath;
 	BOOL bEffForbidItemTypeFix;
 	BOOL bEffInvisibleFix;
-	BOOL bEffIWDDexterityMod;
-	BOOL bEffIWDMageMemSpellMod;
-	BOOL bEffIWDPriestMemSpellMod;
-	BOOL bEffIWDStrengthMod;
 	BOOL bEffLearnSpellMod;
+	BOOL bEffLuckMod;
+	BOOL bEffMageMemSpellMod;
 	BOOL bEffMagicResistFix;
 	BOOL bEffNoDamageNoSpellInterrupt;
 	BOOL bEffPoisonFix;
+	BOOL bEffPriestMemSpellMod;
+	BOOL bEffProficiencyModMod;
 	BOOL bEffRegenerationFix;
 	BOOL bEffRemoveProjectileMod;
 	BOOL bEffRepeatingEffFix;
+	BOOL bEffSaveVsBreathMod;
+	BOOL bEffSaveVsDeathMod;
+	BOOL bEffSaveVsPolyMod;
+	BOOL bEffSaveVsSpellMod;
+	BOOL bEffSaveVsWandsMod;
+	BOOL bEffStrengthMod;
 	BOOL bEffMirrorImageUseCastLevel;
 
 	BOOL bEnginePriestKnownSpellsExtend;
@@ -64,6 +82,7 @@ struct CGameOptionsEx {
 	int nEngineCustomSoAStartXP;
 	int nEngineCustomToBStartXP;
 	BOOL bEngineModifyEffectStacking;
+	BOOL bEngineDisableEndPlayer1Dead;
 	BOOL bEngineDisableInvPauseSP;
 	BOOL bEngineDisableXPBoost;
 	BOOL bEngineCharmSilenceRemoval;
@@ -77,8 +96,10 @@ struct CGameOptionsEx {
 	BOOL bEngineTargetDeadFix;
 	BOOL bEngineWeapSpecNumAttacksMod;
 
+	BOOL bItemsAbilityItemAnim;
 	BOOL bItemsBackstabRestrictionsConfig;
 	BOOL bItemsCriticalHitAversionConfig;
+	BOOL bItemsTargetInvisConfig;
 	BOOL bItemsRandomTreasureExtend;
 	BOOL bItemsExternCreExcl;
 	BOOL bItemsNonAmmoLauncherDamageFix;
@@ -93,13 +114,16 @@ struct CGameOptionsEx {
 	BOOL bSoundExternWalkSounds;
 	BOOL bSoundSoundsetSubtitles;
 
+	BOOL bSpellsUnvoicedConfig;
 	BOOL bSpellsTargetInvisConfig;
 
 	BOOL bTriggerPickpocketFailed;
 	BOOL bTriggerExpandedTriggers;
 	BOOL bTriggerKitFix;
+	BOOL bTriggerOptimiseBagSearch;
 
 	BOOL bUserKitsExtend;
+	BOOL bUserContingencySelectSpell;
 	int nUserCustomDlgBarSize;
 	BOOL bUserLargerTooltipScroll;
 	BOOL bUserExternMageSpellHiding;
@@ -111,10 +135,10 @@ struct CGameOptionsEx {
 	BOOL bUserPriestBookScroll;
 	BOOL bUserFourInventorySlots;
 
-	BOOL bVideoDisableBrightestFix;
 	BOOL bVideoEnableMorePaperdolls;
 	BOOL bVideoIWDAnimAttack3Fix;
 	BOOL bVideoVvcAlphaCrashFix;
+	BOOL bVideoVvcShadowAnimFix;
 
 protected:
 	void Init();

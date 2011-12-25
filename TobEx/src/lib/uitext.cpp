@@ -25,8 +25,13 @@ extern void (CUITextArea::*CUITextArea_UnhighlightText)() =
 	SetFP(static_cast<void (CUITextArea::*)()>			(&CUITextArea::UnhighlightText),	0x59D3A2);	
 extern void (CUITextArea::*CUITextArea_OnLClicked)(POINT) =
 	SetFP(static_cast<void (CUITextArea::*)(POINT)>		(&CUITextArea::OnLClicked),			0x59D7A3);
-extern void (CUITextArea::*CUITextArea_v68)(int) =
-	SetFP(static_cast<void (CUITextArea::*)(int)>		(&CUITextArea::v68),				0x5A5780);
+extern void (CUITextArea::*CUITextArea_UserProc)(int) =
+	SetFP(static_cast<void (CUITextArea::*)(int)>		(&CUITextArea::UserProc),			0x5A5780);
+extern POSITION (CUITextArea::*CUITextArea_Append)(IECString&, IECString&, ABGR, ABGR, int, bool) =
+	SetFP(static_cast<POSITION (CUITextArea::*)(IECString&, IECString&, ABGR, ABGR, int, bool)>
+														(&CUITextArea::Append),				0x59CE80);
+extern void (CUITextArea::*CUITextArea_ClearText)() =
+	SetFP(static_cast<void (CUITextArea::*)()>			(&CUITextArea::ClearText),			0x59E069);
 
 CUITextArea::~CUITextArea()						{ (this->*CUITextArea_Deconstruct)(); }
 void CUITextArea::SetEnabled(bool b)			{ return (this->*CUITextArea_SetEnabled)(b); }
@@ -40,7 +45,10 @@ BOOL CUITextArea::NeedsRedraw()					{ return (this->*CUITextArea_NeedsRedraw)();
 void CUITextArea::HighlightText(POSITION pos)	{ return (this->*CUITextArea_HighlightText)(pos); }
 void CUITextArea::UnhighlightText()				{ return (this->*CUITextArea_UnhighlightText)(); }
 void CUITextArea::OnLClicked(POINT pt)			{ return (this->*CUITextArea_OnLClicked)(pt); }
-void CUITextArea::v68(int n)					{ return (this->*CUITextArea_v68)(n); }
+void CUITextArea::UserProc(int nArg)			{ return (this->*CUITextArea_UserProc)(nArg); }
+POSITION CUITextArea::Append(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int nUserArg, bool bResetScrollbar)
+	{ return (this->*CUITextArea_Append)(sLeft, sRight, colLeft, colRight, nUserArg, bResetScrollbar); }
+void CUITextArea::ClearText()					{ return (this->*CUITextArea_ClearText)(); }
 
 //CUITextField
 void (CUITextField::*CUITextField_Deconstruct)() =

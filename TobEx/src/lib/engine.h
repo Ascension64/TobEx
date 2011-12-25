@@ -39,7 +39,7 @@ public:
 	virtual void v20() {} //construct manager, panels, etc.
 	virtual void v24() {} //resets kit?
 	virtual void v28() {}
-	virtual void LoadEngine(CEngineBase& eng) {} //v2c
+	virtual void LoadEngine(CEngineBase& eng) {} //v2c, closes current engine, loads Arg1
 	virtual void v30() {}
 	virtual void v34() {}
 	virtual void v38() {}
@@ -76,7 +76,7 @@ public:
 	virtual void vb4() {}
 	virtual void vb8() {}
 	virtual void vbc() {}
-	virtual void vc0() {}
+	virtual void vc0() {} //UpdateProc()
 	virtual void vc4() {}
 	virtual void UpdateEngineObjects() {} //vc8
 
@@ -154,7 +154,7 @@ public:
 	int u132;
 	char u136;
 	char u137;
-	int u138;
+	int m_nMenuProgress; //138h, 0: main, 1: SP submenu, 2: MP submenu
 	int u13c;
 	IECPtrList m_OpenPanels; //140h
 	int u15c[8];

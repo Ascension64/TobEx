@@ -2,7 +2,7 @@
 #define RULE_H
 
 //ALIGN.IDS
-const char ALIGN_NONE				= 0x00;
+const char ALIGN_ANY				= 0x00;
 const char ALIGN_LAWFUL_GOOD		= 0x11;
 const char ALIGN_LAWFUL_NEUTRAL		= 0x12;
 const char ALIGN_LAWFUL_EVIL		= 0x13;
@@ -20,10 +20,18 @@ const char ALIGN_NEUTRAL_MASK		= 0x20;
 const char ALIGN_CHAOTIC_MASK		= 0x30;
 
 //ACTION.IDS
-const short ACTION_SPELL			= 31;
-const short ACTION_SPELL_NO_DEC		= 191;
+const short ACTION_SET_GLOBAL			= 30;
+const short ACTION_SPELL				= 31;
+const short ACTION_SPELL_POINT			= 95;
+const short ACTION_INCREMENT_GLOBAL		= 109;
+const short ACTION_BREAK_INSTANTS		= 178;
+const short ACTION_SPELL_NO_DEC			= 191;
+const short ACTOIN_SPELL_POINT_NO_DEC	= 192;
+const short ACTION_SG					= 307;
+const short ACTION_LOSE_GAME			= 352; //new in TobEx
 
 //CLASS.IDS
+const unsigned char CLASS_ANY					= 0;
 const unsigned char CLASS_MAGE					= 1;
 const unsigned char CLASS_FIGHTER				= 2;
 const unsigned char CLASS_CLERIC				= 3;
@@ -46,19 +54,19 @@ const unsigned char CLASS_SORCERER				= 19;
 const unsigned char CLASS_MONK					= 20;
 
 //DMGTYPE.IDS
-const unsigned int DAMAGETYPE_CRUSHING		= 0x00000000;
-const unsigned int DAMAGETYPE_ACID			= 0x00010000;
-const unsigned int DAMAGETYPE_COLD			= 0x00020000;
-const unsigned int DAMAGETYPE_ELECTRICITY	= 0x00040000;
-const unsigned int DAMAGETYPE_FIRE			= 0x00080000;
-const unsigned int DAMAGETYPE_PIERCING		= 0x00100000;
-const unsigned int DAMAGETYPE_POISON		= 0x00200000;
-const unsigned int DAMAGETYPE_MAGIC			= 0x00400000;
-const unsigned int DAMAGETYPE_MISSILE		= 0x00800000;
-const unsigned int DAMAGETYPE_SLASHING		= 0x01000000;
-const unsigned int DAMAGETYPE_MAGICFIRE		= 0x02000000;
-const unsigned int DAMAGETYPE_MAGICCOLD		= 0x04000000;
-const unsigned int DAMAGETYPE_FIST			= 0x08000000;
+const unsigned int DAMAGETYPE_CRUSHING		= 0x0000;
+const unsigned int DAMAGETYPE_ACID			= 0x0001;
+const unsigned int DAMAGETYPE_COLD			= 0x0002;
+const unsigned int DAMAGETYPE_ELECTRICITY	= 0x0004;
+const unsigned int DAMAGETYPE_FIRE			= 0x0008;
+const unsigned int DAMAGETYPE_PIERCING		= 0x0010;
+const unsigned int DAMAGETYPE_POISON		= 0x0020;
+const unsigned int DAMAGETYPE_MAGIC			= 0x0040;
+const unsigned int DAMAGETYPE_MISSILE		= 0x0080;
+const unsigned int DAMAGETYPE_SLASHING		= 0x0100;
+const unsigned int DAMAGETYPE_MAGICFIRE		= 0x0200;
+const unsigned int DAMAGETYPE_MAGICCOLD		= 0x0400;
+const unsigned int DAMAGETYPE_STUNNING		= 0x0800;
 
 //EA.IDS
 const unsigned char EA_INANIMATE		= 1;
@@ -79,6 +87,7 @@ const unsigned char EA_NOTEVIL			= 199;
 const unsigned char EA_EVILCUTOFF		= 200;
 const unsigned char EA_EVILBUTGREEN		= 201;
 const unsigned char EA_EVILBUTBLUE		= 202;
+const unsigned char EA_SPECIFICGROUP	= 253;
 const unsigned char EA_ENEMY			= 255;
 
 //Facing, Orientation
@@ -108,6 +117,15 @@ const unsigned int EIGHTEEN_HOURS	= 0x13C68; //81000
 const unsigned int TWENTYONE_HOURS	= 0x17124; //94500
 const unsigned int TWENTYTWO_HOURS	= 0x182B8; //99000
 const unsigned int ONE_DAY			= 0x1A5E0; //108000
+
+//GENERAL.IDS
+const unsigned char GENDER_ANY		= 0;
+
+//GENDER.IDS
+const unsigned char GENDER_MALE		= 1;
+const unsigned char GENDER_FEMALE	= 2;
+const unsigned char GENDER_OTHER	= 3;
+const unsigned char GENDER_NIETHER	= 4;
 
 //KIT.IDS
 const unsigned int KIT_TRUECLASS			= 0x00004000;
@@ -180,6 +198,7 @@ const unsigned char OBJECT_4NEARESTENEMYOF	= 31;
 const unsigned char OBJECT_5NEARESTENEMYOF	= 32;
 
 //RACE.IDS
+const unsigned char RACE_ANY		= 0;
 const unsigned char RACE_HUMAN		= 1;
 const unsigned char RACE_ELF		= 2;
 const unsigned char RACE_HALF_ELF	= 3;
@@ -282,15 +301,92 @@ const unsigned int STATE_BLUR					= 0x20000000;
 const unsigned int STATE_MIRRORIMAGE			= 0x40000000;
 const unsigned int STATE_CONFUSED				= 0x80000000;
 
+//SPECIFIC.IDS
+const unsigned int SPECIFIC_ANY	= 0;
+
+//STATS.IDS
+const unsigned short  STATS_PROFICIENCYBASTARDSWORD				=  89;
+const unsigned short  STATS_PROFICIENCYLONGSWORD				=  90;
+const unsigned short  STATS_PROFICIENCYSHORTSWORD				=  91;
+const unsigned short  STATS_PROFICIENCYAXE						=  92;
+const unsigned short  STATS_PROFICIENCYTWOHANDEDSWORD			=  93;
+const unsigned short  STATS_PROFICIENCYKATANA					=  94;
+const unsigned short  STATS_PROFICIENCYSCIMITARWAKISASHININJATO	=  95;
+const unsigned short  STATS_PROFICIENCYDAGGER					=  96;
+const unsigned short  STATS_PROFICIENCYWARHAMMER				=  97;
+const unsigned short  STATS_PROFICIENCYSPEAR					=  98;
+const unsigned short  STATS_PROFICIENCYHALBERD					=  99;
+const unsigned short  STATS_PROFICIENCYFLAILMORNINGSTAR			=  100;
+const unsigned short  STATS_PROFICIENCYMACE						=  101;
+const unsigned short  STATS_PROFICIENCYQUARTERSTAFF				=  102;
+const unsigned short  STATS_PROFICIENCYCROSSBOW					=  103;
+const unsigned short  STATS_PROFICIENCYLONGBOW					=  104;
+const unsigned short  STATS_PROFICIENCYSHORTBOW					=  105;
+const unsigned short  STATS_PROFICIENCYDART						=  106;
+const unsigned short  STATS_PROFICIENCYSLING					=  107;
+const unsigned short  STATS_PROFICIENCYBLACKJACK				=  108;
+const unsigned short  STATS_PROFICIENCYGUN						=  109;
+const unsigned short  STATS_PROFICIENCYMARTIALARTS				=  110;
+const unsigned short  STATS_PROFICIENCY2HANDED					=  111;
+const unsigned short  STATS_PROFICIENCYSWORDANDSHIELD			=  112;
+const unsigned short  STATS_PROFICIENCYSINGLEWEAPON				=  113;
+const unsigned short  STATS_PROFICIENCY2WEAPON					=  114;
+const unsigned short  STATS_EXTRAPROFICIENCY1					=  115;
+const unsigned short  STATS_EXTRAPROFICIENCY2					=  116;
+const unsigned short  STATS_EXTRAPROFICIENCY3					=  117;
+const unsigned short  STATS_EXTRAPROFICIENCY4					=  118;
+const unsigned short  STATS_EXTRAPROFICIENCY5					=  119;
+const unsigned short  STATS_EXTRAPROFICIENCY6					=  120;
+const unsigned short  STATS_EXTRAPROFICIENCY7					=  121;
+const unsigned short  STATS_EXTRAPROFICIENCY8					=  122;
+const unsigned short  STATS_EXTRAPROFICIENCY9					=  123;
+const unsigned short  STATS_EXTRAPROFICIENCY10					=  124;
+const unsigned short  STATS_EXTRAPROFICIENCY11					=  125;
+const unsigned short  STATS_EXTRAPROFICIENCY12					=  126;
+const unsigned short  STATS_EXTRAPROFICIENCY13					=  127;
+const unsigned short  STATS_EXTRAPROFICIENCY14					=  128;
+const unsigned short  STATS_EXTRAPROFICIENCY15					=  129;
+const unsigned short  STATS_EXTRAPROFICIENCY16					=  130;
+const unsigned short  STATS_EXTRAPROFICIENCY17					=  131;
+const unsigned short  STATS_EXTRAPROFICIENCY18					=  132;
+const unsigned short  STATS_EXTRAPROFICIENCY19					=  133;
+const unsigned short  STATS_EXTRAPROFICIENCY20					=  134;
+
 //TRIGGER.IDS
-const short TRIGGER_NONE					= 0x0000;
-const short TRIGGER_ATTACKED_BY				= 0x0002;
-const short TRIGGER_SEE						= 0x401C;
-const short TRIGGER_HIT_BY					= 0x0020;
-const short TRIGGER_HP_PERCENT_LT			= 0x402D;
-const short TRIGGER_STATE_CHECK				= 0x4037;
-const short TRIGGER_OR						= 0x4089;
-const short TRIGGER_PERSONAL_SPACE_DISTANCE = 0x40B3;
-const short TRIGGER_TOOK_DAMAGE				= 0x00CC;
+const short TRIGGER_NONE						= 0x0000;
+const short TRIGGER_ATTACKED_BY					= 0x0002;
+const short TRIGGER_SEE							= 0x401C;
+const short TRIGGER_HIT_BY						= 0x0020;
+const short TRIGGER_HP_PERCENT_LT				= 0x402D;
+const short TRIGGER_STATE_CHECK					= 0x4037;
+const short TRIGGER_OR							= 0x4089;
+const short TRIGGER_PERSONAL_SPACE_DISTANCE		= 0x40B3;
+const short TRIGGER_TOOK_DAMAGE					= 0x00CC;
+const short TRIGGER_NEXT_TRIGGER_OBJECT			= 0x4100; //new in TobEx
+const short TRIGGER_MOVEMENT_RATE				= 0x4101; //new in TobEx
+const short TRIGGER_MOVEMENT_RATE_GT			= 0x4102; //new in TobEx
+const short TRIGGER_MOVEMENT_RATE_LT			= 0x4103; //new in TobEx
+const short TRIGGER_NUM_MIRRORIMAGES			= 0x4104; //new in TobEx
+const short TRIGGER_NUM_MIRRORIMAGES_GT			= 0x4105; //new in TobEx
+const short TRIGGER_NUM_MIRRORIMAGES_LT			= 0x4106; //new in TobEx
+const short TRIGGER_BOUNCING_SPELL_LEVEL		= 0x4107; //new in TobEx
+const short TRIGGER_NUM_BOUNCING_SPELL_LEVEL	= 0x4108; //new in TobEx
+const short TRIGGER_NUM_BOUNCING_SPELL_LEVEL_GT	= 0x4109; //new in TobEx
+const short TRIGGER_NUM_BOUNCING_SPELL_LEVEL_LT	= 0x410A; //new in TobEx
+const short TRIGGER_IMMUNE_SPELL_LEVEL			= 0x410B; //new in TobEx
+const short TRIGGER_NUM_IMMUNE_SPELL_LEVEL		= 0x410C; //new in TobEx
+const short TRIGGER_NUM_IMMUNE_SPELL_LEVEL_GT	= 0x410D; //new in TobEx
+const short TRIGGER_NUM_IMMUNE_SPELL_LEVEL_LT	= 0x410E; //new in TobEx
+const short TRIGGER_TIME_STOP_COUNTER			= 0x410F; //new in TobEx
+const short TRIGGER_TIME_STOP_COUNTER_GT		= 0x4110; //new in TobEx
+const short TRIGGER_TIME_STOP_COUNTER_LT		= 0x4111; //new in TobEx
+const short TRIGGER_TIME_STOP_OBJECT			= 0x4112; //new in TobEx
+const short TRIGGER_NUM_TRAPPING_SPELL_LEVEL	= 0x4113; //new in TobEx
+const short TRIGGER_NUM_TRAPPING_SPELL_LEVEL_GT	= 0x4114; //new in TobEx
+const short TRIGGER_NUM_TRAPPING_SPELL_LEVEL_LT	= 0x4115; //new in TobEx
+const short TRIGGER_ORIGINAL_CLASS				= 0x4116; //new in TobEx
+const short TRIGGER_HP_LOST						= 0x4117; //new in TobEx
+const short TRIGGER_HP_LOST_GT					= 0x4118; //new in TobEx
+const short TRIGGER_HP_LOST_LT					= 0x4119; //new in TobEx
 
 #endif //RULE_H

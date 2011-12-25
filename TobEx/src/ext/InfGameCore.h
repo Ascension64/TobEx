@@ -21,9 +21,18 @@ public:
 	void DETOUR_Deconstruct();
 	int DETOUR_CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor);
 	ResRef DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex);
-	int DETOUR_GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit);
+	int DETOUR_GetWeapProfMax(char nClassId, char nClassPrimary, char nClassSecondary, BOOL bTwoClasses, int nWeapProfId, unsigned int dwKit);
 	BOOL DETOUR_IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace);
 	ResRef DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char nIndex);
+};
+
+extern int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL);
+extern void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)();
+
+class DETOUR_CInfGame : public CInfGame {
+public:
+	int DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly);
+	void DETOUR_SetLoseCutscene();
 };
 
 BOOL __stdcall CRuleTables_HasKnownMageSpells(CCreatureObject& cre);

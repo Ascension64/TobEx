@@ -2,6 +2,18 @@
 
 #include "stdafx.h"
 
+//ResEffContainer
+ResEffContainer& (ResEffContainer::*ResEffContainer_Construct_1ResRef)(ResRef) =
+	SetFP(static_cast<ResEffContainer& (ResEffContainer::*)(ResRef)>	(&ResEffContainer::Construct),		0x4F2810);
+void (ResEffContainer::*ResEffContainer_Deconstruct)() =
+	SetFP(static_cast<void (ResEffContainer::*)()>						(&ResEffContainer::Deconstruct),	0x4E27C0);
+CEffect& (ResEffContainer::*ResEffContainer_CreateCEffect)() =
+	SetFP(static_cast<CEffect& (ResEffContainer::*)()>					(&ResEffContainer::CreateCEffect),	0x4F299B);
+
+ResEffContainer::ResEffContainer(ResRef r)	{ (this->*ResEffContainer_Construct_1ResRef)(r); }
+ResEffContainer::~ResEffContainer()			{ (this->*ResEffContainer_Deconstruct)(); }
+CEffect& ResEffContainer::CreateCEffect()	{ return (this->*ResEffContainer_CreateCEffect)(); }
+
 //CEffect
 CEffect& (CEffect::*CEffect_Construct_0)() =
 	SetFP(static_cast<CEffect& (CEffect::*)()>														(&CEffect::Construct),			0x465440);

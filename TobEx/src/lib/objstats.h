@@ -7,6 +7,26 @@
 #include "itmcore.h"
 #include "scrcore.h"
 
+#define CDERIVEDSTATS_BUTTONDISABLE_STEALTH		0
+#define CDERIVEDSTATS_BUTTONDISABLE_THIEVING	1
+#define CDERIVEDSTATS_BUTTONDISABLE_CASTSPELL	2
+#define CDERIVEDSTATS_BUTTONDISABLE_QUICKSPELL1	3
+#define CDERIVEDSTATS_BUTTONDISABLE_QUICKSPELL2	4
+#define CDERIVEDSTATS_BUTTONDISABLE_QUICKSPELL3	5
+#define CDERIVEDSTATS_BUTTONDISABLE_TURNUNDEAD	6
+#define CDERIVEDSTATS_BUTTONDISABLE_TALK		7
+#define CDERIVEDSTATS_BUTTONDISABLE_USEITEM		8
+#define CDERIVEDSTATS_BUTTONDISABLE_QUICKITEM1	9
+#define CDERIVEDSTATS_BUTTONDISABLE_BARDSONG	10 //new in TobEx
+#define CDERIVEDSTATS_BUTTONDISABLE_QUICKITEM2	11
+#define CDERIVEDSTATS_BUTTONDISABLE_QUICKITEM3	12
+#define CDERIVEDSTATS_BUTTONDISABLE_ABILITY		13
+#define CDERIVEDSTATS_BUTTONDISABLE_FINDTRAPS	14 //new in TobEx
+
+#define CDERIVEDSTATS_BUTTONDISABLESPL_WIZARD	0
+#define CDERIVEDSTATS_BUTTONDISABLESPL_PRIEST	1
+#define CDERIVEDSTATS_BUTTONDISABLESPL_INNATE	2
+
 typedef IECPtrList COnAttackEffList; //AA657C
 
 struct CConditionalSpell { //Size 204h
@@ -240,9 +260,13 @@ struct CStatModVsObject { //Size 18h
 	int nModAmount; //14h
 };
 
-
 class CStatModVsObjectList : public IECPtrList { //Size 1Ch
 	//AA65F4
+};
+
+struct SpellLevelDec { //Size 8h
+	BOOL bOn; //0h
+	int nCount; //4h
 };
 
 struct CDerivedStatsTemplate { //Size 2B0h
@@ -259,9 +283,9 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	short numAttacks; //12h, NUMBEROFATTACKS (8)
 	short saveDeath; //14h, SAVEVSDEATH (9)
 	short saveWands; //16h, SAVEVSWANDS (10)
-	short savePolymorph; //18h, SAVEVSPOLY (11)
+	short savePoly; //18h, SAVEVSPOLY (11)
 	short saveBreath; //1ah, SAVEVSBREATH (12)
-	short saveSpells; //1ch, SAVEVSSPELL (13)
+	short saveSpell; //1ch, SAVEVSSPELL (13)
 	short resistFire; //1eh, RESISTFIRE (14)
 	short resistCold; //20h, RESISTCOLD (15)
 	short resistElectricity; //22h, RESISTELECTRICITY
@@ -340,57 +364,52 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	int damageBonusRight; //e6h, DAMAGEBONUSRIGHT
 	int damageBonusLeft; //eah, DAMAGEBONUSLEFT
 	int m_nStoneSkins; //eeh, STONESKINS
-	
-	/*
-	89 PROFICIENCYBASTARDSWORD				
-	90 PROFICIENCYLONGSWORD				
-	91 PROFICIENCYSHORTSWORD				
-	92 PROFICIENCYAXE						
-	93 PROFICIENCYTWOHANDEDSWORD			
-	94 PROFICIENCYKATANA					
-	95 PROFICIENCYSCIMITARWAKISASHININJATO	
-	96 PROFICIENCYDAGGER					
-	97 PROFICIENCYWARHAMMER				
-	98 PROFICIENCYSPEAR					
-	99 PROFICIENCYHALBERD					
-	100 PROFICIENCYFLAILMORNINGSTAR			
-	101 PROFICIENCYMACE						
-	102 PROFICIENCYQUARTERSTAFF				
-	103 PROFICIENCYCROSSBOW					
-	104 PROFICIENCYLONGBOW					
-	105 PROFICIENCYSHORTBOW					
-	106 PROFICIENCYDART						
-	107 PROFICIENCYSLING					
-	108 PROFICIENCYBLACKJACK				
-	109 PROFICIENCYGUN						
-	110 PROFICIENCYMARTIALARTS				
-	111 PROFICIENCY2HANDED				    
-	112 PROFICIENCYSWORDANDSHIELD			
-	113 PROFICIENCYSINGLEWEAPON				
-	114 PROFICIENCY2WEAPON				                 
-	115 EXTRAPROFICIENCY1 		 
-	116 EXTRAPROFICIENCY2 		 
-	117 EXTRAPROFICIENCY3 		 
-	118 EXTRAPROFICIENCY4 		 
-	119 EXTRAPROFICIENCY5 		 
-	120 EXTRAPROFICIENCY6 		 
-	121 EXTRAPROFICIENCY7 		 
-	122 EXTRAPROFICIENCY8 		 
-	123 EXTRAPROFICIENCY9 		 
-	124 EXTRAPROFICIENCY10 		 
-	125 EXTRAPROFICIENCY11 		 
-	126 EXTRAPROFICIENCY12 		 
-	127 EXTRAPROFICIENCY13 		 
-	128 EXTRAPROFICIENCY14 		 
-	129 EXTRAPROFICIENCY15 		 
-	130 EXTRAPROFICIENCY16 		 
-	131 EXTRAPROFICIENCY17 		 
-	132 EXTRAPROFICIENCY18 		 
-	133 EXTRAPROFICIENCY19 		 
-	134 EXTRAPROFICIENCY20 		 
-	*/
-	int proficiencies[46]; //f2h
-
+	int proficiencyBastardSword; //f2h, PROFICIENCYBASTARDSWORD (89)
+	int proficiencyLongSword; //f6h, PROFICIENCYLONGSWORD (90)
+	int proficiencyShortSword; //fah, PROFICIENCYSHORTSWORD (91)
+	int proficiencyAxe; //feh, PROFICIENCYAXE (92)
+	int proficiencyTwoHandedSword; //102h, PROFICIENCYTWOHANDEDSWORD (93)
+	int proficiencyKatana; //106h, PROFICIENCYKATANA (94)
+	int proficiencyScimitarWakizashiNinjato; //10ah, PROFICIENCYSCIMITARWAKISASHININJATO (95)
+	int proficiencyDagger; //10eh, PROFICIENCYDAGGER (96)
+	int proficiencyWarhammer; //112h, PROFICIENCYWARHAMMER (97)
+	int proficiencySpear; //116h, PROFICIENCYSPEAR (98)
+	int proficiencyHalberd; //11ah, PROFICIENCYHALBERD (99)
+	int proficiencyFlailMorningstar; //11eh, PROFICIENCYFLAILMORNINGSTAR (100)
+	int proficiencyMace; //122h, PROFICIENCYMACE (101)
+	int proficiencyQuarterstaff; //126h, PROFICIENCYQUARTERSTAFF (102)
+	int proficiencyCrossbow; //12ah, PROFICIENCYCROSSBOW (103)
+	int proficiencyLongbow; //12eh, PROFICIENCYLONGBOW (104)
+	int proficiencyShortbow; //132h, PROFICIENCYSHORTBOW (105)
+	int proficiencyDart; //136h, PROFICIENCYDART (106)
+	int proficiencySling; //13ah, PROFICIENCYSLING (107)
+	int proficiencyBlackjack; //13eh, PROFICIENCYBLACKJACK (108)
+	int proficiencyGun; //142h, PROFICIENCYGUN (109)
+	int proficiencyMartialArts; //146h, PROFICIENCYMARTIALARTS (110)
+	int proficiencyTwoHanded; //14ah, PROFICIENCY2HANDED (111)
+	int proficiencySwordAndShield; //14eh, PROFICIENCYSWORDANDSHIELD (112)
+	int proficiencySingleWeapon; //152h, PROFICIENCYSINGLEWEAPON (113)
+	int proficiencyTwoWeapon; //156h, PROFICIENCY2WEAPON (114)
+	int proficiencyExtra1; //15ah, EXTRAPROFICIENCY1 (115)
+	int proficiencyExtra2; //15eh, EXTRAPROFICIENCY2 (116)
+	int proficiencyExtra3; //162h, EXTRAPROFICIENCY3 (117)
+	int proficiencyExtra4; //166h, EXTRAPROFICIENCY4 (118)
+	int proficiencyExtra5; //16ah, EXTRAPROFICIENCY5 (119)
+	int proficiencyExtra6; //16eh, EXTRAPROFICIENCY6 (120)
+	int proficiencyExtra7; //172h, EXTRAPROFICIENCY7 (121)
+	int proficiencyExtra8; //176h, EXTRAPROFICIENCY8 (122)
+	int proficiencyExtra9; //17ah, EXTRAPROFICIENCY9 (123)
+	int proficiencyExtra10; //17eh, EXTRAPROFICIENCY10 (124)
+	int proficiencyExtra11; //182h, EXTRAPROFICIENCY11 (125)
+	int proficiencyExtra12; //186h, EXTRAPROFICIENCY12 (126)
+	int proficiencyExtra13; //18ah, EXTRAPROFICIENCY13 (127)
+	int proficiencyExtra14; //18eh, EXTRAPROFICIENCY14 (128)
+	int proficiencyExtra15; //192h, EXTRAPROFICIENCY15 (129)
+	int proficiencyExtra16; //196h, EXTRAPROFICIENCY16 (130)
+	int proficiencyExtra17; //19ah, EXTRAPROFICIENCY17 (131)
+	int proficiencyExtra18; //19eh, EXTRAPROFICIENCY18 (132)
+	int proficiencyExtra19; //1a2h, EXTRAPROFICIENCY19 (133)
+	int proficiencyExtra20; //1a6h, EXTRAPROFICIENCY20 (134)
 	Enum puppermasterId; //1aah, PUPPETMASTERID
 	int puppermasterType; //1aeh, PUPPETMASTERTYPE, 1 or 2
 	int puppetType; //1b2h, PUPPETTYPE
@@ -490,7 +509,7 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	IECPtrList ProtProjId; //2b0h, AA6624, holds DWORDS of PROJECTL.IDS Idx
 	IECPtrList ProtEff; //2cch, AA6618, CEffects
 	CObjectList m_ObjectProtections; //2e8h
-	int ProtSplLvl[10]; //304h
+	BOOL ProtSplLvl[10]; //304h
 	CItemPropertiesList m_WeaponProtections; //32ch
 	CStatModVsObjectList m_ToHitBonusVsObject; //348h
 	CStatModVsObjectList m_DamageBonusVsObject; //364h
@@ -501,8 +520,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	IECPtrList BounceProjId; //3f0h, AA6624
 	IECPtrList BounceEff; //40ch, AA6618, CEffect
 	BOOL BounceSplLvl[10]; //428h, if 1 for a level, is affected by that power level
-	long long BounceSplLvlDec[10]; //450h
-	long long ProtSplLvlDec[10]; //4a0h
+	SpellLevelDec BounceSplLvlDec[10]; //450h
+	SpellLevelDec ProtSplLvlDec[10]; //4a0h
 
 	//group of 14
 	IECPtrList ProtTypePrimary; //4f0h, AA65D0
@@ -513,40 +532,22 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	COnEquipItemtypeList ForbidItemType2; //57ch, objects in this list never used
 	CSpellProtectionList m_SpellProtections; //598h
 	IECPtrList BounceSpl; //5b4h, AA65C4
-	IECPtrList ImmuneTypePrimaryDec; //5d0h, AA65B8
-	IECPtrList ImmuneTypeSecondaryDec; //5ech, AA65B8
+	IECPtrList ProtTypePrimaryDec; //5d0h, AA65B8
+	IECPtrList ProtTypeSecondaryDec; //5ech, AA65B8
 	IECPtrList BounceTypePrimaryDec; //608h, AA65B8
 	IECPtrList BounceTypeSecondaryDec; //624h, AA65B8
 	CConditionalSpellList m_ConditionalSpells; //640h
 	CRepeatingEffList m_RepeatingEffs; //65ch
 
-	long long SplLvlTrap[10]; //67ch
+	SpellLevelDec SplTrapLvl[10]; //67ch
 	IECPtrList SplSequencer; //6cch, AA65AC
 	IECPtrList ColorListPal; //6e8h, AA6594, item color objects of 0x2?
 	IECPtrList ColorListRgb; //704h, AA6588
 	CreFileMemSpellLevel MemInfoMage[9]; //720h
 	CreFileMemSpellLevel MemInfoPriest[7]; //7b0h
 
-	/*
-	0 - stealth
-	1 - thieving
-	2 - cast spell
-	3 - quick spell 1
-	4 - quick spell 2
-	5 - quick spell 3
-	6 - turn undead
-	7 - talk
-	8 - use item
-	9 - quick item 1
-	A - nil
-	B - quick item 2
-	C - quick item 3
-	D - special ability
-	*/
 	int ButtonDisable[14]; //820h
-	int ButtonDisableSplPriest; //858h
-	int ButtonDisableSplWizard; //85ch
-	int ButtonDisableSplInnate; //860h
+	int ButtonDisableSpl[3]; //858h
 	COnAttackEffList m_MeleeEffects; //864h, is checked on non-ranged attack, but FX never added to this list
 	COnAttackEffList m_RangedEffects; //880h, is checked on ranged attack, but FX never added to this list
 	CStatModVsObjectList m_SaveBonusVsObject; //89ch

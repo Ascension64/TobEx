@@ -106,6 +106,18 @@ CEffect& CEffectCurrentHPMod::Duplicate()							{ return (this->*CEffectCurrentH
 BOOL CEffectCurrentHPMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectCurrentHPMod_ApplyEffect)(creTarget); }
 BOOL CEffectCurrentHPMod::IgnoreLevelCheck()						{ return (this->*CEffectCurrentHPMod_IgnoreLevelCheck)(); }
 
+//CEffectLuckMod
+void (CEffectLuckMod::*CEffectLuckMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectLuckMod::*)()>					(&CEffectLuckMod::Deconstruct),	0x54BF20);
+CEffect& (CEffectLuckMod::*CEffectLuckMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectLuckMod::*)()>				(&CEffectLuckMod::Duplicate),	0x54BDF0);
+BOOL (CEffectLuckMod::*CEffectLuckMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectLuckMod::*)(CCreatureObject&)>	(&CEffectLuckMod::ApplyEffect),	0x5129F3);
+
+CEffectLuckMod::~CEffectLuckMod()								{ (this->*CEffectLuckMod_Deconstruct)(); }
+CEffect& CEffectLuckMod::Duplicate()							{ return (this->*CEffectLuckMod_Duplicate)(); }
+BOOL CEffectLuckMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectLuckMod_ApplyEffect)(creTarget); }
+
 //CEffectPoison
 void (CEffectPoison::*CEffectPoison_Deconstruct)() =
 	SetFP(static_cast<void (CEffectPoison::*)()>					(&CEffectPoison::Deconstruct),		0x54C340);
@@ -120,6 +132,66 @@ CEffectPoison::~CEffectPoison()									{ (this->*CEffectPoison_Deconstruct)(); 
 CEffect& CEffectPoison::Duplicate()								{ return (this->*CEffectPoison_Duplicate)(); }
 BOOL CEffectPoison::ApplyEffect(CCreatureObject& creTarget)		{ return (this->*CEffectPoison_ApplyEffect)(creTarget); }
 void CEffectPoison::OnDelayFinished(CCreatureObject& creTarget)	{ return (this->*CEffectPoison_OnDelayFinished)(creTarget); }
+
+//CEffectSaveVsDeathMod
+void (CEffectSaveVsDeathMod::*CEffectSaveVsDeathMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectSaveVsDeathMod::*)()>					(&CEffectSaveVsDeathMod::Deconstruct),	0x54CE40);
+CEffect& (CEffectSaveVsDeathMod::*CEffectSaveVsDeathMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectSaveVsDeathMod::*)()>				(&CEffectSaveVsDeathMod::Duplicate),	0x54CD10);
+BOOL (CEffectSaveVsDeathMod::*CEffectSaveVsDeathMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectSaveVsDeathMod::*)(CCreatureObject&)>	(&CEffectSaveVsDeathMod::ApplyEffect),	0x514B87);
+
+CEffectSaveVsDeathMod::~CEffectSaveVsDeathMod()						{ (this->*CEffectSaveVsDeathMod_Deconstruct)(); }
+CEffect& CEffectSaveVsDeathMod::Duplicate()							{ return (this->*CEffectSaveVsDeathMod_Duplicate)(); }
+BOOL CEffectSaveVsDeathMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectSaveVsDeathMod_ApplyEffect)(creTarget); }
+
+//CEffectSaveVsWandsMod
+void (CEffectSaveVsWandsMod::*CEffectSaveVsWandsMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectSaveVsWandsMod::*)()>					(&CEffectSaveVsWandsMod::Deconstruct),	0x54CFA0);
+CEffect& (CEffectSaveVsWandsMod::*CEffectSaveVsWandsMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectSaveVsWandsMod::*)()>				(&CEffectSaveVsWandsMod::Duplicate),	0x54CE70);
+BOOL (CEffectSaveVsWandsMod::*CEffectSaveVsWandsMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectSaveVsWandsMod::*)(CCreatureObject&)>	(&CEffectSaveVsWandsMod::ApplyEffect),	0x514E4C);
+
+CEffectSaveVsWandsMod::~CEffectSaveVsWandsMod()						{ (this->*CEffectSaveVsWandsMod_Deconstruct)(); }
+CEffect& CEffectSaveVsWandsMod::Duplicate()							{ return (this->*CEffectSaveVsWandsMod_Duplicate)(); }
+BOOL CEffectSaveVsWandsMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectSaveVsWandsMod_ApplyEffect)(creTarget); }
+
+//CEffectSaveVsPolyMod
+void (CEffectSaveVsPolyMod::*CEffectSaveVsPolyMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectSaveVsPolyMod::*)()>					(&CEffectSaveVsPolyMod::Deconstruct),	0x54D100);
+CEffect& (CEffectSaveVsPolyMod::*CEffectSaveVsPolyMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectSaveVsPolyMod::*)()>				(&CEffectSaveVsPolyMod::Duplicate),		0x54CFD0);
+BOOL (CEffectSaveVsPolyMod::*CEffectSaveVsPolyMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectSaveVsPolyMod::*)(CCreatureObject&)>	(&CEffectSaveVsPolyMod::ApplyEffect),	0x515111);
+
+CEffectSaveVsPolyMod::~CEffectSaveVsPolyMod()						{ (this->*CEffectSaveVsPolyMod_Deconstruct)(); }
+CEffect& CEffectSaveVsPolyMod::Duplicate()							{ return (this->*CEffectSaveVsPolyMod_Duplicate)(); }
+BOOL CEffectSaveVsPolyMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectSaveVsPolyMod_ApplyEffect)(creTarget); }
+
+//CEffectSaveVsBreathMod
+void (CEffectSaveVsBreathMod::*CEffectSaveVsBreathMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectSaveVsBreathMod::*)()>					(&CEffectSaveVsBreathMod::Deconstruct),	0x54D260);
+CEffect& (CEffectSaveVsBreathMod::*CEffectSaveVsBreathMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectSaveVsBreathMod::*)()>				(&CEffectSaveVsBreathMod::Duplicate),	0x54D130);
+BOOL (CEffectSaveVsBreathMod::*CEffectSaveVsBreathMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectSaveVsBreathMod::*)(CCreatureObject&)>	(&CEffectSaveVsBreathMod::ApplyEffect),	0x5153C7);
+
+CEffectSaveVsBreathMod::~CEffectSaveVsBreathMod()						{ (this->*CEffectSaveVsBreathMod_Deconstruct)(); }
+CEffect& CEffectSaveVsBreathMod::Duplicate()							{ return (this->*CEffectSaveVsBreathMod_Duplicate)(); }
+BOOL CEffectSaveVsBreathMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectSaveVsBreathMod_ApplyEffect)(creTarget); }
+
+//CEffectSaveVsSpellMod
+void (CEffectSaveVsSpellMod::*CEffectSaveVsSpellMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectSaveVsSpellMod::*)()>					(&CEffectSaveVsSpellMod::Deconstruct),	0x54D3C0);
+CEffect& (CEffectSaveVsSpellMod::*CEffectSaveVsSpellMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectSaveVsSpellMod::*)()>				(&CEffectSaveVsSpellMod::Duplicate),	0x54D290);
+BOOL (CEffectSaveVsSpellMod::*CEffectSaveVsSpellMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectSaveVsSpellMod::*)(CCreatureObject&)>	(&CEffectSaveVsSpellMod::ApplyEffect),	0x51568C);
+
+CEffectSaveVsSpellMod::~CEffectSaveVsSpellMod()						{ (this->*CEffectSaveVsSpellMod_Deconstruct)(); }
+CEffect& CEffectSaveVsSpellMod::Duplicate()							{ return (this->*CEffectSaveVsSpellMod_Duplicate)(); }
+BOOL CEffectSaveVsSpellMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectSaveVsSpellMod_ApplyEffect)(creTarget); }
 
 //CEffectMageMemSpellMod
 void (CEffectMageMemSpellMod::*CEffectMageMemSpellMod_Deconstruct)() =
@@ -211,6 +283,102 @@ CEffect& CEffectRegeneration::Duplicate()								{ return (this->*CEffectRegener
 BOOL CEffectRegeneration::ApplyEffect(CCreatureObject& creTarget)		{ return (this->*CEffectRegeneration_ApplyEffect)(creTarget); }
 void CEffectRegeneration::OnDelayFinished(CCreatureObject& creTarget)	{ return (this->*CEffectRegeneration_OnDelayFinished)(creTarget); }
 
+//CEffectAid
+void (CEffectAid::*CEffectAid_Deconstruct)() =
+	SetFP(static_cast<void (CEffectAid::*)()>					(&CEffectAid::Deconstruct),	0x555C80);
+CEffect& (CEffectAid::*CEffectAid_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectAid::*)()>				(&CEffectAid::Duplicate),	0x555B50);
+BOOL (CEffectAid::*CEffectAid_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectAid::*)(CCreatureObject&)>	(&CEffectAid::ApplyEffect),	0x52720A);
+
+CEffectAid::~CEffectAid()									{ (this->*CEffectAid_Deconstruct)(); }
+CEffect& CEffectAid::Duplicate()							{ return (this->*CEffectAid_Duplicate)(); }
+BOOL CEffectAid::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectAid_ApplyEffect)(creTarget); }
+
+//CEffectBless
+void (CEffectBless::*CEffectBless_Deconstruct)() =
+	SetFP(static_cast<void (CEffectBless::*)()>					(&CEffectBless::Deconstruct),	0x555B20);
+CEffect& (CEffectBless::*CEffectBless_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectBless::*)()>				(&CEffectBless::Duplicate),		0x5559F0);
+BOOL (CEffectBless::*CEffectBless_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectBless::*)(CCreatureObject&)>	(&CEffectBless::ApplyEffect),	0x5273F7);
+
+CEffectBless::~CEffectBless()								{ (this->*CEffectBless_Deconstruct)(); }
+CEffect& CEffectBless::Duplicate()							{ return (this->*CEffectBless_Duplicate)(); }
+BOOL CEffectBless::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectBless_ApplyEffect)(creTarget); }
+
+//CEffectChant
+void (CEffectChant::*CEffectChant_Deconstruct)() =
+	SetFP(static_cast<void (CEffectChant::*)()>					(&CEffectChant::Deconstruct),	0x555DE0);
+CEffect& (CEffectChant::*CEffectChant_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectChant::*)()>				(&CEffectChant::Duplicate),		0x555CB0);
+BOOL (CEffectChant::*CEffectChant_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectChant::*)(CCreatureObject&)>	(&CEffectChant::ApplyEffect),	0x527499);
+
+CEffectChant::~CEffectChant()								{ (this->*CEffectChant_Deconstruct)(); }
+CEffect& CEffectChant::Duplicate()							{ return (this->*CEffectChant_Duplicate)(); }
+BOOL CEffectChant::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectChant_ApplyEffect)(creTarget); }
+
+//CEffectHolyMight
+void (CEffectHolyMight::*CEffectHolyMight_Deconstruct)() =
+	SetFP(static_cast<void (CEffectHolyMight::*)()>					(&CEffectHolyMight::Deconstruct),	0x5560A0);
+CEffect& (CEffectHolyMight::*CEffectHolyMight_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectHolyMight::*)()>				(&CEffectHolyMight::Duplicate),		0x555F70);
+BOOL (CEffectHolyMight::*CEffectHolyMight_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectHolyMight::*)(CCreatureObject&)>	(&CEffectHolyMight::ApplyEffect),	0x527563);
+
+CEffectHolyMight::~CEffectHolyMight()							{ (this->*CEffectHolyMight_Deconstruct)(); }
+CEffect& CEffectHolyMight::Duplicate()							{ return (this->*CEffectHolyMight_Duplicate)(); }
+BOOL CEffectHolyMight::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectHolyMight_ApplyEffect)(creTarget); }
+
+//CEffectChantBad
+void (CEffectChantBad::*CEffectChantBad_Deconstruct)() =
+	SetFP(static_cast<void (CEffectChantBad::*)()>					(&CEffectChantBad::Deconstruct),	0x555F40);
+CEffect& (CEffectChantBad::*CEffectChantBad_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectChantBad::*)()>				(&CEffectChantBad::Duplicate),		0x555E10);
+BOOL (CEffectChantBad::*CEffectChantBad_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectChantBad::*)(CCreatureObject&)>	(&CEffectChantBad::ApplyEffect),	0x5274FE);
+
+CEffectChantBad::~CEffectChantBad()								{ (this->*CEffectChantBad_Deconstruct)(); }
+CEffect& CEffectChantBad::Duplicate()							{ return (this->*CEffectChantBad_Duplicate)(); }
+BOOL CEffectChantBad::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectChantBad_ApplyEffect)(creTarget); }
+
+//CEffectDisableSpelltype
+void (CEffectDisableSpelltype::*CEffectDisableSpelltype_Deconstruct)() =
+	SetFP(static_cast<void (CEffectDisableSpelltype::*)()>					(&CEffectDisableSpelltype::Deconstruct),	0x557280);
+CEffect& (CEffectDisableSpelltype::*CEffectDisableSpelltype_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectDisableSpelltype::*)()>				(&CEffectDisableSpelltype::Duplicate),		0x557150);
+BOOL (CEffectDisableSpelltype::*CEffectDisableSpelltype_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectDisableSpelltype::*)(CCreatureObject&)>	(&CEffectDisableSpelltype::ApplyEffect),	0x52BA62);
+
+CEffectDisableSpelltype::~CEffectDisableSpelltype()						{ (this->*CEffectDisableSpelltype_Deconstruct)(); }
+CEffect& CEffectDisableSpelltype::Duplicate()							{ return (this->*CEffectDisableSpelltype_Duplicate)(); }
+BOOL CEffectDisableSpelltype::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectDisableSpelltype_ApplyEffect)(creTarget); }
+
+//CEffectDisableButton
+void (CEffectDisableButton::*CEffectDisableButton_Deconstruct)() =
+	SetFP(static_cast<void (CEffectDisableButton::*)()>					(&CEffectDisableButton::Deconstruct),	0x556FC0);
+CEffect& (CEffectDisableButton::*CEffectDisableButton_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectDisableButton::*)()>				(&CEffectDisableButton::Duplicate),		0x556E90);
+BOOL (CEffectDisableButton::*CEffectDisableButton_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectDisableButton::*)(CCreatureObject&)>	(&CEffectDisableButton::ApplyEffect),	0x52B97B);
+
+CEffectDisableButton::~CEffectDisableButton()						{ (this->*CEffectDisableButton_Deconstruct)(); }
+CEffect& CEffectDisableButton::Duplicate()							{ return (this->*CEffectDisableButton_Duplicate)(); }
+BOOL CEffectDisableButton::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectDisableButton_ApplyEffect)(creTarget); }
+
+//CEffectCastSpell
+void (CEffectCastSpell::*CEffectCastSpell_Deconstruct)() =
+	SetFP(static_cast<void (CEffectCastSpell::*)()>					(&CEffectCastSpell::Deconstruct),	0x5573E0);
+CEffect& (CEffectCastSpell::*CEffectCastSpell_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectCastSpell::*)()>				(&CEffectCastSpell::Duplicate),		0x5572B0);
+BOOL (CEffectCastSpell::*CEffectCastSpell_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectCastSpell::*)(CCreatureObject&)>	(&CEffectCastSpell::ApplyEffect),	0x52BD1B);
+
+CEffectCastSpell::~CEffectCastSpell()							{ (this->*CEffectCastSpell_Deconstruct)(); }
+CEffect& CEffectCastSpell::Duplicate()							{ return (this->*CEffectCastSpell_Duplicate)(); }
+BOOL CEffectCastSpell::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectCastSpell_ApplyEffect)(creTarget); }
+
 //CEffectLearnSpell
 void (CEffectLearnSpell::*CEffectLearnSpell_Deconstruct)() =
 	SetFP(static_cast<void (CEffectLearnSpell::*)()>				(&CEffectLearnSpell::Deconstruct),	0x557540);
@@ -246,6 +414,18 @@ BOOL (CEffectCastSpellOnCondition::*CEffectCastSpellOnCondition_ApplyEffect)(CCr
 CEffectCastSpellOnCondition::~CEffectCastSpellOnCondition()					{ (this->*CEffectCastSpellOnCondition_Deconstruct)(); }
 CEffect& CEffectCastSpellOnCondition::Duplicate()							{ return (this->*CEffectCastSpellOnCondition_Duplicate)(); }
 BOOL CEffectCastSpellOnCondition::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectCastSpellOnCondition_ApplyEffect)(creTarget); }
+
+//CEffectProficiencyMod
+void (CEffectProficiencyMod::*CEffectProficiencyMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectProficiencyMod::*)()>					(&CEffectProficiencyMod::Deconstruct),	0x55DE80);
+CEffect& (CEffectProficiencyMod::*CEffectProficiencyMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectProficiencyMod::*)()>				(&CEffectProficiencyMod::Duplicate),	0x55DD50);
+BOOL (CEffectProficiencyMod::*CEffectProficiencyMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectProficiencyMod::*)(CCreatureObject&)>	(&CEffectProficiencyMod::ApplyEffect),	0x53B776);
+
+CEffectProficiencyMod::~CEffectProficiencyMod()						{ (this->*CEffectProficiencyMod_Deconstruct)(); }
+CEffect& CEffectProficiencyMod::Duplicate()							{ return (this->*CEffectProficiencyMod_Duplicate)(); }
+BOOL CEffectProficiencyMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectProficiencyMod_ApplyEffect)(creTarget); }
 
 //CEffectWingBuffet
 CEffectWingBuffet& (CEffectWingBuffet::*CEffectWingBuffet_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int) =
@@ -309,6 +489,18 @@ BOOL (CEffectRemoveProjectile::*CEffectRemoveProjectile_ApplyEffect)(CCreatureOb
 CEffectRemoveProjectile::~CEffectRemoveProjectile()						{ (this->*CEffectRemoveProjectile_Deconstruct)(); }
 CEffect& CEffectRemoveProjectile::Duplicate()							{ return (this->*CEffectRemoveProjectile_Duplicate)(); }
 BOOL CEffectRemoveProjectile::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectRemoveProjectile_ApplyEffect)(creTarget); }
+
+//CEffectEnableButton
+void (CEffectEnableButton::*CEffectEnableButton_Deconstruct)() =
+	SetFP(static_cast<void (CEffectEnableButton::*)()>					(&CEffectEnableButton::Deconstruct),	0x557120);
+CEffect& (CEffectEnableButton::*CEffectEnableButton_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectEnableButton::*)()>				(&CEffectEnableButton::Duplicate),		0x556FF0);
+BOOL (CEffectEnableButton::*CEffectEnableButton_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectEnableButton::*)(CCreatureObject&)>	(&CEffectEnableButton::ApplyEffect),	0x52B9AA);
+
+CEffectEnableButton::~CEffectEnableButton()							{ (this->*CEffectEnableButton_Deconstruct)(); }
+CEffect& CEffectEnableButton::Duplicate()							{ return (this->*CEffectEnableButton_Duplicate)(); }
+BOOL CEffectEnableButton::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectEnableButton_ApplyEffect)(creTarget); }
 
 //CEffectCutScene2
 void (CEffectCutScene2::*CEffectCutScene2_Deconstruct)() =

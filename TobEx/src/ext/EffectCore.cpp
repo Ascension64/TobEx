@@ -21,6 +21,8 @@ BOOL (CEffectList::*Tramp_CEffectList_ApplyEffects)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectList::*)(CCreatureObject&)>					(&CEffectList::ApplyEffects),	0x544C0B);
 
 CEffect& DETOUR_CEffect::DETOUR_CreateEffect(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2) {
+	if (0) IECString("DETOUR_CEffect::DETOUR_CreateEffect");
+
 	CEffect* pEffect = NULL;
 	switch (eff.opcode) {
 	case CEFFECT_OPCODE_SET_STAT: //0x13E
@@ -62,7 +64,9 @@ CEffect& DETOUR_CEffect::DETOUR_CreateEffect(ITEM_EFFECT& eff, POINT& ptSource, 
 }
 
 BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
-	if (creTarget.o.IsInvalid()) return FALSE;
+	if (0) IECString("DETOUR_CEffect::DETOUR_ApplyTiming");
+
+	if (creTarget.o.IsNonScript()) return FALSE;
 
 	switch (effect.nTiming) {
 	case 0x1000: //apply until expired

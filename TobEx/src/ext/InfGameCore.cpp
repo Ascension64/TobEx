@@ -26,6 +26,11 @@ BOOL (CRuleTables::*Tramp_CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigne
 ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(char, char) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>								(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
 
+int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL) =
+	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),		0x68F35C);
+void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)() =
+	SetFP(static_cast<void (CInfGame::*)()>							(&CInfGame::SetLoseCutscene),		0x6AE3E0);
+
 CRuleTables& DETOUR_CRuleTables::DETOUR_Construct() {
 	pRuleEx = new CRuleTablesEx();
 	return (this->*Tramp_CRuleTables_Construct)();
@@ -106,9 +111,31 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 	return CRuleTables_TryHideSpell(rSpell);
 }
 
-int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit) {
-	int dwWeapProfMax = (this->*Tramp_CRuleTables_GetWeapProfMax)(dwClassId, bClassPrimary, bClassSecondary, bClassMage, dwWeapProfId, dwKit);
-	int dwClassProfsMax = g_pChitin->pCharacter->dwProfsMax;
+int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char nClassId, char nClassPrimary, char nClassSecondary, BOOL bTwoClasses, int nWeapProfId, unsigned int dwKit) {
+	DWORD Eip;
+	GetEip(Eip);
+
+	int dwWeapProfMax = (this->*Tramp_CRuleTables_GetWeapProfMax)(nClassId, nClassPrimary, nClassSecondary, bTwoClasses, nWeapProfId, dwKit);
+	int dwClassProfsMax = 0;
+
+	if (Eip == 0x6DAEC1 || //CRecord::DualClassProficiencyPanelOnLoad()
+		Eip == 0x6DC79A || //CRecord::LevelUpPanelOnLoad()
+		Eip == 0x6DC80C || //CRecord::LevelUpPanelOnLoad()
+		Eip == 0x6DFAFE || //CRecord::LevelUpPanelOnLoad()
+		Eip == 0x6E2196 || //CRecord::DualClassProficiencyPanelOnUpdate()
+		Eip == 0x6E28BE || //CRecord::LevelUpPanelOnUpdate()
+		Eip == 0x6F082C || //CRecord::DualClass()
+		Eip == 0x6F86E9 || //CUIButtonRecordLevelUpProficiency::UpdateCharacter()
+		Eip == 0x6FD498) //CUIButtonRecordDualClassProficiency::UpdateCharacter()
+		dwClassProfsMax = g_pChitin->pCharacter->dwProfsMax;
+
+	if (Eip == 0x71D9B7 || //CCharGen::ProficienciesPanelOnLoad()
+		Eip == 0x71FAC2 || //CCharGen::ProficienciesPanelOnUpdate()
+		Eip == 0x71FB11 || //CCharGen::ProficienciesPanelOnUpdate()
+		Eip == 0x7305F5 || //CUIButtonCharGenProficiency::UpdateCharacter()
+		Eip == 0x730649) //CUIButtonCharGenProficiency::UpdateCharacter()
+		dwClassProfsMax = g_pChitin->pCreateChar->dwProfsMax;
+
 	if (dwClassProfsMax) {
 		return dwClassProfsMax < dwWeapProfMax ? dwClassProfsMax : dwWeapProfMax;
 	} else {
@@ -132,6 +159,103 @@ BOOL DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed(unsigned int dwKit, unsigned
 ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) {
 	ResRef rSpell = (this->*Tramp_CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex);
 	return CRuleTables_TryHideSpell(rSpell);
+}
+
+int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly) {
+	if (g_pChitin->cNetwork.bSessionOpen) {
+		BOOL bRequested = FALSE;
+		CServerStore store;
+
+		if (!g_pChitin->cNetwork.bSessionHosting) {
+			store.Unmarshal(rItem);
+			BOOL bStoreValid = store.bUnmarshaled && store.m_header == "STORV1.0" ? TRUE : FALSE;
+			if (bStoreValid == FALSE) {
+				bool bFailed = !g_pChitin->BaldurMessageHandler.RequestHostFile(rBag.FormatToString(), CRES_TYPE_STO, TRUE, TRUE, true);
+				if (bFailed) {
+					g_pChitin->cNetwork.CloseSession(true);
+					return 0;
+				} else {
+					store.Unmarshal(rItem);
+					bRequested = TRUE;
+				}
+			}
+		} else {
+			DemandServerStore(rBag, TRUE);
+			store.Unmarshal(rBag);
+		}
+
+		int nItemCount = 0;
+		POSITION pos = store.m_items.GetHeadPosition();
+		while (pos != NULL) {
+			StoFileItem* pItem = (StoFileItem*)store.m_items.GetNext(pos);
+			if (pItem) {
+				if (pItem->name == rItem) {
+					if (bIdentifiedOnly) {
+						if (pItem->dwFlags & CITEMFLAG_IDENTIFIED) {
+							int nAdd = pItem->m_bInfinite ? 1 : pItem->m_nNumInStock;
+							nItemCount += nAdd;
+						}
+					} else {
+						int nAdd = pItem->m_bInfinite ? 1 : pItem->m_nNumInStock;
+						nItemCount += nAdd;
+					}
+				}
+			}
+		}
+
+		if (g_pChitin->cNetwork.bSessionHosting) {
+			g_pChitin->pGame->ReleaseServerStore(store.m_filename);
+			return nItemCount;
+		} else {
+			if (bRequested) {
+				CMessageHostReleaseServerStore* pMsg = IENew CMessageHostReleaseServerStore();
+				pMsg->rStoreName = store.m_filename;
+				g_pChitin->messages.Send(*pMsg, FALSE);
+			}
+			return nItemCount;
+		}
+
+	} else {
+		CServerStore store(rBag);
+		int nItemCount = 0;
+		POSITION pos = store.m_items.GetHeadPosition();
+
+		while (pos != NULL) {
+			StoFileItem* pItem = (StoFileItem*)store.m_items.GetNext(pos);
+			if (pItem) {
+				if (pItem->name == rItem) {
+					if (bIdentifiedOnly) {
+						if (pItem->dwFlags & CITEMFLAG_IDENTIFIED) {
+							int nAdd = pItem->m_bInfinite ? 1 : pItem->m_nNumInStock;
+							nItemCount += nAdd;
+						}
+					} else {
+						int nAdd = pItem->m_bInfinite ? 1 : pItem->m_nNumInStock;
+						nItemCount += nAdd;
+					}
+				}
+			}
+		}
+
+		return nItemCount;
+	}
+}
+
+void DETOUR_CInfGame::DETOUR_SetLoseCutscene() {
+	DWORD Eip;
+	GetEip(Eip);
+
+	if (Eip == 0x5092EB || //CEffectInstantDeath::ApplyEffect()
+		Eip == 0x50935F || //CEffectInstantDeath::ApplyEffect()
+		Eip == 0x5277E6 || //CEffectPetrification::ApplyEffect()
+		Eip == 0x527859 || //CEffectPetrification::ApplyEffect()
+		Eip == 0x531E37 || //CEffectImprisonment::ApplyEffect()
+		Eip == 0x7C612B || //CWorld::Init()?
+		Eip == 0x7D37B8) { //CWorld::Update()
+		return;
+	}
+	
+	return (this->*Tramp_CInfGame_SetLoseCutscene)();
 }
 
 BOOL __stdcall CRuleTables_HasKnownMageSpells(CCreatureObject& cre) {

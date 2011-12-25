@@ -3,11 +3,77 @@
 
 #include "stdafx.h"
 
-struct CNetworkMessagePacket { //Size 10h
-	int u0; //0h
-	int nPlayerID; //4h
-	void* pDataChunk; //8h
-	unsigned int dwSIze; //ch
+typedef IECPtrList CChunkList; //AB9870
+
+#define CSPECIFICMESSAGE_NOT_TEXT	-1
+
+/* struct CTextMessage {
+   char m_nameLength; //0h
+   char name[];
+   char m_textLength;
+   char text[];
+*/
+
+/* struct CSpecificMessage { //Size 3h + dwSize
+	char notext; //0h, CSPECIFICMESSAGE_NOT_TEXT, this denotes that the message is not a text message
+	char type; //1h
+	char subtype; //2h
+	char data[dwSize]; //3h
+};
+*/
+
+/* struct CSpecificMessageZip { //Size 7h + dwSize
+	char notext; //0h, CSPECIFICMESSAGE_NOT_TEXT, , this denotes that the message is not a text message
+	char type; //1h
+	char subtype; //2h
+	unsigned int size_uncompressed; //3h, little endian
+	char compressed_data[dwSizeUncompressed]; //7h
+};
+*/
+
+struct CJMPacketHeader { //Size 10h
+	//joint first (JM)
+	char u0; //unused?
+	char u1; //unused?
+	char u2; //unused?
+	short u3; //unused?
+	unsigned char flags; //5h, bit1: compressed
+	int u6; //unused?
+	char type[2]; //ah, JM
+	unsigned char numPacketsHighByte; //ch, numPackets >> 8
+	unsigned char numPacketsLowByte; //dh //numPackets & 0xFF
+	unsigned char nSizeHighByte; //eh, dwPacketSize >> 8 & 0xFF
+	unsigned char nSizeLowByte; //fh, dwPacketSize & 0xFF
+	//in CJMPacket, payload starts at 10h
+};
+
+struct CJBPacketHeader { //Size Ch
+	//joint subsequent (JB)
+	char u0; //unused?
+	char u1; //unused?
+	char u2; //unused?
+	short u3; //unused?
+	unsigned char flags; //5h, bit1: compressed
+	int u6; //unused?
+	char type[2]; //ah, JB
+	//in CJBPacket, payload starts at Ch
+};
+
+struct CMGPacketHeader { //Size Ch
+	char u0; //3
+	char u1; //3
+	char u2; //3
+	short u3; //unused?
+	unsigned char flags; //5h, bit1: compressed
+	char type[2]; //ah, MG
+	//in CMGPacket, payload starts at Ch
+};
+
+struct CChunk { //Size 10h
+	int nSenderID; //0h
+	int nTargetID; //4h
+	void* pPacket; //8h
+	unsigned int dwPacketSize; //ch
 };
 
 struct CNetworkWindow { //Size 88h
@@ -15,32 +81,31 @@ struct CNetworkWindow { //Size 88h
 	bool bInit; //0h
 	char u1;
 	char u2;
-	char PN; //3h - packet number?
+	char PN; //3h - player number (playerId)
 	short AE; //4h
-	short FTS; //6h
+	short FTS; //6h, frame to send index?
 	short FE; //8h
 	short TF; //ah
 	short uc;
-	int ue[2];
-	int u16;
-	int u1a;
+	CChunk m_currChunkToSend; //eh
+
 	int u1e[2];
 	int u26;
 	int u2a;
-	IECPtrList u2e; //AB9870, Messages (0x10 size) DataChunk
-	IECPtrList u4a; //AB9870, Messages (0x10 size)
+	CChunkList m_chunksReceived; //2eh, received
+	CChunkList m_chunksSend; //4ah, to be sent
 	char u66;
 	char u67; //pad
-	int u68;
+	int u68[1];
 	char u6c;
 	char u6d; //pad
-	short NB; //6eh
+	short NB; //6eh, number of chunks sent?
 	char u70;
 	char u71; //pad
 	int u72;
 	int u76;
 	char u7a;
-	char u7b; //pad
+	bool u7b; //sending a chunk?
 	int u7c;
 	int u80; //GetTickCount + 25000
 	int u84; //GetTickCount + 200
@@ -49,8 +114,11 @@ struct CNetworkWindow { //Size 88h
 class CNetwork { //Size F3Ah
 //Constructor: 9C23E8
 public:
-	int u0;
-	int u4;
+	void CloseSession(bool bCloseImmediately);
+	void PrintNetworkError(HRESULT hResult, LPCTSTR szMsg);
+
+	void* u0; //pIDirectPlay4A
+	void* u4; //pIDirectPlayLobby3A
 	
 	int u8[4]; //0xABD0F0, 0xAA5F70
 	bool u18; //above ints u8 loaded
@@ -116,8 +184,8 @@ public:
 	IECString sThisPlayerName; //6e6h
 	int u6ea;
 	IECString sPlayerName[6]; //6eeh
-	int nServerId[6]; //706h
-	char u71e; //bSoloServer?
+	int nPlayerID[6]; //706h
+	bool m_bSoloServer; //71eh
 	char u71f; //pad
 	int u720;
 	char u724;
@@ -126,13 +194,16 @@ public:
 	int u742;
 	int nServerIdx; //746h
 	IECString u74a;
-	int u74e;
+	BOOL u74e; //handling direct play system message?
 	CNetworkWindow ServerWindows[6]; //752h
 	CNetworkWindow SoloServerWindow; //a82h
 	int ub0a[256];
 	CRITICAL_SECTION csWindowMessages; //f0ah, for access to u2e of CNetworkWindow
-	CRITICAL_SECTION uf22;
+	CRITICAL_SECTION csIDirectPlay4A; //f22h
 };
+
+extern void (CNetwork::*CNetwork_CloseSession)(bool);
+extern void (CNetwork::*CNetwork_PrintNetworkError)(HRESULT, LPCTSTR);
 
 struct CRogerWilco { //Size 10h
 //Constructor: 0x9DCA20

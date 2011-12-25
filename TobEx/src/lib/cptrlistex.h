@@ -3,7 +3,7 @@
 
 #include "win32def.h"
 
-class IECPtrList { //Size 1Ch
+class IECPtrList : public CObject { //Size 1Ch
 	DECLARE_DYNAMIC(IECPtrList)
 
 public:

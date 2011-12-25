@@ -12,6 +12,8 @@ CBaldurChitin& DETOUR_CBaldurChitin::DETOUR_Construct() {
 }
 
 int __stdcall CBaldurChitin_MessageBox(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType) {
+	if (0) IECString("CBaldurChitin_MessageBox");
+
 	int dwThreadProcessId = GetWindowThreadProcessId(hWnd, NULL);
 	HANDLE hThread = OpenThread(THREAD_SUSPEND_RESUME, FALSE, dwThreadProcessId);
 	int dwSuspendCount;

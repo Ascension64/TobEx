@@ -6,36 +6,6 @@
 #include "stdafx.h"
 #include "objcre.h"
 
-//effect opcodes
-#define CEFFECT_OPCODE_ATTACKS_PER_ROUND	0x001
-#define CEFFECT_OPCODE_AWAKEN				0x002
-#define CEFFECT_OPCODE_DAMAGE				0x00C
-#define CEFFECT_OPCODE_INSTANT_DEATH		0x00D
-#define CEFFECT_OPCODE_DEXTERITY_MOD		0x00F
-#define CEFFECT_OPCODE_CURRENTHP_MOD		0x011
-#define CEFFECT_OPCODE_POISON				0x019
-#define CEFFECT_OPCODE_UNCONSCIOUSNESS		0x027
-#define CEFFECT_OPCODE_MAGE_MEM_SPELL_MOD	0x02A
-#define CEFFECT_OPCODE_STRENGTH_MOD			0x02C
-#define CEFFECT_OPCODE_SLEEP				0x027
-#define CEFFECT_OPCODE_DISPEL				0x03A
-#define CEFFECT_OPCODE_PRIEST_MEM_SPELL_MOD	0x03E
-#define CEFFECT_OPCODE_BLINDNESS			0x04A
-#define CEFFECT_OPCODE_DISEASE				0x04E
-#define CEFFECT_OPCODE_REGENERATION			0x062
-#define CEFFECT_OPCODE_LEARN_SPELL			0x093
-#define CEFFECT_OPCODE_MAGIC_RESIST_MOD		0x0A6
-#define CEFFECT_OPCODE_FREEDOM				0x0D4
-#define CEFFECT_OPCODE_CAST_SPELL_CONDITION	0x0E8
-#define CEFFECT_OPCODE_WING_BUFFET			0x0EB
-#define CEFFECT_OPCODE_DISINTEGRATE			0x0EE
-#define CEFFECT_OPCODE_AVATAR_REMOVAL		0x10F
-#define CEFFECT_OPCODE_REPEATING_EFFECT		0x110
-#define CEFFECT_OPCODE_REMOVE_PROJECTILE	0x111
-#define CEFFECT_OPCODE_CUTSCENE_2			0x12A
-#define CEFFECT_OPCODE_ANIMATION_REMOVAL	0x13B
-#define CEFFECT_OPCODE_SET_STAT				0x13E //added by TobEx
-
 //CEffectAttacksPerRoundMod
 class CEffectAttacksPerRoundMod : public CEffect { //opcode 1h
 public:
@@ -164,6 +134,21 @@ extern CEffect& (CEffectCurrentHPMod::*CEffectCurrentHPMod_Duplicate)();
 extern BOOL (CEffectCurrentHPMod::*CEffectCurrentHPMod_ApplyEffect)(CCreatureObject&);
 extern BOOL (CEffectCurrentHPMod::*CEffectCurrentHPMod_IgnoreLevelCheck)();
 
+//CEffectLuckMod
+class CEffectLuckMod : public CEffect { //opcode 16h
+public:
+	//AA93E8
+	virtual ~CEffectLuckMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectLuckMod::*CEffectLuckMod_Deconstruct)();
+extern CEffect& (CEffectLuckMod::*CEffectLuckMod_Duplicate)();
+extern BOOL (CEffectLuckMod::*CEffectLuckMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectPoison
 class CEffectPoison : public CEffect { //opcode 19h
 public:
@@ -180,6 +165,81 @@ extern void (CEffectPoison::*CEffectPoison_Deconstruct)();
 extern CEffect& (CEffectPoison::*CEffectPoison_Duplicate)();
 extern BOOL (CEffectPoison::*CEffectPoison_ApplyEffect)(CCreatureObject&);
 extern void (CEffectPoison::*CEffectPoison_OnDelayFinished)(CCreatureObject&);
+
+//CEffectSaveVsDeathMod
+class CEffectSaveVsDeathMod : public CEffect { //opcode 21h
+public:
+	//AA9230
+	virtual ~CEffectSaveVsDeathMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectSaveVsDeathMod::*CEffectSaveVsDeathMod_Deconstruct)();
+extern CEffect& (CEffectSaveVsDeathMod::*CEffectSaveVsDeathMod_Duplicate)();
+extern BOOL (CEffectSaveVsDeathMod::*CEffectSaveVsDeathMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectSaveVsWandsMod
+class CEffectSaveVsWandsMod : public CEffect { //opcode 22h
+public:
+	//AA9208
+	virtual ~CEffectSaveVsWandsMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectSaveVsWandsMod::*CEffectSaveVsWandsMod_Deconstruct)();
+extern CEffect& (CEffectSaveVsWandsMod::*CEffectSaveVsWandsMod_Duplicate)();
+extern BOOL (CEffectSaveVsWandsMod::*CEffectSaveVsWandsMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectSaveVsPolyMod
+class CEffectSaveVsPolyMod : public CEffect { //opcode 23h
+public:
+	//AA91E0
+	virtual ~CEffectSaveVsPolyMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectSaveVsPolyMod::*CEffectSaveVsPolyMod_Deconstruct)();
+extern CEffect& (CEffectSaveVsPolyMod::*CEffectSaveVsPolyMod_Duplicate)();
+extern BOOL (CEffectSaveVsPolyMod::*CEffectSaveVsPolyMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectSaveVsBreathMod
+class CEffectSaveVsBreathMod : public CEffect { //opcode 24h
+public:
+	//AA91B8
+	virtual ~CEffectSaveVsBreathMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectSaveVsBreathMod::*CEffectSaveVsBreathMod_Deconstruct)();
+extern CEffect& (CEffectSaveVsBreathMod::*CEffectSaveVsBreathMod_Duplicate)();
+extern BOOL (CEffectSaveVsBreathMod::*CEffectSaveVsBreathMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectSaveVsSpellMod
+class CEffectSaveVsSpellMod : public CEffect { //opcode 25h
+public:
+	//AA9190
+	virtual ~CEffectSaveVsSpellMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectSaveVsSpellMod::*CEffectSaveVsSpellMod_Deconstruct)();
+extern CEffect& (CEffectSaveVsSpellMod::*CEffectSaveVsSpellMod_Duplicate)();
+extern BOOL (CEffectSaveVsSpellMod::*CEffectSaveVsSpellMod_ApplyEffect)(CCreatureObject&);
 
 //CEffectMageMemSpellMod
 class CEffectMageMemSpellMod : public CEffect { //opcode 2Ah
@@ -290,15 +350,136 @@ extern CEffect& (CEffectRegeneration::*CEffectRegeneration_Duplicate)();
 extern BOOL (CEffectRegeneration::*CEffectRegeneration_ApplyEffect)(CCreatureObject&);
 extern void (CEffectRegeneration::*CEffectRegeneration_OnDelayFinished)(CCreatureObject&);
 
+//CEffectAid
+class CEffectAid : public CEffect { //opcode 81h
+public:
+	//AA8268
+	virtual ~CEffectAid(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectAid::*CEffectAid_Deconstruct)();
+extern CEffect& (CEffectAid::*CEffectAid_Duplicate)();
+extern BOOL (CEffectAid::*CEffectAid_ApplyEffect)(CCreatureObject&);
+
+//CEffectBless
+class CEffectBless : public CEffect { //opcode 82h
+public:
+	//AA8240
+	virtual ~CEffectBless(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectBless::*CEffectBless_Deconstruct)();
+extern CEffect& (CEffectBless::*CEffectBless_Duplicate)();
+extern BOOL (CEffectBless::*CEffectBless_ApplyEffect)(CCreatureObject&);
+
+//CEffectChant
+class CEffectChant : public CEffect { //opcode 83h
+public:
+	//AA8218
+	virtual ~CEffectChant(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectChant::*CEffectChant_Deconstruct)();
+extern CEffect& (CEffectChant::*CEffectChant_Duplicate)();
+extern BOOL (CEffectChant::*CEffectChant_ApplyEffect)(CCreatureObject&);
+
+//CEffectHolyMight
+class CEffectHolyMight : public CEffect { //opcode 84h
+public:
+	//AA81F0
+	virtual ~CEffectHolyMight(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectHolyMight::*CEffectHolyMight_Deconstruct)();
+extern CEffect& (CEffectHolyMight::*CEffectHolyMight_Duplicate)();
+extern BOOL (CEffectHolyMight::*CEffectHolyMight_ApplyEffect)(CCreatureObject&);
+
+//CEffectChantBad
+class CEffectChantBad : public CEffect { //opcode 89h
+public:
+	//AA8128
+	virtual ~CEffectChantBad(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectChantBad::*CEffectChantBad_Deconstruct)();
+extern CEffect& (CEffectChantBad::*CEffectChantBad_Duplicate)();
+extern BOOL (CEffectChantBad::*CEffectChantBad_ApplyEffect)(CCreatureObject&);
+
+//CEffectDisableSpelltype
+class CEffectDisableSpelltype : public CEffect { //opcode 91h
+public:
+	//AA7FC0
+	virtual ~CEffectDisableSpelltype(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectDisableSpelltype::*CEffectDisableSpelltype_Deconstruct)();
+extern CEffect& (CEffectDisableSpelltype::*CEffectDisableSpelltype_Duplicate)();
+extern BOOL (CEffectDisableSpelltype::*CEffectDisableSpelltype_ApplyEffect)(CCreatureObject&);
+
+//CEffectDisableButton
+class CEffectDisableButton : public CEffect { //opcode 90h
+public:
+	//AA8010
+	virtual ~CEffectDisableButton(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectDisableButton::*CEffectDisableButton_Deconstruct)();
+extern CEffect& (CEffectDisableButton::*CEffectDisableButton_Duplicate)();
+extern BOOL (CEffectDisableButton::*CEffectDisableButton_ApplyEffect)(CCreatureObject&);
+
+//CEffectCastSpell
+class CEffectCastSpell : public CEffect { //opcode 92h
+public:
+	//AA7F70
+	virtual ~CEffectCastSpell(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectCastSpell::*CEffectCastSpell_Deconstruct)();
+extern CEffect& (CEffectCastSpell::*CEffectCastSpell_Duplicate)();
+extern BOOL (CEffectCastSpell::*CEffectCastSpell_ApplyEffect)(CCreatureObject&);
+
 //CEffectLearnSpell
 //wParam1High
-#define EFFECTLEARNSPELL_NO_XP_ALWAYS		0x0001 //new in GemRB, TobEx
-#define EFFECTLEARNSPELL_PRINT_MESSAGE		0x0002 //reserved for GemRB
-#define EFFECTLEARNSPELL_SUCCESS_ALWAYS		0x0004 //new in GemRB, TobEx
-#define EFFECTLEARNSPELL_MEMORIZE_NOW		0x0008 //reserved for GemRB
-#define EFFECTLEARNSPELL_NO_XP_DUPLICATE	0x0010 //new in TobEx
-#define EFFECTLEARNSPELL_RESTRICT_SCHOOL	0x0020 //new in TobEx
-#define EFFECTLEARNSPELL_NO_SORCERER		0x0040 //new in TobEx
+#define EFFECTLEARNSPELL_NO_XP_ALWAYS			0x0001 //new in GemRB, TobEx
+#define EFFECTLEARNSPELL_PRINT_MESSAGE			0x0002 //reserved for GemRB
+#define EFFECTLEARNSPELL_SUCCESS_ALWAYS			0x0004 //new in GemRB, TobEx
+#define EFFECTLEARNSPELL_MEMORIZE_NOW			0x0008 //reserved for GemRB
+#define EFFECTLEARNSPELL_NO_XP_DUPLICATE		0x0010 //new in TobEx
+#define EFFECTLEARNSPELL_RESTRICT_SCHOOL		0x0020 //new in TobEx
+#define EFFECTLEARNSPELL_NO_SORCERER			0x0040 //new in TobEx
+#define EFFECTLEARNSPELL_RESTRICT_MAX_SPELLS	0x0080 //new in TobEx
 
 class CEffectLearnSpell : public CEffect { //opcode 93h
 public:
@@ -343,6 +524,21 @@ public:
 extern void (CEffectCastSpellOnCondition::*CEffectCastSpellOnCondition_Deconstruct)();
 extern CEffect& (CEffectCastSpellOnCondition::*CEffectCastSpellOnCondition_Duplicate)();
 extern BOOL (CEffectCastSpellOnCondition::*CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&);
+
+//CEffectProficiencyMod
+class CEffectProficiencyMod : public CEffect { //opcode E9h
+public:
+	//AA9C30
+	virtual ~CEffectProficiencyMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectProficiencyMod::*CEffectProficiencyMod_Deconstruct)();
+extern CEffect& (CEffectProficiencyMod::*CEffectProficiencyMod_Duplicate)();
+extern BOOL (CEffectProficiencyMod::*CEffectProficiencyMod_ApplyEffect)(CCreatureObject&);
 
 //CEffectWingBuffet
 class CEffectWingBuffet : public CEffect { //opcode EBh
@@ -413,6 +609,21 @@ public:
 extern void (CEffectRemoveProjectile::*CEffectRemoveProjectile_Deconstruct)();
 extern CEffect& (CEffectRemoveProjectile::*CEffectRemoveProjectile_Duplicate)();
 extern BOOL (CEffectRemoveProjectile::*CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&);
+
+//CEffectEnableButton
+class CEffectEnableButton : public CEffect { //opcode 117h
+public:
+	//AA7FE8
+	virtual ~CEffectEnableButton(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectEnableButton::*CEffectEnableButton_Deconstruct)();
+extern CEffect& (CEffectEnableButton::*CEffectEnableButton_Duplicate)();
+extern BOOL (CEffectEnableButton::*CEffectEnableButton_ApplyEffect)(CCreatureObject&);
 
 //CEffectCutScene2
 class CEffectCutScene2 : public CEffect { //opcode 12Ah

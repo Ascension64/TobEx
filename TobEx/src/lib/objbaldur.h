@@ -4,7 +4,7 @@
 #include "objcore.h"
 
 class CBaldurObject : public CGameSprite { //Size 3D8h
-//Constructor: 0x67CB92
+//Constructor: 0x493D2A
 public:
 	//AA6C28
 	int u3d4;

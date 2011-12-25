@@ -9,7 +9,9 @@
 
 #include "cstringex.h"
 #include "cptrlistex.h"
+#include "cmapstrstrex.h"
 #include "resref.h"
+#include "varname.h"
 
 #include "globals.h"
 
@@ -25,6 +27,7 @@ typedef unsigned int Enum; //index to CGameObjectArrayHandler element
 
 typedef IECPtrList CDwordList; //AA5C50, all are EnumList?
 typedef IECPtrList CEnumList; //AA5C50
+typedef IECPtrList CIECStringList; //AA63B4
 typedef IECPtrList CPositionList; //AA702C
 typedef IECPtrList CResRefList; //AA6334
 typedef IECPtrList CGameObjectList; //AA7128

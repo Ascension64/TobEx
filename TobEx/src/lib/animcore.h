@@ -43,7 +43,7 @@ public:
 	virtual void GetAnimGroupPaperdollName(IECString* ptr, int nGroupId) {} //v24, ids use as above
 	virtual bool CanUseMiddleVertList() { return false; } //v28
 	virtual void v2c() {} //bool, 0 arg
-	virtual short GetNumCyclesPerAnimation() { return 0; } //v30
+	virtual short GetNumSeqPerAnimation() { return 0; } //v30
 	virtual char GetVertListType() { return 0; } //v34, get 18h
 	virtual void v38() {} //GetSomeGoreThing?, get 19h
 	virtual char GetDefaultVertListType() { return 0; } //v3c

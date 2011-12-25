@@ -7,6 +7,8 @@ BOOL (CScriptBlock::*Tramp_CScriptBlock_Evaluate)(CTriggerList&, CGameSprite&) =
 	SetFP(static_cast<BOOL (CScriptBlock::*)(CTriggerList&, CGameSprite&)>	(&CScriptBlock::Evaluate),	0x405D19);
 
 BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& sprite) {
+	if (0) IECString("DETOUR_CScriptBlock::DETOUR_Evaluate");
+
 	BOOL bResult = FALSE;
 	int nOr = 0;
 	BOOL bOverrideObject = FALSE;
@@ -44,7 +46,7 @@ BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& s
 		if (pt->opcode == TRIGGER_NEXT_TRIGGER_OBJECT) {
 			oOverride = pt->o;
 			oOverride.DecodeIdentifiers(sprite);
-			pOverrideSprite = (CGameSprite*)&oOverride.GetTargetOfType((CGameObject&)sprite, CGAMEOBJECT_TYPE_SPRITE, FALSE);
+			pOverrideSprite = (CGameSprite*)&oOverride.FindTargetOfType((CGameObject&)sprite, CGAMEOBJECT_TYPE_SPRITE, FALSE);
 			bOverrideObject = TRUE;
 		}
 

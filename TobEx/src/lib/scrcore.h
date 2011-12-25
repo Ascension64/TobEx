@@ -4,18 +4,24 @@
 #include "stdafx.h"
 #include "rescore.h"
 
-//new actions
-
-//new triggers
-const short TRIGGER_NEXT_TRIGGER_OBJECT	= 0x4100;
-
 class CGameObject;
 class CGameSprite;
+class CCreatureObject;
+struct Action;
 
 typedef short ACTIONRESULT;
 typedef IECPtrList CActionList; //AA5C5C
 typedef IECPtrList CTriggerList; //AA5E28
 typedef IECPtrList CScriptBlockList; //AA5E50
+
+static Action* g_pActionTemp = reinterpret_cast<Action*>(0xB79300);
+
+//ACTIONRESULT
+//-3
+const ACTIONRESULT ACTIONRESULT_FAILED			= -2; //purges the action
+const ACTIONRESULT ACTIONRESULT_NOACTIONTAKEN	= -1; //action did not do anything
+const ACTIONRESULT ACTIONRESULT_CONTINUE		= 0; //keeps the action, halt scripts
+const ACTIONRESULT ACTIONRESULT_SUCCESS			= 1; //purges the action
 
 struct ResIdsContainer { //Size 10h
 	BOOL bLoaded; //0h
@@ -49,19 +55,46 @@ extern Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef);
 extern void (Identifiers::*Identifiers_Deconstruct)();
 
 struct CVariable { //Size 54h
-	char name[32]; //0h
-	short u20;
-	short u22;
-	int u24;
-	int value; //28h
-	long u2c[2];
-	char u34[32]; //for Store Local Variable, = res1 + res2 + res3 (associated with deathmatch?)
+	CVariable();
+	CVariable& Construct() { return *this; } //dummy
+
+	CVariable& operator=(CVariable& var);
+	CVariable& OpAssign(CVariable& var) { return *this; } //dummy
+
+	VarName name; //0h
+	short u20; //unused
+	short u22; //unused
+	int value2; //24h, dmPt.y
+	int value; //28h, dmPt.x
+	int u2c[2]; //unused
+	char dmArea[32]; //34h, for Store Local Variable, = res1 + res2 + res3 (associated with deathmatch?)
 };
 
+extern CVariable& (CVariable::*CVariable_Construct)();
+extern CVariable& (CVariable::*CVariable_OpAssign)(CVariable&);
+
 struct CVariableArray { //Size 8h
+	CVariableArray(int nSize);
+	CVariableArray& Construct(int nSize) { return *this; } //dummy
+
+	~CVariableArray();
+	void Deconstruct() {} //dummy
+
+	BOOL AddVariable(CVariable& var);
+	CVariable& GetVariable(IECString sVar);
+	int GetChecksum(IECString sVar);
+	void Clear();
+
 	CVariable* pArray;
 	int nArraySize;
 };
+
+extern CVariableArray& (CVariableArray::*CVariableArray_Construct)(int);
+extern void (CVariableArray::*CVariableArray_Deconstruct)();
+extern BOOL (CVariableArray::*CVariableArray_AddVariable)(CVariable&);
+extern CVariable& (CVariableArray::*CVariableArray_GetVariable)(IECString);
+extern int (CVariableArray::*CVariableArray_GetChecksum)(IECString);
+extern void (CVariableArray::*CVariableArray_Clear)();
 
 struct ObjectIds { //Size 5h
 	ObjectIds();
@@ -78,8 +111,6 @@ class Object { //Size 14h
 //Constructor: 0x410CEE
 public:
 	//BCS correlation: OB ea, general, race, class, specific, gender, alignment, id1, id2, id3, id4, id5, name OB
-	bool IsInvalid();
-
 	Object();
 
 	Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget, ObjectIds* poids, IECString& sName);
@@ -88,15 +119,25 @@ public:
 	Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget);
 	Object& Construct(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum) {return *this;} //dummy
 
+	bool MatchCriteria(Object& oCriteria, BOOL bAnyIncludesNonScript, BOOL bExcludeNonScript, BOOL bEAGroupMatch);
+
 	void operator=(Object& o);
-	void OpEq(Object&) {} //dummy
+	void OpAssign(Object&) {} //dummy
 
 	void DecodeIdentifiers(CGameSprite& spriteSource);
-	CGameObject& GetTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList);
+	CGameObject& FindTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList);
+	CGameObject& FindTarget(CGameObject& source, BOOL bCheckMiddleList);
 	void SetIdentifiers(ObjectIds& ids);
 	unsigned char GetClass();
-	void GetClasses(unsigned char* pClass1, unsigned char* pClass2);
-	BOOL HasSubclass(unsigned char Class, BOOL bThreadAsync);
+	void GetDualClasses(unsigned char* pClassNew, unsigned char* pClassOrg);
+	BOOL HasActiveSubclass(unsigned char nSubClass, BOOL bThreadAsync);
+
+	BOOL inline operator==(Object& o);
+	BOOL IsAnything();
+	BOOL IsNonScript();
+	BOOL IsNothing();
+	BOOL IsAny();
+	BOOL IsMyself();
 
 	IECString Name; //0h
 	unsigned char EnemyAlly; //4h
@@ -105,20 +146,24 @@ public:
 	unsigned char Class; //7h
 	Enum eTarget; //8h, set and used after evaluation of Ids
 	ObjectIds oids; //ch
-	char Specific; //11h, for GroupOfType
-	char Gender; //12h
-	char Alignment; //13h
+	unsigned char Specific; //11h, for GroupOfType
+	unsigned char Gender; //12h
+	unsigned char Alignment; //13h
 };
 
 extern Object& (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&);
 extern Object& (Object::*Object_Construct_8)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum);
-extern void (Object::*Object_OpEq)(Object&);
+extern bool (Object::*Object_MatchCriteria)(Object&, BOOL, BOOL, BOOL);
+extern void (Object::*Object_OpAssign)(Object&);
 extern void (Object::*Object_DecodeIdentifiers)(CGameSprite&);
-extern CGameObject& (Object::*Object_GetTargetOfType)(CGameObject&, char, BOOL);
+extern CGameObject& (Object::*Object_FindTargetOfType)(CGameObject&, char, BOOL);
+extern CGameObject& (Object::*Object_FindTarget)(CGameObject&, BOOL);
 extern void (Object::*Object_SetIdentifiers)(ObjectIds&);
 extern unsigned char (Object::*Object_GetClass)();
-extern void (Object::*Object_GetClasses)(unsigned char*, unsigned char*);
-extern BOOL (Object::*Object_HasSubclass)(unsigned char, BOOL);
+extern void (Object::*Object_GetDualClasses)(unsigned char*, unsigned char*);
+extern BOOL (Object::*Object_HasActiveSubclass)(unsigned char, BOOL);
+
+extern Object* poAny;
 
 struct Trigger { //Size 2Eh
 //Constructor: 430720h (3 args), 430810h (2 args)
@@ -168,11 +213,13 @@ struct Action { //Size 5Eh
 //Note: action opcodes (short) from AA5980-AA5B32
 //BCS correlation: AC opcode, oOverride, oObject, oTarget, i, pt.x, pt.y, i2, i3, sName1, sName2 AC
 public:
+	void* operator new(size_t size);
+	void operator delete(void* mem);
+
 	Action();
 	Action& Construct(void) {return *this;} //dummy
 
-	~Action();
-	void Deconstruct(void) {} //dummy
+	//~Action(); //0x405930
 
 	IECString GetSName1();
 
@@ -190,7 +237,6 @@ public:
 };
 
 extern Action& (Action::*Action_Construct_0)(void);
-extern void (Action::*Action_Deconstruct)(void);
 extern IECString (Action::*Action_GetSName1)();
 
 struct Response { //Size 24h
@@ -199,7 +245,7 @@ struct Response { //Size 24h
 	short nResponseIdx; //2h, if chosen, gets response block # in the response list
 	short nScriptBlockIdx; //4h, if chosen, gets script block # in the script
 	short nScriptIdx; //6h, if chosen, gets script # in the script group (i.e. Override, Race, General, etc.), however this is always 0
-	CActionList m_Actions; //8h
+	CActionList m_actions; //8h
 };
 
 class CResponseList : public IECPtrList { //Size 20h
@@ -235,8 +281,8 @@ struct CScriptParser { //Size EEh
 	int* u6; //0x28 size, 0x0 ResRef, 0x8 int, 0xc CPtrListAA5E50
 	IECPtrList* ua; //contains CPtrListAction objects
 	CTriggerList* ue;
-	CActionList* u12;
-	IECString sError;
+	Response* m_response; //12h, response to use after parsing
+	IECString sError; //16h;
 	CFile u1a;
 	IECString u2a;
 	Identifiers ACTION; //2eh

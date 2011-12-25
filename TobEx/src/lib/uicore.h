@@ -8,6 +8,8 @@ class CEngine;
 class CPanel;
 class CUIControl;
 
+extern void (__cdecl *FormatLabel)(CEngine& engine, CPanel& panel, int nLabelIdx, LPCTSTR szFormat, void* ptr);
+
 struct CManager { //CAh
 //Constructor: 0x584BE3
 	CPanel& GetPanel(int index);
@@ -46,6 +48,7 @@ extern CPanel& (CManager::*CManager_GetPanel)(int);
 struct CPanel { //Size 122h, in IESDP this is Window
 //Constructor: 0x5828FA
 	CUIControl& GetUIControl(int index);
+	void Redraw(RECT* pr);
 
 	CManager* pManager; //0h, pointer to parent CEngine.manager
 	IECPtrList controls; //4h
@@ -68,6 +71,7 @@ struct CPanel { //Size 122h, in IESDP this is Window
 };
 
 extern CUIControl& (CPanel::*CPanel_GetUIControl)(int);
+extern void (CPanel::*CPanel_Redraw)(RECT*);
 
 class CUIControl { //Size 4Ah
 public:

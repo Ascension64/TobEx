@@ -4,10 +4,12 @@
 #include "chitin.h"
 #include "engine.h"
 #include "infcursor.h"
+#include "infbtarr.h"
 #include "infgame.h"
 #include "msgcore.h"
 #include "network.h"
 #include "objare.h"
+#include "objcont.h"
 #include "objcre.h"
 #include "objtext.h"
 #include "rescore.h"
@@ -39,6 +41,7 @@
 #define SIZE_CBALDURCHITIN			0x720C
 #define SIZE_CBUTTONARRAY			0x1820
 #define SIZE_CCHARGEN				0x148C
+#define SIZE_CCONTAINEROBJECT		0x0712
 #define SIZE_CCREATUREOBJECT		0x6774
 #define SIZE_CENGINE				0x00FE
 #define SIZE_CGAMETEXT				0x0620
@@ -87,8 +90,9 @@ void Debug() {
 	_CheckSize(SIZE_CANIMATIOND000, CAnimationD000);
 	_CheckSize(SIZE_CANIMATIONE000, CAnimationE000);
 	_CheckSize(SIZE_CBALDURCHITIN, CBaldurChitin);
-	_CheckSize(SIZE_CBUTTONARRAY, CInfGame::CButtonArray);
+	_CheckSize(SIZE_CBUTTONARRAY, CButtonArray);
 	_CheckSize(SIZE_CCHARGEN, CCharGen);
+	_CheckSize(SIZE_CCONTAINEROBJECT, CContainerObject);
 	_CheckSize(SIZE_CCREATUREOBJECT, CCreatureObject);
 	_CheckSize(SIZE_CENGINE, CEngine);
 	_CheckSize(SIZE_CGAMETEXT, CGameText);

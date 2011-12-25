@@ -668,10 +668,10 @@ void DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObj
 
 	BOOL bMageClass = o.GetClass() == CLASS_MAGE || o.GetClass() == CLASS_SORCERER;
 	if (!bMageClass) {
-		unsigned char class1;
-		unsigned char class2;
-		o.GetClasses(&class1, &class2);
-		bMageClass = class1 == CLASS_MAGE || class2 == CLASS_MAGE;
+		unsigned char nClassNew;
+		unsigned char nClassOrg;
+		o.GetDualClasses(&nClassNew, &nClassOrg);
+		bMageClass = nClassNew == CLASS_MAGE || nClassOrg == CLASS_MAGE;
 	}
 
 	for (int i = 2; i <= 9; i++) {

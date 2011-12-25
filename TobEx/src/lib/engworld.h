@@ -10,8 +10,8 @@ class CWorld : public CEngine { //Size 124Ch
 //Constructor: 0x7C3EE0
 public:
 	//AB5768
-	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int dw, BOOL b);
-	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, int dw, BOOL b);
+	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int nUserArg, bool bResetScrollbar);
+	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, int nUserArg, bool bResetScrollbar);
 
 	int ufe;
 	int u102;
@@ -45,7 +45,7 @@ public:
 	CUITextArea* pTextAreaCurrent; //ea2h
 	CUITextArea* pTextArea2; //ea6h
 	CGameDialog dlgNotOwned; //eaah, dlg set up here if neither parties have matching dialog to one being initiated
-	CGameDialog* dlgCurrent; //f0eh
+	CGameDialog* m_dlgCurrent; //f0eh
 	POINT ptDlgAreaScreen; //f12h
 	ResRef rDlgAreaName; //f1ah
 	BOOL bNonPausingDialogue; //f22h
@@ -176,7 +176,7 @@ public:
 	int u118e;
 	int u1192;
 	int u1196;
-	IECPtrList u119a; //AB5884
+	IECPtrList u119a; //AB5884, 12h objects (int, Enum, unsigned short, int, int)
 	int u11b6;
 	char u11ba;
 	char u11bb;
@@ -214,7 +214,7 @@ public:
 	int u1248;
 };
 
-extern POSITION (CWorld::*CWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, BOOL);
-extern POSITION (CWorld::*CWorld_PrintToConsole_4)(IECString&, IECString&, int, BOOL);
+extern POSITION (CWorld::*CWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, bool);
+extern POSITION (CWorld::*CWorld_PrintToConsole_4)(IECString&, IECString&, int, bool);
 
 #endif //ENGWORLD_H

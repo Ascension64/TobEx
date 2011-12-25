@@ -10,7 +10,7 @@ CRuleTablesEx::CRuleTablesEx() {
 
 void CRuleTablesEx::Init() {
 
-	if (pGameOptionsEx->bEffIWDStrengthMod || pGameOptionsEx->bEffIWDDexterityMod) {
+	if (pGameOptionsEx->bEffStrengthMod || pGameOptionsEx->bEffDexterityMod) {
 		m_ClassSpellAbility.LoadTable(ResRef("CLSSPLAB"));
 		if (!m_ClassSpellAbility.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): CLSSPLAB.2DA not found\r\n";

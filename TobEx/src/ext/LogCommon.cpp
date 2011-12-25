@@ -5,6 +5,9 @@ LPCTSTR Assertion_GetReason(int Eip) {
 	case 0x5121A8:
 		return "CEffectHPMod::ApplyEffect: nParam2 out of bounds";
 		break;
+	case 0x636D63:
+		return "CRuleTables::GetWeapProfMax: proficiency ID not found in WEAPPROF.2DA";
+		break;
 	case 0x796F6E:
 		return "CStart::UpdatePanel: nPanelIdx == 6, 7, or out of bounds";
 		break;

@@ -63,13 +63,28 @@ IECString& (CCreatureObject::*CCreatureObject_GetLongName)() =
 	SetFP(static_cast<IECString& (CCreatureObject::*)()>					(&CCreatureObject::GetLongName),			0x8D49D9);
 STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)() =
 	SetFP(static_cast<STRREF (CCreatureObject::*)()>						(&CCreatureObject::GetLongNameStrRef),		0x8D4AAC);
+void (CCreatureObject::*CCreatureObject_SetSpellMemorizedState)(ResSplContainer&, BOOL) =
+	SetFP(static_cast<void (CCreatureObject::*)(ResSplContainer&, BOOL)>	(&CCreatureObject::SetSpellMemorizedState),	0x8D6202);
 void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*) =
 	SetFP(static_cast<void (CCreatureObject::*)(char*)>						(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
+char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef) =
+	SetFP(static_cast<char (CCreatureObject::*)(int, ResRef)>				(&CCreatureObject::GetNumUniqueMemSpellMage),0x8DAE88);
 unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 	SetFP(static_cast<unsigned int (CCreatureObject::*)()>					(&CCreatureObject::GetKitUnusableFlag),		0x8E066B);
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
 	SetFP(static_cast<void (CCreatureObject::*)(short, int, int, int, STRREF, BOOL, IECString&)>
 																			(&CCreatureObject::PrintEventMessage),		0x8FAE5A);
+short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL) =
+	SetFP(static_cast<short (CCreatureObject::*)(ResSplContainer&, BOOL)>	(&CCreatureObject::GetSpellCastingLevel),	0x9514A1);
+
+bool (CCreatureObject::*CCreatureObject_NeedsAIUpdate)(bool, int) =
+	SetFP(static_cast<bool (CCreatureObject::*)(bool, int)>					(&CCreatureObject::NeedsAIUpdate),			0x8DE733);
+BOOL (CCreatureObject::*CCreatureObject_EvaluateTrigger)(Trigger&) =
+	SetFP(static_cast<BOOL (CCreatureObject::*)(Trigger&)>					(&CCreatureObject::EvaluateTrigger),		0x8F6C0E);
+ACTIONRESULT (CCreatureObject::*CCreatureObject_ExecuteAction)() =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)()>					(&CCreatureObject::ExecuteAction),			0x8E2276);
+void (CCreatureObject::*CCreatureObject_SetCurrentAction)(Action&) =
+	SetFP(static_cast<void (CCreatureObject::*)(Action&)>					(&CCreatureObject::SetCurrentAction),		0x8F97AA);
 
 CGameObject& CCreatureObject::SetTarget(Object& o, char type)					{ return (this->*CCreatureObject_SetTarget)(o, type); }
 void CCreatureObject::GetSpellIdsName(int nSpellIdx, IECString* ptr)			{ return (this->*CCreatureObject_GetSpellIdsName)(nSpellIdx, ptr); }
@@ -104,8 +119,18 @@ BOOL CCreatureObject::AddKnownSpellMage(ResRef& name, int nLevel)				{ return (t
 BOOL CCreatureObject::AddKnownSpellInnate(ResRef& name, int nLevel)				{ return (this->*CCreatureObject_AddKnownSpellInnate)(name, nLevel); }
 IECString& CCreatureObject::GetLongName()										{ return (this->*CCreatureObject_GetLongName)(); }
 STRREF CCreatureObject::GetLongNameStrRef()										{ return (this->*CCreatureObject_GetLongNameStrRef)(); }
+void CCreatureObject::SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bState)
+	{ return (this->*CCreatureObject_SetSpellMemorizedState)(resSpell, bState); }
 void CCreatureObject::ValidateAttackSequence(char* pSeq)						{ return (this->*CCreatureObject_ValidateAttackSequence)(pSeq); }
+char CCreatureObject::GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp)		{ return (this->*CCreatureObject_GetNumUniqueMemSpellMage)(nLevel, rTemp); }
 unsigned int CCreatureObject::GetKitUnusableFlag()								{ return (this->*CCreatureObject_GetKitUnusableFlag)(); }
 void CCreatureObject::PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6) {
 	return (this->*CCreatureObject_PrintEventMessage)(wEventId, nParam1, nParam2, nParam3, strrefParam4, bParam5, sParam6);
 }
+short CCreatureObject::GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod)
+	{ return (this->*CCreatureObject_GetSpellCastingLevel)(resSpell, bUseWildMagicMod); }
+
+bool CCreatureObject::NeedsAIUpdate(bool bRun, int nChitinUpdates)	{ return (this->*CCreatureObject_NeedsAIUpdate)(bRun, nChitinUpdates); }
+BOOL CCreatureObject::EvaluateTrigger(Trigger& t)					{ return (this->*CCreatureObject_EvaluateTrigger)(t); }
+ACTIONRESULT CCreatureObject::ExecuteAction()						{ return (this->*CCreatureObject_ExecuteAction)(); }
+void CCreatureObject::SetCurrentAction(Action& a)					{ return (this->*CCreatureObject_SetCurrentAction)(a); }

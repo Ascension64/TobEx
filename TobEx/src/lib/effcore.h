@@ -18,13 +18,26 @@ typedef void* CEffectVirtualTable[10];
 #define EFFECT_SAVETYPE_POLYMORPH	0x00000010
 
 class CCreatureObject;
+class CEffect;
 
 struct ResEffContainer { //Size 10h
 //Constructor: 0x4F2810
+	ResEffContainer(ResRef r);
+	ResEffContainer& Construct(ResRef r) { return *this; } //dummy
+
+	~ResEffContainer();
+	void Deconstruct() {} //dummy
+
+	CEffect& CreateCEffect();
+
 	BOOL bLoaded; //0h
 	ResEff* pRes; //4h
 	ResRef name; //8h
 };
+
+extern ResEffContainer& (ResEffContainer::*ResEffContainer_Construct_1ResRef)(ResRef);
+extern void (ResEffContainer::*ResEffContainer_Deconstruct)();
+extern CEffect& (ResEffContainer::*ResEffContainer_CreateCEffect)();
 
 class CEffect { //Size 19Ah
 public:

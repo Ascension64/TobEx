@@ -75,14 +75,14 @@ extern void (CUIButton::*CUIButton_OnLDblClicked)(POINT);
 extern void (CUIButton::*CUIButton_OnRClicked)(POINT);
 extern void (CUIButton::*CUIButton_SetText)(IECString&);
 
-class CUIButtonChargenPlusMinus : public CUIButton { //Size 654h
+class CUIButtonPlusMinus : public CUIButton { //Size 654h
 //Constructor: 0x6F82C3 (profs), 0x6F889F (thief skills) -> 0x5A3C3A
 //Note: for the + and - arrows in proficiencies/thief skills
 public:
 	//vtable: 0xAADAD0 (profs), 0xAADB40 (thief skills)
-	virtual ~CUIButtonChargenPlusMinus(); //v0
+	virtual ~CUIButtonPlusMinus(); //v0
 
-	virtual void UpdateCharacter() {} //v6c, called by LMouseBtDn (differs between the two button types)
+	virtual void OnPlusMinus() {} //v6c, called by LMouseBtDn (differs between the two button types)
 			
 	BOOL m_bLMouseBtState; //650h, 1 = down, 0 = up
 };
@@ -256,10 +256,80 @@ public:
 	short u66c;
 };
 
+class CUICheckButtonMageBookContChoice : public CUICheckButton { //Size 66Eh
+public:
+	CUICheckButtonMageBookContChoice(CPanel& panel, ChuFileControlInfoBase& controlInfo); //7C124D
+	CUICheckButtonMageBookContChoice& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
+	void SetSpell(ResRef rSpell, short wNumber);
+	void SetArrowIcon(BOOL bDirection);
+
+	//AB5394
+	virtual ~CUICheckButtonMageBookContChoice(); //v0
+	void Deconstruct() {} //dummy
+	virtual void OnLMouseBtUp(POINT pt); //v1c
+	virtual BOOL OnLMouseDblClk(POINT pt); //v20
+	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
+
+	virtual void OnLClicked(POINT pt); //v5c
+
+	short wNumber; //658h
+	ResRef rIcon; //65ah
+	ResRef rSpell; //662h
+	int nArrowDirection; //66ah, 0: no arrow, -1: left arrow, 1: right arrow
+};
+
+extern CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
+extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Deconstruct)();
+extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLMouseBtUp)(POINT);
+extern BOOL (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLMouseDblClk)(POINT);
+extern BOOL (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Redraw)(BOOL);
+extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLClicked)(POINT);
+extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_SetSpell)(ResRef, short);
+extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_SetArrowIcon)(BOOL);
+
+class CUICheckButtonMageBookContSelected : public CUICheckButton { //Size 668h
+public:
+	CUICheckButtonMageBookContSelected(CPanel& panel, ChuFileControlInfoBase& controlInfo); //7C0CAC
+	CUICheckButtonMageBookContSelected& Construct(CPanel& panel, ChuFileControlInfoBase& controlInfo) { return *this; } //dummy
+	void SetSpell(ResRef rSpell);
+
+	//AB5328
+	virtual ~CUICheckButtonMageBookContSelected(); //v0
+	void Deconstruct() {} //dummy
+	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
+
+	virtual void OnLClicked(POINT pt); //v5c
+
+	ResRef rIcon; //658h
+	ResRef rSpell; //660h
+};
+
+extern CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
+extern void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Deconstruct)();
+extern BOOL (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Redraw)(BOOL);
+extern void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_OnLClicked)(POINT);
+extern void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_SetSpell)(ResRef);
+
+class CUICheckButtonMageBookContSwitch : public CUICheckButton { //Size 658h
+public:
+	CUICheckButtonMageBookContSwitch(CPanel& panel, ChuFileControlInfoBase& controlInfo); //7C0AEC
+	CUICheckButtonMageBookContSwitch& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
+
+	//AB5250
+	virtual ~CUICheckButtonMageBookContSwitch(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual void OnLClicked(POINT pt); //v5c
+};
+
+extern CUICheckButtonMageBookContSwitch& (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
+extern void (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_Deconstruct)();
+extern void (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_OnLClicked)(POINT);
+
 class CUICheckButtonRecMageSpell : public CUICheckButton { //Size 66Ch
 public:
 	CUICheckButtonRecMageSpell(CPanel& panel, ChuFileControlInfoBase& controlInfo); //6FA496
-	CUICheckButtonRecMageSpell& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
+	CUICheckButtonRecMageSpell& Construct(CPanel& panel, ChuFileControlInfoBase& controlInfo) { return *this; } //dummy
 	void SetSpell(ResRef rSpell);
 
 	//AADE3C

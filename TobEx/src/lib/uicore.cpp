@@ -3,6 +3,10 @@
 #include "stdafx.h"
 #include "datatypes.h"
 
+//global
+extern void (__cdecl *FormatLabel)(CEngine& engine, CPanel& panel, int nLabelIdx, LPCTSTR szFormat, void* ptr) =
+	reinterpret_cast<void (__cdecl *)(CEngine&, CPanel&, int, LPCTSTR, void*)>		(0x43B374);
+
 //CManager
 CPanel& (CManager::*CManager_GetPanel)(int) =
 	SetFP(static_cast<CPanel& (CManager::*)(int)>		(&CManager::GetPanel),		0x585480);
@@ -12,8 +16,11 @@ CPanel& CManager::GetPanel(int index)		{ return (this->*CManager_GetPanel)(index
 //CPanel
 CUIControl& (CPanel::*CPanel_GetUIControl)(int) =
 	SetFP(static_cast<CUIControl& (CPanel::*)(int)>	(&CPanel::GetUIControl),	0x5831CE);
+void (CPanel::*CPanel_Redraw)(RECT*) =
+	SetFP (static_cast<void (CPanel::*)(RECT*)>		(&CPanel::Redraw),			0x5848C7);
 
 CUIControl& CPanel::GetUIControl(int index)	{ return (this->*CPanel_GetUIControl)(index); }
+void CPanel::Redraw(RECT* pr) { return (this->*CPanel_Redraw)(pr); }
 
 //CUIControl
 CUIControl& (CUIControl::*CUIControl_Construct)(CPanel&, ChuFileControlInfoBase&, BOOL) =

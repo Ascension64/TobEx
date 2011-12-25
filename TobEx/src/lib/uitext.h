@@ -5,17 +5,19 @@
 
 typedef IECPtrList CTextAreaEntryList; //AAB0C8
 
+#define CUITEXTAREA_USERARG_NONE	0 //AAAE20
+
 struct TextAreaEntry { //Size 20h
 //Constructor: 0x59C518
 	IECString sLeft; //0h
 	IECString sRight; //4h
-	POSITION posBoss; //8h
-	int ch; //ch
+	POSITION posBoss; //8h, pos containing first TextAreaEntry
+	int nUserArg; //ch, passed to CTextArea::UserProc()
 	ABGR rgbLeft; //10h
 	ABGR rgbRight; //14h
-	int nRows; //18h?
-	short u1c;
-	short u1e;
+	int nRows; //18h, only for first TextAreaEntry
+	short wIndent; //1ch, in pixels
+	short wRowIdx; //1eh
 };
 
 class CUITextArea : public CUIControl { //Size AA8h
@@ -36,12 +38,15 @@ public:
 
 	virtual void HighlightText(POSITION pos); //v5c
 	virtual void UnhighlightText(); //v60
-	virtual void OnLClicked(POINT pt); //v64
-	virtual void v68(int n); //v68, Arg1 = ch of TextAreaEntry
+	virtual void OnLClicked(POINT pt); //v64, calls UserProc()
+	virtual void UserProc(int nArg); //v68, nArg = TextAreaEntry.nUserArg, e.g. selecting custom script
+
+	POSITION Append(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int nUserArg, bool bResetScrollbar);
+	void ClearText();
 
 	CTextAreaEntryList* m_plstStrings; //4ah
-	POSITION m_posTopString; //4eh
-	short wCurrentEntry; //52h
+	POSITION m_posCurrString; //4eh
+	short wCurrString; //52h, to set the scroll bar position
 	short u54;
 	short u56;
 	CVidFont fontLeft; //58h
@@ -49,24 +54,24 @@ public:
 	short wFontHeight; //a50h
 	short ua52;
 	char ua54;
-	char ua55;
+	char m_nNewRows; //a55h?
 	char ua56;
 	char ua57;
 	short wRowsMax; //a58h (0xB15016)
-	short wTextLines; //a5ah
-	short wRowsCurrent; //a5ch
+	short wRowsPerPage; //a5ah
+	short wNumStrings; //a5ch
 	int nScrollBarId; //a5eh
-	ABGR rgbColor2; //a62h
-	ABGR rgbColor3; //a66h
-	ABGR rgbColor1; //a6ah
+	ABGR colLeft; //a62h, col2
+	ABGR rgbColor3; //a66h, col3
+	ABGR colRight; //a6ah, col1
 	ABGR colSelected; //a6eh
 	POSITION posSelected; //a72h
 	ABGR colStoredRight; //a76h, stores old color of selected text
 	ABGR colStoredLeft; //a7ah, stores old color of selected text
 #ifdef _DEBUG
-	_CCriticalSection ua7e;
+	_CCriticalSection csStrings; //a7eh, for access to m_plstStrings
 #else
-	CCriticalSection ua7e;
+	CCriticalSection csString; //a7eh
 #endif
 	bool bSingleColorLeft; //a9eh
 	bool bSingleColorRight; //a9fh
@@ -88,7 +93,9 @@ extern BOOL (CUITextArea::*CUITextArea_NeedsRedraw)();
 extern void (CUITextArea::*CUITextArea_HighlightText)(POSITION);
 extern void (CUITextArea::*CUITextArea_UnhighlightText)();
 extern void (CUITextArea::*CUITextArea_OnLClicked)(POINT);
-extern void (CUITextArea::*CUITextArea_v68)(int);
+extern void (CUITextArea::*CUITextArea_UserProc)(int);
+extern POSITION (CUITextArea::*CUITextArea_Append)(IECString&, IECString&, ABGR, ABGR, int, bool);
+extern void (CUITextArea::*CUITextArea_ClearText)();
 
 class CUITextField : public CUIControl { //Size 87Eh
 //Constructor: 0x59C00A

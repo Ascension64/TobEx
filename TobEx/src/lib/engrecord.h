@@ -29,7 +29,7 @@ public:
 	char u48b; //pad
 	int u48c; //nSpellsRemaining, # spells remaining for sorcerer to choose
 	int u490;
-	int u494;
+	int m_pScripts; //494h
 	int u498;
 	int u49c;
 	int u4a0;
@@ -42,7 +42,7 @@ public:
 	int u4bc;
 	short u4c0;
 	int u4c2;
-	int u4c6;
+	BOOL m_bPlayerControllable; //4c6h
 	int u4ca;
 	int u4ce;
 	short u4d2;
@@ -73,7 +73,9 @@ public:
 	short u143c;
 	char nCurrentMageBookLevel; //143eh
 	char u143f; //pad?
-	int u1440[3];
+	short m_wFirstWeapProfRowIdx; //1440h, the first row idx to read from in WEAPPROF.2DA in dual class proficiencies
+	short u1442;
+	int u1444[2];
 	char u144c;
 	char u144d; //pad
 	IECString u144e;

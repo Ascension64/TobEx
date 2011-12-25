@@ -339,8 +339,8 @@ public:
 	IECPtrList u9ca; //AA7014 - gets CDoorObject 438h objects
 	CDwordList u9e6;
 	POINT ua02;
-	CVariableArray AreaVariables; //a0ah
-	CVariableArray ObjectNames; //a12h, contains all CGameObjects from ARE file (value is the enum?)
+	CVariableArray m_AreaVariables; //a0ah
+	CVariableArray ObjectNames; //a12h, contains all CGameObjects from ARE file (value is enum)
 	char ua1a;
 	char ua1b; //pad
 	short wCurrentSongType; //a1ch (day, night, battle, etc.)
@@ -350,7 +350,7 @@ public:
 	short ua28;
 	int ua2a;
 	IECPtrList ua2e; //AA6FFC
-	CEnumList ua4a; //containerObject enums
+	CEnumList m_eContainers; //a4ah, for multiplayer only?
 	int ua66; //unused?
 	int ua6a;
 	short u6e; //unused?

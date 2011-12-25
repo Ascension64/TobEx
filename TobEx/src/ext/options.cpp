@@ -12,8 +12,10 @@ CGameOptionsEx* pGameOptionsEx = NULL;
 
 CGameOptionsEx::CGameOptionsEx() {
 	bActionAddKitFix = FALSE;
-	bSpellsTargetInvisConfig = FALSE;
 	bActionEquipRangedFix = FALSE;
+	bActionExpandedActions = FALSE;
+
+	bArenasEnable = FALSE;
 
 	bDebugCriticalMsgBoxFix = FALSE;
 	bDebugExternalLogging = FALSE;
@@ -22,8 +24,11 @@ CGameOptionsEx::CGameOptionsEx() {
 	bDebugLogWarnings = FALSE;
 	bDebugLogMissingRes = FALSE;
 	bDebugLogMore = FALSE;
+	bDebugLogNetworkErrors = FALSE;
 	bDebugRestoreCombatInfoText = FALSE;
 	bDebugVerbose = FALSE;
+
+	bDlgInstantVars = FALSE;
 
 	bEffApplyConcCheckDamage = FALSE;
 	bEffApplyEffItemFix = FALSE;
@@ -33,31 +38,43 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffDamageAwaken = FALSE;
 	bEffBlindnessAsSpellDesc = FALSE;
 	bEffBlindnessFix = FALSE;
+	bEffButtonFXMod = FALSE;
 	bEffCastSpellConditionMod = FALSE;
 	bEffCastingLevelModFix = FALSE;
 	bEffBackstabEveryHitConfig = FALSE;
 	bEffDamageBypassMirrorImageConfig = FALSE;
 	bEffDispelMagicalItemConfig = FALSE;
+	bEffContainerUseEffFileFix = FALSE;
 	bEffCureDrunkFix = FALSE;
+	bEffCutScene2Mod = FALSE;
 	bEffDamageFix = FALSE;
+	bEffDexterityMod = FALSE;
 	bEffStoneskinDisableColour = FALSE;
 	bEffDiseaseFix = FALSE;
 	bEffDisintegrateFix = FALSE;
 	bEffDispelFix = FALSE;
-	bEffCutScene2Extend = FALSE;
+	bEffDropInvDisintegrate = FALSE;
+	bEffDropInvFrozenDeath = FALSE;
+	bEffDropInvStoneDeath = FALSE;
 	bEffForbidItemTypeFix = FALSE;
 	bEffInvisibleFix = FALSE;
-	bEffIWDDexterityMod = FALSE;
-	bEffIWDMageMemSpellMod = FALSE;
-	bEffIWDPriestMemSpellMod = FALSE;
-	bEffIWDStrengthMod = FALSE;
 	bEffLearnSpellMod = FALSE;
+	bEffLuckMod = FALSE;
+	bEffMageMemSpellMod = FALSE;
 	bEffMagicResistFix = FALSE;
 	bEffNoDamageNoSpellInterrupt = FALSE;
 	bEffPoisonFix = FALSE;
+	bEffPriestMemSpellMod = FALSE;
+	bEffProficiencyModMod = FALSE;
 	bEffRegenerationFix = FALSE;
 	bEffRemoveProjectileMod = FALSE;
 	bEffRepeatingEffFix = FALSE;
+	bEffSaveVsBreathMod = FALSE;
+	bEffSaveVsDeathMod = FALSE;
+	bEffSaveVsPolyMod = FALSE;
+	bEffSaveVsSpellMod = FALSE;
+	bEffSaveVsWandsMod = FALSE;
+	bEffStrengthMod = FALSE;
 	bEffMirrorImageUseCastLevel = FALSE;
 
 	bEnginePriestKnownSpellsExtend = FALSE;
@@ -70,6 +87,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	nEngineCustomSoAStartXP = -1;
 	nEngineCustomToBStartXP = -1;
 	bEngineModifyEffectStacking = FALSE;
+	bEngineDisableEndPlayer1Dead = FALSE;
 	bEngineDisableInvPauseSP = FALSE;
 	bEngineDisableXPBoost = FALSE;
 	bEngineCharmSilenceRemoval = FALSE;
@@ -83,8 +101,10 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineTargetDeadFix = FALSE;
 	bEngineWeapSpecNumAttacksMod = FALSE;
 
+	bItemsAbilityItemAnim = FALSE;
 	bItemsBackstabRestrictionsConfig = FALSE;
 	bItemsCriticalHitAversionConfig = FALSE;
+	bItemsTargetInvisConfig = FALSE;
 	bItemsRandomTreasureExtend = FALSE;
 	bItemsNonAmmoLauncherDamageFix = FALSE;
 	bItemsUseAnimPercentThrowingWeapons = FALSE;
@@ -98,11 +118,16 @@ CGameOptionsEx::CGameOptionsEx() {
 	bSoundExternWalkSounds = FALSE;
 	bSoundSoundsetSubtitles = FALSE;
 
+	bSpellsUnvoicedConfig = FALSE;
+	bSpellsTargetInvisConfig = FALSE;
+		
 	bTriggerPickpocketFailed = FALSE;
 	bTriggerExpandedTriggers = FALSE;
 	bTriggerKitFix = FALSE;
+	bTriggerOptimiseBagSearch = FALSE;
 
 	bUserKitsExtend = FALSE;
+	bUserContingencySelectSpell = FALSE;
 	nUserCustomDlgBarSize = 0;
 	bUserLargerTooltipScroll = FALSE;
 	bUserExternMageSpellHiding = FALSE;
@@ -114,10 +139,10 @@ CGameOptionsEx::CGameOptionsEx() {
 	bUserPriestBookScroll = FALSE;
 	bUserFourInventorySlots = FALSE;
 
-	bVideoDisableBrightestFix = FALSE;
 	bVideoEnableMorePaperdolls = FALSE;
 	bVideoIWDAnimAttack3Fix = FALSE;
 	bVideoVvcAlphaCrashFix = FALSE;
+	bVideoVvcShadowAnimFix = FALSE;
 
 	Init();
 }
@@ -125,6 +150,9 @@ CGameOptionsEx::CGameOptionsEx() {
 void CGameOptionsEx::Init() {
 	bActionAddKitFix = GetCoreIniValue("Action", "AddKit Actions Fix");
 	bActionEquipRangedFix = GetCoreIniValue("Action", "EquipRanged Action Fix");
+	bActionExpandedActions = GetCoreIniValue("Action", "Expanded Actions");
+
+	bArenasEnable = GetCoreIniValue("Arenas", "Enable Arenas Game Type");
 
 	bDebugCriticalMsgBoxFix = GetCoreIniValue("Debug", "Critical Error Message Box Fix");
 	bDebugExternalLogging = GetCoreIniValue("Debug", "Externalise Logging");
@@ -133,8 +161,11 @@ void CGameOptionsEx::Init() {
 	bDebugLogWarnings = GetCoreIniValue("Debug", "Log Assertion Warnings");
 	bDebugLogMissingRes = GetCoreIniValue("Debug", "Log Missing Resources");
 	bDebugLogMore = GetCoreIniValue("Debug", "Log More Messages");
+	bDebugLogNetworkErrors = GetCoreIniValue("Debug", "Log Network Errors");
 	bDebugRestoreCombatInfoText = GetCoreIniValue("Debug", "Restore Extra Combat Info Text");
 	bDebugVerbose = GetCoreIniValue("Debug", "Verbose Logging");
+
+	bDlgInstantVars = GetCoreIniValue("Dialogue", "Instantly Set Dialogue Variables");
 
 	bEffApplyConcCheckDamage = GetTweakIniValue("Tweak", "Effect Opcodes:Apply Concentration Check On Damage");
 	bEffApplyEffItemFix = GetCoreIniValue("Effect Opcodes", "Apply Effect Item Fix");
@@ -144,31 +175,43 @@ void CGameOptionsEx::Init() {
 	bEffDamageAwaken = GetTweakIniValue("Tweak", "Effect Opcodes:Awaken On Damage");
 	bEffBlindnessAsSpellDesc = GetTweakIniValue("Tweak", "Blindness As Spell Description");
 	bEffBlindnessFix = GetCoreIniValue("Effect Opcodes", "Blindness Fix");
+	bEffButtonFXMod = GetCoreIniValue("Effect Opcodes", "Button Effects Mod");
 	bEffCastSpellConditionMod = GetCoreIniValue("Effect Opcodes", "Cast Spell On Condition Mod");
 	bEffCastingLevelModFix = GetCoreIniValue("Effect Opcodes", "Casting Level Mod Fix");
 	bEffBackstabEveryHitConfig = GetCoreIniValue("Effect Opcodes", "Configurable Backstab Every Hit");
 	bEffDamageBypassMirrorImageConfig = GetCoreIniValue("Effect Opcodes", "Configurable Damage Effect Bypasses Mirror Images");
 	bEffDispelMagicalItemConfig = GetCoreIniValue("Effect Opcodes", "Configurable Magical Item Dispel Behaviour");
+	bEffContainerUseEffFileFix = GetCoreIniValue("Effect Opcodes", "Container Use EFF File Fix");
 	bEffCureDrunkFix = GetCoreIniValue("Effect Opcodes", "Cure Drunk Fix");
+	bEffCutScene2Mod = GetCoreIniValue("Effect Opcodes", "Cut Scene 2 Mod");
 	bEffDamageFix = GetCoreIniValue("Effect Opcodes", "Damage Fix");
+	bEffDexterityMod =  GetCoreIniValue("Effect Opcodes", "Dexterity Mod");
 	bEffStoneskinDisableColour = GetTweakIniValue("Tweak", "Effect Opcodes:Disable Stoneskin Grey Colour");
 	bEffDiseaseFix = GetCoreIniValue("Effect Opcodes", "Disease Fix");
 	bEffDisintegrateFix = GetCoreIniValue("Effect Opcodes", "Disintegrate Fix");
 	bEffDispelFix = GetCoreIniValue("Effect Opcodes", "Dispel Formula Fix");
-	bEffCutScene2Extend = GetCoreIniValue("Effect Opcodes", "Extend Cut Scene 2");
+	bEffDropInvDisintegrate = GetTweakIniValue("Tweak", "Effect Opcodes:Drop Inventory on Disintegrate");
+	bEffDropInvFrozenDeath = GetTweakIniValue("Tweak", "Effect Opcodes:Drop Inventory on Frozen Death");
+	bEffDropInvStoneDeath = GetTweakIniValue("Tweak", "Effect Opcodes:Drop Inventory on Stone Death");
 	bEffForbidItemTypeFix = GetCoreIniValue("Effect Opcodes", "Forbid Item Type Fix");
 	bEffInvisibleFix = GetCoreIniValue("Effect Opcodes", "Invisible Fix");
-	bEffIWDDexterityMod =  GetCoreIniValue("Effect Opcodes", "IWD Style Cats Grace Dexterity Mod");
-	bEffIWDMageMemSpellMod = GetCoreIniValue("Effect Opcodes", "IWD Style Mage Spell Slots Mod");
-	bEffIWDPriestMemSpellMod = GetCoreIniValue("Effect Opcodes", "IWD Style Priest Spell Slots Mod");
-	bEffIWDStrengthMod = GetCoreIniValue("Effect Opcodes", "IWD Style Strength Mod");
 	bEffLearnSpellMod = GetCoreIniValue("Effect Opcodes", "Learn Spell Mod");
+	bEffLuckMod = GetCoreIniValue("Effect Opcodes", "Luck Mod");
+	bEffMageMemSpellMod = GetCoreIniValue("Effect Opcodes", "Mage Spell Slots Mod");
 	bEffMagicResistFix = GetCoreIniValue("Effect Opcodes", "Magic Resistance Mod Fix");
 	bEffNoDamageNoSpellInterrupt = GetTweakIniValue("Tweak", "Effect Opcodes:No Spell Interruption On Zero Damage");
 	bEffPoisonFix = GetCoreIniValue("Effect Opcodes", "Poison Fix");
+	bEffPriestMemSpellMod = GetCoreIniValue("Effect Opcodes", "Priest Spell Slots Mod");
+	bEffProficiencyModMod = GetCoreIniValue("Effect Opcodes", "Proficiency Modifier Mod");
 	bEffRegenerationFix = GetCoreIniValue("Effect Opcodes", "Regeneration Fix");
 	bEffRemoveProjectileMod = GetCoreIniValue("Effect Opcodes", "Remove Projectile Mod");
 	bEffRepeatingEffFix = GetCoreIniValue("Effect Opcodes", "Repeating Effect Fix");
+	bEffSaveVsBreathMod = GetCoreIniValue("Effect Opcodes", "Save Vs Breath Mod");
+	bEffSaveVsDeathMod = GetCoreIniValue("Effect Opcodes", "Save Vs Death Mod");
+	bEffSaveVsPolyMod = GetCoreIniValue("Effect Opcodes", "Save Vs Poly Mod");
+	bEffSaveVsSpellMod = GetCoreIniValue("Effect Opcodes", "Save Vs Spell Mod");
+	bEffSaveVsWandsMod = GetCoreIniValue("Effect Opcodes", "Save Vs Wands Mod");
+	bEffStrengthMod = GetCoreIniValue("Effect Opcodes", "Strength Mod");
 	bEffMirrorImageUseCastLevel = GetTweakIniValue("Tweak:", "Effect Opcodes:Use Caster Level On Mirror Image");
 
 	bEnginePriestKnownSpellsExtend = GetCoreIniValue("Engine", "Allow 99 Priest Known Spells Per Level");
@@ -181,6 +224,7 @@ void CGameOptionsEx::Init() {
 	nEngineCustomSoAStartXP = GetTweakIniValue("Tweak", "Engine:Custom Shadows of Amn Starting Experience", "-1");
 	nEngineCustomToBStartXP = GetTweakIniValue("Tweak", "Engine:Custom Throne of Bhaal Starting Experience", "-1");
 	bEngineModifyEffectStacking = GetCoreIniValue("Engine", "Disable Duplicate Effect Stacking");
+	bEngineDisableEndPlayer1Dead = GetTweakIniValue("Tweak", "Engine:Disable End On Player1 Dead");
 	bEngineDisableInvPauseSP = GetTweakIniValue("Tweak", "Engine:Disable Force Inventory Pause");
 	bEngineDisableXPBoost = GetTweakIniValue("Tweak", "Engine:Disable Experience Boost");
 	bEngineCharmSilenceRemoval = GetTweakIniValue("Tweak", "Engine:Disable Silence On Charm");
@@ -194,8 +238,10 @@ void CGameOptionsEx::Init() {
 	bEngineTargetDeadFix = GetCoreIniValue("Engine", "Targetting Dead Animations Fix");
 	bEngineWeapSpecNumAttacksMod = GetTweakIniValue("Tweak", "Engine:Weapon Specialisation Number of Attacks Mod");
 
+	bItemsAbilityItemAnim = GetCoreIniValue("Items", "Ability-specific Use Item Animations");
 	bItemsBackstabRestrictionsConfig = GetCoreIniValue("Items", "Configurable Backstab Restrictions");
 	bItemsCriticalHitAversionConfig = GetCoreIniValue("Items", "Configurable Critical Hit Aversion");
+	bItemsTargetInvisConfig = GetCoreIniValue("Items", "Configurable Items Cannot Target Invisible");
 	bItemsRandomTreasureExtend = GetCoreIniValue("Items", "Enable 99 Random Treasure Rows");
 	bItemsExternCreExcl = GetCoreIniValue("Items", "Externalise Item-Creature Exclusions");
 	bItemsNonAmmoLauncherDamageFix = GetCoreIniValue("Items", "Non-Ammo Launcher Damage Fix");
@@ -210,13 +256,16 @@ void CGameOptionsEx::Init() {
 	bSoundExternWalkSounds = GetCoreIniValue("Sound", "Externalise Animation Walking Sounds");
 	bSoundSoundsetSubtitles = GetCoreIniValue("Sound", "Soundset Subtitles");
 
+	bSpellsUnvoicedConfig = GetCoreIniValue("Spells", "Configurable Spells Can Be Unvoiced");
 	bSpellsTargetInvisConfig = GetCoreIniValue("Spells", "Configurable Spells Can Target Invisible");
 
 	bTriggerPickpocketFailed = GetTweakIniValue("Tweak", "Trigger:Enable PickpocketFailed Trigger");
 	bTriggerExpandedTriggers = GetCoreIniValue("Trigger", "Expanded Triggers");
 	bTriggerKitFix = GetCoreIniValue("Trigger", "Kit Trigger Fix");
+	bTriggerOptimiseBagSearch = GetCoreIniValue("Trigger", "Optimise Bag Search Code");
 
 	bUserKitsExtend = GetCoreIniValue("UI", "Allow 1280 Total Kits");
+	bUserContingencySelectSpell = GetCoreIniValue("UI", "Contingency Detects Select Spell");
 	nUserCustomDlgBarSize = GetCoreIniValue("UI", "Custom Dialogue Bar Buffer Size");
 	nUserCustomDlgBarSize = max(nUserCustomDlgBarSize, 0);
 	bUserLargerTooltipScroll = GetCoreIniValue("UI", "Enlarge Tooltip Scroll");
@@ -229,10 +278,10 @@ void CGameOptionsEx::Init() {
 	bUserPriestBookScroll = GetCoreIniValue("UI", "Scrollable Priest Spellbook");
 	bUserFourInventorySlots = GetTweakIniValue("Tweak", "UI:Universal Four Inventory Weapon Slots");
 
-	bVideoDisableBrightestFix = GetCoreIniValue("Video", "Brighten On Disable Brightest No3d Fix");
 	bVideoEnableMorePaperdolls = GetCoreIniValue("Video", "Enable More Paperdolls");
 	bVideoIWDAnimAttack3Fix = GetCoreIniValue("Video", "IWD Animation Attack 3 Fix");
 	bVideoVvcAlphaCrashFix = GetCoreIniValue("Video", "VVC Alpha Rendering Crash Fix");
+	bVideoVvcShadowAnimFix = GetCoreIniValue("Video", "VVC Shadow Animation Fix");
 
 	return;
 }

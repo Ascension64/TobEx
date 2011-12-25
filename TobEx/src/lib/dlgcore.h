@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "rescore.h"
 #include "scrcore.h"
+#include "vidcore.h"
 
 typedef CPtrArray CPtrArrayDlgState; //AA73D0
 typedef CPtrArray CPtrArrayDlgResponse; //AA73C4
@@ -33,34 +34,41 @@ struct CDlgState { //Size 42h
 	short u40;
 };
 
+struct CDlgNext { //Size Ch
+//constructor: see 0x4E8F42
+	ResRef rDlgName; //0h
+	int nDlgState; //8h
+};
+
 struct CDlgResponse { //Size 76h
 //constructor: see 0x4E477E
 //as in code
+	CDlgNext& Execute(CCreatureObject& cre);
+
 	unsigned int dwFlags; //0h
-	ResRef text; //4h
-	ResRef textJournal; //8h
-	CTriggerList conditions; //ch
-	IECPtrList u28;
-	int u44;
-	int u48;
-	ResRef nextDialogFilename; //4ch
-	int nNextDialogState; //54h
-	int u58;
+	STRREF rText; //4h
+	STRREF rTextJournal; //8h
+	CTriggerList m_conditions; //ch
+	Response m_responseActive; //28h
+	ResRef rNextDlgName; //4ch
+	int nNextDlgState; //54h
+	int* u58;
 	int u5c;
-	char u60;
-	char u61; //pad
-
-	IECString SingleTrigger; //62h, for single response trigger
-	BOOL bUseSingleTrigger; //66h
-
-	IECString SingleAction; //6ah, for single actions
-	BOOL bUseSingleAction; //6eh
-
-	int u72;
+	char nResponseIdx; //60h
+	char u61;
+	IECString sTriggerText; //62h, for unencoded trigger text (e.g. dlg)
+	BOOL bUseTextualTrigger; //66h
+	IECString sActionText; //6ah, for unencoded action text (e.g. dlg)
+	BOOL bUseTextualAction; //6eh
+	BOOL bAddedSetInterrupts; //72h, set to TRUE when SetInterrupts added to head and tail of response actions
 };
+
+extern CDlgNext& (CDlgResponse::*CDlgResponse_Execute)(CCreatureObject&);
 
 struct CGameDialog { //Size 64h
 //Constructor: 0x4E554E
+	void SetUserArgument(int n);
+
 	ResRef rName; //0h
 	CPtrArrayCDlgState cprStatesStateOrder; //8h
 	CPtrArrayCDlgState cprStatesTriggerOder; //1ch
@@ -68,7 +76,7 @@ struct CGameDialog { //Size 64h
 	Enum eTarget; //34h
 	int nActiveDlgStateIdx; //38h
 	int u3c;
-	int u40;
+	int nUserArg; //40h, contains the dialog choice that the user picked
 	ABGR col; //44h, colorMajor of CRE
 	IECString name; //48h, longName of CRE
 	int u4c; //6
@@ -78,5 +86,7 @@ struct CGameDialog { //Size 64h
 	int u5c; //from Arg4
 	int u60;
 };
+
+extern void (CGameDialog::*CGameDialog_SetUserArgument)(int);
 
 #endif //DLGCORE_H

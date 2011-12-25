@@ -53,7 +53,9 @@ public:
 	int u4a2;
 	int nSpellsRemaining; //4a6h
 	int nThievingPointsRemaining; //4aah, used only for the BG1 Skills panel
-	int u4ae[12];
+	int u4ae[10];
+	int dwProfsMax; //4d6h, set but not used in-game
+	int u4da;
 	IECPtrList m_OpenPanels; //4deh
 	int u4fa;
 	int u4fe;

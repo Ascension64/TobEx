@@ -2,32 +2,29 @@
 #define SPLCORE_H
 
 #include "rescore.h"
-
-//Spell flags
-#define SPELLFLAG_HOSTILE			0x00000400
-#define SPELLFLAG_IGNORE_LOS		0x00000800
-#define SPELLFLAG_OUTDOOR			0x00002000
-#define SPELLFLAG_NONMAGICAL		0x00004000
-#define SPELLFLAG_CONDITIONAL		0x00008000
-#define SPELLFLAG_NONCOMBAT			0x00010000
-#define SPELLFLAG_TARGET_INVISIBLE	0x01000000 //new in TobEx
-
-//Spell types
-#define SPELLTYPE_SPECIAL	0
-#define SPELLTYPE_MAGE		1
-#define SPELLTYPE_PRIEST	2
-#define SPELLTYPE_PSIONIC	3
-#define SPELLTYPE_INNATE	4
-#define SPELLTYPE_BARDSONG	5
+#include "effcore.h"
 
 typedef IECPtrList CMemSpellList; //AAA8E4
 typedef IECPtrList CKnownSpellList; //AAA8CC
 
 struct ResSplContainer { //Size 10h
-	void Unload();
+	ResSplContainer();
+
+	ResSplContainer(ResRef r);
+	ResSplContainer& Construct(ResRef r) { return *this; } //dummy
+
+	~ResSplContainer();
+	void Deconstruct() {} //dummy
+
 	void LoadResource(ResRef& r, BOOL bAddToHandler, BOOL bLogNotFound);
+	BOOL Demand();
+	BOOL Release();
+	int GetNumAbilities();
+	SplFileAbility& GetSpellAbility(int nIndex);
+	CEffect& GetAbilityEffect(int nAbilityIdx, int nEffectIdx, CCreatureObject& creSource);
 	short GetSpellLevel();
 	int GetExclusionFlags();
+	STRREF GetSpellDescription();
 	short GetSpellType();
 	int GetSpellFlags();
 	char GetSpellSchoolPrimary();
@@ -37,10 +34,17 @@ struct ResSplContainer { //Size 10h
 	ResRef name; //8h
 };
 
-extern void (ResSplContainer::*ResSplContainer_Unload)();
+extern ResSplContainer& (ResSplContainer::*ResSplContainer_Construct_1ResRef)(ResRef);
+extern void (ResSplContainer::*ResSplContainer_Deconstruct)();
 extern void (ResSplContainer::*ResSplContainer_LoadResource)(ResRef&, BOOL, BOOL);
+extern BOOL (ResSplContainer::*ResSplContainer_Demand)();
+extern BOOL (ResSplContainer::*ResSplContainer_Release)();
+extern int (ResSplContainer::*ResSplContainer_GetNumAbilities)();
+extern SplFileAbility& (ResSplContainer::*ResSplContainer_GetSpellAbility)(int);
+extern CEffect& (ResSplContainer::*ResSplContainer_GetAbilityEffect)(int, int, CCreatureObject&);
 extern short (ResSplContainer::*ResSplContainer_GetSpellLevel)();
 extern int (ResSplContainer::*ResSplContainer_GetExclusionFlags)();
+extern STRREF (ResSplContainer::*ResSplContainer_GetSpellDescription)();
 extern short (ResSplContainer::*ResSplContainer_GetSpellType)();
 extern int (ResSplContainer::*ResSplContainer_GetSpellFlags)();
 extern char (ResSplContainer::*ResSplContainer_GetSpellSchoolPrimary)();

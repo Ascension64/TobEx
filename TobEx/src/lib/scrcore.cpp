@@ -12,6 +12,36 @@ Identifiers::Identifiers()				{ (this->*Identifiers_Construct_0)(); }
 Identifiers::Identifiers(ResRef rFile)	{ (this->*Identifiers_Construct_1_ResRef)(rFile); }
 Identifiers::~Identifiers()				{ (this->*Identifiers_Deconstruct)(); }
 
+//CVariable
+CVariable& (CVariable::*CVariable_Construct)() =
+	SetFP(static_cast<CVariable& (CVariable::*)()>				(&CVariable::Construct),	0x4B6850);
+CVariable& (CVariable::*CVariable_OpAssign)(CVariable&) =
+	SetFP(static_cast<CVariable& (CVariable::*)(CVariable&)>	(&CVariable::OpAssign),		0x4B68C0);
+
+CVariable::CVariable() { (this->*CVariable_Construct)(); }
+CVariable& CVariable::operator=(CVariable& var) { return (this->*CVariable_OpAssign)(var); }
+
+//CVariableArray
+CVariableArray& (CVariableArray::*CVariableArray_Construct)(int) =
+	SetFP(static_cast<CVariableArray& (CVariableArray::*)(int)>	(&CVariableArray::Construct),	0x64A1E0);
+void (CVariableArray::*CVariableArray_Deconstruct)() =
+	SetFP(static_cast<void (CVariableArray::*)()>				(&CVariableArray::Deconstruct),	0x64A2C7);
+BOOL (CVariableArray::*CVariableArray_AddVariable)(CVariable&) =
+	SetFP(static_cast<BOOL (CVariableArray::*)(CVariable&)>		(&CVariableArray::AddVariable),	0x64A2E8);
+CVariable& (CVariableArray::*CVariableArray_GetVariable)(IECString) =
+	SetFP(static_cast<CVariable& (CVariableArray::*)(IECString)>(&CVariableArray::GetVariable),	0x64A709);
+int (CVariableArray::*CVariableArray_GetChecksum)(IECString) =
+	SetFP(static_cast<int (CVariableArray::*)(IECString)>		(&CVariableArray::GetChecksum),	0x64A96E);
+void (CVariableArray::*CVariableArray_Clear)() =
+	SetFP(static_cast<void (CVariableArray::*)()>				(&CVariableArray::Clear),		0x64AA27);
+
+CVariableArray::CVariableArray(int nSize)				{ (this->*CVariableArray_Construct)(nSize); }
+CVariableArray::~CVariableArray()						{ (this->*CVariableArray_Deconstruct)(); }
+BOOL CVariableArray::AddVariable(CVariable& var)		{ return (this->*CVariableArray_AddVariable)(var); }
+CVariable& CVariableArray::GetVariable(IECString sVar)	{ return (this->*CVariableArray_GetVariable)(sVar); }
+int CVariableArray::GetChecksum(IECString sVar)			{ return (this->*CVariableArray_GetChecksum)(sVar); }
+void CVariableArray::Clear()							{ return (this->*CVariableArray_Clear)(); }
+
 //ObjectIds
 ObjectIds::ObjectIds() {
 	id1 = OBJECT_NOTHING;
@@ -22,7 +52,11 @@ ObjectIds::ObjectIds() {
 }
 
 //Object
-static Object* poInvalid = reinterpret_cast<Object*>(0xB75AB8);
+static Object* poAnything = reinterpret_cast<Object*>(0xB75AA0); //unused
+static Object* poNonScript = reinterpret_cast<Object*>(0xB75AB8); //only in CGameObject constructor
+static Object* poNothing = reinterpret_cast<Object*>(0xB75AD0); //for constructors
+Object* poAny = reinterpret_cast<Object*>(0xB75AE8); //for criteria objects
+static Object* poMyself = reinterpret_cast<Object*>(0xB75B00); //unused
 
 Object& (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&) =
 	SetFP(static_cast<Object& (Object::*)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&)>
@@ -30,53 +64,66 @@ Object& (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned ch
 Object& (Object::*Object_Construct_8)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum) =
 	SetFP(static_cast<Object& (Object::*)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum)>
 																			(&Object::Construct),			0x410CEE);
-void (Object::*Object_OpEq)(Object&) =
-	SetFP(static_cast<void (Object::*)(Object&)>							(&Object::OpEq),				0x4119BD);
+bool (Object::*Object_MatchCriteria)(Object&, BOOL, BOOL, BOOL) =
+	SetFP(static_cast<bool (Object::*)(Object&, BOOL, BOOL, BOOL)>			(&Object::MatchCriteria),		0x410D9E);
+void (Object::*Object_OpAssign)(Object&) =
+	SetFP(static_cast<void (Object::*)(Object&)>							(&Object::OpAssign),			0x4119BD);
 void (Object::*Object_DecodeIdentifiers)(CGameSprite&) =
 	SetFP(static_cast<void (Object::*)(CGameSprite&)>						(&Object::DecodeIdentifiers),	0x411A4C);
-CGameObject& (Object::*Object_GetTargetOfType)(CGameObject&, char, BOOL) =
-	SetFP(static_cast<CGameObject& (Object::*)(CGameObject&, char, BOOL)>	(&Object::GetTargetOfType),		0x414EA9);
+CGameObject& (Object::*Object_FindTargetOfType)(CGameObject&, char, BOOL) =
+	SetFP(static_cast<CGameObject& (Object::*)(CGameObject&, char, BOOL)>	(&Object::FindTargetOfType),	0x414EA9);
+CGameObject& (Object::*Object_FindTarget)(CGameObject&, BOOL) =
+	SetFP(static_cast<CGameObject& (Object::*)(CGameObject&, BOOL)>			(&Object::FindTarget),			0x414FA8);
 
 void (Object::*Object_SetIdentifiers)(ObjectIds&) =
 	SetFP(static_cast<void (Object::*)(ObjectIds&)>							(&Object::SetIdentifiers),		0x41531E);
 unsigned char (Object::*Object_GetClass)() =
 	SetFP(static_cast<unsigned char (Object::*)()>							(&Object::GetClass),			0x4158A4);
-void (Object::*Object_GetClasses)(unsigned char*, unsigned char*) =
-	SetFP(static_cast<void (Object::*)(unsigned char*, unsigned char*)>		(&Object::GetClasses),			0x4158B5);
-extern BOOL (Object::*Object_HasSubclass)(unsigned char, BOOL) =
-	SetFP(static_cast<BOOL (Object::*)(unsigned char, BOOL)>				(&Object::HasSubclass),			0x415BD0);
-
-bool Object::IsInvalid() {
-	//normally inline
-	if (
-		EnemyAlly == poInvalid->EnemyAlly && //127
-		General == poInvalid->General && //255
-		Race == poInvalid->Race && //255
-		Class == poInvalid->Class && //255
-		Specific == poInvalid->Specific && //255
-		Alignment == poInvalid->Alignment && //255
-		Gender == poInvalid->Gender && //255
-		eTarget == poInvalid->eTarget //0x80000000
-	) {
-		return true;
-	} else {
-		return false;
-	}
-}
+void (Object::*Object_GetDualClasses)(unsigned char*, unsigned char*) =
+	SetFP(static_cast<void (Object::*)(unsigned char*, unsigned char*)>		(&Object::GetDualClasses),		0x4158B5);
+extern BOOL (Object::*Object_HasActiveSubclass)(unsigned char, BOOL) =
+	SetFP(static_cast<BOOL (Object::*)(unsigned char, BOOL)>				(&Object::HasActiveSubclass),	0x415BD0);
 
 Object::Object() { (this->*Object_Construct_8)(0, 0, 0, 0, 0, 0, 0, -1); }
 Object::Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget, ObjectIds* poids, IECString& sName)
 	{ (this->*Object_Construct_10)(EnemyAlly, General, Race, Class, Specific, Gender, Alignment, eTarget, poids, sName); }
 Object::Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget)
 	{ (this->*Object_Construct_8)(EnemyAlly, General, Race, Class, Specific, Gender, Alignment, eTarget); }
-void Object::operator=(Object& o)										{ return (this->*Object_OpEq)(o); }
-void Object::DecodeIdentifiers(CGameSprite& spriteSource)				{ return (this->*Object_DecodeIdentifiers)(spriteSource); }
-CGameObject& Object::GetTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList)
-	{ return (this->*Object_GetTargetOfType)(source, type, bCheckMiddleList); }
-void Object::SetIdentifiers(ObjectIds& ids)								{ return (this->*Object_SetIdentifiers)(ids); }
-unsigned char Object::GetClass()										{ return (this->*Object_GetClass)(); }
-void Object::GetClasses(unsigned char* pClass1, unsigned char* pClass2)	{ return (this->*Object_GetClasses)(pClass1, pClass2); }
-BOOL Object::HasSubclass(unsigned char Class, BOOL bThreadAsync)		{ return (this->*Object_HasSubclass)(Class, bThreadAsync); }
+bool Object::MatchCriteria(Object& oCriteria, BOOL bAnyIncludesNonScript, BOOL bExcludeNonScript, BOOL bEAGroupMatch)
+	{ return (this->*Object_MatchCriteria)(oCriteria, bAnyIncludesNonScript, bExcludeNonScript, bEAGroupMatch); }
+void Object::operator=(Object& o)												{ return (this->*Object_OpAssign)(o); }
+void Object::DecodeIdentifiers(CGameSprite& spriteSource)						{ return (this->*Object_DecodeIdentifiers)(spriteSource); }
+CGameObject& Object::FindTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList)
+	{ return (this->*Object_FindTargetOfType)(source, type, bCheckMiddleList); }
+CGameObject& Object::FindTarget(CGameObject& source, BOOL bCheckMiddleList)		{ return (this->*Object_FindTarget)(source, bCheckMiddleList); }
+void Object::SetIdentifiers(ObjectIds& ids)										{ return (this->*Object_SetIdentifiers)(ids); }
+unsigned char Object::GetClass()												{ return (this->*Object_GetClass)(); }
+void Object::GetDualClasses(unsigned char* pClassNew, unsigned char* pClassOrg)	{ return (this->*Object_GetDualClasses)(pClassNew, pClassOrg); }
+BOOL Object::HasActiveSubclass(unsigned char nSubclass, BOOL bThreadAsync)		{ return (this->*Object_HasActiveSubclass)(nSubclass, bThreadAsync); }
+
+BOOL inline Object::operator==(Object& o) {
+	//normally inline
+	if (
+		EnemyAlly == o.EnemyAlly &&
+		General == o.General &&
+		Race == o.Race &&
+		Class == o.Class &&
+		Specific == o.Specific &&
+		Alignment == o.Alignment &&
+		Gender == o.Gender &&
+		eTarget == o.eTarget
+	) {
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+}
+
+BOOL Object::IsAnything()	{ return operator==(*poAnything); }
+BOOL Object::IsNonScript()	{ return operator==(*poNonScript); }
+BOOL Object::IsNothing()		{ return operator==(*poNothing); }
+BOOL Object::IsAny()			{ return operator==(*poAny); }
+BOOL Object::IsMyself()		{ return operator==(*poMyself); }
 
 //Trigger
 Trigger& (Trigger::*Trigger_Construct_2)(short, int) =
@@ -109,13 +156,12 @@ IECString* Trigger::GetSName2()						{ return (this->*Trigger_GetSName2)(); }
 //Action
 Action& (Action::*Action_Construct_0)() =
 	SetFP(static_cast<Action& (Action::*)()>	(&Action::Construct),		0x405820);
-void (Action::*Action_Deconstruct)() =
-	SetFP(static_cast<void (Action::*)()>		(&Action::Deconstruct),		0x405930);
 IECString (Action::*Action_GetSName1)() =
 	SetFP(static_cast<IECString (Action::*)()>	(&Action::GetSName1),		0x430330);
 
+void* Action::operator new(size_t size) { return ::operator new(size, 0); }
+void Action::operator delete(void* mem) { return ::operator delete(mem, 0); } 
 Action::Action() { (this->*Action_Construct_0)(); }
-Action::~Action() { (this->*Action_Deconstruct)(); }
 IECString Action::GetSName1() { return (this->*Action_GetSName1)(); }
 
 //CScriptBlock

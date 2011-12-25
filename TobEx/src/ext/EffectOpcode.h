@@ -29,10 +29,58 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectLuckMod
+extern BOOL (CEffectLuckMod::*Tramp_CEffectLuckMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectLuckMod : public CEffectLuckMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectPoison
 extern BOOL (CEffectPoison::*Tramp_CEffectPoison_ApplyEffect)(CCreatureObject&);
 
 class DETOUR_CEffectPoison : public CEffectPoison {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectSaveVsDeathMod
+extern BOOL (CEffectSaveVsDeathMod::*Tramp_CEffectSaveVsDeathMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectSaveVsDeathMod : public CEffectSaveVsDeathMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectSaveVsWandsMod
+extern BOOL (CEffectSaveVsWandsMod::*Tramp_CEffectSaveVsWandsMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectSaveVsWandsMod : public CEffectSaveVsWandsMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectSaveVsPolyMod
+extern BOOL (CEffectSaveVsPolyMod::*Tramp_CEffectSaveVsPolyMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectSaveVsPolyMod : public CEffectSaveVsPolyMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectSaveVsBreathMod
+extern BOOL (CEffectSaveVsBreathMod::*Tramp_CEffectSaveVsBreathMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectSaveVsBreathMod : public CEffectSaveVsBreathMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectSaveVsSpellMod
+extern BOOL (CEffectSaveVsSpellMod::*Tramp_CEffectSaveVsSpellMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectSaveVsSpellMod : public CEffectSaveVsSpellMod {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
@@ -93,6 +141,62 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectAid
+extern BOOL (CEffectAid::*Tramp_CEffectAid_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectAid : public CEffectAid {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectBless
+extern BOOL (CEffectBless::*Tramp_CEffectBless_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectBless : public CEffectBless {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectChant
+extern BOOL (CEffectChant::*Tramp_CEffectChant_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectChant : public CEffectChant {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectHolyMight
+extern BOOL (CEffectHolyMight::*Tramp_CEffectHolyMight_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectHolyMight : public CEffectHolyMight {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectChantBad
+extern BOOL (CEffectChantBad::*Tramp_CEffectChantBad_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectChantBad : public CEffectChantBad {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectDisableSpelltype
+extern BOOL (CEffectDisableSpelltype::*Tramp_CEffectDisableSpelltype_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectDisableSpelltype : public CEffectDisableSpelltype {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectDisableButton
+extern BOOL (CEffectDisableButton::*Tramp_CEffectDisableButton_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectDisableButton : public CEffectDisableButton {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectLearnSpell
 extern BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&);
 
@@ -117,6 +221,14 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectProficiencyMod
+extern BOOL (CEffectProficiencyMod::*Tramp_CEffectProficiencyMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectProficiencyMod : public CEffectProficiencyMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectRepeatingEff
 extern CEffectRepeatingEff& (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int);
 extern BOOL (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_ApplyEffect)(CCreatureObject&);
@@ -124,6 +236,14 @@ extern BOOL (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_ApplyEffect)(CCreat
 class DETOUR_CEffectRepeatingEff : public CEffectRepeatingEff {
 public:
 	CEffectRepeatingEff& DETOUR_Construct(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY);
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectWingBuffet
+extern BOOL (CEffectWingBuffet::*Tramp_CEffectWingBuffet_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectWingBuffet : public CEffectWingBuffet {
+public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
@@ -139,6 +259,14 @@ public:
 extern BOOL (CEffectRemoveProjectile::*Tramp_CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&);
 
 class DETOUR_CEffectRemoveProjectile : public CEffectRemoveProjectile {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectEnableButton
+extern BOOL (CEffectEnableButton::*Tramp_CEffectEnableButton_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectEnableButton : public CEffectEnableButton {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };

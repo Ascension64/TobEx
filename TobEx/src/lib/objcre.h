@@ -23,6 +23,7 @@
 #define EVENTMESSAGE_BACKSTAB_SUCCESS			0x01
 #define EVENTMESSAGE_BACKSTAB_WEAPON_UNSUITABLE	0x1C
 #define EVENTMESSAGE_BACKSTAB_FAIL				0x40
+#define EVENTMESSAGE_SPELLFAILED_INVISIBLE		0x42
 
 struct CQuickObject { //Size 30h
 //Constructor: see 0x532F23
@@ -32,7 +33,7 @@ struct CQuickObject { //Size 30h
 	STRREF strrefLauncherName; //14h
 	short wAmount; //18h
 	struct ObjectInfo { //Size 14h
-		short wType; //0h, 1 = SPL, 2 = ITM
+		short wType; //0h, 1 = SPL, 2 = ITM, 3 = cast spell from list
 		short wItemSlotIdx; //2h
 		short wItemAbilityIdx; //4h
 		ResRef rSpellName; //6h
@@ -58,10 +59,10 @@ struct CQuickSlot { //Size 30h
 	ResRef uc; //second name?
 	int u14;
 	short u18;
-	short u1a;
-	short nQuickSlot; //1ch
-	short nQuickAbilityIdx; //1eh
-	ResRef rSpellName; //20h
+		short u1a;
+		short nQuickSlot; //1ch
+		short nQuickAbilityIdx; //1eh
+		ResRef rSpellName; //20h
 	char u28;
 	char u29;
 	int u2a; //-1
@@ -109,12 +110,19 @@ public:
 	BOOL AddKnownSpellInnate(ResRef& name, int nLevel);
 	IECString& GetLongName();
 	STRREF GetLongNameStrRef();
+	void SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bState);
 	void ValidateAttackSequence(char* pSeq);
+	char GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp);
 	unsigned int GetKitUnusableFlag();
 	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
+	short GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod);
 
 	//AA98A8
 	virtual ~CCreatureObject() {} //v0
+	virtual bool NeedsAIUpdate(bool bRun, int nChitinUpdates); //v4c
+	virtual BOOL EvaluateTrigger(Trigger& t); //v60
+	virtual ACTIONRESULT ExecuteAction(); //v7c
+	virtual void SetCurrentAction(Action& a); //v88, calls vb0
 
 	virtual void SetAutoPauseInfo(int nType) {} //va8
 	virtual BOOL CanSeeInvisible() { return FALSE; } //vac
@@ -128,7 +136,7 @@ public:
 	short u3d4;
 	short u3d6;
 	ResRef saveName; //3d8h, CRE name with * prefix
-	short isSpawned; //3e0h, bHasSpawned
+	short bHasSpawned; //3e0h
 	int nTicksTillRemove; //3e2h, Arg4
 	short nMaxMvtDistance; //3e6h, Arg5, Actor3C
 	short nMaxMvtDistanceToObject; //3e8h, Arg6, Actor3E
@@ -196,16 +204,9 @@ public:
 	CDerivedStats cdsPrevious; //13c2h, previous state to restore after effect finishes
 	CDerivedStats cdsDiff; //1c7ah, difference to add to currentState
 	int u2532;
-	CQuickSlot weapon0; //2536h
-	CQuickSlot weapon1; //2566h
-	CQuickSlot weapon2; //2596h
-	CQuickSlot weapon3; //25c6h
-	CQuickSlot spell0; //25f6h
-	CQuickSlot spell1; //2626h
-	CQuickSlot spell2; //2656h
-	CQuickSlot item0; //2686h
-	CQuickSlot item1; //26b6h
-	CQuickSlot item2; //26e6h
+	CQuickSlot m_qsWeapons[4]; //2536h
+	CQuickSlot m_qsSpells[3]; //25f6h
+	CQuickSlot m_qsItems[3]; //2686h
 	IECString sLongName; //2716h
 	char u271a;
 	char u271b; //padding?
@@ -271,10 +272,10 @@ public:
 	POINT ptGoreCentre; //2e6a
 	bool u2e72; //assoc gore particle
 	char u2e73;
-	BOOL m_bIsAnimationMovable; //0 = static animation (ANIMATE.IDS values < 0x1000)
+	BOOL m_bIsAnimationMovable; //2e74h, 0 = static animation (ANIMATE.IDS values < 0x1000), set to 1 on dying
 	int u2e78;
 	char u2e7c; //3
-	char m_nMirrorImages; //2e7dh, immune to poison and display special effect icon?
+	unsigned char m_nMirrorImages; //2e7dh, immune to poison and display special effect icon?
 	bool m_bBlur; //2e7eh
 	bool m_bInvisible; //2e7fh, invisibility and improved invisibility
 	bool m_bSanctuary;
@@ -339,7 +340,7 @@ public:
 	BOOL u350c; //if set, will set search bitmap bits 1, 2, 3 in foot circle area, else 4, 5, 6
 	char u3510;
 	char u3511; //padding?
-	long u3512[2];
+	POINT u3512;
 	int u351a;
 	int u351e;
 	int u3522;
@@ -347,8 +348,7 @@ public:
 	int u352a; //assoc with action 0x30
 	CParticleList m_particles; //352eh
 	short m_wCastingTimer; //354ah, how many ticks has creature been casting a spell, counts upwards (-1 is none)
-	short u354c; //assoc actions
-	short u354e; //0 on empty action list
+	BOOL m_bCastingAction; //354ch, assoc ForceSpell[Point], Spell, UseItem, UseItemPoint
 	BOOL m_bCastingSpell; //3550h
 	short u3554;
 	short u3556; //assoc actions
@@ -362,9 +362,9 @@ public:
 	CPtrArray u35d8;
 	POINT u35ec; //assoc actions
 	int u35f4;
-	int u35f8;
+	int u35f8; //assoc actions
 	short u35fc; //confusion timer?
-	short u35fe;
+	short m_wTriggerRemovalTimer; //35feh, ticks until remove all 0x0 triggers
 	int u3600;
 	int u3604;
 	BOOL m_bInterruptSpellcasting; //3608h
@@ -373,13 +373,14 @@ public:
 	int u3614;
 	CProjectile* m_currentProjectile; //3618h, once projectile placed in area list, set to NULL
 	ResSplContainer* m_currentSpell; //361ch
-	int u3620; //assoc actions
-	int u3624;
+	CItem* m_currentItem; //3620h, quick item currently being used
+	short m_currentItemSlot; //3624h, slot of m_currentItem
+	short m_currentItemAbility; //3626h, ability of m_currentItem
 	short u3628[0x28];
 	char u3678[8];
 	char m_AttackSpeed; //3680h, (weaponSpeed - physicalSpeed - 1D6 - luck) / 0.5 * dieSize, range 0-10, determines the y-coordinate of the pixel to select in RNDBASE*.BMP
 	char u3681;
-	short u3682; //action opcode (usually 3 Attack or 22 MoveToObject), never checked
+	short m_wPreviousTickActionOpcode; //3682h, action opcode in the last tick, sometimes set to 3 Attack or 22 MoveToObject, never checked
 	Object oDerived; //3684h, keeps General, scriptName is of thisCre
 	Object oBase; //3698h, base for o and oDerived, used for gender for sounds, scriptName is of thisCre
 	int u36ac;
@@ -397,7 +398,7 @@ public:
 	int u36d0; //1 = force refresh during Refresh()?
 	char u36d4; //assoc actions
 	char u36d5;
-	BOOL m_bUsingLeftWeapon; //36d6h
+	BOOL m_bUsingLeftWeapon; //36d6h, assoc actions
 	short u36da;
 	BOOL m_bResetAnimationColors; //36dch
 	int u36e0; //set to 1 when Set Item Color effect used
@@ -481,9 +482,9 @@ public:
 	short u6416;
 	int u6418;
 	int u641c;
-	CVariableArray* pLocalVariables; //6420h
+	CVariableArray* m_pLocalVariables; //6420h
 	int m_bUnmarshalling; //6424h, 1 during Unmarshal, 0 when done
-	IECPtrList ProtectedSpls; //6428h, Size 1Ch objects, DW nPower, DW nOpcodeEffect, CProjectile*, DW, STRREF, DW, DW
+	IECPtrList ProtectedSpls; //6428h, Size 1Ch objects, DW nPower, DW nOpcodeEffect, CProjectile*, BOOL bCreateProjectile, STRREF, BOOL bDoNotUpdateEffects, BOOL bRestoreLostSpells
 	int u6444;
 	int u6448;
 	int u644c;
@@ -508,7 +509,7 @@ public:
 	char u664c;
 	char u664d; //padding?
 	int u664e;
-	CDwordList u6652;
+	CEnumList u6652;
 	IECPtrList u666e;
 	BOOL bInStore; //668ah, prevents party required area transitions
 	int u668e;
@@ -578,8 +579,16 @@ extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellMage)(ResRef&, int);
 extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellInnate)(ResRef&, int);
 extern IECString& (CCreatureObject::*CCreatureObject_GetLongName)();
 extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
+extern void (CCreatureObject::*CCreatureObject_SetSpellMemorizedState)(ResSplContainer&, BOOL);
 extern void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*);
+extern char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef);
 extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
 extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
+extern short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL);
+
+extern bool (CCreatureObject::*CCreatureObject_NeedsAIUpdate)(bool, int);
+extern BOOL (CCreatureObject::*CCreatureObject_EvaluateTrigger)(Trigger&);
+extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ExecuteAction)();
+extern void (CCreatureObject::*CCreatureObject_SetCurrentAction)(Action&);
 
 #endif //OBJCRE_H

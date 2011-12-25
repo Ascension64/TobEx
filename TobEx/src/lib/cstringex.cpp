@@ -30,10 +30,10 @@ extern IECString (IECString::*IECString_Mid_int_int)(int, int) const =
 	SetFP(static_cast<IECString (IECString::*)(int, int) const>							(&IECString::Mid),						0xA4D57F);
 extern IECString (IECString::*IECString_Mid_int)(int) const =
 	SetFP(static_cast<IECString (IECString::*)(int) const>								(&IECString::Mid),						0xA4D5A2);
-extern IECString (IECString::*IECString_Left)(int) const =
-	SetFP(static_cast<IECString (IECString::*)(int) const>								(&IECString::Left),						0xA4D638);
 extern IECString (IECString::*IECString_Right)(int) const =
-	SetFP(static_cast<IECString (IECString::*)(int) const>								(&IECString::Right),					0xA4D6B4);
+	SetFP(static_cast<IECString (IECString::*)(int) const>								(&IECString::Right),					0xA4D638);
+extern IECString (IECString::*IECString_Left)(int) const =
+	SetFP(static_cast<IECString (IECString::*)(int) const>								(&IECString::Left),						0xA4D6B4);
 extern IECString (IECString::*IECString_SpanIncluding)(LPCTSTR) const =
 	SetFP(static_cast<IECString (IECString::*)(LPCTSTR) const>							(&IECString::SpanIncluding),			0xA4D72C);
 extern IECString (IECString::*IECString_SpanExcluding)(LPCTSTR) const =
@@ -142,8 +142,8 @@ int IECString::Replace(LPCTSTR lpszOld, LPCTSTR lpszNew)					{ return (this->*IE
 int IECString::Remove(TCHAR chRemove)										{ return (this->*IECString_Remove)(chRemove); }
 IECString IECString::Mid(int nFirst, int nCount) const						{ return (this->*IECString_Mid_int_int)(nFirst, nCount); }
 IECString IECString::Mid(int nFirst) const									{ return (this->*IECString_Mid_int)(nFirst); }
-IECString IECString::Left(int nCount) const									{ return (this->*IECString_Left)(nCount); }
 IECString IECString::Right(int nCount) const								{ return (this->*IECString_Right)(nCount); }
+IECString IECString::Left(int nCount) const									{ return (this->*IECString_Left)(nCount); }
 IECString IECString::SpanIncluding(LPCTSTR lpszCharSet) const				{ return (this->*IECString_SpanIncluding)(lpszCharSet); }
 IECString IECString::SpanExcluding(LPCTSTR lpszCharSet) const				{ return (this->*IECString_SpanExcluding)(lpszCharSet); }
 int IECString::ReverseFind(TCHAR ch) const									{ return (this->*IECString_ReverseFind)(ch); }

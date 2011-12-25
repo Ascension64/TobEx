@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{008D1FC8-0CB0-41B0-8946-0CE28066C354}</ProjectGuid>
+    <RootNamespace>TobEx</RootNamespace>
+    <Keyword>MFCDLLProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Zp %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>detours.lib;detoured.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\detours\lib;.\MFC42\LIB</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+    <Manifest>
+      <OutputManifestFile>
+      </OutputManifestFile>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/wd 4430 /Zp %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src</AdditionalIncludeDirectories>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>detours.lib;detoured.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\detours\lib;.\MFC42\LIB</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\ext\ChitinCore.cpp" />
+    <ClCompile Include="src\ext\EffectOpcode.cpp" />
+    <ClCompile Include="src\ext\EngineChargen.cpp" />
+    <ClCompile Include="src\ext\EngineCommon.cpp" />
+    <ClCompile Include="src\ext\EngineMageBook.cpp" />
+    <ClCompile Include="src\ext\EnginePriestBook.cpp" />
+    <ClCompile Include="src\ext\ObjectCreature.cpp" />
+    <ClCompile Include="src\ext\UserButton.cpp" />
+    <ClCompile Include="src\lib\chitin.cpp" />
+    <ClCompile Include="src\lib\cstringex.cpp" />
+    <ClCompile Include="src\lib\effcore.cpp" />
+    <ClCompile Include="src\lib\effopcode.cpp" />
+    <ClCompile Include="src\lib\engchargen.cpp" />
+    <ClCompile Include="src\lib\engine.cpp" />
+    <ClCompile Include="src\lib\engmagebk.cpp" />
+    <ClCompile Include="src\lib\engpriestbk.cpp" />
+    <ClCompile Include="src\lib\engrecord.cpp" />
+    <ClCompile Include="src\lib\infgame.cpp" />
+    <ClCompile Include="src\lib\objcore.cpp" />
+    <ClCompile Include="src\lib\objcre.cpp" />
+    <ClCompile Include="src\lib\scrcore.cpp" />
+    <ClCompile Include="src\lib\tlkcore.cpp" />
+    <ClCompile Include="src\lib\uibutton.cpp" />
+    <ClCompile Include="src\lib\uicore.cpp" />
+    <ClCompile Include="src\lib\uiscroll.cpp" />
+    <ClCompile Include="src\TobEx.cpp" />
+    <ClCompile Include="src\lib\animcore.cpp" />
+    <ClCompile Include="src\lib\areacore.cpp" />
+    <ClCompile Include="src\lib\dbgcore.cpp" />
+    <ClCompile Include="src\lib\msgcore.cpp" />
+    <ClCompile Include="src\lib\resref.cpp" />
+    <ClCompile Include="src\lib\sndcore.cpp" />
+    <ClCompile Include="src\ext\sndmus.cpp" />
+    <ClCompile Include="src\lib\vidcore.cpp" />
+    <ClCompile Include="src\include\detoursext.cpp" />
+    <ClCompile Include="src\include\utils.cpp" />
+    <ClCompile Include="src\ext\AnimationSound.cpp" />
+    <ClCompile Include="src\ext\AreaCommon.cpp" />
+    <ClCompile Include="src\ext\console.cpp" />
+    <ClCompile Include="src\ext\debug.cpp" />
+    <ClCompile Include="src\ext\EffectCore.cpp" />
+    <ClCompile Include="src\ext\hook.cpp" />
+    <ClCompile Include="src\ext\log.cpp" />
+    <ClCompile Include="src\ext\LogCore.cpp" />
+    <ClCompile Include="src\ext\main.cpp" />
+    <ClCompile Include="src\ext\patch.cpp" />
+    <ClCompile Include="src\ext\ScriptAction.cpp" />
+    <ClCompile Include="src\ext\SoundMusic.cpp" />
+    <ClCompile Include="src\ext\UserChargenKit.cpp" />
+    <ClCompile Include="src\ext\UserChargenMageSpell.cpp" />
+    <ClCompile Include="src\ext\InfGameCore.cpp" />
+    <ClCompile Include="src\ext\UserCommon.cpp" />
+    <ClCompile Include="src\ext\UserCore.cpp" />
+    <ClCompile Include="src\ext\UserMageBook.cpp" />
+    <ClCompile Include="src\ext\UserPriestBook.cpp" />
+    <ClCompile Include="src\ext\UserRecMageSpell.cpp" />
+    <ClCompile Include="src\ext\EngineRecord.cpp" />
+    <ClCompile Include="src\ext\VideoCommon.cpp" />
+    <ClCompile Include="src\ext\VideoCore.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ext\ChitinCore.h" />
+    <ClInclude Include="src\ext\EffectCore.h" />
+    <ClInclude Include="src\ext\EffectOpcode.h" />
+    <ClInclude Include="src\ext\EngineChargen.h" />
+    <ClInclude Include="src\ext\EngineCommon.h" />
+    <ClInclude Include="src\ext\EngineMageBook.h" />
+    <ClInclude Include="src\ext\EnginePriestBook.h" />
+    <ClInclude Include="src\ext\InfGameCore.h" />
+    <ClInclude Include="src\ext\ObjectCreature.h" />
+    <ClInclude Include="src\ext\UserButton.h" />
+    <ClInclude Include="src\lib\cstringex.h" />
+    <ClInclude Include="src\lib\datatypes.h" />
+    <ClInclude Include="src\lib\effopcode.h" />
+    <ClInclude Include="src\lib\engchargen.h" />
+    <ClInclude Include="src\lib\engmagebk.h" />
+    <ClInclude Include="src\lib\engpriestbk.h" />
+    <ClInclude Include="src\lib\engrecord.h" />
+    <ClInclude Include="src\lib\tlkcore.h" />
+    <ClInclude Include="src\lib\uibutton.h" />
+    <ClInclude Include="src\lib\uiscroll.h" />
+    <ClInclude Include="src\template.h" />
+    <ClInclude Include="src\TobEx.h" />
+    <ClInclude Include="src\lib\animcore.h" />
+    <ClInclude Include="src\lib\animext.h" />
+    <ClInclude Include="src\lib\areacore.h" />
+    <ClInclude Include="src\lib\chitin.h" />
+    <ClInclude Include="src\lib\dbgcore.h" />
+    <ClInclude Include="src\lib\dlgcore.h" />
+    <ClInclude Include="src\lib\effcore.h" />
+    <ClInclude Include="src\lib\engine.h" />
+    <ClInclude Include="src\lib\icon.h" />
+    <ClInclude Include="src\lib\infgame.h" />
+    <ClInclude Include="src\lib\itmcore.h" />
+    <ClInclude Include="src\lib\msgcore.h" />
+    <ClInclude Include="src\lib\network.h" />
+    <ClInclude Include="src\lib\objbaldur.h" />
+    <ClInclude Include="src\lib\objcont.h" />
+    <ClInclude Include="src\lib\objcore.h" />
+    <ClInclude Include="src\lib\objcre.h" />
+    <ClInclude Include="src\lib\objdoor.h" />
+    <ClInclude Include="src\lib\objproj.h" />
+    <ClInclude Include="src\lib\objsound.h" />
+    <ClInclude Include="src\lib\objspawn.h" />
+    <ClInclude Include="src\lib\objstatic.h" />
+    <ClInclude Include="src\lib\objtile.h" />
+    <ClInclude Include="src\lib\objtrig.h" />
+    <ClInclude Include="src\lib\objvef.h" />
+    <ClInclude Include="src\lib\pathfind.h" />
+    <ClInclude Include="src\lib\rescore.h" />
+    <ClInclude Include="src\lib\resref.h" />
+    <ClInclude Include="src\lib\scrcore.h" />
+    <ClInclude Include="src\lib\sndcore.h" />
+    <ClInclude Include="src\lib\sndmus.h" />
+    <ClInclude Include="src\lib\splcore.h" />
+    <ClInclude Include="src\lib\stocore.h" />
+    <ClInclude Include="src\lib\uicore.h" />
+    <ClInclude Include="src\lib\vidcore.h" />
+    <ClInclude Include="src\include\_constants.h" />
+    <ClInclude Include="src\include\_MFC.h" />
+    <ClInclude Include="src\include\detours.h" />
+    <ClInclude Include="src\include\detoursext.h" />
+    <ClInclude Include="src\include\globals.h" />
+    <ClInclude Include="src\include\rule.h" />
+    <ClInclude Include="src\include\utils.h" />
+    <ClInclude Include="src\ext\AnimationSound.h" />
+    <ClInclude Include="src\ext\AreaCommon.h" />
+    <ClInclude Include="src\ext\console.h" />
+    <ClInclude Include="src\ext\debug.h" />
+    <ClInclude Include="src\ext\hook.h" />
+    <ClInclude Include="src\ext\log.h" />
+    <ClInclude Include="src\ext\LogCore.h" />
+    <ClInclude Include="src\ext\main.h" />
+    <ClInclude Include="src\ext\patch.h" />
+    <ClInclude Include="src\ext\ScriptAction.h" />
+    <ClInclude Include="src\ext\SoundMusic.h" />
+    <ClInclude Include="src\ext\UserChargenKit.h" />
+    <ClInclude Include="src\ext\UserChargenMageSpell.h" />
+    <ClInclude Include="src\ext\UserCommon.h" />
+    <ClInclude Include="src\ext\UserCore.h" />
+    <ClInclude Include="src\ext\UserMageBook.h" />
+    <ClInclude Include="src\ext\UserPriestBook.h" />
+    <ClInclude Include="src\ext\UserRecMageSpell.h" />
+    <ClInclude Include="src\ext\EngineRecord.h" />
+    <ClInclude Include="src\ext\VideoCommon.h" />
+    <ClInclude Include="src\ext\VideoCore.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

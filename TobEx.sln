@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TobEx", "TobEx\TobEx.vcxproj", "{008D1FC8-0CB0-41B0-8946-0CE28066C354}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TobExLoader", "TobExLoader\TobExLoader.vcxproj", "{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{008D1FC8-0CB0-41B0-8946-0CE28066C354}.Debug|Win32.ActiveCfg = Debug|Win32
+		{008D1FC8-0CB0-41B0-8946-0CE28066C354}.Debug|Win32.Build.0 = Debug|Win32
+		{008D1FC8-0CB0-41B0-8946-0CE28066C354}.Release|Win32.ActiveCfg = Release|Win32
+		{008D1FC8-0CB0-41B0-8946-0CE28066C354}.Release|Win32.Build.0 = Release|Win32
+		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Debug|Win32.Build.0 = Debug|Win32
+		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Release|Win32.ActiveCfg = Release|Win32
+		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+#ifndef VIDEOCOMMON_H
+#define VIDEOCOMMON_H
+
+#include "utils.h"
+
+void UnpackRGB565(WORD, BYTE&, BYTE&, BYTE&);
+WORD PackRGB565(BYTE, BYTE, BYTE);
+void UnpackRGB8888(DWORD, BYTE&, BYTE&, BYTE&, BYTE&);
+WORD PackRGB8888(BYTE, BYTE, BYTE, BYTE);
+
+#endif //VIDEOCOMMON_H

@@ -160,7 +160,7 @@ void CGameOptionsEx::Init() {
 
 	bUserKitsExtend = GetIniValue("UI", "Allow 1280 Total Kits");
 	nUserCustomDlgBarSize = GetIniValue("UI", "Custom Dialogue Bar Buffer Size");
-	nUserCustomDlgBarSize = max(nUserCustomDlgBarSize, 1);
+	nUserCustomDlgBarSize = max(nUserCustomDlgBarSize, 0);
 	bUserLargerTooltipScroll = GetIniValue("UI", "Enlarge Tooltip Scroll");
 	bUserExternMageSpellHiding = GetIniValue("UI", "Externalise Mage Spell Hiding");
 	bUserExternRaceSelectionText = GetIniValue("UI", "Externalise Race Selection StrRef");

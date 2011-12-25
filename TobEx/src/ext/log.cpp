@@ -44,15 +44,13 @@ Log& Log::append(CString& s) {
 }
 
 Log& Log::append(LPCTSTR format, int n, ...) {
-	char text[256];
-	int length = sizeof(text);
-
+	CString s;
     va_list v;
     va_start(v, n);
-	vsprintf_s(text, length, format, v);
-	DWORD size = (DWORD)strlen(text);
+	s.FormatV(format, v);
+	DWORD size = s.GetLength();
 
-	WriteFile(hFile, (LPCVOID)text, size, &size, NULL);
+	WriteFile(hFile, (LPCVOID)s, size, &size, NULL);
 	return *this;
 }
 

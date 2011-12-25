@@ -62,16 +62,14 @@ Console& Console::write(CString& s) {
 }
 
 Console& Console::write(LPCTSTR format, int n, ...) {
-	char text[256];
-	int length = sizeof(text);
-
+	CString s;
     va_list v;
     va_start(v, n);
-	vsprintf_s(text, length, format, v);
-	DWORD size = (DWORD)strlen(text);
+	s.FormatV(format, v);
+	DWORD size = s.GetLength();
 
 	EnterCriticalSection(&csConsole);
-	WriteConsoleA(hOutput, text, size, &size, NULL);
+	WriteConsoleA(hOutput, (LPCTSTR)s, size, &size, NULL);
 	LeaveCriticalSection(&csConsole);
 
 	return *this;

@@ -99,7 +99,7 @@ void CRuleTablesEx::Init() {
 			L.append(lpsz);
 			m_nStats = 201;
 		} else {
-			int nHighestStat = 201;
+			int nHighestStat = 300; //incorporates new hard-coded stats 202-300
 			POSITION pos = idStats.entries.GetHeadPosition();
 			while (pos != NULL) {
 				IdsEntry* pIde = (IdsEntry*)(idStats.entries.GetNext(pos));
@@ -134,6 +134,24 @@ void CRuleTablesEx::Init() {
 
 	if (m_nEncumbranceLowThreshold < 0) m_nEncumbranceLowThreshold = 100;
 	if (m_nEncumbranceHighThreshold < 0) m_nEncumbranceHighThreshold = 120;
+
+	if (pGameOptionsEx->bEngineExternHPTables) {
+		m_HPClass.LoadTable(ResRef("HPCLASS"));
+		if (!m_HPClass.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): HPCLASS.2DA not found. Did you install the required WeiDU component?\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		}
+
+		m_HPBarbarian.LoadTable(ResRef("HPBARB"));
+		if (!m_HPBarbarian.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): HPBARB.2DA not found. Did you install the required WeiDU component?\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		}
+	}
 
 	return;
 }

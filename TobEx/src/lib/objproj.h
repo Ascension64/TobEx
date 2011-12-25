@@ -209,11 +209,11 @@ public:
 	//AABB68
 	CVideoMode* pVideoMode; //42h
 	IECPtrList u46; //AABA88
-	ARGB rgbStart; //62h
-	ARGB rgbFade1; //66h
-	ARGB rgbFade2; //6ah
-	ARGB rgbFade3; //6eh
-	ARGB rgbFade4; //72h
+	ABGR rgbStart; //62h
+	ABGR rgbFade1; //66h
+	ABGR rgbFade2; //6ah
+	ABGR rgbFade3; //6eh
+	ABGR rgbFade4; //72h
 	int u76;
 	RECT u7a;
 	short u8a;

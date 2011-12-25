@@ -15,6 +15,8 @@ CEffect& (*CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum) =
 	SetFP(static_cast<CEffect& (*)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum)>						(&CEffect::CreateEffect),		0x4F3EC2);
 void (*CEffect_CreateItemEffect)(ITEM_EFFECT&, int) =
 	SetFP(static_cast<void (*)(ITEM_EFFECT&, int)>													(&CEffect::CreateItemEffect),	0x4FFC3E);
+void (CEffect::*CEffect_PlaySound)(ResRef&, CCreatureObject&) =
+	SetFP(static_cast<void (CEffect::*)(ResRef&, CCreatureObject&)>									(&CEffect::PlaySound),			0x4FFCCF);
 BOOL (CEffect::*CEffect_IsExpired)() =
 	SetFP(static_cast<BOOL (CEffect::*)()>															(&CEffect::IsExpired),			0x500517);
 ITEM_EFFECT& (CEffect::*CEffect_ToItemEffect)() =
@@ -50,6 +52,7 @@ CEffect& CEffect::CreateEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource,
 	return (*CEffect_CreateEffect)(data, ptSource, eSource, ptDest, e2);
 }
 void CEffect::CreateItemEffect(ITEM_EFFECT& ptr, int nOpcode) { return (*CEffect_CreateItemEffect)(ptr, nOpcode); }
+void CEffect::PlaySound(ResRef& rSound, CCreatureObject& cre) { return (this->*CEffect_PlaySound)(rSound, cre); }
 BOOL CEffect::IsExpired() { return (this->*CEffect_IsExpired)(); }
 ITEM_EFFECT& CEffect::ToItemEffect() {return (this->*CEffect_ToItemEffect)(); }
 CEffect::~CEffect() { (this->*CEffect_Deconstruct)(); }

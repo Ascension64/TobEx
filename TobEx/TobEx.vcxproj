@@ -150,6 +150,7 @@
     <ClCompile Include="src\lib\objstats.cpp" />
     <ClCompile Include="src\lib\rescore.cpp" />
     <ClCompile Include="src\lib\scrcore.cpp" />
+    <ClCompile Include="src\lib\splcore.cpp" />
     <ClCompile Include="src\lib\tlkcore.cpp" />
     <ClCompile Include="src\lib\uibutton.cpp" />
     <ClCompile Include="src\lib\uicore.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="src\lib\objare.h" />
     <ClInclude Include="src\lib\objstats.h" />
     <ClInclude Include="src\lib\objtext.h" />
+    <ClInclude Include="src\lib\particle.h" />
     <ClInclude Include="src\lib\stdafx.h" />
     <ClInclude Include="src\lib\tlkcore.h" />
     <ClInclude Include="src\lib\uibutton.h" />

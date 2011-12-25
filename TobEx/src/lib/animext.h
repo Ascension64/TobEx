@@ -4,11 +4,14 @@
 #include "animcore.h"
 #include "datatypes.h"
 #include "cstringex.h"
+#include "arecore.h"
 
 class CAnimation0000 : public CAnimation { //Size 976h
 //Constructor: 0x7FAA53
 public:
 	//AB622C
+	virtual bool CanUseMiddleVertList() { return true; } //v28
+
 	CVidCell* m_pCurrentVidCell; //6d8h
 	CVidCell* m_pAnimShadow; //6dch
 	CVidCell m_AnimMain; //6e0h
@@ -104,6 +107,7 @@ class CAnimation1300 : public CAnimation { //Size 7F4h
 //Constructor: 0x8746B1
 public:
 	//AB7158
+	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -130,7 +134,7 @@ public:
 	int u7e4;
 	char u7e8;
 	char u7e9;
-	int u7ea;
+	BOOL bCanUseMiddleVertList; //7eah, retrieved as char (set to 1)
 	int u7ee;
 	char u7f2;
 	char u7f3;
@@ -172,7 +176,7 @@ public:
 	BOOL bUseColorRange; //df8h
 	IECString udfc;
 	IECString ue00;
-	char ue04;
+	bool m_bImmuneToDamage; //e04h
 	char ue05; //pad
 	int ue06;
 	char nOrientations; //e0ah
@@ -185,6 +189,7 @@ class CAnimation3000 : public CAnimation { //Size 1106h
 //Constructor: 0x841063
 public:
 	//AB6EAC
+	virtual BOOL CanBeTargetted() { return bCanBeTargetted; } //vc4
 
 	IECString sPrefix; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
@@ -212,7 +217,7 @@ public:
 
 	short wCurrentAnimationIdx; //10fch
 	short wCurrentOrientation; //10feh
-	int u1100;
+	BOOL bCanBeTargetted; //1100h, set on SetAnimationSequence() when ankheg has SEQ_EMERGE/SEQ_HIDE
 	char nOrientations; //1104h
 	char u1105; //pad
 };
@@ -221,6 +226,7 @@ class CAnimation4000 : public CAnimation { //Size 7E4h
 //Constructor: 0x801EDE
 public:
 	//AB63F4
+	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
 
 	CVidCell* m_pCurrentVidCellBase; //6d8h
 	CVidCell* m_pCurrentVidCellExtend; //6dch
@@ -230,7 +236,7 @@ public:
 	short wCurrentAnimationIdx; //7dah
 	short wCurrentOrientation; //7dch
 	BOOL bUseColorRange; //7deh
-	char nOrientations; //7e2h
+	bool bCanUseMiddleVertList; //7e2h
 	char u7e3; //pad
 };
 
@@ -243,6 +249,7 @@ public:
 	CAnimation5000& Construct(unsigned short, ColorRangeValues&, int) { return *this; }
 
 	//AB6F90
+	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix1; //6d8h, C<RACE><SEX>B
@@ -301,8 +308,8 @@ public:
 	char u16ce;
 	char nOrientations; //16cfh
 	char u16d0;
-	char u16d1;
-	bool u16d2;
+	bool m_bImmuneToDamage; //16d1h
+	bool m_bCanUseMiddleVertList; //16d2h, only SAREVOK (X404) is false
 	char u16d3;
 	char u16d4;
 	char u16d5;
@@ -320,6 +327,7 @@ class CAnimation6400 : public CAnimation { //Size 36B0h
 //Constructor: 0x8586AC
 public:
 	//AB7074
+	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h, C<RACE><SEX>C - main
@@ -436,7 +444,7 @@ public:
 	char nOrientations; //36abh
 	char u36ac;
 	char u36ad;
-	bool u36ae;
+	bool m_bCanUseMiddleVertList; //36aeh, only SAREVOK (X404) is false
 	char u36af; //pad
 };
 
@@ -477,6 +485,7 @@ class CAnimation7300 : public CAnimation { //Size D3Ch
 //Constructor: 0x807184
 public:
 	//AB66A0
+	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -506,7 +515,7 @@ public:
 	int ub6c;
 	char ub70;
 	char nOrientations; //b71h
-	int ub72;
+	BOOL bCanUseMiddleVertList; //b72h, retrieved as char (always 1)
 	int ub76;
 	int ub7a;
 	char ub7e;
@@ -642,6 +651,7 @@ class CAnimationC000 : public CAnimation { //Size 8CAh
 //Constructor: 0x804D2B
 public:
 	//AB65BC
+	virtual char GetDefaultVertListType() { return nDefaultVertListType; } //v3c
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -658,7 +668,7 @@ public:
 	BOOL bUseColorRange; //8bch
 	int u8c0;
 	int u8c4;
-	char u8c8; //8c8h
+	char nDefaultVertListType; //8c8h, always LIST_FRONT except for C500 is LIST_BACK
 	char nOrientations; //8c9h
 };
 
@@ -668,6 +678,8 @@ class CAnimationD000 : public CAnimation { //Size 7E4h
 //Constructor: 0x800D4F
 public:
 	//AB6310
+	virtual bool CanUseMiddleVertList() { return false; } //v28
+	virtual char GetDefaultVertListType() { return LIST_BACK; } //v3c
 
 	CVidCell* m_pCurrentVidCell; //6d8h
 	CVidCell* m_pCurrentVidCellBase; //6dch

@@ -293,7 +293,7 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	int XPWorth; //5ch, XPVALUE
 	int currentXP; //60h, XP
 	int gold; //64h, GOLD
-	int morale; //68h, MORALEBREAK
+	int moraleBreak; //68h, MORALEBREAK
 	int moraleRecovery; //6ch, MORALERECOVERYTIME
 	short reputation; //70h, REPUTATION
 	short racialEnemy; //72h, HATEDRACE (49)
@@ -404,7 +404,7 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	int summonDisable; //1e2h, SUMMONDISABLE
 	int avatarRemoval; //1e6h (188)
 	short hitBonus; //1eah, HITBONUS
-	unsigned short kit[2]; //1ec, KIT
+	unsigned int kit; //1ec, KIT
 	int forceSurge; //1f0h, FORCESURGE
 	int surgeMod; //1f4h, SURGEMOD
 	int improvedHaste; //1f8h, IMPROVEDHASTE
@@ -474,6 +474,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 
 	void LimitStats();
 	int GetStat(short nOpcode);
+	char GetSubclassLevel(char nClass, char nSubclass);
+	short GetMeanLevel(char nClass);
 	void MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize);
 	void UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize);
 	char GetEffectiveClericLevel(unsigned char nClass);
@@ -555,6 +557,8 @@ extern void (CDerivedStats::*CDerivedStats_ClearStats)();
 extern CDerivedStats& (CDerivedStats::*CDerivedStats_OpAdd)(CDerivedStats&);
 extern void (CDerivedStats::*CDerivedStats_LimitStats)();
 extern int (CDerivedStats::*CDerivedStats_GetStat)(short);
+extern char (CDerivedStats::*CDerivedStats_GetSubclassLevel)(char, char);
+extern short (CDerivedStats::*CDerivedStats_GetMeanLevel)(char nClass);
 extern void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*);
 extern void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int);
 extern char (CDerivedStats::*CDerivedStats_GetEffectiveClericLevel)(unsigned char);

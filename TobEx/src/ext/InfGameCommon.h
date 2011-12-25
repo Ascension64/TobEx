@@ -19,6 +19,8 @@ public:
 	CRuleTable m_Encumbrance;
 	short m_nEncumbranceLowThreshold;
 	short m_nEncumbranceHighThreshold;
+	CRuleTable m_HPClass;
+	CRuleTable m_HPBarbarian;
 
 protected:
 	void Init();

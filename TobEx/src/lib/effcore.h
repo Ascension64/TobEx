@@ -42,6 +42,7 @@ public:
 	static CEffect& CreateEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2);
 	static void CEffect::CreateItemEffect(ITEM_EFFECT& ptr, int nOpcode);
 
+	void PlaySound(ResRef& rSound, CCreatureObject& cre);
 	BOOL IsExpired();
 	ITEM_EFFECT& CEffect::ToItemEffect();
 
@@ -78,6 +79,7 @@ extern void (CEffect::*CEffect_Unmarshal)(EffFileData&);
 extern CEffect& (CEffect::*CEffect_Construct_1)(EffFileData&);
 extern CEffect& (*CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum);
 extern void (*CEffect_CreateItemEffect)(ITEM_EFFECT&, int);
+extern void (CEffect::*CEffect_PlaySound)(ResRef&, CCreatureObject&);
 extern BOOL (CEffect::*CEffect_IsExpired)();
 extern ITEM_EFFECT& (CEffect::*CEffect_ToItemEffect)();
 extern void (CEffect::*CEffect_Deconstruct)();

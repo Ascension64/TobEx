@@ -16,6 +16,8 @@
 #include "dlgcore.h"
 #include "animcore.h"
 #include "tlkcore.h"
+#include "uicore.h"
+#include "particle.h"
 
 //Event message ids
 #define EVENTMESSAGE_BACKSTAB_SUCCESS			0x01
@@ -78,12 +80,17 @@ class CCreatureObject : public CGameSprite { //Size 6774h
 //Constructor: 0x87FB08
 public:
 	CGameObject& SetTarget(Object& o, char type);
+	void GetSpellIdsName(int nSpellIdx, IECString* ptr);
 	CDerivedStats& GetDerivedStats();
 	ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil);
 	static void RemoveItem(CCreatureObject& cre, int nSlot);
 	CEffectList& GetEquippedEffectsList();
 	CEffectList& GetMainEffectsList();
+	void CreateGore(int dwUnused, short wOrient, short wType);
+	void UpdateHPStatusTooltip(CUIControl& control);
+	short GetOrientationTo(POINT& pt);
 	void SetAnimationSequence(short wSeq);
+	void StartSpriteEffect(char nEffectType, char nParticleType, int nParticles);
 	CItem& GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot);
 	void UnequipAll(BOOL bKeepEffects);
 	void EquipAll(BOOL bDoNotApplyEffects);
@@ -104,6 +111,15 @@ public:
 
 	//AA98A8
 	virtual ~CCreatureObject() {} //v0
+
+	virtual void SetAutoPauseInfo(int nType) {} //va8
+	virtual BOOL CanSeeInvisible() { return FALSE; } //vac
+	
+	//vb8, void CCreatureObject::SetObjects(o, bSetDerived, bSetBase)
+	//vc0, void RefreshObjects(), 1c = 3698 (identical), 3684 = 3698 (except general)
+	//vc4, void ProcessScriptsOnce(BOOL bOverrideOnly)
+	//...
+	//etc. to v114
 
 	short u3d4;
 	short u3d6;
@@ -233,21 +249,23 @@ public:
 	TerrainTable tt3; //2c39h
 	char u2c49;
 	AnimData m_animation; //2c4ah
-	int u2c50;
-	int u2c54;
+	short* m_GoreParticleArray; //2c50h, elements = (2c5c + 2c5d - 1) * m_nGoreParticleFrames
+	long long* m_GoreParticleArray2; //2c54h, elements as above
 	char u2c58;
-	char u2c59; //padding?
-	char u2c5a;
-	char u2c5b; //padding?
-	short u2c5c;
-	CVidCell u2c5e;
-	VidPal u2d34;
+	char m_nGoreParticleSequences; //2c59h
+	char u2c5a; //m_nNumGoreParticls?
+	char m_nGoreParticleFrames; //2c5bh
+	char u2c5c; //assoc gore
+	char u2c5d; //assoc gore
+	CVidCell m_cvcGoreParticle; //2c5eh, e.g. flames/sparks
+	VidPal m_vpGoreParticle; //2d34h
 	int u2d58;
-	CVidCell u2d5c;
-	VidPal u2e32;
+	CVidCell m_cvcGoreMain; //2d5ch, e.g. blood
+	VidPal m_vpGoreMain; //2e32h
 	int u2e56;
-	char u2e5a[24]; //don't know the type here
-	char u2e72; //don't know the type here
+	RECT rGoreBounds; //2e5ah
+	POINT ptGoreCentre; //2e6a
+	bool u2e72; //assoc gore particle
 	char u2e73;
 	BOOL m_bIsAnimationMovable; //0 = static animation (ANIMATE.IDS values < 0x1000)
 	int u2e78;
@@ -307,10 +325,10 @@ public:
 	int u3436;
 	int u343a;
 	CSearchRequest* m_currentSearchRequest; //343eh
-	short u3442;
-	short u3444;
-	int u3446; //0x001e1eff
-	int u344a;
+	short m_wDamagePortraitFlashTimer; //3442h, countdown by 5, this+78h also gives red intensity
+	short m_wDamageArrowTimer; //3444h, countdown by 1
+	ABGR m_rgbDamageArrow; //3446h, different colour every 5 ticks
+	BOOL m_bShowDamageArrow; //344ah
 	int u344e;
 	CVidBitmap smallPortrait; //3452h
 	int u3508;
@@ -323,11 +341,11 @@ public:
 	int u3522;
 	int u3526;
 	int u352a; //assoc with action 0x30
-	IECPtrList u352e;
-	short u354a;
+	CParticleList m_particles; //352eh
+	short m_wCastingTimer; //354ah, how many ticks has creature been casting a spell, counts upwards (-1 is none)
 	short u354c; //assoc actions
-	short u354e;
-	int u3550; //assoc actions
+	short u354e; //0 on empty action list
+	BOOL m_bCastingSpell; //3550h
 	short u3554;
 	short u3556; //assoc actions
 	short m_wMoveToFrontDelay; //3558h, countdown to move to front vertical list on resurrect?
@@ -345,7 +363,7 @@ public:
 	short u35fe;
 	int u3600;
 	int u3604;
-	int u3608;
+	BOOL m_bInterruptSpellcasting; //3608h
 	POSITION* posSelected; //360ch, of CPartySelection list
 	int u3610;
 	int u3614;
@@ -357,7 +375,7 @@ public:
 	char u3678[8];
 	char m_AttackSpeed; //3680h, (weaponSpeed - physicalSpeed - 1D6 - luck) / 0.5 * dieSize, range 0-10, determines the y-coordinate of the pixel to select in RNDBASE*.BMP
 	char u3681;
-	short u3682; //action opcode
+	short u3682; //action opcode (usually 3 Attack or 22 MoveToObject), never checked
 	Object oDerived; //3684h, keeps General, scriptName is of thisCre
 	Object oBase; //3698h, base for o and oDerived, used for gender for sounds, scriptName is of thisCre
 	int u36ac;
@@ -372,12 +390,12 @@ public:
 	short wRoundTimer; //36c6h, range 0-100, determines the x-coordinate of the pixel to select in RNDBASE*.BMP
 	int u36c8; //assoc actions (idle time?), ++ with NoAction()
 	int u36cc;
-	int u36d0; //1 = an effect is applied?
+	int u36d0; //1 = force refresh during Refresh()?
 	char u36d4; //assoc actions
 	char u36d5;
-	BOOL bUsingLeftWeapon; //36d6h
+	BOOL m_bUsingLeftWeapon; //36d6h
 	short u36da;
-	int u36dc; //assoc with items
+	BOOL m_bResetAnimationColors; //36dch
 	int u36e0; //set to 1 when Set Item Color effect used
 	int u36e4; //assoc with items
 	BOOL m_bRemoveFromArea; //36e8h
@@ -406,7 +424,7 @@ public:
 	} m_u3748;
 	ResRef rDialog; //3778h
 	ResRef rDialog2; //3780h
-	char u3788;
+	bool u3788;
 	char u3789; //padding?
 	CStrRef soundset[100]; //378ah
 	char rndEffSaveDeath; //6282h, 1D20
@@ -421,8 +439,8 @@ public:
 	char u628b; //padding?
 	long u628c[2];
 	int u6294; //7fff
-	int u6298; //contains char data
-	BOOL bInAttack; //629ch, in the middle of attack phase of a round
+	BOOL m_bMoraleBroken; //6298h, contains char data
+	BOOL m_bInAttack; //629ch, in the middle of attack phase of a round
 	short u62a0; //assoc actions
 	int u62a2;
 	int u62a6; //countdown timer, related to 62aa
@@ -433,8 +451,8 @@ public:
 	CDwordList m_PortraitIcons; //62b6h
 	CVidCell u62d2;
 	int u63a8;
-	int u63ac; //0x105cc
-	int u63b0; //assoc with berserk state?
+	int nTicksLastRested; //63ach, base time to calculate fatigue = (nGameTime - 63ach) / (4 hours in ticks) - FATIGUE_BONUS
+	int m_bAllowBerserkStage2; //63b0h, updated every AIUpdateActions(), no actual berserk action unless STATE_BERSERK
 	short u63b4;
 	int u63b6; //related to constitution? used to subtract from current and max HP
 	int u63ba[6];
@@ -448,19 +466,19 @@ public:
 	int u63f0;
 	int u63f4;
 	int u63f8;
-	short u63fc; //contains an actionOpcode (a dialoge or escape area action?)
+	short u63fc; //contains an actionOpcode (a dialog or escape area action?)
 	int u63fe; //assoc actions
 	int u6402; //assoc actions
 	int u6406; //timer
 	int u640a; //timer
-	short u640e; //timer
+	short m_wPoisonTimer; //640eh, set to 100 on poison damage
 	short u6410;
 	BOOL bUseCurrentState; //6412h, 0 = uses prevState, 1 = uses currentState, set to 0 when refreshing repeating effects
 	short u6416;
 	int u6418;
 	int u641c;
 	CVariableArray* pLocalVariables; //6420h
-	int u6424; //1 when CRE copied over, 0 at constructor end
+	int m_bUnmarshalling; //6424h, 1 during Unmarshal, 0 when done
 	IECPtrList ProtectedSpls; //6428h, Size 1Ch objects, DW nPower, DW nOpcodeEffect, CProjectile*, DW, STRREF, DW, DW
 	int u6444;
 	int u6448;
@@ -493,7 +511,7 @@ public:
 	int u6692;
 	int u6696; //assoc actions
 	BOOL m_bLeavingArea; //669ah
-	Enum ePuppetMaster; //669eh
+	Enum ePuppet; //669eh
 	int u66a2;
 	int u66a6;
 	int u66aa;
@@ -502,8 +520,8 @@ public:
 	BOOL u66ce; //set when search bitmap has set 2 bits
 	_8DF1F2 u66d2;
 	int u6722;
-	int nDamageTaken; //6726h
-	int u672a;
+	int nLastDamageTaken; //6726h
+	int u672a; //timer
 	int u672e;
 	char m_SightRadius; //6732h, default = 14 (AACF46), one unit = 32 pixels
 	char u6733; //padding?
@@ -522,17 +540,22 @@ public:
 	int u6760;
 	int u6764;
 	int u6768;
-	BOOL m_bInitToB; //676ch
-	int u6770;
+	int m_nSpriteUpdateTimer; //676ch, increments up to 15, then set to 0 on before CMessageSpriteUpdate
+	int u6770; //assoc sprite update timer, 0 = always sprite update when ready, other = sprite update, reset to 0 if timer > 2
 };
 
 extern CGameObject& (CCreatureObject::*CCreatureObject_SetTarget)(Object&, char);
+extern void (CCreatureObject::*CCreatureObject_GetSpellIdsName)(int, IECString*);
 extern CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)();
 extern ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL);
 extern void (*CCreatureObject_RemoveItem)(CCreatureObject&, int);
 extern CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)();
 extern CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)();
+extern void (CCreatureObject::*CCreatureObject_CreateGore)(int, short, short);
+extern void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&);
+extern short (CCreatureObject::*CCreatureObject_GetOrientationTo)(POINT&);
 extern void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short);
+extern void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int);
 extern CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot);
 extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
 extern void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL);

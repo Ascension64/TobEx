@@ -14,6 +14,7 @@
 #define CEFFECT_OPCODE_DEXTERITY_MOD		0x00F
 #define CEFFECT_OPCODE_CURRENTHP_MOD		0x011
 #define CEFFECT_OPCODE_POISON				0x019
+#define CEFFECT_OPCODE_UNCONSCIOUSNESS		0x027
 #define CEFFECT_OPCODE_MAGE_MEM_SPELL_MOD	0x02A
 #define CEFFECT_OPCODE_STRENGTH_MOD			0x02C
 #define CEFFECT_OPCODE_SLEEP				0x027
@@ -54,6 +55,11 @@ public:
 extern BOOL (CEffectAwaken::*CEffectAwaken_ApplyEffect)(CCreatureObject&);
 
 //CEffectDamage
+#define EFFECTDAMAGE_BEHAVIOR_NORMAL		0x0
+#define EFFECTDAMAGE_BEHAVIOR_SETVALUE		0x1
+#define EFFECTDAMAGE_BEHAVIOR_SETPERCENT	0x2
+#define EFFECTDAMAGE_BEHAVIOR_LOSEPERCENT	0x3
+
 class CEffectDamage : public CEffect { //opcode Ch
 public:
 	//AA6950
@@ -64,9 +70,13 @@ public:
 	virtual BOOL CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist) { return FALSE; } //v18
 	virtual BOOL IgnoreLevelCheck() { return TRUE; } //v1c
 	virtual void PrintEffectText(CCreatureObject& creTarget) {} //v20
+	virtual void PrintEffectTextOnApply(CCreatureObject& creTarget) {} //v28
+
+	void PlayHitSound(int nDamageType, CCreatureObject& creTarget);
 };
 
 extern BOOL (CEffectDamage::*CEffectDamage_ApplyEffect)(CCreatureObject&);
+extern void (CEffectDamage::*CEffectDamage_PlayHitSound)(int, CCreatureObject&);
 
 //CEffectInstantDeath
 #define EFFECTINSTANTDEATH_TYPE_ACID			0x000

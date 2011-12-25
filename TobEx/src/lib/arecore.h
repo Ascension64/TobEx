@@ -19,6 +19,10 @@
 #define CAREA_SONGTYPE_8		8
 #define CAREA_SONGTYPE_9		9
 
+#define LIST_FRONT		0
+#define LIST_MIDDLE		1
+#define LIST_BACK		2
+
 class CInfGame;
 class CArea;
 class CObjectMarker;
@@ -125,14 +129,14 @@ struct CInfinity { //Size 29Eh
 	int u1a6; //assoc u14a
 	char u1aa;
 	char u1ab; //pad
-	int u1ac; // = u1c0, gets AAD2C4 (5a4646) for night Wed, AAD2C0 (6e6e6e) for day Wed (ARGB)
+	int u1ac; // = u1c0, gets AAD2C4 (5a4646) for night Wed, AAD2C0 (6e6e6e) for day Wed (ABGR)
 				
 	//note: get lowest(1b4, 1bc) for each color, add 1b0, then set 1b8
 	int u1b0; //additive lighting (can be used to control fades)
 	int u1b4; //lighting
 	int u1b8; //current lightmask, copied to CVideoMode.ua4
-	ARGB u1bc; //lighting (FFFFFF day, C86464 night)
-	ARGB u1c0; //lighting (6E6E6E day, 5A4646 night)
+	ABGR u1bc; //lighting (FFFFFF day, C86464 night)
+	ABGR u1c0; //lighting (6E6E6E day, 5A4646 night)
 	int u1c4; //assoc u16a, u16e
 	CArea* pArea; //1c8h, owning area
 	CVidBitmap u1cc;
@@ -271,7 +275,7 @@ public:
 	char u23c;
 	char u23d;
 	Enum u23e;
-	Enum u242;
+	Enum eDamageLocatorTarget; //242h
 	Enum u246;
 	int u24a;
 	int u24e;

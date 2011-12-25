@@ -3,6 +3,8 @@
 //CCreatureObject
 CGameObject& (CCreatureObject::*CCreatureObject_SetTarget)(Object&, char) =
 	SetFP(static_cast<CGameObject& (CCreatureObject::*)(Object&, char)>		(&CCreatureObject::SetTarget),				0x48D519);
+void (CCreatureObject::*CCreatureObject_GetSpellIdsName)(int, IECString*) =
+	SetFP(static_cast<void (CCreatureObject::*)(int, IECString*)>			(&CCreatureObject::GetSpellIdsName),		0x48FE60);
 CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)() =
 	SetFP(static_cast<CDerivedStats& (CCreatureObject::*)()>				(&CCreatureObject::GetDerivedStats),		0x495630);
 ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL) =
@@ -14,8 +16,16 @@ CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)() =
 	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetEquippedEffectsList),	0x567540);
 CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)() =
 	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetMainEffectsList),		0x567560);
+void (CCreatureObject::*CCreatureObject_CreateGore)(int, short, short) =
+	SetFP(static_cast<void (CCreatureObject::*)(int, short, short)>			(&CCreatureObject::CreateGore),				0x8862FE);
+void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&) =
+	SetFP(static_cast<void (CCreatureObject::*)(CUIControl&)>				(&CCreatureObject::UpdateHPStatusTooltip),	0x8AC3C5);
+short (CCreatureObject::*CCreatureObject_GetOrientationTo)(POINT&) =
+	SetFP(static_cast<short (CCreatureObject::*)(POINT&)>					(&CCreatureObject::GetOrientationTo),		0x8ACFC2);
 void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short) =
 	SetFP(static_cast<void (CCreatureObject::*)(short)>						(&CCreatureObject::SetAnimationSequence),	0x8AD630);
+void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int) =
+	SetFP(static_cast<void (CCreatureObject::*)(char, char, int)>			(&CCreatureObject::StartSpriteEffect),		0x8B10DE);
 CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot) =
 	SetFP(static_cast<CItem& (CCreatureObject::*)(ItmFileAbility&, int*)>	(&CCreatureObject::GetFirstEquippedLauncherOfAbility),
 																														0x8C5981);
@@ -46,7 +56,7 @@ IECString& (CCreatureObject::*CCreatureObject_GetLongName)() =
 STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)() =
 	SetFP(static_cast<STRREF (CCreatureObject::*)()>						(&CCreatureObject::GetLongNameStrRef),		0x8D4AAC);
 void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*) =
-	SetFP(static_cast<void (CCreatureObject::*)(char*)>					(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
+	SetFP(static_cast<void (CCreatureObject::*)(char*)>						(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
 unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 	SetFP(static_cast<unsigned int (CCreatureObject::*)()>					(&CCreatureObject::GetKitUnusableFlag),		0x8E066B);
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
@@ -54,13 +64,19 @@ void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int,
 																			(&CCreatureObject::PrintEventMessage),		0x8FAE5A);
 
 CGameObject& CCreatureObject::SetTarget(Object& o, char type)					{ return (this->*CCreatureObject_SetTarget)(o, type); }
+void CCreatureObject::GetSpellIdsName(int nSpellIdx, IECString* ptr)			{ return (this->*CCreatureObject_GetSpellIdsName)(nSpellIdx, ptr); }
 CDerivedStats& CCreatureObject::GetDerivedStats()								{ return (this->*CCreatureObject_GetDerivedStats)(); }
 ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil)
 	{ return (this->*CCreatureObject_CastSpell)(rResource, cgoTarget, bPrintStrref, strref, pMod, bPrintEventMsg, bDoNotApplySplAbil); }
 void CCreatureObject::RemoveItem(CCreatureObject& cre, int nSlot)				{ return (*CCreatureObject_RemoveItem)(cre, nSlot); }
 CEffectList& CCreatureObject::GetEquippedEffectsList()							{ return (this->*CCreatureObject_GetEquippedEffectsList)(); }
 CEffectList& CCreatureObject::GetMainEffectsList()								{ return (this->*CCreatureObject_GetMainEffectsList)(); }
+void CCreatureObject::CreateGore(int dwUnused, short wOrient, short wType)		{ return (this->*CCreatureObject_CreateGore)(dwUnused, wOrient, wType); }
+void CCreatureObject::UpdateHPStatusTooltip(CUIControl& control)				{ return (this->*CCreatureObject_UpdateHPStatusTooltip)(control); }
+short CCreatureObject::GetOrientationTo(POINT& pt)								{ return (this->*CCreatureObject_GetOrientationTo)(pt); }
 void CCreatureObject::SetAnimationSequence(short wSeq)							{ return (this->*CCreatureObject_SetAnimationSequence)(wSeq); }
+void CCreatureObject::StartSpriteEffect(char nEffectType, char nParticleType, int nParticles)
+	{ return (this->*CCreatureObject_StartSpriteEffect)(nEffectType, nParticleType, nParticles); }
 CItem& CCreatureObject::GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot)
 	{ return (this->*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ability, pnSlot); }
 void CCreatureObject::UnequipAll(BOOL bKeepEffects)								{ return (this->*CCreatureObject_UnequipAll)(bKeepEffects); }

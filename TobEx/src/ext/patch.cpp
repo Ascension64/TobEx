@@ -68,6 +68,73 @@ void InitPatches() {
 	std::vector<Patch>::iterator vPatchItr;
 	std::vector<Data> vDataList;
 
+	if (pGameOptionsEx->bActionAddKitFix) {
+		//AddKit()
+		//edx: i, ecx: pCCreatureObject
+		//mov eax,edx
+		//shr eax,10
+		//and edx,0FFFF
+		//mov word ptr ds:[ecx+632],ax
+		//mov word ptr ds:[ecx+634],dx
+		//nop
+		char bytes[] = {0x8B, 0xC2,
+						0xC1, 0xE8, 0x10,
+						0x81, 0xE2, 0xFF, 0xFF, 0x00, 0x00,
+						0x66, 0x89, 0x81, 0x32, 0x06, 0x00, 0x00,
+						0x66, 0x89, 0x91, 0x34, 0x06, 0x00, 0x00,
+						0x90};
+		vDataList.push_back( Data(0x8E460C, 26, bytes) );
+
+		//AddSuperKit()
+		//ecx: i, eax: pCCreatureObject
+		//mov edx,ecx
+		//shr edx,10
+		//and ecx,0FFFF
+		//mov word ptr ds:[eax+632],dx
+		//mov word ptr ds:[eax+634],cx
+		//nop
+		char bytes2[] = {0x8B, 0xD1,
+						0xC1, 0xEA, 0x10,
+						0x81, 0xE1, 0xFF, 0xFF, 0x00, 0x00,
+						0x66, 0x89, 0x90, 0x32, 0x06, 0x00, 0x00,
+						0x66, 0x89, 0x88, 0x34, 0x06, 0x00, 0x00,
+						0x90};
+		vDataList.push_back( Data(0x8E49F8, 26, bytes2) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bActionSpellTargetInvisConfig) {
+		//mov edx,dword ptr ss:[ebp+8]
+		//mov ecx,dword ptr ss:[ebp-764]
+		//push edx
+		//push ecx
+		//call ...
+		char bytes[] = {0x8B, 0x8D, 0x9C, 0xF8, 0xFF, 0xFF,
+						0x52,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x911EA7, 9, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_IsValidSpellTarget_CheckInvisible;
+		DWORD address = (DWORD)ptr - 5  - 0x911EAF;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x911EB0, 4, bytes2) );
+
+		//test eax,eax
+		//je 911FA7
+		//jmp 91222F
+		char bytes3[] = {0x85, 0xC0,
+						0x0F, 0x84, 0xEB, 0x00, 0x00, 0x00,
+						0xE9, 0x6E, 0x03, 0x00, 0x00};
+		vDataList.push_back( Data(0x911EB4, 13, bytes3) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bActionEquipRangedFix) {
 		//mov al,byte ptr ds:[edx]
 		//cmp al,2 (TYPE_RANGED)
@@ -125,6 +192,12 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bDebugLogMissingRes) {
+		//in KeyTable::FindKey()
+		char bytes[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x99B12D, 6, bytes) );
+	}
+	
 	//Enable logging of system, AREA-TRANSITION and AREA-INVENTORY messages
 	if (pGameOptionsEx->bDebugLogMore) {
 		char bytes[] = {0x01};
@@ -437,6 +510,23 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
+	if (pGameOptionsEx->bEngineClericRangerHLAFix) {
+		//CLASS_RANGER -> CLASS_CLERIC
+		char bytes[] = {0x66};
+		vDataList.push_back( Data(0x62D0DB, 1, bytes) );
+		vDataList.push_back( Data(0x62D179, 1, bytes) );
+		vDataList.push_back( Data(0x62D18F, 1, bytes) );
+
+		//CLASS_CLERIC -> CLASS_RANGER
+		char bytes2[] = {0x6F};
+		vDataList.push_back( Data(0x62D12D, 1, bytes2) );
+		vDataList.push_back( Data(0x62D1A5, 1, bytes2) );
+		vDataList.push_back( Data(0x62D1BA, 1, bytes2) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bEngineExperienceFix) {
 		char bytes[] = {0x64};
 		vDataList.push_back( Data(0x6A97D5, 1, bytes) );
@@ -501,39 +591,45 @@ void InitPatches() {
 	if (pGameOptionsEx->bEngineExternEncumbrance) {
 		//1. some animation thing depending on encumbrance
 
+		//push edx
 		//mov ecx,dword ptr ss:[ebp-44]
 		//push ecx
 		//call
-		char bytes[] = {0x8B, 0x4D, 0xBC,
+		char bytes[] = {0x52,
+						0x8B, 0x4D, 0xBC,
 						0x51,
 						0xE8};
-		vDataList.push_back( Data(0x8ECAED, 5, bytes) );
+		vDataList.push_back( Data(0x8ECAED, 6, bytes) );
 
 		//CALL address
 		void* ptr = (void*)CRuleTables_IsHighEncumbrance;
-		DWORD address = (DWORD)ptr - 5  - 0x8ECAF1;
+		DWORD address = (DWORD)ptr - 5  - 0x8ECAF2;
 		char* bytes2 = (char*)&address;
-		vDataList.push_back( Data(0x8ECAF2, 4, bytes2) );
+		vDataList.push_back( Data(0x8ECAF3, 4, bytes2) );
 
 		//test eax,eax
+		//mov edx,dword ptr ss:[ebp-40] <-- nTotalWeightAllowance for next condition
 		//nop
 		//je short 8ECB6B
 		char bytes3[] = {0x85, 0xC0,
-						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+						0x8B, 0x55, 0xC0,
+						0x90, 0x90, 0x90,
 						0x74, 0x6A};
-		vDataList.push_back( Data(0x8ECAF6, 11, bytes3) );
+		vDataList.push_back( Data(0x8ECAF7, 10, bytes3) );
 
+		//push edx
 		//push ecx
 		//call
-		char bytes4[] = {0x51,
+		char bytes4[] = {0x52,
+						0x51,
 						0xE8};
-		vDataList.push_back( Data(0x8ECB6E, 2, bytes4) );
+		vDataList.push_back( Data(0x8ECB6E, 3, bytes4) );
 
 		//CALL address
 		ptr = (void*)CRuleTables_IsLowEncumbrance;
-		address = (DWORD)ptr - 5  - 0x8ECB6F;
+		address = (DWORD)ptr - 5  - 0x8ECB70;
 		char* bytes5 = (char*)&address;
-		vDataList.push_back( Data(0x8ECB70, 4, bytes5) );
+		vDataList.push_back( Data(0x8ECB71, 4, bytes5) );
 
 		//test eax,eax
 		//nop
@@ -554,7 +650,7 @@ void InitPatches() {
 		//mov ecx,dword ptr ds:[ecx]
 		//mov edx,dword ptr ds:[ecx]
 		char bytes6[] = {0x85, 0xC0,
-						0x90, 0x90, 0x90,
+						0x90, 0x90,
 						0x0F, 0x84, 0xC2, 0x00, 0x00, 0x00,
 						0x8B, 0x95, 0x80, 0xF7, 0xFF, 0xFF,
 						0x81, 0xC2, 0x4A, 0x2C, 0x00, 0x00,
@@ -571,59 +667,65 @@ void InitPatches() {
 						0x8B, 0x8D, 0x34, 0xFC, 0xFF, 0xFF,
 						0x8B, 0x09,
 						0x8B, 0x11};
-		vDataList.push_back( Data(0x8ECB74, 75, bytes6) );
+		vDataList.push_back( Data(0x8ECB75, 74, bytes6) );
 
 		//2. settings of encumbrance in CDerivedStats
 
+		//push edx
 		//mov ecx,dword ptr ss:[ebp-11c]
 		//push ecx
 		//call
-		char bytes7[] = {0x8B, 0x8D, 0xE4, 0xFE, 0xFF, 0xFF,
+		char bytes7[] = {0x52,
+						0x8B, 0x8D, 0xE4, 0xFE, 0xFF, 0xFF,
 						0x51,
 						0xE8};
-		vDataList.push_back( Data(0x8EFDCF, 8, bytes7) );
+		vDataList.push_back( Data(0x8EFDCF, 9, bytes7) );
 
 		//CALL address
 		ptr = (void*)CRuleTables_IsHighEncumbrance;
-		address = (DWORD)ptr - 5  - 0x8EFDD6;
+		address = (DWORD)ptr - 5  - 0x8EFDD7;
 		char* bytes8 = (char*)&address;
-		vDataList.push_back( Data(0x8EFDD7, 4, bytes8) );
+		vDataList.push_back( Data(0x8EFDD8, 4, bytes8) );
 
 		//test eax,eax
 		//nop
 		//je 8EFE7D
 		char bytes9[] = {0x85, 0xC0,
-						0x90, 0x90, 0x90, 0x90,	0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
 						0x0F, 0x84, 0x90, 0x00, 0x00, 0x00};
-		vDataList.push_back( Data(0x8EFDDB, 18, bytes9) );
+		vDataList.push_back( Data(0x8EFDDC, 17, bytes9) );
 
+		//mov edx,dword ptr ss:[ebp-118]
 		//push edx
+		//mov ecx,dword ptr ss:[ebp-11c]
+		//push ecx
 		//call
-		char bytes10[] = {0x52,
+		char bytes10[] = {0x8B, 0x95, 0xE8, 0xFE, 0xFF, 0xFF,
+						0x52,
+						0x8B, 0x8D, 0xE4, 0xFE, 0xFF, 0xFF,
+						0x51,
 						0xE8};
-		vDataList.push_back( Data(0x8EFE83, 2, bytes10) );
+		vDataList.push_back( Data(0x8EFE7D, 15, bytes10) );
 
 		//CALL address
 		ptr = (void*)CRuleTables_IsLowEncumbrance;
-		address = (DWORD)ptr - 5  - 0x8EFE84;
+		address = (DWORD)ptr - 5  - 0x8EFE8B;
 		char* bytes11 = (char*)&address;
-		vDataList.push_back( Data(0x8EFE85, 4, bytes11) );
+		vDataList.push_back( Data(0x8EFE8C, 4, bytes11) );
 
 		//test eax,eax
-		//nop
 		//je 8EFF7D
 		//nop
 		//mov eax,dword ptr ds:[B773CC]
 		//mov ecx,dword ptr ss:[eax+42BA]
 		//mov eax,dword ptr ds:[ecx+4302]
 		char bytes12[] = {0x85, 0xC0,
-						0x90, 0x90, 0x90, 0x90,	0x90, 0x90,
-						0x0F, 0x84, 0xE6, 0x00, 0x00, 0x00,
-						0x90, 0x90, 0x90,
+						0x0F, 0x84, 0xE5, 0x00, 0x00, 0x00,
+						0x90, 0x90,
 						0xA1, 0xCC, 0x73, 0xB7, 0x00,
 						0x36, 0x8B, 0x88, 0xBA, 0x42, 0x00, 0x00,
 						0x8B, 0x81, 0x02, 0x43, 0x00, 0x00};
-		vDataList.push_back( Data(0x8EFE89, 35, bytes12) );
+		vDataList.push_back( Data(0x8EFE90, 28, bytes12) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
@@ -708,6 +810,85 @@ void InitPatches() {
 						0x83, 0xBD, 0x34, 0xFF, 0xFF, 0xFF, 0x00,
 						0x0F, 0x8E, 0xBA, 0x09, 0x00, 0x00};
 		vDataList.push_back( Data(0x6AB254, 83, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bEngineTargetDeadFix) {
+		//NOTE: this is an incomplete fix since it only applies to objects existing in LIST_FRONT
+
+		//1. for all before posSource
+
+		//mov edx,dword ptr ss:[ebp-5c]
+		//push edx
+		//call
+		char bytes[] = {0x8B, 0x55, 0xA4,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x4BA3DD, 5, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_IsDeadInFrontVerticalList;
+		DWORD address = (DWORD)ptr - 5  - 0x4BA3E1;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x4BA3E2, 4, bytes2) );
+
+		//test eax,eax
+		//je short 4BA3FA
+		//mov dword ptr ss:[ebp-3c],0
+		//jmp 4BA4E3
+		//nop
+		//mov ecx,dword ptr ss:[ebp-5c]
+		//call CCreatureObject::GetDerivedStats()
+		//nop
+		//mov dword ptr ss:[ebp-ac],eax
+		char bytes3[] = {0x85, 0xC0,
+						0x74, 0x10,
+						0xC7, 0x45, 0xC4, 0x00, 0x00, 0x00, 0x00,
+						0xE9, 0xED, 0x00, 0x00, 0x00,
+						0x90, 0x90, 0x90, 0x90,
+						0x8B, 0x4D, 0xA4,
+						0xE8, 0x2E, 0xB2, 0xFD, 0xFF,
+						0x90,
+						0x89, 0x85, 0x54, 0xFF, 0xFF, 0xFF};
+		vDataList.push_back( Data(0x4BA3E6, 35, bytes3) );
+
+		//2. for all after posSource
+
+		//mov edx,dword ptr ss:[ebp-5c]
+		//push edx
+		//call
+		char bytes4[] = {0x8B, 0x55, 0xA4,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x4BA862, 5, bytes4) );
+
+		//CALL address
+		ptr = (void*)CCreatureObject_IsDeadInFrontVerticalList;
+		address = (DWORD)ptr - 5  - 0x4BA866;
+		char* bytes5 = (char*)&address;
+		vDataList.push_back( Data(0x4BA867, 4, bytes5) );
+
+		//test eax,eax
+		//je short 4BA87F
+		//mov dword ptr ss:[ebp-3c],0
+		//jmp 4BA968
+		//nop
+		//mov ecx,dword ptr ss:[ebp-5c]
+		//call CCreatureObject::GetDerivedStats()
+		//nop
+		//mov dword ptr ss:[ebp-ac],eax
+		char bytes6[] = {0x85, 0xC0,
+						0x74, 0x10,
+						0xC7, 0x45, 0xC4, 0x00, 0x00, 0x00, 0x00,
+						0xE9, 0xED, 0x00, 0x00, 0x00,
+						0x90, 0x90, 0x90, 0x90,
+						0x8B, 0x4D, 0xA4,
+						0xE8, 0xA9, 0xAD, 0xFD, 0xFF,
+						0x90,
+						0x89, 0x85, 0x28, 0xFF, 0xFF, 0xFF};
+		vDataList.push_back( Data(0x4BA86B, 35, bytes6) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

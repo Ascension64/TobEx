@@ -67,8 +67,8 @@ BOOL (CUITextField::*CUITextField_Redraw)(BOOL) =
 	SetFP(static_cast<BOOL (CUITextField::*)(BOOL)>				(&CUITextField::Redraw),			0x59A93F);
 BOOL (CUITextField::*CUITextField_NeedsRedraw)() =
 	SetFP(static_cast<BOOL (CUITextField::*)()>					(&CUITextField::NeedsRedraw),		0x59A8FC);
-void (CUITextField::*CUITextField_SetTextColors)(ARGB, ARGB) =
-	SetFP(static_cast<void (CUITextField::*)(ARGB, ARGB)>		(&CUITextField::SetTextColors),		0x5A5710);
+void (CUITextField::*CUITextField_SetTextColors)(ABGR, ABGR) =
+	SetFP(static_cast<void (CUITextField::*)(ABGR, ABGR)>		(&CUITextField::SetTextColors),		0x5A5710);
 void (CUITextField::*CUITextField_ClearText)(IECString&) =
 	SetFP(static_cast<void (CUITextField::*)(IECString&)>		(&CUITextField::ClearText),			0x5A5740);
 IECString (CUITextField::*CUITextField_GetText)() =
@@ -90,7 +90,7 @@ void CUITextField::OnKeyPress(short wChar)						{ return (this->*CUITextField_On
 void CUITextField::SetRedraw()									{ return (this->*CUITextField_SetRedraw)(); }
 BOOL CUITextField::Redraw(BOOL bForceRedraw)					{ return (this->*CUITextField_Redraw)(bForceRedraw); }
 BOOL CUITextField::NeedsRedraw()								{ return (this->*CUITextField_NeedsRedraw)(); }
-void CUITextField::SetTextColors(ARGB colText, ARGB colGreyed)	{ return (this->*CUITextField_SetTextColors)(colText, colGreyed); }
+void CUITextField::SetTextColors(ABGR colText, ABGR colGreyed)	{ return (this->*CUITextField_SetTextColors)(colText, colGreyed); }
 void CUITextField::ClearText(IECString& s)						{ return (this->*CUITextField_ClearText)(s); }
 IECString CUITextField::GetText()								{ return (this->*CUITextField_GetText)(); }
 void CUITextField::SetText(IECString& s)						{ return (this->*CUITextField_SetText)(s); }

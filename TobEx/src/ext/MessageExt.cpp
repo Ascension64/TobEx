@@ -67,7 +67,7 @@ BOOL CMessageRemoveAreaAirEffectSpecific::Unmarshal(void* pData, int* dwSize) {
 
 void CMessageRemoveAreaAirEffectSpecific::DoMessage(void) {
 
-	IECString s = this->rAreaName.SafeToString();
+	IECString s = this->rAreaName.ToString();
 	CArea& area = g_pChitin->pGame->GetLoadedArea(s);
 	if (&area != NULL) {
 		CArea_RemoveAreaAirEffectSpecific(area, this->rResource);

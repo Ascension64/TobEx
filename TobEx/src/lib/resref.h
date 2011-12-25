@@ -24,7 +24,7 @@ public:
 	IECString ToString();
 	void NullSpaces();
 	LPTSTR GetBuffer() const;
-	IECString SafeToString();
+	IECString FormatToString();
 	BOOL IsNotEmpty();
 	void ToChar(LPCTSTR sz);
 
@@ -72,7 +72,7 @@ extern ResRef* (ResRef::*ResRef_Construct_1LPCTSTR)(LPCSTR);
 extern IECString (ResRef::*ResRef_ToString)();
 extern void (ResRef::*ResRef_NullSpaces)();
 extern LPTSTR (ResRef::*ResRef_GetBuffer)() const;
-extern IECString (ResRef::*ResRef_SafeToString)();
+extern IECString (ResRef::*ResRef_FormatToString)();
 extern BOOL (ResRef::*ResRef_IsNotEmpty)();
 extern void (ResRef::*ResRef_ToChar)(LPCTSTR);
 extern BOOL (ResRef::*ResRef_OpNeq_ResRef)(ResRef&);

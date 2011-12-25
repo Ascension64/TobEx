@@ -64,11 +64,31 @@ unsigned char Object::GetClass()										{ return (this->*Object_GetClass)(); }
 void Object::GetClasses(unsigned char* pClass1, unsigned char* pClass2)	{ return (this->*Object_GetClasses)(pClass1, pClass2); }
 BOOL Object::HasSubclass(unsigned char Class, BOOL bThreadAsync)		{ return (this->*Object_HasSubclass)(Class, bThreadAsync); }
 
+//Trigger
+Trigger* (Trigger::*Trigger_Construct_2)(short, int) =
+	SetFP(static_cast<Trigger* (Trigger::*)(short, int)>	(&Trigger::Construct),	0x430810);
+Trigger* (Trigger::*Trigger_OpEq)(Trigger&) =
+	SetFP(static_cast<Trigger* (Trigger::*)(Trigger&)>		(&Trigger::OpEq),		0x496100);
+
+Trigger::Trigger() {
+	opcode = 0;
+	i = 0;
+	dwFlags = 0;
+	i2 = 0;
+	u22 = 0;
+}
+
+Trigger::Trigger(short wOpcode, int n)	{ (this->*Trigger_Construct_2)(wOpcode, n); }
+Trigger* Trigger::operator=(Trigger& t)	{ return (this->*Trigger_OpEq)(t); }
+
 //Action
 Action* (Action::*Action_Construct_0)() =
 	SetFP(static_cast<Action* (Action::*)()>	(&Action::Construct),		0x405820);
 void (Action::*Action_Deconstruct)() =
 	SetFP(static_cast<void (Action::*)()>		(&Action::Deconstruct),		0x405930);
+IECString (Action::*Action_GetSName1)() =
+	SetFP(static_cast<IECString (Action::*)()>	(&Action::GetSName1),		0x430330);
 
 Action::Action() { (this->*Action_Construct_0)(); }
 Action::~Action() { (this->*Action_Deconstruct)(); }
+IECString Action::GetSName1() { return (this->*Action_GetSName1)(); }

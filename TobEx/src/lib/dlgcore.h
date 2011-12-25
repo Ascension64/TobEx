@@ -69,7 +69,7 @@ struct CGameDialog { //Size 64h
 	int nActiveDlgStateIdx; //38h
 	int u3c;
 	int u40;
-	ARGB col; //44h, colorMajor of CRE
+	ABGR col; //44h, colorMajor of CRE
 	IECString name; //48h, longName of CRE
 	int u4c; //6
 	int u50;

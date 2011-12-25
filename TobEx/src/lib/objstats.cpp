@@ -112,6 +112,10 @@ void (CDerivedStats::*CDerivedStats_LimitStats)() =
 	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::LimitStats),				0x471B36);
 int (CDerivedStats::*CDerivedStats_GetStat)(short) =
 	SetFP(static_cast<int (CDerivedStats::*)(short)>						(&CDerivedStats::GetStat),					0x473162);
+char (CDerivedStats::*CDerivedStats_GetSubclassLevel)(char, char) =
+	SetFP(static_cast<char (CDerivedStats::*)(char, char)>					(&CDerivedStats::GetSubclassLevel),			0x473F40);
+short (CDerivedStats::*CDerivedStats_GetMeanLevel)(char nClass) =
+	SetFP(static_cast<short (CDerivedStats::*)(char)>						(&CDerivedStats::GetMeanLevel),				0x4740A2);
 void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*) =
 	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate*, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
 void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int) =
@@ -136,6 +140,8 @@ void CDerivedStats::ClearStats()												{ return (this->*CDerivedStats_Clear
 CDerivedStats& CDerivedStats::operator+(CDerivedStats& cds)						{ return (this->*CDerivedStats_OpAdd)(cds); }
 void CDerivedStats::LimitStats()												{ return (this->*CDerivedStats_LimitStats)(); }
 int CDerivedStats::GetStat(short nOpcode)										{ return (this->*CDerivedStats_GetStat)(nOpcode); }
+char CDerivedStats::GetSubclassLevel(char nClass, char nSubclass)				{ return (this->*CDerivedStats_GetSubclassLevel)(nClass, nSubclass); }
+short CDerivedStats::GetMeanLevel(char nClass)									{ return (this->*CDerivedStats_GetMeanLevel)(nClass); }
 void CDerivedStats::MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize)	{ return (this->*CDerivedStats_MarshalTemplate)(pcdst, pnSize); }
 void CDerivedStats::UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize)	{ return (this->*CDerivedStats_UnmarshalTemplate)(cds, nSize); }
 char CDerivedStats::GetEffectiveClericLevel(unsigned char nClass)				{ return (this->*CDerivedStats_GetEffectiveClericLevel)(nClass); }

@@ -12,10 +12,10 @@
 
 struct CVidPolySurface;
 
-typedef unsigned int ARGB; //[ALPHA.RED.GREEN.BLUE]
+typedef unsigned int ABGR; //[ALPHA.RED.GREEN.BLUE]
 
-extern const ARGB* g_pColorRangeArray;
-extern const ARGB g_ColorDefaultText;
+extern const ABGR* g_pColorRangeArray;
+extern const ABGR g_ColorDefaultText;
 
 struct CVidPolySurface { //Size 24h
 	CVidPolySurface* pSurfacePrev; //0h
@@ -43,7 +43,7 @@ struct CVidPoly { //Size 14h?
 
 struct VidPal { //Size 24h
 //Constructor: 0x9F3640
-	void SetFxPaletteNo3d(ARGB* pPalette, int nBitsPerPixel, unsigned int dwFlags, int dwAlpha, BOOL bIgnoreBrighten);
+	void SetFxPaletteNo3d(ABGR* pPalette, int nBitsPerPixel, unsigned int dwFlags, int dwAlpha, BOOL bIgnoreBrighten);
 
 	int* u0; //pRgbColor + nChitinUpdates?, gets an element from the palette
 	int u4; //an alternative palette?
@@ -66,35 +66,36 @@ struct VidPal { //Size 24h
 	char u23; //pad
 };
 
-extern void (VidPal::*VidPal_SetFxPaletteNo3d)(ARGB*, int, unsigned int, int, BOOL);
+extern void (VidPal::*VidPal_SetFxPaletteNo3d)(ABGR*, int, unsigned int, int, BOOL);
 
 struct CVid : public VidPal { //Size 9Ch
 //Constructor: 0x9C97F0
 //vtable: NULL
+//Note: due to virtual table, CVid offsets add 4h
 	struct CColorSettings {
 		//for TYPE_SET palette (also used for TYPE_RANGE)
-		ARGB u24; //00ffffff, [A.R.G.B] lightmask
-		int u28; //some brightness value to multiply
-		ARGB u2c; //gammargb?, RGB value based on char 0xAB9AF6 (3)
+		ABGR m_rgbLightMask; //24h
+		int m_brightness; //28h, some brightness value to multiply
+		ABGR m_rgbGamma; //2ch, RGB value based on char 0xAB9AF6 (3)
 
 		//for TYPE_RANGE palette; 7 colors for each range set
 		//lightmask
-		ARGB u30[7];
+		ABGR* u30[7];
 		char u4c[7]; //adjustments if not 1
 
 		char u53; //pad
 
 		//brightness
-		int u54[7];
+		ABGR* u54[7];
 		char u70[7];
 
 		char u77; //pad
 
 		//gamma
-		ARGB u78[7];
+		ABGR* u78[7];
 		char u94[7];
 
-		char u9b;
+		char m_nColorRangeBitfield; //bits 0-7 for each nRangeId set
 	} m_ColorSettings;
 };
 
@@ -153,7 +154,7 @@ struct CTilesetBase : public CVid { //Size A4h
 struct CTileset { //Size B8h
 //Constructor: 0x6C1450
 	int u0; //brightness
-	ARGB u4; //ARGB lightmask, obtained from CInfinity.u1b8
+	ABGR u4; //ABGR lightmask, obtained from CInfinity.u1b8
 	CTilesetBase u8;
 	int uac;
 	int* pArray; //b0h, ptrs to CObjects (0x72h size; inherits from ResTis, constructor 0x6C283C)
@@ -185,8 +186,8 @@ public:
 	short u4e2;
 	short wAscent; //4e4h
 	short wHeight; //4e6h
-	ARGB colGreyText; //4e8h
-	ARGB colText; //4ech
+	ABGR colGreyText; //4e8h
+	ABGR colText; //4ech
 	int u4f0;
 	int u4f4;
 	int u4f8;
@@ -208,7 +209,7 @@ public:
 	int u1c; //dwColorSpaceLowValue, ff00
 	int u20; //dwColorSpaceHighValue, ff0000
 
-	ARGB u24; //RgbTriple lightmask for wallgroup obscured animations, normally [0.0.0]
+	ABGR u24; //RgbTriple lightmask for wallgroup obscured animations, normally [0.0.0]
 
 #ifdef _DEBUG
 	_CCriticalSection ccs; //28h, for access to 8h, 8ah, 8eh
@@ -239,7 +240,7 @@ public:
 	//2 = SURFACE_FX
 	//3 = SURFACE_MIRROR_FX
 
-	ARGB ua4; //Color Correction light mask, copied from CInfinity.u1b8
+	ABGR ua4; //Color Correction light mask, copied from CInfinity.u1b8
 		
 	//colors adjusted by 255 - (255-brightness)*(255-color)/256
 	//essentially addition with capping at 255
@@ -378,7 +379,7 @@ struct CSelectionCircle { //Size 24h
 	short wHighlights; //2h, number of times pizza look is requested
 	char u4;
 	char u5;
-	ARGB rgbCircle; //6h, for unbroken circle
+	ABGR rgbCircle; //6h, for unbroken circle
 	int ua;
 	int ue;
 	short u12;

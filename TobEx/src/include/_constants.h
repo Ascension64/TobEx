@@ -257,7 +257,7 @@
 //0xAA6DDC, ch (CMessageClearAllActions)
 //0xAA6E14, eh, W
 //0xAA6E4C, 12h, DW, unsigned char, unsigned char
-//0xAA6E68, 1ah, ResRef sound, unsigned char channel, unsigned char, int (CMessagePlaySound) //Constructor: 0x5684E0
+//! 0xAA6E68 CMessagePlaySound
 //0xAA6E84, 14h, DW, W, W
 //0xAA6EBC, 10h, DW
 //0xAA6ED8, eh, unsigned char
@@ -272,7 +272,7 @@
 //0xAA7334, 18h, CString sDialog, eTarget, int (CMessageLoadDialog)
 //0xAA7350, 10h, unsigned char, pad, W
 //0xAA736C, 14h, DW x, DW y (CMessageForceJump)
-//0xAA73DC, 16h, DW (bPrintToConsole), DW (bSaveTo62AE), unsigned char (sndtype+1), pad (CMessagePlaySoundset)
+//! 0xAA73DC, CMessagePlaySoundset
 //0xAA73F8, 1Ah, DW nStatedIdx, BYTE, pad, DW (CGameDialog 5ch), DW (CGameDialog 60h) (CMessageShowDialogueState)
 
 //0xAA99F4, 10h, dwDuration, CMessageTimeStop
@@ -347,7 +347,7 @@ f area_forest
 //0xAAB6E8, eh, unsigned char, pad
 //0xAAB704, ch
 //0xAAB720, ch (CMessagePrepareDialogue)
-//0xAAB758, ch
+//0xAAB758, ch (CMessageSetCreatureAnimationColors)
 //0xAAB7C8, ch
 //0xAAB81C, 10h, DW
 //0xAAB838, 14h, ResRef 

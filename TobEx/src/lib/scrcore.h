@@ -111,9 +111,17 @@ extern void (Object::*Object_GetClasses)(unsigned char*, unsigned char*);
 extern BOOL (Object::*Object_HasSubclass)(unsigned char, BOOL);
 
 struct Trigger { //Size 2Eh
-//Constructor: 430720h (3 args), 430180h (2 args)
+//Constructor: 430720h (3 args), 430810h (2 args)
 //Note: trigger opcodes (short) from AA5E68-AA5F66
 //BCS correlation: TR opcode, i, dwFlags, i2, u22, sName1, sName2, o TR
+
+	Trigger();
+
+	Trigger(short wOpcode, int i);
+	Trigger* Construct(short wOpcode, int i) { return this; } //dummy
+
+	Trigger* operator=(Trigger& t);
+	Trigger* OpEq(Trigger& t) { return this; } //dummy
 
 	short opcode; //0h
 	int i; //2h, gets Arg1 (I)
@@ -129,6 +137,9 @@ struct Trigger { //Size 2Eh
 	IECString sName2; //2ah, (S), second global
 };
 
+extern Trigger* (Trigger::*Trigger_Construct_2)(short, int);
+extern Trigger* (Trigger::*Trigger_OpEq)(Trigger&);
+
 struct Action { //Size 5Eh
 //Constructor: 0x405820
 //Note: action opcodes (short) from AA5980-AA5B32
@@ -139,6 +150,8 @@ public:
 
 	~Action();
 	void Deconstruct(void) {} //dummy
+
+	IECString GetSName1();
 
 	short opcode; //0h (A)
 	Object oOverride; //2h (O)
@@ -155,6 +168,7 @@ public:
 
 extern Action* (Action::*Action_Construct_0)(void);
 extern void (Action::*Action_Deconstruct)(void);
+extern IECString (Action::*Action_GetSName1)();
 
 struct Response { //Size 24h
 //Constructor: 0x416130

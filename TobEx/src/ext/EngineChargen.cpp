@@ -34,7 +34,7 @@ void (CCharGen::*Tramp_CCharGen_InitSoundset)(CCreatureObject&) =
 void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenKit& scroll = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "[DETOUR]CCharGen::KitPanelOnLoad(): Kit scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnLoad(): Kit scroll bar not found. Did you install the required WeiDU component?\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -56,7 +56,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre)
 void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenMageSpell& scroll = (CUIScrollBarChargenMageSpell&)panel.GetUIControl(31);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "[DETOUR]CCharGen::MageBookPanelOnLoad(): Chargen mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(): Chargen mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -76,7 +76,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 	scroll.nRows = 4;
 
 	if (pGameOptionsEx->bDebugVerbose) {
-		LPCTSTR lpsz = "[DETOUR]CCharGen::MageBookPanelOnLoad(): nMageSpells(%d), nScrollValues(%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(): nMageSpells(%d), nScrollValues(%d)\r\n";
 		console.write(lpsz, 2, MageBookSpells.GetCount(), max(scroll.nValues - scroll.nRows, 0));
 		L.timestamp();
 		L.append(lpsz, 2, MageBookSpells.GetCount(), scroll.nValues);
@@ -124,7 +124,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	if (&scrollKit == NULL ||
 		&option11 == NULL) {
-		LPCTSTR lpsz = "[DETOUR]CCharGen::KitPanelOnUpdate(): Kit selection scroll bar or button 11 not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(): Kit selection scroll bar or button 11 not found. Did you install the required WeiDU component?\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -484,7 +484,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	if (pGameOptionsEx->bDebugVerbose) {
 		
-		LPCTSTR lpsz = "[DETOUR]CCharGen::KitPanelOnUpdate(): nKits(%d), nScrollValues(%d), wKit(0x%X)\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(): nKits(%d), nScrollValues(%d), wKit(0x%X)\r\n";
 		console.write(lpsz, 3, Kit_Class_Race.nRows, max(scrollKit.nValues - scrollKit.nRows, 0), dwKit);
 		L.timestamp();
 		L.append(lpsz, 3, Kit_Class_Race.nRows, scrollKit.nValues, dwKit);
@@ -496,7 +496,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenMageSpell& scroll = (CUIScrollBarChargenMageSpell&)panel.GetUIControl(31);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "[DETOUR]CCharGen::MageBookPanelOnUpdate(): Chargen mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Chargen mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -511,7 +511,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		int i = nSliderCount - nPileCount;
 		while (i) {
 			if (MageBookSpells.IsEmpty()) {
-				LPCTSTR lpsz = "[DETOUR]CCharGen::MageBookPanelOnUpdate(): Mage book is empty\r\n";
+				LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Mage book is empty\r\n";
 				console.write(lpsz);
 				L.timestamp();
 				L.append(lpsz);
@@ -526,7 +526,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		int i = nPileCount - nSliderCount;
 		while (i) {
 			if (scroll.cplTempSpells.IsEmpty()) {
-				LPCTSTR lpsz = "[DETOUR]CCharGen::MageBookPanelOnUpdate(): Mage spell pile is empty\r\n";
+				LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Mage spell pile is empty\r\n";
 				console.write(lpsz);
 				L.timestamp();
 				L.append(lpsz);

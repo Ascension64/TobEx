@@ -80,6 +80,8 @@ struct CRuleTables { //Size 1DB0h
 	IECString GetRaceString(unsigned char nRace);
 	IECString GetAlignmentString(char align);
 	IECString GetClassString(unsigned char nClass, unsigned int dwKit);
+	int CalculateNewHPRule(CRuleTable& rule, int nLevelOld, int nLevelNew, int nMinRoll, int nDivisor, BOOL bOverrideSides, int nOverrideSides, BOOL bOverrideModifier, int nOverrideModifier);
+	int CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor);
 	ResRef GetMageSpellRef(int nSpellLevel, int nIndex);
 	STRREF GetCharSndStrRef(int dwCustom, int dwRow, char sex);
 	void GetDetailedClassString(char Class, unsigned int dwKit, unsigned int dwFlags, IECString& ptr, CCreatureObject& cre);
@@ -226,7 +228,15 @@ struct CRuleTables { //Size 1DB0h
 	CRuleTable CLABPR02; //13c8h
 	CRuleTable CLABPR03; //13ech
 	CRuleTable CLABPR04; //1410h
-	CRuleTable empty[9]; //1434h
+	CRuleTable CLABMA01; //1434h
+	CRuleTable CLABMA02; //1458h
+	CRuleTable CLABMA03; //147ch
+	CRuleTable CLABMA04; //14a0h
+	CRuleTable CLABMA05; //14c4h
+	CRuleTable CLABMA06; //14e8h
+	CRuleTable CLABMA07; //150ch
+	CRuleTable CLABMA08; //1530h
+	CRuleTable CLABMA09; //1554h
 	CRuleTable CLABMO01; //1578h
 	CRuleTable CLABFI05; //159ch
 	CRuleTable SPLAUTOP; //15c0h
@@ -265,6 +275,8 @@ extern void (CRuleTables::*CRuleTables_Deconstruct)();
 extern IECString (CRuleTables::*CRuleTables_GetRaceString)(unsigned char);
 extern IECString (CRuleTables::*CRuleTables_GetAlignmentString)(char);
 extern IECString (CRuleTables::*CRuleTables_GetClassString)(unsigned char, unsigned int);
+extern int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int);
+extern int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int);
 extern STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char);
 extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned int, unsigned int, IECString&, CCreatureObject&);
@@ -274,6 +286,7 @@ extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
+	short GetPartyMemberSlot(Enum e);
 	CArea& GetLoadedArea(IECString sAreaName);
 	void StorePartyLocations(BOOL);
 	
@@ -396,7 +409,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 
 	int u3738;
 	IECString u373c;
-	CVidBitmap u3740; //colour range palette
+	CVidBitmap m_colorRangePalette; //3740h
 	CGameObjectArrayHandler m_GameObjectArrayHandler; //37f6h
 	CGameRemoteObjectArrayHandler m_GameRemoteObjectArrayHandler; //3824h
 	char m_VisibleAreaIdx; //38b4h, index to loaded area array of the currently visible area
@@ -622,7 +635,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	short u4bc6;
 	Identifiers SVTRIOBJ; //4bc8h
 	int u4c08;
-	short u4c0c;
+	bool u4c0c; //when set, override script actions take precedence in party members (even if Continue())
+	char u4c0d; //pad
 	char u4c0e; //random number
 	ResRef u4c0f;
 	char u4c17;
@@ -686,6 +700,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4dc4; //? compared with CVisualEffectVidCell.u39c*/
 };
 
+extern short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum);
 extern CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString);
 extern void (CInfGame::*CInfGame_StorePartyLocations)(BOOL);
 

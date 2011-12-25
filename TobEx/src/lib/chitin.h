@@ -53,7 +53,7 @@ public:
 	virtual IECString GetChitinIcon() { return IECString("IDI_BIOWARE"); } //v3c, 0x43C8D0
 	virtual void v40(IECString* pStr) { pStr->operator =("Baldr"); return; } //Baldr (0xB77238)
 	virtual int GetResTypeId(IECString* pStr) { return 0; } //v44, returns CRES_TYPE ID based on filetype (compares file extension)
-	virtual IECString GetFileExtension(unsigned int nResTypeId) { return IECString(""); } //v48, returns IECString of filetype with CRES_TYPE ID
+	virtual IECString GetFileExtension(unsigned int nResTypeId, IECString* ptr) { return IECString(""); } //v48, returns IECString of filetype with CRES_TYPE ID
 	virtual void v4c() {} //0x9A68CB, CreateChitinWindow(), calls v54
 	virtual void v50() {} //returns Obj+6C66h
 	virtual void v54(HWND hWnd) {} //0x436C0B, ? InitDirectDraw InitDirectSound, calls vb4, vf4

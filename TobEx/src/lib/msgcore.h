@@ -135,8 +135,8 @@ public:
 
 	STRREF srOwner; //ch
 	STRREF srText; //10h
-	ARGB rgbOwner; //14h
-	ARGB rgbText; //18h
+	ABGR rgbOwner; //14h
+	ABGR rgbText; //18h
 	int u1c; //-1
 	char u20;
 	bool bFloatText; //21h
@@ -158,14 +158,123 @@ public:
 
 	IECString sLeft; //ch
 	IECString sRight; //10h
-	ARGB rgbLeft; //14h
-	ARGB rgbRight; //18h
+	ABGR rgbLeft; //14h
+	ABGR rgbRight; //18h
 	int u1c; //-1
 	char u20;
 	bool bFloatText; //21h
 	bool u22;
 	bool u23; //pad
 };
+
+class CMessagePlaySound : public CMessage { //Size 1Ah
+//Constructor: 0x5684E0
+public:
+	CMessagePlaySound();
+
+	CMessagePlaySound(ResRef rSound, int n, Enum eSource, Enum eTarget);
+	CMessagePlaySound* Construct(ResRef rSound, int n, Enum eSource, Enum eTarget) { return this; } //dummy
+
+	//AA6E68
+	virtual ~CMessagePlaySound(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	ResRef rSound; //ch
+	unsigned char nChannel; //14h
+	unsigned char u15;
+	int u16;
+};
+
+extern CMessagePlaySound* (CMessagePlaySound::*CMessagePlaySound_Construct_4)(ResRef, int, Enum, Enum);
+extern void (CMessagePlaySound::*CMessagePlaySound_Deconstruct)();
+extern short (CMessagePlaySound::*CMessagePlaySound_GetMsgType)(void);
+extern char (CMessagePlaySound::*CMessagePlaySound_GetNetworkType1)(void);
+extern char (CMessagePlaySound::*CMessagePlaySound_GetNetworkType2)(void);
+extern void (CMessagePlaySound::*CMessagePlaySound_Marshal)(void*, int*);
+extern BOOL (CMessagePlaySound::*CMessagePlaySound_Unmarshal)(void*, int*);
+extern void (CMessagePlaySound::*CMessagePlaySound_DoMessage)(void);
+
+//CMessagePlaySoundset
+#define SOUNDSET_INITIAL_MEETING		1
+#define SOUNDSET_MORALE					2
+#define SOUNDSET_HAPPY					3
+#define SOUNDSET_UNHAPPY_ANNOYED		4
+#define SOUNDSET_UNHAPPY_SERIOUS		5
+#define SOUNDSET_UNHAPPY_BREAKINGPOIINT	6
+#define SOUNDSET_LEADER					7
+#define SOUNDSET_TIRED					8
+#define SOUNDSET_BORED					9
+#define SOUNDSET_BATTLE_CRY				10
+#define SOUNDSET_ATTACK					11
+#define SOUNDSET_DAMAGE					12
+#define SOUNDSET_DYING					13
+#define SOUNDSET_HURT					14
+#define SOUNDSET_AREA_FOREST			15
+#define SOUNDSET_AREA_CITY				16
+#define SOUNDSET_AREA_DUNGEON			17
+#define SOUNDSET_AREA_DAY				18
+#define SOUNDSET_AREA_NIGHT				19
+#define SOUNDSET_SELECT_COMMON			20
+#define SOUNDSET_SELECT_COMMON_NOOPT	21
+#define SOUNDSET_SELECT_ACTION			22
+#define SOUNDSET_SELECT_RARE			23
+#define SOUNDSET_INTERACTION			24
+#define SOUNDSET_INSULT					25
+#define SOUNDSET_COMPLIMENT				26
+#define SOUNDSET_SPECIAL				27
+#define SOUNDSET_REACT_TO_DIE_GENERAL	28
+#define SOUNDSET_REACT_TO_DIE_SPECIFIC	29
+#define SOUNDSET_MISC_20				30
+#define SOUNDSET_RESPONSE_TO_COMPLIMENT	31
+#define SOUNDSET_RESPONSE_TO_INSULT		32
+#define SOUNDSET_DIALOG_HOSTILE			33
+#define SOUNDSET_DIALOG_DEFAULT			34
+#define SOUNDSET_EXISTANCE				35
+#define SOUNDSET_SELECT_RARE2			36
+#define SOUNDSET_CRITICAL_HIT			37
+#define SOUNDSET_CRITICAL_MISS			38
+#define SOUNDSET_TARGET_IMMUNE			39
+#define SOUNDSET_INVENTORY_FULL			40
+#define SOUNDSET_PICKED_POCKET			41
+#define SOUNDSET_EXISTANCE1				42
+#define SOUNDSET_EXISTANCE2				43
+#define SOUNDSET_EXISTANCE3				44
+
+class CMessagePlaySoundset : public CMessage { //Size 16h
+public:
+	//AA73DC
+	CMessagePlaySoundset();
+
+	virtual ~CMessagePlaySoundset(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	BOOL bPrintToConsole; //ch
+	BOOL bLimitLength; //10h
+	unsigned char nSoundIdx; //14h
+	char u15; //pad
+};
+
+extern void (CMessagePlaySoundset::*CMessagePlaySoundset_Deconstruct)();
+extern short (CMessagePlaySoundset::*CMessagePlaySoundset_GetMsgType)(void);
+extern char (CMessagePlaySoundset::*CMessagePlaySoundset_GetNetworkType1)(void);
+extern char (CMessagePlaySoundset::*CMessagePlaySoundset_GetNetworkType2)(void);
+extern void (CMessagePlaySoundset::*CMessagePlaySoundset_Marshal)(void*, int*);
+extern BOOL (CMessagePlaySoundset::*CMessagePlaySoundset_Unmarshal)(void*, int*);
+extern void (CMessagePlaySoundset::*CMessagePlaySoundset_DoMessage)(void);
 
 class CMessageRemoveAreaAirEffects : public CMessage { //Size 14h
 public:

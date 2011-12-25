@@ -70,6 +70,12 @@ IECString (CRuleTables::*CRuleTables_GetAlignmentString)(char) =
 	SetFP(static_cast<IECString (CRuleTables::*)(char)>										(&CRuleTables::GetAlignmentString),			0x62AEA4);
 IECString (CRuleTables::*CRuleTables_GetClassString)(unsigned char, unsigned int) =
 	SetFP(static_cast<IECString (CRuleTables::*)(unsigned char, unsigned int)>				(&CRuleTables::GetClassString),				0x62B072);
+int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int) =
+	SetFP(static_cast<int (CRuleTables::*)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int)>
+																							(&CRuleTables::CalculateNewHPRule),	0x630ED4);
+int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int) =
+	SetFP(static_cast<int (CRuleTables::*)(char, char, CDerivedStats&, CDerivedStats&, int, int)>
+																							(&CRuleTables::CalculateNewHPSubclass),	0x631055);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>									(&CRuleTables::GetMageSpellRef),			0x633691);
 STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char) =
@@ -89,6 +95,10 @@ CRuleTables::~CRuleTables() { (this->*CRuleTables_Deconstruct)(); }
 IECString CRuleTables::GetRaceString(unsigned char nRace) { return (this->*CRuleTables_GetRaceString)(nRace); }
 IECString CRuleTables::GetAlignmentString(char align) { return (this->*CRuleTables_GetAlignmentString)(align); }
 IECString CRuleTables::GetClassString(unsigned char nClass, unsigned int dwKit) { return (this->*CRuleTables_GetClassString)(nClass, dwKit); }
+int CRuleTables::CalculateNewHPRule(CRuleTable& rule, int nLevelOld, int nLevelNew, int nMinRoll, int nDivisor, BOOL bOverrideSides, int nOverrideSides, BOOL bOverrideModifier, int nOverrideModifier)
+	{ return (this->*CRuleTables_CalculateNewHPRule)(rule, nLevelOld, nLevelNew, nMinRoll, nDivisor, bOverrideSides, nOverrideSides, bOverrideModifier, nOverrideModifier); }
+int CRuleTables::CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor)
+	{ return (this->*CRuleTables_CalculateNewHPSubclass)(nClass, nSubclass, cdsOld, cdsNew, nMinRoll, nDivisor); }
 ResRef CRuleTables::GetMageSpellRef(int nSpellLevel, int nIndex) { return (this->*CRuleTables_GetMageSpellRef)(nSpellLevel, nIndex); }
 STRREF CRuleTables::GetCharSndStrRef(int dwCustom, int dwRow, char sex) { return (this->*CRuleTables_GetCharSndStrRef)(dwCustom, dwRow, sex); }
 void CRuleTables::GetDetailedClassString(char Class, unsigned int dwKit, unsigned int dwFlags, IECString& ptr, CCreatureObject& cre)
@@ -99,10 +109,13 @@ BOOL CRuleTables::IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace) {
 ResRef CRuleTables::GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) { return (this->*CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex); }
 
 //CInfGame
+short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum) =
+	SetFP(static_cast<short (CInfGame::*)(Enum)>			(&CInfGame::GetPartyMemberSlot),	0x69410C);
 CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString) =
 	SetFP(static_cast<CArea& (CInfGame::*)(IECString)>		(&CInfGame::GetLoadedArea),			0x69A7D4);
 void (CInfGame::*CInfGame_StorePartyLocations)(BOOL) =
 	SetFP(static_cast<void (CInfGame::*)(BOOL)>				(&CInfGame::StorePartyLocations),	0x6B7D93);
 
+short CInfGame::GetPartyMemberSlot(Enum e)				{ return (this->*CInfGame_GetPartyMemberSlot)(e); }
 CArea& CInfGame::GetLoadedArea(IECString sAreaName)		{ return (this->*CInfGame_GetLoadedArea)(sAreaName); }
 void CInfGame::StorePartyLocations(BOOL bUseSecondList)	{ return (this->*CInfGame_StorePartyLocations)(bUseSecondList); }

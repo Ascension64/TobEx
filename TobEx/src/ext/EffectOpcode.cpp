@@ -6,6 +6,7 @@
 #include "effopcode.h"
 #include "effcore.h"
 #include "engworld.h"
+#include "infcursor.h"
 #include "infgame.h"
 #include "msgcore.h"
 #include "options.h"
@@ -56,82 +57,6 @@ BOOL (CEffectAnimationRemoval::*Tramp_CEffectAnimationRemoval_ApplyEffect)(CCrea
 	SetFP(static_cast<BOOL (CEffectAnimationRemoval::*)(CCreatureObject&)>	(&CEffectAnimationRemoval::ApplyEffect),	0x549C0C);
 
 BOOL DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-
-	/*original function
-	switch (effect.nParam2) {
-	case 0: //add
-		if (effect.nTiming == 1) {
-			if (creTarget.m_BaseStats.numAttacks <= 5) {
-				creTarget.m_BaseStats.numAttacks += creTarget.m_BaseStats.numAttacks + effect.nParam1;
-				if (creTarget.m_BaseStats.numAttacks > 5) creTarget.m_BaseStats.numAttacks = 5;
-				if (creTarget.m_BaseStats.numAttacks < 0) creTarget.m_BaseStats.numAttacks = 0;
-			} else {
-				creTarget.m_BaseStats.numAttacks += creTarget.m_BaseStats.numAttacks + effect.nParam1;
-				if (creTarget.m_BaseStats.numAttacks > 10) creTarget.m_BaseStats.numAttacks = 10;
-				if (creTarget.m_BaseStats.numAttacks < 6) creTarget.m_BaseStats.numAttacks = 6;
-			}
-
-			bRefreshStats = TRUE;
-			bPurge = TRUE;
-		} else {
-			creTarget.cdsDiff.numAttacks += effect.nParam1;
-			bPurge = FALSE;
-		}
-		break;
-	case 1: //set
-		if (effect.nTiming == 1) {
-			creTarget.m_BaseStats.numAttacks = effect.nParam1;
-			if (creTarget.m_BaseStats.numAttacks > 10) creTarget.m_BaseStats.numAttacks = 10;
-			if (creTarget.m_BaseStats.numAttacks < 0) creTarget.m_BaseStats.numAttacks = 0;
-
-			bRefreshStats = TRUE;
-			bPurge = TRUE;
-		} else {
-			if (creTarget.cdsCurrent.numAttacks) {
-				creTarget.cdsCurrent.numAttacks = effect.nParam1;
-				if (creTarget.cdsCurrent.numAttacks > 10) creTarget.cdsCurrent.numAttacks = 10;
-				if (creTarget.cdsCurrent.numAttacks < 0) creTarget.cdsCurrent.numAttacks = 0;
-			}
-			bPurge = FALSE;
-		}
-		break;
-	case 2: //percent
-		if (effect.nTiming == 1) {
-			if (creTarget.m_BaseStats.numAttacks <= 5) {
-				creTarget.m_BaseStats.numAttacks = creTarget.m_BaseStats.numAttacks * effect.nParam1 / 100;
-				if (creTarget.m_BaseStats.numAttacks > 5) creTarget.m_BaseStats.numAttacks = 5;
-				if (creTarget.m_BaseStats.numAttacks < 0) creTarget.m_BaseStats.numAttacks = 0;
-				if (creTarget.m_BaseStats.numAttacks <= 1) creTarget.m_BaseStats.numAttacks = 1;
-			} else {
-				creTarget.m_BaseStats.numAttacks = (creTarget.m_BaseStats.numAttacks - 5) * effect.nParam1 / 100 + 5;
-				if (creTarget.m_BaseStats.numAttacks > 10) creTarget.m_BaseStats.numAttacks = 10;
-				if (creTarget.m_BaseStats.numAttacks < 6) creTarget.m_BaseStats.numAttacks = 6;
-				if (creTarget.m_BaseStats.numAttacks <= 1) creTarget.m_BaseStats.numAttacks = 1;
-			}
-			bRefreshStats = TRUE;
-			bPurge = TRUE;
-		} else {
-			if (creTarget.cdsCurrent.numAttacks <= 5) {
-				creTarget.cdsCurrent.numAttacks = creTarget.m_BaseStats.numAttacks * effect.nParam1 / 100;
-				if (creTarget.cdsCurrent.numAttacks > 5) creTarget.cdsCurrent.numAttacks = 5;
-				if (creTarget.cdsCurrent.numAttacks < 0) creTarget.cdsCurrent.numAttacks = 0;
-				if (creTarget.cdsCurrent.numAttacks <= 1) creTarget.cdsCurrent.numAttacks = 1;
-			} else {
-				creTarget.cdsCurrent.numAttacks = (creTarget.m_BaseStats.numAttacks - 5) * effect.nParam1 / 100 + 5;
-				if (creTarget.cdsCurrent.numAttacks > 10) creTarget.cdsCurrent.numAttacks = 10;
-				if (creTarget.cdsCurrent.numAttacks < 6) creTarget.cdsCurrent.numAttacks = 6;
-				if (creTarget.cdsCurrent.numAttacks <= 1) creTarget.cdsCurrent.numAttacks = 1;
-			}
-			bPurge = FALSE;
-		}
-		break;
-	default:
-		assert(FALSE);
-		break;
-	}
-
-	return TRUE;*/
-
 	switch (effect.nParam2) {
 	case 0: //add
 		if (effect.nTiming == 1) {
@@ -182,7 +107,7 @@ BOOL DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(CCreatureObject& creTa
 		}
 		break;
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectAttacksPerRoundMod::ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
 		console.write(lpsz, 1, effect.nParam2);
 		L.timestamp();
 		L.append(lpsz, 1, effect.nParam2);
@@ -194,14 +119,453 @@ BOOL DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(CCreatureObject& creTa
 }
 
 BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-	(this->*Tramp_CEffectDamage_ApplyEffect)(creTarget);
+	if (!pGameOptionsEx->bEffApplyConcCheckDamage &&
+		!pGameOptionsEx->bEffDamageFix &&
+		!pGameOptionsEx->bEffNoDamageNoSpellInterrupt) {
 
-	//CEffectAwaken::ApplyEffect(creTarget)
-	creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
-	creTarget.cdsCurrent.stateFlags &= ~STATE_SLEEPING;
-	creTarget.m_EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
-	creTarget.m_EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsMain.posItrPrev, -1, ResRef(), FALSE);
+		(this->*CEffectDamage_ApplyEffect)(creTarget);
+		
+		if (pGameOptionsEx->bEffDamageAwaken) {
+			creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
+			creTarget.cdsCurrent.stateFlags &= ~STATE_SLEEPING;
+			creTarget.m_EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
+			creTarget.m_EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsMain.posItrPrev, -1, ResRef(), FALSE);
+		}
 
+		return TRUE;
+	}
+
+	if (creTarget.m_bUnmarshalling) return TRUE;
+
+	creTarget.m_bResetAnimationColors = TRUE;
+	int nPrevHP = creTarget.m_BaseStats.currentHP;
+	
+	CAnimation* pAnimation = creTarget.m_animation.pAnimation;
+	if (pAnimation == NULL) {
+		LPCTSTR lpsz = "DETOUR_CEffectDamage::DETOUR_ApplyEffect(): pAnimation == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+		bPurge = TRUE;
+		return TRUE;
+	}
+	if (pAnimation->IsImmuneToDamage()) {
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	BOOL bCheckSlayerChange;
+	if (g_pChitin->pGame->u44c0 <= 0) {
+		if (g_pChitin->pWorld->u1230 &&
+			g_pChitin->pWorld->u1234 <= 0) {
+			bCheckSlayerChange = TRUE;
+		} else {
+			bCheckSlayerChange = FALSE;
+		}
+		bCheckSlayerChange = TRUE;
+	}
+
+	if (bCheckSlayerChange) {
+		if (effect.rParentResource == "SPIN823") {
+			bPurge = TRUE;
+			return TRUE;
+		}
+	}
+
+	short wOrient;
+	if (eSource == ENUM_INVALID_INDEX) {
+		wOrient = creTarget.GetOrientationTo(effect.ptSource);
+	} else {
+		CCreatureObject* pCre;
+		char nReturnVal;
+		do {
+			nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eSource, THREAD_ASYNCH, &pCre, INFINITE);
+		} while (nReturnVal == OBJECT_SHARING || nReturnVal == OBJECT_DENYING);
+
+		if (nReturnVal == OBJECT_SUCCESS) {
+			wOrient = creTarget.GetOrientationTo(pCre->m_currentLoc);
+			nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eSource, THREAD_ASYNCH, INFINITE);
+		} else {
+			wOrient = 0;
+		}
+	}
+
+	if (creTarget.m_BaseStats.stateFlags & STATE_STONE_DEATH) {
+		CEffectInstantDeath* pEff = IENew CEffectInstantDeath();
+		pEff->effect.ptSource = effect.ptSource;
+		pEff->eSource = eSource;
+		pEff->enum2 = enum2;
+		pEff->effect.nParam2 = EFFECTINSTANTDEATH_TYPE_STONE_EXPLODE;
+		creTarget.ApplyEffect(*pEff, 1, TRUE, TRUE);
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	if (creTarget.m_BaseStats.stateFlags & STATE_FROZEN_DEATH) {
+		CEffectInstantDeath* pEff = IENew CEffectInstantDeath();
+		pEff->effect.ptSource = effect.ptSource;
+		pEff->eSource = eSource;
+		pEff->enum2 = enum2;
+		pEff->effect.nParam2 = EFFECTINSTANTDEATH_TYPE_FROZEN_EXPLODE;
+		creTarget.ApplyEffect(*pEff, 1, TRUE, TRUE);
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	if (creTarget.m_BaseStats.currentHP <= -10 ||
+		creTarget.m_BaseStats.stateFlags & STATE_DEAD) {
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	int nDamageAmount = 0;
+	for (int i = 0; i < effect.nDice; i++) {
+		nDamageAmount += DieRoll(effect.nDieSides, -creTarget.cdsPrevious.luck) + 1;
+	}
+	effect.nParam1 += nDamageAmount;
+	
+	BOOL bBaseDamageDone = (BOOL)effect.nParam1;
+	short wAnimSeq = creTarget.wCurrentSequenceSimplified;
+
+	int nDamageType = effect.nParam2 & 0xFFFF0000;
+	int nDamageBehavior = effect.nParam2 & 0xFFFF;
+
+	if (nDamageBehavior == EFFECTDAMAGE_BEHAVIOR_NORMAL) {
+		switch (nDamageType) {
+		case DAMAGETYPE_ACID:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistAcid / 100;
+			break;
+		case DAMAGETYPE_COLD:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistCold / 100;
+			break;
+		case DAMAGETYPE_CRUSHING:
+		case DAMAGETYPE_FIST:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistCrushing / 100;
+			break;
+		case DAMAGETYPE_PIERCING:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistPiercing / 100;
+			break;
+		case DAMAGETYPE_SLASHING:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistSlashing / 100;
+			break;
+		case DAMAGETYPE_ELECTRICITY:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistElectricity / 100;
+			break;
+		case DAMAGETYPE_FIRE:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistFire / 100;
+			break;
+		case DAMAGETYPE_POISON:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistPoison / 100;
+			break;
+		case DAMAGETYPE_MAGIC:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMagic / 100;
+			break;
+		case DAMAGETYPE_MISSILE:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMissile / 100;
+			break;
+		case DAMAGETYPE_MAGICFIRE:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMagicFire / 100;
+			break;
+		case DAMAGETYPE_MAGICCOLD:
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMagicCold / 100;
+			break;
+		default:
+			break;
+		}
+
+		if (g_pChitin->pGame->GetPartyMemberSlot(creTarget.e) != -1) {
+			if (g_pChitin->cNetwork.bSessionOpen) {
+				effect.nParam1 -= effect.nParam1 * g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier / 100;
+			} else {
+				effect.nParam1 -= effect.nParam1 * g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier / 100;
+			}
+			
+			if (effect.nParam1 > creTarget.cdsPrevious.maxHP &&
+				creTarget.cdsPrevious.maxHP < 14) {
+				effect.nParam1 = creTarget.cdsPrevious.maxHP - 1;
+			}
+		}
+
+	}
+
+	BOOL bPreviousSpellInterruptState = creTarget.m_bInterruptSpellcasting;
+	creTarget.m_bInterruptSpellcasting = TRUE;
+
+	if (pGameOptionsEx->bEffApplyConcCheckDamage) {
+		int nBaseDifficulty = 0;
+		int nLevelMod = 0;
+
+		if (creTarget.m_bCastingSpell &&
+			(creTarget.aCurrent.opcode == ACTION_SPELL || creTarget.aCurrent.opcode == ACTION_SPELL_NO_DEC)) {
+			IECString sSpell;
+			if (creTarget.aCurrent.GetSName1().IsEmpty()) {
+				creTarget.GetSpellIdsName(creTarget.aCurrent.i, &sSpell);
+			} else {
+				sSpell = creTarget.aCurrent.GetSName1();
+			}
+	
+			ResSplContainer resSpell;
+			resSpell.LoadResource(ResRef(sSpell), TRUE, TRUE);
+			if (resSpell.bLoaded &&
+				resSpell.name.IsNotEmpty()) {
+				nLevelMod = resSpell.GetSpellLevel();
+			}
+			resSpell.Unload();
+		}
+
+		int nDifficulty = nBaseDifficulty + nLevelMod + effect.nParam1;
+		int nRoll = DieRoll(20, creTarget.cdsPrevious.luck);
+		if (nRoll >= nDifficulty) { //if pass
+			creTarget.m_bInterruptSpellcasting = bPreviousSpellInterruptState;
+		}
+	}
+
+	if (pGameOptionsEx->bEffNoDamageNoSpellInterrupt) {
+		if (nDamageBehavior == EFFECTDAMAGE_BEHAVIOR_NORMAL &&
+			effect.nParam1 <= 0) {
+			creTarget.m_bInterruptSpellcasting = bPreviousSpellInterruptState;
+		}
+	}
+
+	if (creTarget.ePuppet != ENUM_INVALID_INDEX) {
+		Enum ePuppet = creTarget.ePuppet;
+		CCreatureObject* pCrePuppet;
+		char nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(ePuppet, THREAD_ASYNCH, &pCrePuppet, INFINITE);
+		if (nReturnVal == OBJECT_SUCCESS) {
+			creTarget.ePuppet = ENUM_INVALID_INDEX;
+			pCrePuppet->m_bRemoveFromArea = TRUE;
+			nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(ePuppet, THREAD_ASYNCH, INFINITE);
+		}
+		creTarget.u36d0 = TRUE;
+	}
+
+	if (nDamageType == DAMAGETYPE_POISON) {
+		if (creTarget.m_wPoisonTimer <= 0) {
+			creTarget.m_wPoisonTimer = 100;
+			CMessagePlaySoundset* pMsg = IENew CMessagePlaySoundset();
+			pMsg->eTarget = creTarget.e;
+			pMsg->eSource = creTarget.e;
+			pMsg->nSoundIdx = SOUNDSET_DAMAGE;
+			pMsg->bPrintToConsole = TRUE;
+			pMsg->bLimitLength = TRUE;
+			g_pChitin->messages.Send(*pMsg, FALSE);
+		}
+	} else {
+		if (bBaseDamageDone) {
+			CMessagePlaySoundset* pMsg = IENew CMessagePlaySoundset();
+			pMsg->eTarget = creTarget.e;
+			pMsg->eSource = creTarget.e;
+			pMsg->nSoundIdx = SOUNDSET_DAMAGE;
+			pMsg->bPrintToConsole = TRUE;
+			pMsg->bLimitLength = TRUE;
+			g_pChitin->messages.Send(*pMsg, FALSE);
+		}
+	}
+
+	switch (nDamageBehavior) {
+	case EFFECTDAMAGE_BEHAVIOR_NORMAL:
+		if (bBaseDamageDone) PrintEffectTextOnApply(creTarget);
+		if (effect.nParam1 > 0) {
+			Trigger tTookDamage(TRIGGER_TOOK_DAMAGE, effect.nParam1);
+			CMessageSetTrigger* pMsg = IENew CMessageSetTrigger();
+			pMsg->eTarget = creTarget.e;
+			pMsg->eSource = creTarget.e;
+			pMsg->t = tTookDamage;
+			g_pChitin->messages.Send(*pMsg, FALSE);
+		}
+		creTarget.m_BaseStats.currentHP -= effect.nParam1;
+		break;
+	case EFFECTDAMAGE_BEHAVIOR_SETVALUE:
+		creTarget.m_BaseStats.currentHP = creTarget.cdsPrevious.maxHP < effect.nParam1 ? effect.nParam1 : creTarget.cdsPrevious.maxHP;
+		break;
+	case EFFECTDAMAGE_BEHAVIOR_SETPERCENT:
+		creTarget.m_BaseStats.currentHP = creTarget.m_BaseStats.currentHP * effect.nParam1 / 100;
+		break;
+	case EFFECTDAMAGE_BEHAVIOR_LOSEPERCENT:
+		creTarget.m_BaseStats.currentHP -= creTarget.cdsPrevious.maxHP * effect.nParam1 / 100;
+		break;
+	default:
+		break;
+	}
+
+	creTarget.m_bShowDamageArrow = TRUE;
+	creTarget.m_wDamagePortraitFlashTimer = 128;
+	creTarget.m_wDamageArrowTimer = 128;
+
+	if (g_pChitin->pCursor->nCurrentCursorIdx == CURSOR_TOOLTIP_SCROLL &&
+		creTarget.pArea != NULL &&
+		creTarget.pArea->eDamageLocatorTarget == creTarget.e &&
+		g_pChitin->pGame->GetPartyMemberSlot(creTarget.e) != -1) {
+		creTarget.UpdateHPStatusTooltip(*g_pChitin->pCursor->pCtrlTarget);
+	}
+
+	PlayHitSound(nDamageType, creTarget);
+
+	switch (nDamageType) {
+	case DAMAGETYPE_PIERCING:
+	case DAMAGETYPE_CRUSHING:
+	case DAMAGETYPE_SLASHING:
+	case DAMAGETYPE_MISSILE:
+		if (nPrevHP - creTarget.m_BaseStats.currentHP < 6) {
+			creTarget.CreateGore(0, wOrient, PARTICLETYPE_BLOOD_SMALL);
+		} else {
+			creTarget.CreateGore(0, wOrient, PARTICLETYPE_BLOOD_MEDIUM);
+		}
+		break;
+	case DAMAGETYPE_COLD:
+		PlaySound(ResRef("HIT_06"), creTarget);
+		creTarget.StartSpriteEffect(GORETYPE_COLD, 0, (nPrevHP - creTarget.m_BaseStats.currentHP) * 3);
+		break;
+	case DAMAGETYPE_MAGICCOLD: //omitted in original code
+		if (pGameOptionsEx->bEffDamageFix) {
+			PlaySound(ResRef("HIT_06"), creTarget);
+			creTarget.StartSpriteEffect(GORETYPE_COLD, 0, (nPrevHP - creTarget.m_BaseStats.currentHP) * 3);
+		}
+		break;
+	case DAMAGETYPE_FIRE:
+	case DAMAGETYPE_MAGICFIRE:
+		PlaySound(ResRef("FIRE"), creTarget);
+		creTarget.StartSpriteEffect(GORETYPE_FIRE, 0, (nPrevHP - creTarget.m_BaseStats.currentHP) * 3);
+		break;
+	case DAMAGETYPE_ELECTRICITY:
+		PlaySound(ResRef("HIT_05"), creTarget);
+		creTarget.StartSpriteEffect(GORETYPE_SHOCK, 0, (nPrevHP - creTarget.m_BaseStats.currentHP) * 3);
+		break;
+	case DAMAGETYPE_MAGIC:
+		PlaySound(ResRef("HIT_07"), creTarget);
+		break;
+	default:
+		break;
+	}
+
+	if (wAnimSeq != SEQ_DAMAGE &&
+		wAnimSeq != SEQ_DIE &&
+		wAnimSeq != SEQ_TWITCH &&
+		wAnimSeq != SEQ_SLEEP) {
+		if (pGameOptionsEx->bEffNoDamageNoSpellInterrupt &&
+			nDamageBehavior == EFFECTDAMAGE_BEHAVIOR_NORMAL &&
+			effect.nParam1 <= 0 &&
+			(wAnimSeq == SEQ_CONJURE || wAnimSeq == SEQ_CAST)) {
+		} else {
+			creTarget.SetAnimationSequence(SEQ_DAMAGE);
+		}
+	}
+
+	if (creTarget.cdsPrevious.minHitPoints > 0 &&
+		creTarget.m_BaseStats.currentHP <= 0) {
+		creTarget.m_BaseStats.currentHP = creTarget.cdsPrevious.minHitPoints;
+	}
+
+	if (creTarget.m_BaseStats.currentHP <= 0) {
+		if (g_pChitin->pGame->GetPartyMemberSlot(creTarget.e) != -1 &&
+			creTarget.m_BaseStats.currentHP > -20) {
+			creTarget.m_BaseStats.currentHP = 0;
+		}
+		CEffectInstantDeath* pEff = IENew CEffectInstantDeath();
+		pEff->eSource = eSource;
+		pEff->enum2 = enum2;
+
+		switch (nDamageType) {
+		case DAMAGETYPE_FIST:
+			{
+			operator delete(pEff, 0);
+			pEff = NULL;
+			ITEM_EFFECT* pIF = IENew ITEM_EFFECT();
+			CreateItemEffect(*pIF, CEFFECT_OPCODE_UNCONSCIOUSNESS);
+			pIF->timing = 0;
+			pIF->duration = (1 - creTarget.m_BaseStats.currentHP) * 15;
+			POINT ptSrc;
+			ptSrc.x = -1;
+			ptSrc.y = -1;
+			POINT ptDest;
+			ptDest.x = -1;
+			ptDest.y = -1;
+
+			pEff = (CEffectInstantDeath*)&CreateEffect(*pIF, ptSrc, ENUM_INVALID_INDEX, ptDest, ENUM_INVALID_INDEX);
+			pEff->effect.ptSource = creTarget.m_currentLoc;
+			pEff->eSource = creTarget.e;
+			pEff->enum2 = ENUM_INVALID_INDEX;
+			pEff->effect.ptDest = effect.ptDest;
+			}
+			
+			creTarget.m_BaseStats.currentHP = 1;
+
+			break;
+		case DAMAGETYPE_ACID:
+			pEff->effect.nParam2 = creTarget.m_BaseStats.currentHP < -5 ? EFFECTINSTANTDEATH_TYPE_ACID : EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		case DAMAGETYPE_COLD:
+		case DAMAGETYPE_MAGICCOLD:
+			pEff->effect.nParam2 = creTarget.m_BaseStats.currentHP < -5 ? EFFECTINSTANTDEATH_TYPE_FROZEN : EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		case DAMAGETYPE_CRUSHING:
+		case DAMAGETYPE_PIERCING:
+		case DAMAGETYPE_SLASHING:
+			pEff->effect.nParam2 = creTarget.m_BaseStats.currentHP < -8 ? EFFECTINSTANTDEATH_TYPE_CHUNKED : EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		case DAMAGETYPE_ELECTRICITY:
+			pEff->effect.nParam2 = creTarget.m_BaseStats.currentHP < -5 ? EFFECTINSTANTDEATH_TYPE_ELECTRIC : EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		case DAMAGETYPE_FIRE:
+			pEff->effect.nParam2 = creTarget.m_BaseStats.currentHP < -5 ? EFFECTINSTANTDEATH_TYPE_BURNING : EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		case DAMAGETYPE_MAGICFIRE: //omitted in original code
+			if (pGameOptionsEx->bEffDamageFix) {
+				pEff->effect.nParam2 = creTarget.m_BaseStats.currentHP < -5 ? EFFECTINSTANTDEATH_TYPE_BURNING : EFFECTINSTANTDEATH_TYPE_NORMAL;
+				break;
+			}
+		case DAMAGETYPE_POISON:
+		case DAMAGETYPE_MAGIC:
+		case DAMAGETYPE_MISSILE:
+			pEff->effect.nParam2 = EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		default:
+			LPCTSTR lpsz = "DETOUR_CEffectDamage::DETOUR_ApplyEffect(): WEIRD damage\r\n";
+			L.timestamp();
+			L.append(lpsz);
+			console.write(lpsz);
+			pEff->effect.nParam2 = EFFECTINSTANTDEATH_TYPE_NORMAL;
+			break;
+		}
+
+		creTarget.ApplyEffect(*pEff, 1, TRUE, TRUE);
+	}
+
+	if (pGameOptionsEx->bEffDamageAwaken) {
+		creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
+		creTarget.cdsCurrent.stateFlags &= ~STATE_SLEEPING;
+		creTarget.m_EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
+		creTarget.m_EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsMain.posItrPrev, -1, ResRef(), FALSE);
+	}
+
+	int n = creTarget.cdsPrevious.maxHP < 1 ? 1 : creTarget.cdsPrevious.maxHP;
+	if (nPrevHP * 100 / n > *g_pHPHurtThresholdPercent &&
+		creTarget.m_BaseStats.currentHP * 100 / n < *g_pHPHurtThresholdPercent &&
+		creTarget.m_BaseStats.currentHP * 100 / n > 0) { //went from above threshold to below threshold
+		CMessagePlaySoundset* pMsg = IENew CMessagePlaySoundset();
+		pMsg->eTarget = creTarget.e;
+		pMsg->eSource = creTarget.e;
+		pMsg->nSoundIdx = SOUNDSET_HURT;
+		pMsg->bPrintToConsole = TRUE;
+		pMsg->bLimitLength = FALSE;
+		g_pChitin->messages.Send(*pMsg, FALSE);
+
+		creTarget.SetAutoPauseInfo(8);
+	} else if (creTarget.m_BaseStats.currentHP * 100 / n < *g_pHPHurtThresholdPercent &&
+		creTarget.m_BaseStats.currentHP * 100 / n > 0 &&
+		IERand() * 10 >> 15 == 0) { //was below threshold and still below threshold, with 1/16 chance
+		CMessagePlaySoundset* pMsg = IENew CMessagePlaySoundset();
+		pMsg->eTarget = creTarget.e;
+		pMsg->eSource = creTarget.e;
+		pMsg->nSoundIdx = SOUNDSET_HURT;
+		pMsg->bPrintToConsole = TRUE;
+		pMsg->bLimitLength = FALSE;
+		g_pChitin->messages.Send(*pMsg, FALSE);
+
+		creTarget.SetAutoPauseInfo(8);
+	}
+
+	bPurge = TRUE;
 	return TRUE;
 };
 
@@ -250,7 +614,7 @@ BOOL DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	case 3: //IWD1/P&P Cat's Grace spell
 		if (!pRuleEx->m_ClassSpellAbility.m_2da.bLoaded) {
-			LPCTSTR lpsz = "[DETOUR]CEffectDexterityMod::ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+			LPCTSTR lpsz = "DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
 			console.write(lpsz, 1, effect.nParam2);
 			L.timestamp();
 			L.append(lpsz, 1, effect.nParam2);
@@ -292,7 +656,7 @@ BOOL DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		}
 		break;
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectDexterityMod::ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
 		console.write(lpsz, 1, effect.nParam2);
 		L.timestamp();
 		L.append(lpsz, 1, effect.nParam2);
@@ -355,7 +719,7 @@ BOOL DETOUR_CEffectPoison::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		pRepeat->wSecondsElapsed = (g_pChitin->pGame->m_WorldTimer.nGameTime - nTicksBegan) / 15 % pRepeat->wPeriod;
 		break;
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectPoison::ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectPoison::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
 		console.write(lpsz, 1, wParam2Low);
 		L.timestamp();
 		L.append(lpsz, 1, wParam2Low);
@@ -399,55 +763,6 @@ BOOL DETOUR_CEffectMageMemSpellMod::DETOUR_ApplyEffect(CCreatureObject& creTarge
 };
 
 BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-	/*original function
-	switch (effect.nParam2) {
-	case 0: //sum
-		if (effect.nTiming == 1) {
-			creTarget.m_BaseStats.strength += effect.nParam1;
-			creTarget.m_BaseStats.strength = min(creTarget.m_BaseStats.strength, 25);
-			creTarget.m_BaseStats.strength = max(creTarget.m_BaseStats.strength, 0);
-			bRefreshStats = TRUE;
-			bPurge = TRUE;
-		} else {
-			creTarget.cdsDiff.strength += effect.nParam1;
-			bPurge = FALSE;
-		}
-		break;
-	case 1: //set
-		if (effect.nTiming == 1) {
-			creTarget.m_BaseStats.strength = effect.nParam1;
-			creTarget.m_BaseStats.strength = min(creTarget.m_BaseStats.strength, 25);
-			creTarget.m_BaseStats.strength = max(creTarget.m_BaseStats.strength, 0);
-			bRefreshStats = TRUE;
-			bPurge = TRUE;
-		} else {
-			creTarget.cdsCurrent.strength = effect.nParam1;
-			creTarget.cdsCurrent.strength = min(creTarget.cdsCurrent.strength, 25);
-			creTarget.cdsCurrent.strength = max(creTarget.cdsCurrent.strength, 0);
-			bPurge = FALSE;
-		}
-		break;
-	case 2:	//percentage
-		if (effect.nTiming == 1) {
-			creTarget.m_BaseStats.strength = creTarget.m_BaseStats.strength * effect.nParam1 / 100;
-			creTarget.m_BaseStats.strength = min(creTarget.m_BaseStats.strength, 25);
-			creTarget.m_BaseStats.strength = max(creTarget.m_BaseStats.strength, 0);
-			bRefreshStats = TRUE;
-			bPurge = TRUE;
-		} else {
-			creTarget.cdsCurrent.strength = creTarget.cdsCurrent.strength * effect.nParam1 / 100;
-			creTarget.cdsCurrent.strength = min(creTarget.cdsCurrent.strength, 25);
-			creTarget.cdsCurrent.strength = max(creTarget.cdsCurrent.strength, 0);
-			bPurge = FALSE;
-		}
-		break;
-	default:
-		assert(FALSE);
-		break;
-	}
-	
-	return TRUE;*/
-
 	switch (effect.nParam2) {
 	case 0: //sum
 		{
@@ -505,7 +820,7 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	case 3: //IWD1/P&P Strength Spell
 		if (!pRuleEx->m_ClassSpellAbility.m_2da.bLoaded) {
-			LPCTSTR lpsz = "[DETOUR]CEffectStrengthMod::ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+			LPCTSTR lpsz = "DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
 			console.write(lpsz, 1, effect.nParam2);
 			L.timestamp();
 			L.append(lpsz, 1, effect.nParam2);
@@ -570,7 +885,7 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		}
 		break;
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectStrengthMod::ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
 		console.write(lpsz, 1, effect.nParam2);
 		L.timestamp();
 		L.append(lpsz, 1, effect.nParam2);
@@ -582,58 +897,6 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 }
 
 BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-
-	/*original function
-	char nRand;
-
-	switch (effect.nParam2) {
-	case 0:
-		creTarget.m_EffectsMain.TryDispel(creTarget, creTarget.m_EffectsMain.posItrPrev, TRUE, FALSE, 0, 0);
-		creTarget.m_EffectsEquipped.TryDispel(creTarget, creTarget.m_EffectsEquipped.posItrPrev, TRUE, FALSE, 0, 0);
-		creTarget.UnequipAll(TRUE);
-		CCreatureObject::RemoveItem(creTarget, SLOT_MISC19);
-		creTarget.EquipAll(TRUE);
-		creTarget.u36dc = TRUE;
-		creTarget.u36e0 = TRUE;
-		creTarget.u36e4 = TRUE;
-
-		bRefreshStats = TRUE;
-		break;
-
-	case 1:
-		nRand = IERand() * 100 >> 15;
-		creTarget.m_EffectsMain.TryDispel(creTarget, creTarget.m_EffectsMain.posItrPrev, TRUE, TRUE, nRand, effect.nSourceCreLevel);
-		creTarget.m_EffectsEquipped.TryDispel(creTarget, creTarget.m_EffectsEquipped.posItrPrev, TRUE, TRUE, nRand, effect.nSourceCreLevel);
-
-		creTarget.UnequipAll(TRUE);
-		CCreatureObject::RemoveItem(creTarget, SLOT_MISC19);
-		creTarget.EquipAll(TRUE);
-		creTarget.u36dc = TRUE;
-		creTarget.u36e0 = TRUE;
-		creTarget.u36e4 = TRUE;
-
-		bRefreshStats = TRUE;
-		break;
-
-	default:
-		nRand = IERand() * 100 >> 15;
-		creTarget.m_EffectsMain.TryDispel(creTarget, creTarget.m_EffectsMain.posItrPrev, TRUE, TRUE, nRand, effect.nParam1);
-		creTarget.m_EffectsEquipped.TryDispel(creTarget, creTarget.m_EffectsEquipped.posItrPrev, TRUE, TRUE, nRand, effect.nParam1);
-
-		creTarget.UnequipAll(TRUE);
-		CCreatureObject::RemoveItem(creTarget, SLOT_MISC19);
-		creTarget.EquipAll(TRUE);
-		creTarget.u36dc = TRUE;
-		creTarget.u36e0 = TRUE;
-		creTarget.u36e4 = TRUE;
-
-		bRefreshStats = TRUE;
-		break;
-	}
-
-	bPurge = TRUE;
-	*/
-
 	int nParam2Low = effect.nParam2 & 0xFFFF;
 	int nParam2High = effect.nParam2 >> 16;
 	char nRand = IERand() * 100 >> 15;
@@ -702,7 +965,7 @@ BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.EquipAll(TRUE);
 	}
 
-	creTarget.u36dc = TRUE;
+	creTarget.m_bResetAnimationColors = TRUE;
 	creTarget.u36e0 = TRUE;
 	creTarget.u36e4 = TRUE;
 
@@ -743,21 +1006,6 @@ BOOL DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect(CCreatureObject& creTar
 };
 
 BOOL DETOUR_CEffectBlindness::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-
-	/*original function
-	if (timing == 1) {
-		//permanent
-		creTarget.m_BaseStats.stateFlags |= STATE_BLIND;
-		creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
-		creTarget.m_BaseStats.THAC0 -= (-10);
-		creTarget.cdsCurrent.THAC0 -= (-10);
-		bPurge = TRUE;
-	} else {
-		//limited
-		creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
-		creTarget.cdsCurrent.THAC0 -= (-10);
-	}*/
-
 	//Remove cumulative penalty
 	if (pGameOptionsEx->nEffBlindnessFix == 1) {
 		if (effect.nTiming == 1) {
@@ -885,7 +1133,7 @@ BOOL DETOUR_CEffectDisease::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.cdsCurrent.stateFlags &= STATE_SLOWED;
 		break;
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectDisease::ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectDisease::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
 		console.write(lpsz, 1, wParam2Low);
 		L.timestamp();
 		L.append(lpsz, 1, wParam2Low);
@@ -945,7 +1193,7 @@ BOOL DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		pRepeat->wSecondsElapsed = (g_pChitin->pGame->m_WorldTimer.nGameTime - nTicksBegan) / 15 % pRepeat->wPeriod;
 		break;
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectRegeneration::ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
 		console.write(lpsz, 1, wParam2Low);
 		L.timestamp();
 		L.append(lpsz, 1, wParam2Low);
@@ -959,21 +1207,6 @@ BOOL DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 }
 
 BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-
-	/*original function
-	switch (effect.nParam2) {
-		case 0:
-			//sum
-			creTarget.cdsCurrent.resistMagic += effect.nParam1;
-			break;
-		case 1:
-			//set
-			creTarget.cdsCurrent.resistMagic = effect.nParam1;
-			break;
-		default:
-			break;
-	}*/
-
 	switch (effect.nParam2) {
 		case 0:
 			//sum
@@ -1019,7 +1252,7 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 			}
 			break;
 		default:
-			LPCTSTR lpsz = "[DETOUR]CEffectMagicResistMod::ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+			LPCTSTR lpsz = "DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
 			console.write(lpsz, 1, effect.nParam2);
 			L.timestamp();
 			L.append(lpsz, 1, effect.nParam2);
@@ -1089,7 +1322,7 @@ BOOL DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	case 1:
 	default:
-		LPCTSTR lpsz = "[DETOUR]CEffectRepeatingEff::ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
 		console.write(lpsz, 1, wParam2Low);
 		L.timestamp();
 		L.append(lpsz, 1, wParam2Low);
@@ -1163,16 +1396,6 @@ BOOL DETOUR_CEffectDisintegrate::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 }
 
 BOOL DETOUR_CEffectRemoveProjectile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-	/*
-	CArea* pArea = creTarget.pArea;
-	if (pArea == NULL) return TRUE;
-	CMessageRemoveAreaAirEffects* pMsg = IENew CMessageRemoveAreaAirEffects();
-	pMsg->rAreaName = pArea->rAreaName;
-	g_pChitin->messages.Send(*pMsg, FALSE);
-	bPurge = 1;
-	return TRUE;
-	*/
-
 	CArea* pArea = creTarget.pArea;
 	if (pArea == NULL) return TRUE;
 	
@@ -1241,10 +1464,6 @@ BOOL DETOUR_CEffectCutScene2::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 }
 
 BOOL DETOUR_CEffectAnimationRemoval::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-	/*original function
-	creTarget.cdsCurrent.animationRemoval = effect.nParam2;
-	return TRUE;*/
-
 	DWORD nSize = pRuleEx->m_nStats - 200;
 
 	if (creTarget.cdsCurrent.animationRemoval) {
@@ -1264,7 +1483,7 @@ CEffectSetStat::CEffectSetStat(ITEM_EFFECT& data, POINT& ptSource, Enum eSource,
 	: CEffect(data, ptSource, eSource, destX, destY, bUseDice, e2) {}
 
 CEffect& CEffectSetStat::Duplicate() {
-	CEffectSetStat* pceff = new CEffectSetStat(ToItemEffect(), effect.ptSource, eSource, effect.nDestX, effect.nDestY, FALSE, ENUM_INVALID_INDEX);
+	CEffectSetStat* pceff = new CEffectSetStat(ToItemEffect(), effect.ptSource, eSource, effect.ptDest.x, effect.ptDest.y, FALSE, ENUM_INVALID_INDEX);
 	pceff->Unmarshal(effect);
 	return *pceff;
 }
@@ -1315,10 +1534,26 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 		pStatsEx[nOpcode - 200 - 1] *= effect.nParam1;
 		break;
 	case 4: //divide
-		pStatsEx[nOpcode - 200 - 1] /= effect.nParam1;
+		if (effect.nParam1 != 0) {
+			pStatsEx[nOpcode - 200 - 1] /= effect.nParam1;
+		} else {
+			LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to divide by zero\r\n";
+			L.timestamp();
+			L.append(lpsz, 1, nSize);
+			console.write(lpsz, 1, nSize);
+			return TRUE;
+		}
 		break;
 	case 5: //modulus
-		pStatsEx[nOpcode - 200 - 1] %= effect.nParam1;
+		if (effect.nParam1 != 0) {
+			pStatsEx[nOpcode - 200 - 1] %= effect.nParam1;
+		} else {
+			LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to divide by zero\r\n";
+			L.timestamp();
+			L.append(lpsz, 1, nSize);
+			console.write(lpsz, 1, nSize);
+			return TRUE;
+		}
 		break;
 	case 6: //logical and
 		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] && effect.nParam1;

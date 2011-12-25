@@ -6,6 +6,8 @@
 struct CGameOptionsEx {
 	CGameOptionsEx();
 
+	BOOL bActionAddKitFix;
+	BOOL bActionSpellTargetInvisConfig;
 	BOOL bActionEquipRangedFix;
 	
 	BOOL bDebugCriticalMsgBoxFix;
@@ -13,10 +15,12 @@ struct CGameOptionsEx {
 	BOOL bDebugLogDialogueBar;
 	BOOL bDebugLogFailures;
 	BOOL bDebugLogWarnings;
+	BOOL bDebugLogMissingRes;
 	BOOL bDebugLogMore;
 	BOOL bDebugRestoreCombatInfoText;
 	BOOL bDebugVerbose;
 
+	BOOL bEffApplyConcCheckDamage;
 	BOOL bEffApplyEffItemFix;
 	BOOL bEffApplyEffItemtypeFix;
 	BOOL bEffAttacksPerRoundFix;
@@ -27,6 +31,7 @@ struct CGameOptionsEx {
 	BOOL bEffDamageBypassMirrorImageConfig;
 	BOOL bEffDispelMagicalItemConfig;
 	BOOL bEffCureDrunkFix;
+	BOOL bEffDamageFix;
 	BOOL bEffStoneskinDisableColour;
 	BOOL bEffDiseaseFix;
 	BOOL bEffDisintegrateFix;
@@ -39,6 +44,7 @@ struct CGameOptionsEx {
 	BOOL bEffIWDPriestMemSpellMod;
 	BOOL bEffIWDStrengthMod;
 	BOOL bEffMagicResistFix;
+	BOOL bEffNoDamageNoSpellInterrupt;
 	BOOL bEffPoisonFix;
 	BOOL bEffRegenerationFix;
 	BOOL bEffRemoveProjectileMod;
@@ -50,17 +56,20 @@ struct CGameOptionsEx {
 	BOOL bEngineAllowEquipArmorCombat;
 	BOOL bEngineCastingLevelBonus;
 	BOOL bEngineAssBHPenaltyKit;
+	BOOL bEngineClericRangerHLAFix;
 	BOOL bEngineExperienceFix;
 	int nEngineContingencyTriggerDelay;
 	BOOL bEngineModifyEffectStacking;
 	BOOL bEngineDisableInvPauseSP;
 	BOOL bEngineCharmSilenceRemoval;
 	BOOL bEngineExpandedStats;
+	BOOL bEngineExternHPTables;
 	BOOL bEngineExternClassRaceRestrictions;
 	BOOL bEngineExternEncumbrance;
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;
+	BOOL bEngineTargetDeadFix;
 
 	BOOL bItemsBackstabRestrictionsConfig;
 	BOOL bItemsCriticalHitAversionConfig;

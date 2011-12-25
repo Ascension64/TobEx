@@ -84,7 +84,7 @@ struct CreFileData { //Size 268h
 	char stealth; //60h
 	char findTraps;
 	char pickPockets;
-	char fatigue;
+	char fatigueLimit; //63h, fatigue above this value results in fatigue
 	char intoxication;
 	char luck;
 	char BG1ProfLSword; //unused
@@ -228,8 +228,7 @@ struct EffFileData { //size 108h
 	ResRef rResource2; //68h
 	ResRef rResource3; //70h
 	POINT ptSource; //78h
-	int nDestX; //80h
-	int nDestY; //84h
+	POINT ptDest; //80h
 	int nParentResourceType; //88h, 0 = none, 1 = SPL, 2 = ITM
 	ResRef rParentResource; //8ch
 	unsigned int dwParentFlags; //94h, dwFlags of SplFileData or dwFlags of ItmFileAbility
@@ -237,7 +236,7 @@ struct EffFileData { //size 108h
 	int nParentItemSlot; //9ch
 	char variable[32]; //a0h
 	int nSourceCreLevel; //c0h
-	int uc8; //c4h
+	int uc8; //c4h, related to berserk modifier
 	int nType2; //c8h
 	int ud0[15]; //cch
 };

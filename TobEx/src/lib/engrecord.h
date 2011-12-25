@@ -25,7 +25,7 @@ public:
 	CPtrArray u456; //AAD7D0
 	int nThievingPointsRemaining; //46ah
 	int u46e[7];
-	char u48a;
+	char m_nSelectedDualClass; //48ah
 	char u48b; //pad
 	int u48c; //nSpellsRemaining, # spells remaining for sorcerer to choose
 	int u490;
@@ -57,7 +57,7 @@ public:
 	IECString sClassScript; //4fah
 	ResRef rPortraitSmall2; //4feh
 	ResRef rPortraitLarge2; //506h
-	short u50e; //wKit low/high?
+	short m_wSelectedDualClassKit; //50eh, wKit low
 	IECPtrList* m_pSounds; //510h, contains CStrings
 	ResRef rVoiceset; //514h
 	CreFileData* u51c; //m_pTempBaseStats
@@ -92,7 +92,7 @@ public:
 	BOOL bHighLevelAbility; //14f4h
 	int u14f8;
 	int u14fc;
-	char u1500;
+	char nHLAFlags; //1500h, bit4: allow cleric HLAs, bit5: allow mage HLAs
 	char u1501; //pad
 	
 	

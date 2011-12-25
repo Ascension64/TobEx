@@ -11,8 +11,8 @@ struct TextAreaEntry { //Size 20h
 	IECString sRight; //4h
 	POSITION posBoss; //8h
 	int ch; //ch
-	ARGB rgbLeft; //10h
-	ARGB rgbRight; //14h
+	ABGR rgbLeft; //10h
+	ABGR rgbRight; //14h
 	int nRows; //18h?
 	short u1c;
 	short u1e;
@@ -56,13 +56,13 @@ public:
 	short wTextLines; //a5ah
 	short wRowsCurrent; //a5ch
 	int nScrollBarId; //a5eh
-	ARGB rgbColor2; //a62h
-	ARGB rgbColor3; //a66h
-	ARGB rgbColor1; //a6ah
-	ARGB colSelected; //a6eh
+	ABGR rgbColor2; //a62h
+	ABGR rgbColor3; //a66h
+	ABGR rgbColor1; //a6ah
+	ABGR colSelected; //a6eh
 	POSITION posSelected; //a72h
-	ARGB colStoredRight; //a76h, stores old color of selected text
-	ARGB colStoredLeft; //a7ah, stores old color of selected text
+	ABGR colStoredRight; //a76h, stores old color of selected text
+	ABGR colStoredLeft; //a7ah, stores old color of selected text
 #ifdef _DEBUG
 	_CCriticalSection ua7e;
 #else
@@ -109,7 +109,7 @@ public:
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 	virtual BOOL NeedsRedraw(); //v58
 
-	void SetTextColors(ARGB colText, ARGB colGreyed); //v5c
+	void SetTextColors(ABGR colText, ABGR colGreyed); //v5c
 	void ClearText(IECString& s); //v60
 	IECString GetText(); //v64
 	void SetText(IECString& s); //v68
@@ -135,8 +135,8 @@ public:
 	char u85b;
 	short wRows; //85ch
 	short wMaxScrollValue; //85eh
-	ARGB colText; //860h
-	ARGB colGreyed; //864h
+	ABGR colText; //860h
+	ABGR colGreyed; //864h
 	int u868;
 	char u86c;
 	char u86d; //pad
@@ -161,7 +161,7 @@ extern void (CUITextField::*CUITextField_OnKeyPress)(short);
 extern void (CUITextField::*CUITextField_SetRedraw)();
 extern BOOL (CUITextField::*CUITextField_Redraw)(BOOL);
 extern BOOL (CUITextField::*CUITextField_NeedsRedraw)();
-extern void (CUITextField::*CUITextField_SetTextColors)(ARGB, ARGB);
+extern void (CUITextField::*CUITextField_SetTextColors)(ABGR, ABGR);
 extern void (CUITextField::*CUITextField_ClearText)(IECString&);
 extern IECString (CUITextField::*CUITextField_GetText)();
 extern void (CUITextField::*CUITextField_SetText)(IECString&);

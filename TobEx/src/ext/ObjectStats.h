@@ -11,8 +11,7 @@
 #define CDERIVEDSTATSEX_THIEFLEVEL				4
 #define CDERIVEDSTATSEX_DRUIDLEVEL				5
 #define CDERIVEDSTATSEX_RANGERLEVEL				6
-#define CDERIVEDSTATSEX_EFFECTIVEMAGELEVEL		7
-#define CDERIVEDSTATSEX_EFFECTIVECLERICLEVEL	8
+#define CDERIVEDSTATSEX_EFFECTIVECLERICLEVEL	7
 
 extern void (CConditionalSpellList::*Tramp_CConditionalSpellList_EvaluateTriggers)(CCreatureObject&);
 
@@ -53,5 +52,7 @@ void CDerivedStats_GetRealStrength(char strengthEffective, char& strength, char&
 char CDerivedStats_GetEffectiveStrengthSpell(char strength, char strengthEx);
 void CDerivedStats_GetRealStrengthSpell(char strengthEffective, char& strength, char& strengthEx);
 void CDerivedStats_SetStat(CDerivedStats& cds, short nOpcode, int nValue);
+char CDerivedStats_GetSubclassLevelNoAssertion(CDerivedStats& cds, char nClass, char nSubclass);
+char CDerivedStats_GetEffectiveClericLevelNoAssertion(CDerivedStats& cds, char nClass);
 
 #endif //OBJECTSTATS_H

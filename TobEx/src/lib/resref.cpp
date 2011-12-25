@@ -4,7 +4,7 @@
 
 //member function pointers
 ResRef* (ResRef::*ResRef_Construct_0)() =
-	SetFP(static_cast<ResRef* (ResRef::*)()>			(&ResRef::Construct),		0x999EC1);
+	SetFP(static_cast<ResRef* (ResRef::*)()>				(&ResRef::Construct),		0x999EC1);
 ResRef* (ResRef::*ResRef_Construct_1CString)(IECString&) =
 	SetFP(static_cast<ResRef* (ResRef::*)(IECString&)>		(&ResRef::Construct),		0x999ED9);
 ResRef* (ResRef::*ResRef_Construct_1LPTSTR)(LPTSTR) =
@@ -17,8 +17,8 @@ void (ResRef::*ResRef_NullSpaces)() =
 	SetFP(static_cast<void (ResRef::*)()>					(&ResRef::NullSpaces),		0x999F6C);	
 LPTSTR (ResRef::*ResRef_GetBuffer)() const =
 	SetFP(static_cast<LPTSTR (ResRef::*)() const>			(&ResRef::GetBuffer),		0x999FB3);
-IECString (ResRef::*ResRef_SafeToString)() =
-	SetFP(static_cast<IECString (ResRef::*)()>				(&ResRef::SafeToString),	0x999FC1);
+IECString (ResRef::*ResRef_FormatToString)() =
+	SetFP(static_cast<IECString (ResRef::*)()>				(&ResRef::FormatToString),	0x999FC1);
 BOOL (ResRef::*ResRef_IsNotEmpty)() =
 	SetFP(static_cast<BOOL (ResRef::*)()>					(&ResRef::IsNotEmpty),		0x99A040);
 void (ResRef::*ResRef_ToChar)(LPCTSTR) =
@@ -61,7 +61,7 @@ ResRef::~ResRef()								{}
 IECString ResRef::ToString()					{ return (this->*ResRef_ToString)(); }
 void ResRef::NullSpaces()						{ return (this->*ResRef_NullSpaces)(); }
 LPTSTR ResRef::GetBuffer() const				{ return (this->*ResRef_GetBuffer)(); }
-IECString ResRef::SafeToString()				{ return (this->*ResRef_SafeToString)(); }
+IECString ResRef::FormatToString()				{ return (this->*ResRef_FormatToString)(); }
 BOOL ResRef::IsNotEmpty()						{ return (this->*ResRef_IsNotEmpty)(); }
 void ResRef::ToChar(LPCTSTR sz)					{ return (this->*ResRef_ToChar)(sz); }
 BOOL ResRef::operator!=(ResRef& r)				{ return (this->*ResRef_OpNeq_ResRef)(r); }

@@ -13,6 +13,9 @@ CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)() =
 	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>									(&CRuleTables::Construct),					0x6213DC);
 void (CRuleTables::*Tramp_CRuleTables_Deconstruct)() =
 	SetFP(static_cast<void (CRuleTables::*)()>											(&CRuleTables::Deconstruct),				0x6279D1);
+int (CRuleTables::*Tramp_CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int) =
+	SetFP(static_cast<int (CRuleTables::*)(char, char, CDerivedStats&, CDerivedStats&, int, int)>
+																						(&CRuleTables::CalculateNewHPSubclass),		0x631055);
 ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRef)(int, int) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>								(&CRuleTables::GetMageSpellRef),			0x633691);
 int (CRuleTables::*Tramp_CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int) =
@@ -31,6 +34,70 @@ void DETOUR_CRuleTables::DETOUR_Deconstruct() {
 	delete pRuleEx;
 	pRuleEx = NULL;
 	return (this->*Tramp_CRuleTables_Deconstruct)();
+}
+
+int DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor) {
+	if (!pRuleEx->m_HPClass.m_2da.bLoaded ||
+		!pRuleEx->m_HPBarbarian.m_2da.bLoaded) {
+		return (this->*Tramp_CRuleTables_CalculateNewHPSubclass)(nClass, nSubclass, cdsOld, cdsNew, nMinRoll, nDivisor);
+	}
+
+	char nSubclassLevelOld = cdsOld.GetSubclassLevel(nClass, nSubclass);
+	char nSubclassLevelNew = cdsNew.GetSubclassLevel(nClass, nSubclass);
+
+	IECString sSubclass;
+	if (nSubclass == CLASS_FIGHTER) {
+		unsigned int nKitUnusableFlag = cdsNew.kit;
+		if (cdsNew.kit & KIT_TRUECLASS &&
+			cdsNew.kit & 0xBFFF) {
+			unsigned int dwKitOnly = cdsNew.kit & 0xBFFF;
+			int col = 6;
+			int row = dwKitOnly;
+
+			IECString sKitUnusableFlag;
+			if (col < KITLIST.nCols &&
+				row < KITLIST.nRows &&
+				col >= 0 &&
+				row >= 0) {
+				sKitUnusableFlag = *((KITLIST.pDataArray) + (KITLIST.nCols * row + col));
+			} else {
+				sKitUnusableFlag = KITLIST.defaultVal;
+			}
+
+			sscanf_s((LPCTSTR)sKitUnusableFlag, "%d", &nKitUnusableFlag);
+		}
+
+		if (nKitUnusableFlag == KIT_BARBARIAN) {
+			sSubclass = "BARBARIAN";
+		} else {
+			sSubclass = GetClassString(nSubclass, KIT_TRUECLASS);
+		}
+	} else {
+		sSubclass = GetClassString(nSubclass, KIT_TRUECLASS);
+	}
+
+	IECString sColName = "TABLE";
+	IECString sTable = pRuleEx->m_HPClass.GetValue(sColName, sSubclass);
+	
+	CRuleTable table;
+	table.LoadTable(ResRef(sTable));
+	if (!table.m_2da.bLoaded) {
+		LPCTSTR lpsz = "DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(): %s.2DA not found\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+
+		return (this->*Tramp_CRuleTables_CalculateNewHPSubclass)(nClass, nSubclass, cdsOld, cdsNew, nMinRoll, nDivisor);
+	}
+
+	if (pGameOptionsEx->bDebugVerbose) {
+		LPCTSTR lpsz = "DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(): Using table %s.2DA\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, (LPCTSTR)sTable);
+		console.write(lpsz, 1, (LPCTSTR)sTable);
+	}
+
+	return CalculateNewHPRule(table, nSubclassLevelOld, nSubclassLevelNew, nMinRoll, nDivisor, FALSE, 0, FALSE, 0);
 }
 
 ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
@@ -370,12 +437,12 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 	return bPass;
 }
 
-BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight) {
+BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance) {
 	if (pRuleEx->m_nEncumbranceLowThreshold == 0) return FALSE;
-	return nWeight > pRuleEx->m_nEncumbranceLowThreshold;
+	return (nWeight * 100 / nWeightAllowance) > pRuleEx->m_nEncumbranceLowThreshold;
 }
 
-BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight) {
+BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance) {
 	if (pRuleEx->m_nEncumbranceHighThreshold == 0) return FALSE;
-	return nWeight > pRuleEx->m_nEncumbranceHighThreshold;
+	return (nWeight * 100 / nWeightAllowance) > pRuleEx->m_nEncumbranceHighThreshold;
 }

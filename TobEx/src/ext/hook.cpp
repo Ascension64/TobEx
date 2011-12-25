@@ -58,6 +58,7 @@ void InitHooks() {
 
 	DetourMemberFunction(Tramp_CEffect_CreateEffect, DETOUR_CEffect::DETOUR_CreateEffect);
 	DetourMemberFunction(Tramp_CDerivedStats_OpAdd, DETOUR_CDerivedStats::DETOUR_OpAdd);
+	DetourMemberFunction(Tramp_CEffectDamage_ApplyEffect, DETOUR_CEffectDamage::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffApplyEffItemtypeFix ||
 		pGameOptionsEx->bEffApplyEffItemFix) {
 		DetourMemberFunction(Tramp_CItem_Equip, DETOUR_CItem::DETOUR_Equip);
@@ -65,8 +66,6 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffAttacksPerRoundFix) {
 		DetourMemberFunction(Tramp_CEffectAttacksPerRoundMod_ApplyEffect, DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect);
 	}
-	if (pGameOptionsEx->bEffDamageAwaken)
-		DetourMemberFunction(Tramp_CEffectDamage_ApplyEffect, DETOUR_CEffectDamage::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->nEffBlindnessFix)
 		DetourMemberFunction(Tramp_CEffectBlindness_ApplyEffect, DETOUR_CEffectBlindness::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffDiseaseFix)
@@ -116,6 +115,8 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CDerivedStats_UnmarshalTemplate, DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate);
 		DetourMemberFunction(Tramp_CDerivedStats_Deconstruct, DETOUR_CDerivedStats::DETOUR_Deconstruct);
 	}
+	if (pGameOptionsEx->bEngineExternHPTables)
+		DetourMemberFunction(Tramp_CRuleTables_CalculateNewHPSubclass, DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass);
 	if (pGameOptionsEx->bEngineExternClassRaceRestrictions) {
 		DetourFunction(Tramp_CAnimation_IsPlayableAnimation, DETOUR_CAnimation::DETOUR_IsPlayableAnimation);
 		DetourMemberFunction(Tramp_CAnimation5000_Construct, DETOUR_CAnimation5000::DETOUR_Construct);

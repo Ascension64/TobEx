@@ -106,8 +106,8 @@ void DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence(char* pSeq) {
 
 void __stdcall CCreatureObject_PrintExtraCombatInfoText(CCreatureObject& creSelf, IECString& sText) {
 	if (g_pChitin->pGame->m_GameOptions.m_bDisplayExtraCombatInfo) {
-		ARGB colorOwner = *(g_pColorRangeArray + creSelf.m_BaseStats.colors.colorMajor);
-		ARGB colorText = g_ColorDefaultText;
+		ABGR colorOwner = *(g_pColorRangeArray + creSelf.m_BaseStats.colors.colorMajor);
+		ABGR colorText = g_ColorDefaultText;
 		IECString sOwner = creSelf.GetLongName();
 		g_pChitin->pWorld->PrintToConsole(sOwner, sText, colorOwner, colorText, -1, 0);
 	}
@@ -245,7 +245,7 @@ BOOL __stdcall CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(CCreatureOb
 			if (
 				(pAnimation->wAnimId >= 0x5000 &&
 				pAnimation->wAnimId < 0x5400 &&
-				((CAnimation5000*)pAnimation)->sPrefix1[0] == 'C' //avoid the mu (0xB5) symbol in Infinity Animations
+				((CAnimation5000*)pAnimation)->sPrefix1[0] == 'C' //avoid clash with Infinity Animations
 				) ||
 				pAnimation->wAnimId & 0x6000
 				) {
@@ -256,3 +256,60 @@ BOOL __stdcall CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(CCreatureOb
 	}
 	return FALSE;
 };
+
+BOOL __stdcall CCreatureObject_IsValidSpellTarget_CheckInvisible(CCreatureObject& creSource, CCreatureObject& creTarget) {
+	if (&creSource == &creTarget) return TRUE;
+
+	IECString sSpell;
+	if (creSource.aCurrent.GetSName1().IsEmpty()) {
+		creSource.GetSpellIdsName(creSource.aCurrent.i, &sSpell);
+	} else {
+		sSpell = creSource.aCurrent.GetSName1();
+	}
+	
+	ResSplContainer resSpell;
+	resSpell.LoadResource(ResRef(sSpell), TRUE, TRUE);
+	if (resSpell.bLoaded &&
+		resSpell.name.IsNotEmpty()) {
+		if (resSpell.GetSpellFlags() & SPELLFLAG_TARGET_INVISIBLE) {
+			resSpell.Unload();
+			return TRUE;
+		}
+	}
+	resSpell.Unload();
+
+	if (!creSource.CanSeeInvisible()) {
+		if (creTarget.GetDerivedStats().stateFlags & STATE_INVISIBLE ||
+			creTarget.GetDerivedStats().stateFlags & STATE_IMPROVEDINVISIBILITY) {
+			return FALSE;
+		}
+	}
+
+	if (!creSource.CanSeeInvisible()) {
+		if (creTarget.GetDerivedStats().sanctuary) {
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+};
+
+BOOL __stdcall CCreatureObject_IsDeadInFrontVerticalList(CCreatureObject& cre) {
+	if (cre.GetVertListType() == LIST_FRONT) {
+		CDerivedStats& cds = cre.GetDerivedStats();
+		if (cds.stateFlags & STATE_DEAD) {
+			CAnimation* pAnimation = cre.m_animation.pAnimation;
+			if (pAnimation == NULL) {
+				LPCSTR lpsz = "CCreatureObject_IsDeadInFrontVerticalList(): pAnimation == NULL\r\n";
+				L.timestamp();
+				L.append(lpsz);
+				console.write(lpsz);
+				return FALSE;
+			}
+			if (!pAnimation->CanUseMiddleVertList()) {
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}

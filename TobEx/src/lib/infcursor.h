@@ -5,6 +5,9 @@
 #include "uicore.h"
 #include "sndcore.h"
 
+#define CURSOR_ARROW			0x64
+#define CURSOR_TOOLTIP_SCROLL	0x65
+
 class CInfTooltip : public CVidCell { //Size 656h
 //Constructor: 0x67384D
 	//AAD08C
@@ -49,7 +52,7 @@ struct CInfCursor { //Size 8F6h
 	int nCurrentCursorIdx; //8e4h
 	int nCursorArrowDirection; //8e8h, 0-7 (N-NE-E-SE-S-SW-W-SW)
 	BOOL bLeftMouseDown; //8ech, TRUE: will set to cursor index + 1
-	CUIControl* pTarget; //8f0h
+	CUIControl* pCtrlTarget; //8f0h
 	char u8f4;
 	char u8f5; //pad
 };

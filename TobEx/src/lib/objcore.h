@@ -37,6 +37,16 @@ const char OBJECT_BAD_ENUM		= 3;
 const char OBJECT_SHARING		= 4;
 const char OBJECT_DENYING		= 5;
 
+typedef IECPtrList CTimerList; //AA682C
+
+struct CTimeElement {
+//For CTimerList
+	int nTime; //0h
+	char nId; //4h
+	char u5; //pad
+
+};
+
 class _8DF1F2 { //Size 50h
 //Related to current area sprite is in
 //Constructor: 0x008DF1F2, also 0x008DF105
@@ -91,7 +101,7 @@ public:
 	virtual void v14() {} //v14 (dw 3738h) - get some enum?
 	virtual void v18() {} //v18 void GetCurrentPoint(POINT* ptr)
 	virtual void v1c() {} //v1c POSITION& GetVerticalListPosition(), gets 16h
-	virtual void v20() {} //v20 char GetVertListType(), returns 1ah
+	virtual char GetVertListType() { return 0; } //v20, returns 1ah
 	virtual void v24() {} //v24 bool IsAllowSaving(STRREF), 1 = allow save
 	virtual void v28() {} //v28 bool CompressTime(int)
 	virtual void v2c() {} //v2c void DebugDump()
@@ -150,24 +160,25 @@ class CGameSprite : public CGameObject { //Size 3D4h
 public:
 	//AA6778
 	virtual ~CGameSprite() {} //v0
+
 	virtual BOOL EvaluateTrigger(Trigger& t) { return TRUE; } //v60
 	virtual void v64() {} //v64, void ClearAllActions(BOOL bExceptFlagged)
 	virtual void v68() {} //v68, void SetTarget(creTarget)
 	virtual void v6c() {} //v6c, void AddActionHead(pAction)
 	virtual void ApplyEffect(CEffect& eff, bool bCheckEffectListType, BOOL bDelayFinished, BOOL bUpdateCre) {} //v70
-	//v74, update for new round? (BOOL) calls v64, v88
-	//v78, void ExecuteOneAction(), calls v7c
-	//v7c, short ExecuteAction()
-	//v80, void AddActionTail(Action*)
-	//v84, void AIUpdateActions(), called from AIUpdate
-	//v88, void SetCurrentAction(pAction), calls vb0
-	//v8c, void SetScript(nScriptIndex, pNewScript)
-	//v90, int GetSightRadius(), returned in pixels
-	//v94, TerrainTable& GetTerrainTable2()
-	//v98, TerrainTable& GetTerrainTable()
-	//v9c, CCreatureObject& GetTargetOfTrigger(Trigger& t, CCreatureObject* pTarget)
-	//va0, int GetVisualRange(), m_SightRadius x 48
-	//va4, void ExecuteTriggers()
+	virtual void v74() {} //v74, update for new round? (BOOL) calls v64, v88
+	virtual void ExecuteOneAction() {}//v78, calls v7c
+	virtual short ExecuteAction() { return 0; } //v7c
+	virtual void AddActionTail(Action& a) {} //v80
+	virtual void AIUpdateActions() {} //v84, called from AIUpdate
+	virtual void SetCurrentAction(Action& a) {} //v88, calls vb0
+	virtual void SetScript(int nScriptIdx, CScript& script) {} //v8c
+	virtual int GetSightRadius() { return 0; } //v90, returned in pixels
+	virtual void GetTerrainTable2() {} //v94, TerrainTable& GetTerrainTable2()
+	virtual void GetTerrainTable() {} //v98, TerrainTable& GetTerrainTable()
+	virtual BOOL GetTargetOfTrigger(Trigger& t, CGameSprite& spriteTarget) { return FALSE; } //v9c
+	virtual int GetVisualRange() { return 0; } //va0, m_SightRadius x 48
+	virtual void ExecuteTriggers() {} //va4
 		
 	//va8, void SetAutoPauseInfo(int type)
 	/* type
@@ -186,10 +197,7 @@ public:
 
 	//vac, BOOL GetSeeInvisible(), returns TRUE if cdsCurrent->seeInivisible is set, or game is in CutSceneMode
 	//vb0
-	//vb8, void SetObjects(o, dwUnused1, dwUnused2), sets 1Ch and 3698h
-	//vc0, void RefreshObjects()
-	//...
-	//etc. to v114
+	//END CGAMESPRITE
 
 	Object oAttacker; //42h, for AttackedBy() trigger, for LastAttackerOf triggerid
 		
@@ -233,9 +241,9 @@ public:
 	//Triggers 0x0*** are checked here with == only
 	//Triggers 0x4*** are checked more sophisticatedly
 
-	int u28e;
-	int u292;
-	IECPtrList u296; //timers?, AA682C
+	int u28e; //countup, time free (i.e. not mazed/imprisoned)
+	int u292; //countup timer
+	CTimerList m_timers; //296h
 	short nCurrResponseIdx; //2b2h, gets Response.u2
 	short nCurrScriptBlockIdx; //2b4h, gets Response.u4
 	short nCurrScriptIdx; //2b6h, gets Response.u6
@@ -246,7 +254,7 @@ public:
 	short u320; //random number, 0-15, used with Delay() trigger
 	short u322;
 	char name[32]; //324h, script name/death var
-	BOOL u344;
+	BOOL u344; //bEmptyActionList?
 	int u348;
 	int u34c;
 	int u350; //random number 0-37627

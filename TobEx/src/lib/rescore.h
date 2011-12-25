@@ -66,7 +66,7 @@ public:
 	int m_nDemands; //40h, number of times demanded
 	int nRefs; //44h, number of CPtr objects in master IECPtrList containing this object
 	POSITION pNode; //48h, CNode containing this object
-	unsigned int dwFlags2; //4ch
+	unsigned int dwFlags2; //4ch, identical to uc of KeyTableEntry
 };
 
 class ResBah : public Res { //Size 7Ah
@@ -94,7 +94,7 @@ public:
 	int* m_pSequences; //60h, cycle entries (IESDP)
 	int* m_pFrameList; //64h, frame lookup table (IESDP)
 	short nTotalFrames; //68h
-	int* m_pPalette; //6ah, ARGB[256]
+	int* m_pPalette; //6ah, ABGR[256]
 	BamFileFrameEntry m_CurrentFrame; //6eh
 	BOOL m_bParsing; //7ah
 	BOOL m_bCopyResData; //7eh
@@ -207,7 +207,7 @@ struct KeyTableEntry { //Size 18h
 	ResRef name; //0h
 	Res* pRes; //8h
 	int uc; //ch, two short, 0xc ?, 0xe biffIndex
-	short nLoaded; //10h
+	short nLoaded; //10h, numDemands?
 	short nCResType; //12h
 	int u14; //14h
 };

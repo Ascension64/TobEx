@@ -136,7 +136,26 @@ void DETOUR_CDerivedStats::DETOUR_Init(CreFileData& stats, CreFileMemSpellLevel*
 
 	(this->*Tramp_CDerivedStats_Init)(stats, memArrayMage, memArrayPriest);
 
-	
+	if (pStatsEx != NULL && nSize >= 100) {	
+		//init the values of new hard-coded stats here
+		CCreatureObject* pCre = (CCreatureObject*)((unsigned int)&stats - 0x3F6);
+		if (*(int*)pCre == 0xAA98A8) {
+			Object o = pCre->oBase;
+
+			pStatsEx[CDERIVEDSTATSEX_FIGHTERLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_FIGHTER);
+			pStatsEx[CDERIVEDSTATSEX_MAGELEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_MAGE);
+			pStatsEx[CDERIVEDSTATSEX_CLERICLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_CLERIC);
+			pStatsEx[CDERIVEDSTATSEX_THIEFLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_THIEF);
+			pStatsEx[CDERIVEDSTATSEX_DRUIDLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_DRUID);
+			pStatsEx[CDERIVEDSTATSEX_RANGERLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_RANGER);
+			pStatsEx[CDERIVEDSTATSEX_EFFECTIVECLERICLEVEL] = CDerivedStats_GetEffectiveClericLevelNoAssertion(*this, o.Class);
+		} else {
+			LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_Init(): Problem getting CCreatureObject*\r\n";
+			L.timestamp();
+			L.append(lpsz);
+			console.write(lpsz);
+		}
+	}
 
 	animationRemoval = (int)pStatsEx;
 
@@ -479,4 +498,194 @@ void CDerivedStats_SetStat(CDerivedStats& cds, short nOpcode, int nValue) {
 
 	return;
 
+}
+
+char CDerivedStats_GetSubclassLevelNoAssertion(CDerivedStats& cds, char nClass, char nSubclass) {
+	switch (nClass) {
+	case CLASS_MAGE:
+	case CLASS_FIGHTER:
+	case CLASS_CLERIC:
+	case CLASS_THIEF:
+	case CLASS_BARD:
+	case CLASS_PALADIN:
+	case CLASS_DRUID:
+	case CLASS_RANGER:
+	case CLASS_SORCERER:
+	case CLASS_MONK:
+		if (nSubclass == nClass) {
+			return (char)cds.levelPrimary;
+		} else {
+			return 0;
+		}
+		break;
+	case CLASS_FIGHTER_MAGE:
+		switch (nSubclass) {
+		case CLASS_FIGHTER:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_MAGE:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_FIGHTER_CLERIC:
+		switch (nSubclass) {
+		case CLASS_FIGHTER:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_CLERIC:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_FIGHTER_THIEF:
+		switch (nSubclass) {
+		case CLASS_FIGHTER:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_THIEF:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_FIGHTER_MAGE_THIEF:
+		switch (nSubclass) {
+		case CLASS_FIGHTER:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_MAGE:
+			return (char)cds.levelSecondary;
+			break;
+		case CLASS_THIEF:
+			return (char)cds.levelTertiary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_MAGE_THIEF:
+		switch (nSubclass) {
+		case CLASS_MAGE:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_THIEF:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_CLERIC_MAGE:
+		switch (nSubclass) {
+		case CLASS_CLERIC:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_MAGE:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_CLERIC_THIEF:
+		switch (nSubclass) {
+		case CLASS_CLERIC:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_THIEF:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_FIGHTER_DRUID:
+		switch (nSubclass) {
+		case CLASS_FIGHTER:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_DRUID:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_FIGHTER_MAGE_CLERIC:
+		switch (nSubclass) {
+		case CLASS_FIGHTER:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_MAGE:
+			return (char)cds.levelSecondary;
+			break;
+		case CLASS_CLERIC:
+			return (char)cds.levelTertiary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	case CLASS_CLERIC_RANGER:
+		switch (nSubclass) {
+		case CLASS_CLERIC:
+			return (char)cds.levelPrimary;
+			break;
+		case CLASS_RANGER:
+			return (char)cds.levelSecondary;
+			break;
+		default:
+			return 0;
+			break;
+		}
+		break;
+	default:
+		return 0;
+		break;
+	}
+	return 0;
+}
+
+char CDerivedStats_GetEffectiveClericLevelNoAssertion(CDerivedStats& cds, char nClass) {
+	switch (nClass) {
+	case CLASS_CLERIC:
+	case CLASS_DRUID:
+		return CDerivedStats_GetSubclassLevelNoAssertion(cds, nClass, nClass);
+		break;
+	case CLASS_FIGHTER_CLERIC:
+	case CLASS_CLERIC_MAGE:
+	case CLASS_CLERIC_THIEF:
+	case CLASS_FIGHTER_MAGE_CLERIC:
+	case CLASS_CLERIC_RANGER:
+		return CDerivedStats_GetSubclassLevelNoAssertion(cds, nClass, CLASS_CLERIC);
+		break;
+	case CLASS_FIGHTER_DRUID:
+		return CDerivedStats_GetSubclassLevelNoAssertion(cds, nClass, CLASS_DRUID);
+		break;
+	case CLASS_RANGER:
+		return max(CDerivedStats_GetSubclassLevelNoAssertion(cds, nClass, nClass) - 7, 0);
+		break;
+	case CLASS_PALADIN:
+		return max(CDerivedStats_GetSubclassLevelNoAssertion(cds, nClass, nClass) - 8, 0);
+		break;
+	default:
+		return 0;
+		break;
+	}
+	return 0;
 }

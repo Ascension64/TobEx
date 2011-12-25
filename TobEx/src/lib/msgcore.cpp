@@ -57,6 +57,74 @@ CMessageDisplayText::CMessageDisplayText() {
 	u23 = TRUE;
 }
 
+//CMessagePlaySound
+CMessagePlaySound* (CMessagePlaySound::*CMessagePlaySound_Construct_4)(ResRef, int, Enum, Enum) =
+	SetFP(static_cast<CMessagePlaySound* (CMessagePlaySound::*)(ResRef, int, Enum, Enum)>
+																(&CMessagePlaySound::Construct),		0x5684E0);
+void (CMessagePlaySound::*CMessagePlaySound_Deconstruct)() =
+	SetFP(static_cast<void (CMessagePlaySound::*)()>			(&CMessagePlaySound::Deconstruct),		0x4B7010);
+short (CMessagePlaySound::*CMessagePlaySound_GetMsgType)() =
+	SetFP(static_cast<short (CMessagePlaySound::*)()>			(&CMessagePlaySound::GetMsgType),		0x4B6F90);
+char (CMessagePlaySound::*CMessagePlaySound_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessagePlaySound::*)()>			(&CMessagePlaySound::GetNetworkType1),	0x4B6FC0);
+char (CMessagePlaySound::*CMessagePlaySound_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessagePlaySound::*)()>			(&CMessagePlaySound::GetNetworkType2),	0x4B6FD0);
+void (CMessagePlaySound::*CMessagePlaySound_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessagePlaySound::*)(void*, int*)>	(&CMessagePlaySound::Marshal),			0x5CBD6A);
+BOOL (CMessagePlaySound::*CMessagePlaySound_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessagePlaySound::*)(void*, int*)>	(&CMessagePlaySound::Unmarshal),		0x5CC06A);
+void (CMessagePlaySound::*CMessagePlaySound_DoMessage)() =
+	SetFP(static_cast<void (CMessagePlaySound::*)()>			(&CMessagePlaySound::DoMessage),		0x5CC258);
+
+CMessagePlaySound::CMessagePlaySound() {
+	SetVT(this, 0xAA6E68);
+	nChannel = 0;
+	u15 = 0;
+	u16 = 0;
+}
+
+CMessagePlaySound::CMessagePlaySound(ResRef rSound, int n, Enum eSource, Enum eTarget)
+	{ (this->*CMessagePlaySound_Construct_4)(rSound, n, eSource, eTarget); }
+CMessagePlaySound::~CMessagePlaySound()						{ (this->*CMessagePlaySound_Deconstruct)(); }
+short CMessagePlaySound::GetMsgType()						{ return (this->*CMessagePlaySound_GetMsgType)(); }
+char CMessagePlaySound::GetNetworkType1()					{ return (this->*CMessagePlaySound_GetNetworkType1)(); }
+char CMessagePlaySound::GetNetworkType2()					{ return (this->*CMessagePlaySound_GetNetworkType2)(); }
+void CMessagePlaySound::Marshal(void* pData, int* dwSize)	{ return (this->*CMessagePlaySound_Marshal)(pData, dwSize); }
+BOOL CMessagePlaySound::Unmarshal(void* pData, int* dwSize)	{ return (this->*CMessagePlaySound_Unmarshal)(pData, dwSize); }
+void CMessagePlaySound::DoMessage()							{ return (this->*CMessagePlaySound_DoMessage)(); }
+
+//CMessagePlaySoundset
+void (CMessagePlaySoundset::*CMessagePlaySoundset_Deconstruct)() =
+	SetFP(static_cast<void (CMessagePlaySoundset::*)()>				(&CMessagePlaySoundset::Deconstruct),		0x4E9740);
+short (CMessagePlaySoundset::*CMessagePlaySoundset_GetMsgType)() =
+	SetFP(static_cast<short (CMessagePlaySoundset::*)()>			(&CMessagePlaySoundset::GetMsgType),		0x4E96D0);
+char (CMessagePlaySoundset::*CMessagePlaySoundset_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessagePlaySoundset::*)()>				(&CMessagePlaySoundset::GetNetworkType1),	0x4E96F0);
+char (CMessagePlaySoundset::*CMessagePlaySoundset_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessagePlaySoundset::*)()>				(&CMessagePlaySoundset::GetNetworkType2),	0x4E9700);
+void (CMessagePlaySoundset::*CMessagePlaySoundset_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessagePlaySoundset::*)(void*, int*)>	(&CMessagePlaySoundset::Marshal),			0x5CB939);
+BOOL (CMessagePlaySoundset::*CMessagePlaySoundset_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessagePlaySoundset::*)(void*, int*)>	(&CMessagePlaySoundset::Unmarshal),			0x5CBB4C);
+void (CMessagePlaySoundset::*CMessagePlaySoundset_DoMessage)() =
+	SetFP(static_cast<void (CMessagePlaySoundset::*)()>				(&CMessagePlaySoundset::DoMessage),			0x5CBC95);
+
+CMessagePlaySoundset::CMessagePlaySoundset() {
+	SetVT(this, 0xAA73DC);
+	bPrintToConsole = FALSE;
+	bLimitLength = FALSE;
+	nSoundIdx = 0;
+	u15 = 0;
+}
+
+CMessagePlaySoundset::~CMessagePlaySoundset()					{ (this->*CMessagePlaySoundset_Deconstruct)(); }
+short CMessagePlaySoundset::GetMsgType()						{ return (this->*CMessagePlaySoundset_GetMsgType)(); }
+char CMessagePlaySoundset::GetNetworkType1()					{ return (this->*CMessagePlaySoundset_GetNetworkType1)(); }
+char CMessagePlaySoundset::GetNetworkType2()					{ return (this->*CMessagePlaySoundset_GetNetworkType2)(); }
+void CMessagePlaySoundset::Marshal(void* pData, int* dwSize)	{ return (this->*CMessagePlaySoundset_Marshal)(pData, dwSize); }
+BOOL CMessagePlaySoundset::Unmarshal(void* pData, int* dwSize)	{ return (this->*CMessagePlaySoundset_Unmarshal)(pData, dwSize); }
+void CMessagePlaySoundset::DoMessage()							{ return (this->*CMessagePlaySoundset_DoMessage)(); }
+
 //CMessageRemoveAreaAirEffects
 void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Deconstruct)() =
 	SetFP(static_cast<void (CMessageRemoveAreaAirEffects::*)()>				(&CMessageRemoveAreaAirEffects::Deconstruct),		0x4E2930);

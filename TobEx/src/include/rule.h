@@ -19,17 +19,46 @@ const char ALIGN_LAWFUL_MASK		= 0x10;
 const char ALIGN_NEUTRAL_MASK		= 0x20;
 const char ALIGN_CHAOTIC_MASK		= 0x30;
 
+//ACTION.IDS
+const short ACTION_SPELL			= 31;
+const short ACTION_SPELL_NO_DEC		= 191;
+
 //CLASS.IDS
-const unsigned char CLASS_MAGE		= 1;
-const unsigned char CLASS_FIGHTER	= 2;
-const unsigned char CLASS_CLERIC	= 3;
-const unsigned char CLASS_THIEF		= 4;
-const unsigned char CLASS_BARD		= 5;
-const unsigned char CLASS_PALADIN	= 6;
-const unsigned char CLASS_DRUID		= 11;
-const unsigned char CLASS_RANGER	= 12;
-const unsigned char CLASS_SORCERER	= 19;
-const unsigned char CLASS_MONK		= 20;
+const unsigned char CLASS_MAGE					= 1;
+const unsigned char CLASS_FIGHTER				= 2;
+const unsigned char CLASS_CLERIC				= 3;
+const unsigned char CLASS_THIEF					= 4;
+const unsigned char CLASS_BARD					= 5;
+const unsigned char CLASS_PALADIN				= 6;
+const unsigned char CLASS_FIGHTER_MAGE			= 7;
+const unsigned char CLASS_FIGHTER_CLERIC		= 8;
+const unsigned char CLASS_FIGHTER_THIEF			= 9;
+const unsigned char CLASS_FIGHTER_MAGE_THIEF	= 10;
+const unsigned char CLASS_DRUID					= 11;
+const unsigned char CLASS_RANGER				= 12;
+const unsigned char CLASS_MAGE_THIEF			= 13;
+const unsigned char CLASS_CLERIC_MAGE			= 14;
+const unsigned char CLASS_CLERIC_THIEF			= 15;
+const unsigned char CLASS_FIGHTER_DRUID			= 16;
+const unsigned char CLASS_FIGHTER_MAGE_CLERIC	= 17;
+const unsigned char CLASS_CLERIC_RANGER			= 18;
+const unsigned char CLASS_SORCERER				= 19;
+const unsigned char CLASS_MONK					= 20;
+
+//DMGTYPE.IDS
+const unsigned int DAMAGETYPE_CRUSHING		= 0x00000000;
+const unsigned int DAMAGETYPE_ACID			= 0x00010000;
+const unsigned int DAMAGETYPE_COLD			= 0x00020000;
+const unsigned int DAMAGETYPE_ELECTRICITY	= 0x00040000;
+const unsigned int DAMAGETYPE_FIRE			= 0x00080000;
+const unsigned int DAMAGETYPE_PIERCING		= 0x00100000;
+const unsigned int DAMAGETYPE_POISON		= 0x00200000;
+const unsigned int DAMAGETYPE_MAGIC			= 0x00400000;
+const unsigned int DAMAGETYPE_MISSILE		= 0x00800000;
+const unsigned int DAMAGETYPE_SLASHING		= 0x01000000;
+const unsigned int DAMAGETYPE_MAGICFIRE		= 0x02000000;
+const unsigned int DAMAGETYPE_MAGICCOLD		= 0x04000000;
+const unsigned int DAMAGETYPE_FIST			= 0x08000000;
 
 //EA.IDS
 const unsigned char EA_INANIMATE	= 1;
@@ -215,5 +244,8 @@ const unsigned int STATE_CHANTBAD				= 0x10000000;
 const unsigned int STATE_BLUR					= 0x20000000;
 const unsigned int STATE_MIRRORIMAGE			= 0x40000000;
 const unsigned int STATE_CONFUSED				= 0x80000000;
+
+//TRIGGER.IDS
+const short TRIGGER_TOOK_DAMAGE		= 0x00CC;
 
 #endif //RULE_H

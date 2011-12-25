@@ -15,8 +15,11 @@ BOOL CEffectAwaken::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectAw
 //CEffectDamage
 BOOL (CEffectDamage::*CEffectDamage_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDamage::*)(CCreatureObject&)>				(&CEffectDamage::ApplyEffect),				0x505570);
+void (CEffectDamage::*CEffectDamage_PlayHitSound)(int, CCreatureObject&) =
+	SetFP(static_cast<void (CEffectDamage::*)(int, CCreatureObject&)>			(&CEffectDamage::PlayHitSound),				0x507240);
 
-BOOL CEffectDamage::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectDamage_ApplyEffect)(cre); }
+BOOL CEffectDamage::ApplyEffect(CCreatureObject& creTarget)						{ return (this->*CEffectDamage_ApplyEffect)(creTarget); }
+void CEffectDamage::PlayHitSound(int nDamageType, CCreatureObject& creTarget)	{ return (this->*CEffectDamage_PlayHitSound)(nDamageType, creTarget); }
 
 //CEffectInstantDeath
 CEffectInstantDeath::CEffectInstantDeath() {

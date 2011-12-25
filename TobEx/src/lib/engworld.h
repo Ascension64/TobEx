@@ -10,7 +10,7 @@ class CWorld : public CEngine { //Size 124Ch
 //Constructor: 0x7C3EE0
 public:
 	//AB5768
-	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, ARGB colLeft, ARGB colRight, int dw, BOOL b);
+	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int dw, BOOL b);
 	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, int dw, BOOL b);
 
 	int ufe;
@@ -70,7 +70,7 @@ public:
 		int u10;
 		int u14;
 		short u18;
-		ARGB u1a;
+		ABGR u1a;
 		int u1e;
 
 		struct _u22 { //Size 36h
@@ -214,7 +214,7 @@ public:
 	int u1248;
 };
 
-extern POSITION (CWorld::*CWorld_PrintToConsole_6)(IECString&, IECString&, ARGB, ARGB, int, BOOL);
+extern POSITION (CWorld::*CWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, BOOL);
 extern POSITION (CWorld::*CWorld_PrintToConsole_4)(IECString&, IECString&, int, BOOL);
 
 #endif //ENGWORLD_H

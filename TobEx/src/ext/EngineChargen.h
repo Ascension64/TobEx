@@ -14,14 +14,14 @@ extern void (CCharGen::*Tramp_CCharGen_InitSoundset)(CCreatureObject&);
 
 class DETOUR_CCharGen : public CCharGen {
 public:
-	void DETOUR_KitPanelOnLoad(CPanel&, CCreatureObject&);
-	void DETOUR_MageBookPanelOnLoad(CPanel&, CCreatureObject&);
-	void DETOUR_KitPanelOnUpdate(CPanel&, CCreatureObject&);
-	void DETOUR_MageBookPanelOnUpdate(CPanel&, CCreatureObject&);
-	void DETOUR_ClassPanelOnUpdate(CPanel&, CCreatureObject&);
-	void DETOUR_MulticlassPanelOnUpdate(CPanel&, CCreatureObject&);
-	void DETOUR_MageSchoolPanelOnUpdate(CPanel&, CCreatureObject&);
-	void DETOUR_InitSoundset(CCreatureObject&);
+	void DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_MulticlassPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void DETOUR_InitSoundset(CCreatureObject& cre);
 };
 
 #endif //ENGINECHARGEN_H

@@ -1,6 +1,6 @@
 #include "UserChargenMageSpell.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "chitin.h"
 #include "uicore.h"
 #include "rescore.h"
@@ -16,8 +16,8 @@ CUIScrollBarChargenMageSpell::CUIScrollBarChargenMageSpell(CPanel& panel, ChuFil
 
 void CUIScrollBarChargenMageSpell::UpdatePanel() {
 	CCreatureObject* pCre;
-	BYTE threadNum = THREAD_ASYNCH;
-	BYTE threadVal;
+	char threadNum = THREAD_ASYNCH;
+	char threadVal;
 	do {
 		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(g_pChitin->pCreateChar->eChar, threadNum, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
@@ -34,7 +34,7 @@ CUIScrollBarChargenMageSpell::~CUIScrollBarChargenMageSpell() {
 }
 
 void CUIScrollBarChargenMageSpell::OnMouseDragKnob() {
-	WORD nOld = nCurrentValue;
+	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
 	} else {
@@ -45,7 +45,7 @@ void CUIScrollBarChargenMageSpell::OnMouseDragKnob() {
 }
 
 void CUIScrollBarChargenMageSpell::OnLMouseBtnDnArrowUp() {
-	WORD nOld = nCurrentValue;
+	short nOld = nCurrentValue;
 	nCurrentValue = max(nCurrentValue - 1, 0);
 	if (nOld != nCurrentValue) {
 		UpdatePanel();
@@ -55,7 +55,7 @@ void CUIScrollBarChargenMageSpell::OnLMouseBtnDnArrowUp() {
 }
 
 void CUIScrollBarChargenMageSpell::OnLMouseBtnDnArrowDn() {
-	WORD nOld = nCurrentValue;
+	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
 	} else {
@@ -68,10 +68,10 @@ void CUIScrollBarChargenMageSpell::OnLMouseBtnDnArrowDn() {
 	return;
 }
 
-void CUIScrollBarChargenMageSpell::OnLClickedAboveKnob(DWORD interval) {
-	if (interval > 3) interval = 3;
-	WORD nOld = nCurrentValue;
-	nCurrentValue = max(nCurrentValue - (WORD)interval, 0);
+void CUIScrollBarChargenMageSpell::OnLClickedAboveKnob(short interval) {
+	if (interval > 3 || interval < 0) interval = 3;
+	short nOld = nCurrentValue;
+	nCurrentValue = max(nCurrentValue - interval, 0);
 	if (nOld != nCurrentValue) {
 		UpdatePanel();
 		UpdateKnobPosition(nCurrentValue, nValues, nRows);
@@ -79,13 +79,13 @@ void CUIScrollBarChargenMageSpell::OnLClickedAboveKnob(DWORD interval) {
 	return;
 }
 
-void CUIScrollBarChargenMageSpell::OnLClickedBelowKnob(DWORD interval) {
-	if (interval > 3) interval = 3;
-	WORD nOld = nCurrentValue;
+void CUIScrollBarChargenMageSpell::OnLClickedBelowKnob(short interval) {
+	if (interval > 3 || interval < 0) interval = 3;
+	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
 	} else {
-		nCurrentValue = min(nCurrentValue + (WORD)interval, nValues - nRows);
+		nCurrentValue = min(nCurrentValue + interval, nValues - nRows);
 	}
 	if (nOld != nCurrentValue) {
 		UpdatePanel();

@@ -7,12 +7,12 @@
 #include "console.h"
 #include "log.h"
 
-DWORD (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&) =
-	SetFP(static_cast<DWORD (CUICheckButtonChargenKit::*)(Object&)>	(&CUICheckButtonChargenKit::GetKitId),		0x73A6E8);
+unsigned int (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&) =
+	SetFP(static_cast<unsigned int (CUICheckButtonChargenKit::*)(Object&)>	(&CUICheckButtonChargenKit::GetKitId),		0x73A6E8);
 STRREF (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitHelpText)(Object&) =
-	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
+	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>		(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
 
-DWORD DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
+unsigned int DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 	CCharGen* pCreateChar = g_pChitin->pCreateChar;
 	assert(pCreateChar != NULL);
 	CPanel& panel = pCreateChar->manager.GetPanel(22);
@@ -80,10 +80,10 @@ DWORD DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 	} else {
 		sKit = g_pChitin->pCreateChar->Kit_Class_Race.defaultVal;
 	}
-	int nKitId;
+	unsigned int nKitId;
 	sscanf_s((LPCTSTR)sKit, "%d", &nKitId);
 
-	return (nKitId | TRUECLASS);
+	return (nKitId | KIT_TRUECLASS);
 }
 
 STRREF DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitHelpText(Object& o) {
@@ -154,7 +154,7 @@ STRREF DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitHelpText(Object& o) {
 	} else {
 		sKit = g_pChitin->pCreateChar->Kit_Class_Race.defaultVal;
 	}
-	int nKitId;
+	unsigned int nKitId;
 	sscanf_s((LPCTSTR)sKit, "%d", &nKitId);
 
 	if (pCreateChar->Kit_Class_Race.m_2da.name != "" && nKitId) {

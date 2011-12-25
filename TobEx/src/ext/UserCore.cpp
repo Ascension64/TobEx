@@ -2,7 +2,8 @@
 
 #include <cassert>
 
-#include "utils.h"
+#include "stdafx.h"
+#include "options.h"
 #include "UserChargenKit.h"
 #include "UserChargenMageSpell.h"
 #include "UserRecMageSpell.h"
@@ -27,7 +28,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 7:
 				switch (controlInfo.id) {
 				case 31:
-					if (GetIniValue("UI", "Scrollable Chargen Mage Spell Selection")) {
+					if (pGameOptionsEx->bUserChargenMageSpellScroll) {
 						pControl = new CUIScrollBarChargenMageSpell(panel, controlInfo);
 					}
 					break;
@@ -38,12 +39,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 22:
 				switch (controlInfo.id) {
 				case 15:
-					if (GetIniValue("UI", "Scrollable Kit Selection")) {
+					if (pGameOptionsEx->bUserChargenKitSelectScroll) {
 						pControl = new CUIScrollBarChargenKit(panel, controlInfo);
 					}
 					break;
 				case 16:
-					if (GetIniValue("UI", "Scrollable Kit Selection")) {
+					if (pGameOptionsEx->bUserChargenKitSelectScroll) {
 						pControl = IENew CUICheckButtonChargenKit(panel, controlInfo);
 					}
 					break;
@@ -62,12 +63,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 2:
 				switch (controlInfo.id) {
 				case 65:
-					if (GetIniValue("UI", "Scrollable Mage Spellbook")) {
+					if (pGameOptionsEx->bUserMageBookScroll) {
 						pControl = new CUIButtonMageBookUp(panel, controlInfo);
 					}
 					break;
 				case 66:
-					if (GetIniValue("UI", "Scrollable Mage Spellbook")) {
+					if (pGameOptionsEx->bUserMageBookScroll) {
 						pControl = new CUIButtonMageBookDn(panel, controlInfo);
 					}
 					break;
@@ -86,12 +87,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 2:
 				switch (controlInfo.id) {
 				case 62:
-					if (GetIniValue("UI", "Scrollable Priest Spellbook")) {
+					if (pGameOptionsEx->bUserPriestBookScroll) {
 						pControl = new CUIButtonPriestBookUp(panel, controlInfo);
 					}
 					break;
 				case 63:
-					if (GetIniValue("UI", "Scrollable Priest Spellbook")) {
+					if (pGameOptionsEx->bUserPriestBookScroll) {
 						pControl = new CUIButtonPriestBookDn(panel, controlInfo);
 					}
 					break;
@@ -110,12 +111,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 8:
 				switch (controlInfo.id) {
 				case 24:
-					if (GetIniValue("UI", "Scrollable Level Up Mage Spell Selection")) {
+					if (pGameOptionsEx->bUserRecordMageSpellScroll) {
 						pControl = IENew CUICheckButtonRecMageSpell(panel, controlInfo);
 					}
 					break;
 				case 30:
-					if (GetIniValue("UI", "Scrollable Level Up Mage Spell Selection")) {
+					if (pGameOptionsEx->bUserRecordMageSpellScroll) {
 						pControl = new CUIScrollBarRecMageSpell(panel, controlInfo);
 					}
 					break;

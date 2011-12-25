@@ -2,60 +2,60 @@
 
 //0xAA5980 - action indices (up to 220)
 
-//0xAA5D13 BYTE Object_ENEMYALLY_GOODCUTOFF (30)
-//0xAA5D18 BYTE Object_ENEMYALLY_NEUTRAL (128)
-//0xAA5D1A BYTE Object_ENEMYALLY_ (198)
-//0xAA5D1D BYTE Object_ENEMYALLY_EVILCUTOFF (200)
+//0xAA5D13 unsigned char Object_ENEMYALLY_GOODCUTOFF (30)
+//0xAA5D18 unsigned char Object_ENEMYALLY_NEUTRAL (128)
+//0xAA5D1A unsigned char Object_ENEMYALLY_ (198)
+//0xAA5D1D unsigned char Object_ENEMYALLY_EVILCUTOFF (200)
 
 //0xAA5D64 - class indices (up to 160)
 
 //0xAA5E68 - trigger indices (up to 127)
 
 //Vertical List Types
-//0xAAA9EE BYTE CGameObject::LIST_FRONT
-//0xAAA9EF BYTE CGameObject::LIST_MIDDLE?
-//0xAAA9F0 BYTE CGameObject::LIST_BACK?
+//0xAAA9EE unsigned char CGameObject::LIST_FRONT
+//0xAAA9EF unsigned char CGameObject::LIST_MIDDLE?
+//0xAAA9F0 unsigned char CGameObject::LIST_BACK?
 
 //0xAAA9E1-D CGAMEOBJECT_TYPE
-//0xAAA9E7 BYTE CGAMEOBJECT_TYPE_CREATURE
+//0xAAA9E7 unsigned char CGAMEOBJECT_TYPE_CREATURE
 
 //0xAAA9EE bool PROJ_SPARKTRAIL_OFF (0)
 //0xAAA9EF bool PROJ_SPARKTRAIL_ON (1)
 
-//0xAABC34 BYTE PixelsPerSearchMapX (16)
-//0xAABC35 BYTE PixelsPerSearchMapY (12)
+//0xAABC34 unsigned char PixelsPerSearchMapX (16)
+//0xAABC35 unsigned char PixelsPerSearchMapY (12)
 
-//0xAACCD4 BYTE TICKS_PER_SECOND (15)
-//0xAACCD8 DWORD ONE_DAY (108000 ticks)
-//0xAACCE4 DWORD TIME_DAY (31500 ticks)
-//0xAACCEC DWORD TIME_DAWN (27000 ticks)
-//0xAACCF4 DWORD TIME_DUSK (94500 ticks)
+//0xAACCD4 unsigned char TICKS_PER_SECOND (15)
+//0xAACCD8 int ONE_DAY (108000 ticks)
+//0xAACCE4 int TIME_DAY (31500 ticks)
+//0xAACCEC int TIME_DAWN (27000 ticks)
+//0xAACCF4 int TIME_DUSK (94500 ticks)
 
-//0xAACD24 DWORD[34] PRIME_NUMBER_TABLE (for checksums)
+//0xAACD24 int[34] PRIME_NUMBER_TABLE (for checksums)
 
-//0xAACF4E WORD CVISMAP_DISCOVERED (0x8000)
+//0xAACF4E short CVISMAP_DISCOVERED (0x8000)
 
 //0xAAD1D0 Enum ENUM_INVALID_INDEX (-1)
 
-//0xAAD1EE WORD CINFGAME_POINTSPERREPUTATIONVALUE (10)
+//0xAAD1EE short CINFGAME_POINTSPERREPUTATIONVALUE (10)
 
-//0xAAD230 BYTE CINFGAME_SAVEIDX_AUTOSAVE (0)
-//0xAAD231 BYTE CINFGAME_SAVEIDX_QUIKSAVE (1)
-//0xAAD232 BYTE CINFGAME_SAVEIDX_FINALSAVE (2)
-//0xAAD233 BYTE CINFGAME_SAVEIDX_AUTOSAVETOB (3)
-//0xAAD234 BYTE CINFGAME_SAVEIDX_QUIKSAVETOB (4)
-//0xAAD235 BYTE CINFGAME_SAVEIDX_FINALSAVETOB (5)
-//0xAAD290 BYTE (1)
-//0xAAD291 BYTE (2)
+//0xAAD230 unsigned char CINFGAME_SAVEIDX_AUTOSAVE (0)
+//0xAAD231 unsigned char CINFGAME_SAVEIDX_QUIKSAVE (1)
+//0xAAD232 unsigned char CINFGAME_SAVEIDX_FINALSAVE (2)
+//0xAAD233 unsigned char CINFGAME_SAVEIDX_AUTOSAVETOB (3)
+//0xAAD234 unsigned char CINFGAME_SAVEIDX_QUIKSAVETOB (4)
+//0xAAD235 unsigned char CINFGAME_SAVEIDX_FINALSAVETOB (5)
+//0xAAD290 unsigned char (1)
+//0xAAD291 unsigned char (2)
 
-//0xAAF5E3 BYTE[10] CCHARGEN_BARDSPELLS_LEVEL [0, 6, 5, 4, 4, 3, 3, 2, 1, 1]
+//0xAAF5E3 unsigned char[10] CCHARGEN_BARDSPELLS_LEVEL [0, 6, 5, 4, 4, 3, 3, 2, 1, 1]
 //note: sorcerer spells per level at chargen is based on SPLSRCKN.2DA
-//0xAAF5CB BYTE[10] CCHARGEN_MAGESPELLS_LEVEL [0, 7, 6, 5, 5, 4, 4, 3, 2, 2]
-//0xAAF5D7 BYTE[10] CCHARGEN_MINSPECIALISTSPELLS_LEVEL [0, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+//0xAAF5CB unsigned char[10] CCHARGEN_MAGESPELLS_LEVEL [0, 7, 6, 5, 5, 4, 4, 3, 2, 2]
+//0xAAF5D7 unsigned char[10] CCHARGEN_MINSPECIALISTSPELLS_LEVEL [0, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 //0xAB3BCC BOOL G_ENABLEWILDMAGE (1) - if disabled, disables wild mage, SPWI124 in spell selection, wild magic surges
 
-//0xAB7300 BYTE ANIMSEQ_* [0, 1, 2, 3, 4, 5, E, 6, F, 7, 8, 10, 9, A, B, C]
+//0xAB7300 unsigned char ANIMSEQ_* [0, 1, 2, 3, 4, 5, E, 6, F, 7, 8, 10, 9, A, B, C]
 
 //0xAB9108 GLsizei height (256) - for FXSurface B8E1B0
 //0xAB9108 GLsizei width (256) - for FXSurface B8E1B0
@@ -106,8 +106,8 @@
 
 //0xB8A304 - g_nSpriteMirror
 
-//0xB8C5B8 - DWORD logCreated
-//0xB8C5D4 - DWORD Logging On (in baldur.ini)
+//0xB8C5B8 - int logCreated
+//0xB8C5D4 - int Logging On (in baldur.ini)
 //0xB8C5D8 - CString PrivateBuild
 //0xB8C5E4 - ForceLocalIP
 //0xB8C5E8 - CString ProductVersion
@@ -233,11 +233,11 @@
 //! 0xAA5C84 CMessageSetTrigger
 
 //! 0xAA63CC CMessageDisplayDialogue
-//0xAA68A8, eh, BYTE bEnabled, pad (CMessageCutsceneLite)
-//0xAA697C, 12h, W, BYTE, BYTE, BYTE, pad
-//0xAA69B4, eh, BYTE, pad
+//0xAA68A8, eh, unsigned char bEnabled, pad (CMessageCutsceneLite)
+//0xAA697C, 12h, W, unsigned char, unsigned char, unsigned char, pad
+//0xAA69B4, eh, unsigned char, pad
 //! 0xAA69D0 CMessageCutSceneMode
-//0xAA69EC, 12h, DW, BYTE, pad
+//0xAA69EC, 12h, DW, unsigned char, pad
 //! 0xAA6A40 CMessageApplyEffect
 //0xAA6A84, 10h, CString areaName (CMessageExploreArea)
 //0xAA6AB0, 10h, DW
@@ -245,29 +245,29 @@
 //0xAA6AE8, 16h, ResRef
 //0xAA6B04, 10h, DW
 //0xAA6B58, 20h, Object oAttacker (CMessageSetLastAttacker)
-//0xAA6CE0, 1ah, CString (scope), CString (variable), DW, BYTE, CMessageSetVariable
-//0xAA6CFC, 22h, CString areaName, DW (Windowwidth / 2 + ScreenOffsetX), DW (Windowheight / 2 + ScreenOffsetY), DW x, DW y, BYTE int, pad
+//0xAA6CE0, 1ah, CString (scope), CString (variable), DW, unsigned char, CMessageSetVariable
+//0xAA6CFC, 22h, CString areaName, DW (Windowwidth / 2 + ScreenOffsetX), DW (Windowheight / 2 + ScreenOffsetY), DW x, DW y, unsigned char int, pad
 //0xAA6D18, 2ah, ResRef (visualeffectname), CString (areaname), POINT, Point2, W zPos (CMessageCreateVisualEffect)
-//0xAA6D6C, eh BYTE (SEQ.IDS ref), pad
+//0xAA6D6C, eh unsigned char (SEQ.IDS ref), pad (CMessagePlayAnimationSound)
 //0xAA6D88, ch
-//0xAA6DA4, 14h, DW, DW
+//0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
 //0xAA6DC0 38h, Response, DW, DW, DW (CMessageInsertResponse)
 //0xAA6DDC, ch
 //0xAA6E14, eh, W
-//0xAA6E4C, 12h, DW, BYTE, BYTE
-// 0xAA6E68, 1ah, ResRef sound, BYTE channel, BYTE, DWORD (CMessagePlaySound) //Constructor: 0x5684E0
+//0xAA6E4C, 12h, DW, unsigned char, unsigned char
+//0xAA6E68, 1ah, ResRef sound, unsigned char channel, unsigned char, int (CMessagePlaySound) //Constructor: 0x5684E0
 //0xAA6E84, 14h, DW, W, W
 //0xAA6EBC, 10h, DW
-//0xAA6ED8, eh, BYTE
+//0xAA6ED8, eh, unsigned char
 //0xAA6EF4, 18h, CString, POINT (CMessageMoveGlobal)
-//0xAA6F10, 10h, BYTE FadeDirection (0 = ToColor, 1 = FromColor), BYTE (FadeAmountBlue - all negative, so FF is -1 each time), BYTE (Green), BYTE (Red) (CMessageScreenFade) - B61512 = targetBrightness
+//0xAA6F10, 10h, unsigned char FadeDirection (0 = ToColor, 1 = FromColor), unsigned char (FadeAmountBlue - all negative, so FF is -1 each time), unsigned char (Green), unsigned char (Red) (CMessageScreenFade) - B61512 = targetBrightness
 
 //0xAA7134, ch
-//0xAA72D0, 10ah, CItem, W, BYTE, pad
+//0xAA72D0, 10ah, CItem, W, unsigned char, pad
 //0xAA7334, 10h, CString (CMessageLoadDialog)
-//0xAA7350, 10h, BYTE, pad, W
+//0xAA7350, 10h, unsigned char, pad, W
 //0xAA736C, 14h, DW, DW
-//0xAA73DC, 16h, DW (bPrintToConsole), DW (bSaveTo62AE), BYTE (sndtype+1), pad (CMessagePlaySoundset)
+//0xAA73DC, 16h, DW (bPrintToConsole), DW (bSaveTo62AE), unsigned char (sndtype+1), pad (CMessagePlaySoundset)
 
 //0xAA99F4, 10h, dwDuration, CMessageTimeStop
 /*
@@ -318,39 +318,39 @@ f area_forest
 2b existance2
 2c existance3
 */
-//0xAA73F8, 1ah, DW, BYTE, pad, DW, DW
+//0xAA73F8, 1ah, DW, unsigned char, pad, DW, DW
 //0xAA7420, 1ch, CString, DW, DW, DW
-//0xAA743C, 14h, DWORD nTime, Enum eTarget
+//0xAA743C, 14h, int nTime, Enum eTarget
 //0xAA7458, eh, W
 
-//0xAA9758, eh, BYTE, pad (CMessageEnemy)
+//0xAA9758, eh, unsigned char, pad (CMessageEnemy)
 //0xAA9774, 24h, CMessageStatic
-//0xAA9790, eh, CMessageOverlay
-//0xAA97C4, eh, BYTE, pad
+//! 0xAA9790, eh, CMessageCreatureOverlay
+//0xAA97C4, eh, unsigned char, pad
 
 //0xAA9970, 14h, CString, Enum source (CMessageFireSpell)
 
 //0xAAB528, 10h, DW
 //0xAAB544, 28h, ResRef storename, ResRef itemname, W arg6, W usage1, W usage2, W usage3, B bIdentified (CMessageAddStoreItem)
-//0xAAB598, 1ah, c, 10, 14, DW, BYTE, pad (CMessageSetTarget)
+//0xAAB598, 1ah, c, 10, 14, DW, unsigned char, pad (CMessageSetTarget)
 //0xAAB5EC, eh, W (action opcode)
-//0xAAB608, eh, BYTE, pad
+//0xAAB608, eh, unsigned char, pad
 //0xAAB65C, 14h, CString, Enum source (CMessageNonControlledDialogStart)
-//0xAAB694, 16h, ResRef (filename), BYTE (filetype, 1 = vvc, 2 = bam of nameanim1), pad (CMessageRemoveVisualEffectVidCell)
-//0xAAB6E8, eh, BYTE, pad
+//0xAAB694, 16h, ResRef (filename), unsigned char (filetype, 1 = vvc, 2 = bam of nameanim1), pad (CMessageRemoveVisualEffectVidCell)
+//0xAAB6E8, eh, unsigned char, pad
 //0xAAB704, ch
 //0xAAB720, ch
 //0xAAB758, ch
 //0xAAB7C8, ch
 //0xAAB81C, 10h, DW
 //0xAAB838, 14h, ResRef 
-//0xAAB86C, 44h, CPtrList, CPtrList (constructor: 0x5BE891 (pSprite, enum, enum))
-//0xAAB8A4, 16h, DW, W, W, pad?, BYTE (constructor: 0x5C353B (pSprite, enum, enum))
+//0xAAB86C, 44h, IECPtrList, IECPtrList (constructor: 0x5BE891 (pSprite, enum, enum))
+//0xAAB8A4, 16h, DW, W, W, pad?, unsigned char (constructor: 0x5C353B (pSprite, enum, enum))
 //0xAAB8C0, 1eh, W (projIdx), Enum, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
 //0xAAB8DC, 24h, W, DW* , W, DW, DW, DW, CString
-//0xAAB8F8, b4h, ItemSlots, DW, DW (constructor: 0x5D7877 (pSprite, enum, enum))
+//0xAAB8F8, b4h, CInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
 //! 0xAAB914 CMessageSpriteUpdate
-//0xAAB930, 28h, CPtrList, constructor: 0x5E998E
-//0xAAB94C, 2ah, BYTE bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
-//0xAAB9B8, eh, BYTE, pad
+//0xAAB930, 28h, IECPtrList, constructor: 0x5E998E
+//0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
+//0xAAB9B8, eh, unsigned char, pad
 //0xAAB9D4, 14h, ResRef

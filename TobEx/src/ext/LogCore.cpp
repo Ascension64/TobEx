@@ -1,25 +1,28 @@
 #include "LogCore.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "dbgcore.h"
 #include "patch.h"
+#include "options.h"
 #include "console.h"
 #include "log.h"
 
-void (__cdecl *Tramp_AssertFailedQuit)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR) =
-	reinterpret_cast<void (__cdecl *)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F06C);
-void (__cdecl *Tramp_AssertFailedContinue)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR) =
-	reinterpret_cast<void (__cdecl *)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F193);
+void (__cdecl *Tramp_AssertFailedQuit)(int, LPCTSTR, LPCTSTR, LPCTSTR) =
+	reinterpret_cast<void (__cdecl *)(int, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F06C);
+void (__cdecl *Tramp_AssertFailedContinue)(int, LPCTSTR, LPCTSTR, LPCTSTR) =
+	reinterpret_cast<void (__cdecl *)(int, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F193);
 void (__cdecl *Tramp_WriteToFile)(CFile&, CString&) =
 	reinterpret_cast<void (__cdecl *)(CFile&, CString&)>					(0x99F371);
 void (__stdcall *Tramp_CloseLogAndErr)() =
 	reinterpret_cast<void (__stdcall *)()>									(0x99F1BA);
 
 void __stdcall DETOUR_CloseLogAndErr() {
+	Tramp_CloseLogAndErr();
+
 	//delete ClassAbilityTable;	- main program does this
 	ClassAbilityTable = NULL;
-
-	Tramp_CloseLogAndErr();
+	delete pGameOptionsEx;
+	pGameOptionsEx = NULL;
 
 	return;
 }
@@ -43,8 +46,8 @@ void __cdecl DETOUR_WriteToFile(CFile& file, CString& str) {
 	return;
 }
 
-void __cdecl DETOUR_AssertFailedQuit(DWORD dwLine, LPCTSTR szPath, LPCTSTR szExpression, LPCTSTR szMessage) {
-	DWORD Eip;
+void __cdecl DETOUR_AssertFailedQuit(int dwLine, LPCTSTR szPath, LPCTSTR szExpression, LPCTSTR szMessage) {
+	int Eip;
 	GetEip(Eip);
 
 	CString sFile(szPath);
@@ -62,8 +65,8 @@ void __cdecl DETOUR_AssertFailedQuit(DWORD dwLine, LPCTSTR szPath, LPCTSTR szExp
 	return Tramp_AssertFailedQuit(dwLine, szPath, szExpression, szMessage);
 }
 	
-void __cdecl DETOUR_AssertFailedContinue(DWORD dwLine, LPCTSTR szPath, LPCTSTR szExpression, LPCTSTR szMessage) {
-	DWORD Eip;
+void __cdecl DETOUR_AssertFailedContinue(int dwLine, LPCTSTR szPath, LPCTSTR szExpression, LPCTSTR szMessage) {
+	int Eip;
 	GetEip(Eip);
 
 	CString sFile(szPath);

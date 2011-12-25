@@ -1,14 +1,14 @@
 #include "SoundCore.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "sndcore.h"
 #include "sndmus.h"
 #include "console.h"
 
-BOOL (CSoundMixer::*Tramp_CSoundMixer_InitSonglist)(DWORD, char**) =
-	SetFP(static_cast<BOOL (CSoundMixer::*)(DWORD, char**)>		(&CSoundMixer::InitSonglist),	0x9E209B);
+BOOL (CSoundMixer::*Tramp_CSoundMixer_InitSonglist)(int, char**) =
+	SetFP(static_cast<BOOL (CSoundMixer::*)(int, char**)>		(&CSoundMixer::InitSonglist),	0x9E209B);
 
-BOOL DETOUR_CSoundMixer::DETOUR_InitSonglist(DWORD nSongs, char** pSongFileArray) {
+BOOL DETOUR_CSoundMixer::DETOUR_InitSonglist(int nSongs, char** pSongFileArray) {
 	if (!bSosDriverLoaded) return FALSE;
 	if (nNumSongs) return FALSE; //normally an assert
 	LPTSTR szSongPath = sSongPath.GetBuffer(0);
@@ -23,7 +23,7 @@ BOOL DETOUR_CSoundMixer::DETOUR_InitSonglist(DWORD nSongs, char** pSongFileArray
 
 	for (int i = 0; i < nSongs; i++) {
 		*(ppArray+i) = pArray+i;
-		sprintf_s( (pArray+i)->path, 256, "%s/%s", sSongPath, *(pSongFileArray+i));
+		sprintf_s( (pArray+i)->path, 256, "%s/%s", sSongPath, *(pSongFileArray+i) );
 	}
 
 	Sos_InitSonglist(ppArray, nSongs);

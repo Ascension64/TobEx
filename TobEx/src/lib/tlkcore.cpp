@@ -1,6 +1,6 @@
 #include "tlkcore.h"
 
-#include "utils.h"
+#include "stdafx.h"
 
 IECString (__cdecl *GetTlkString)(STRREF) =
 	reinterpret_cast<IECString (__cdecl *)(STRREF)>(0x43B193);

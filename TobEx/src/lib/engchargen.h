@@ -11,97 +11,94 @@ public:
 	//AAF5F0
 	virtual void v0() {}
 
-	//functions
-	void KitPanelOnLoad(CPanel&, CCreatureObject&);
-	void MageBookPanelOnLoad(CPanel&, CCreatureObject&);
-	void UpdatePanel(DWORD, CCreatureObject&);
-	void KitPanelOnUpdate(CPanel&, CCreatureObject&);
-	void MageBookPanelOnUpdate(CPanel&, CCreatureObject&);
-	void ClassPanelOnUpdate(CPanel&, CCreatureObject&);
-	void MulticlassPanelOnUpdate(CPanel&, CCreatureObject&);
-	void MageSchoolPanelOnUpdate(CPanel&, CCreatureObject&);
-	void InitSoundset(CCreatureObject&);
-	BOOL CanContinue(CCreatureObject&);
+	void KitPanelOnLoad(CPanel& panel, CCreatureObject& cre);
+	void MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre);
+	void UpdatePanel(int nPanelIdx, CCreatureObject& cre);
+	void KitPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void ClassPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void MulticlassPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	void InitSoundset(CCreatureObject& cre);
+	BOOL CanContinue(CCreatureObject& cre);
 
-	//members
 	CRuleTable Kit_Class_Race; //feh
-	struct _5A7510 {
-	//Size: 0x30
+	struct _5A7510 { //Size 30h
 	//Constructor: 0x5A7510
-		BYTE u0;
-		BYTE u1[7];
+		char u0;
+		char u1[7];
 		CPtrArray u8; //AAB3EC
 		CPtrArray u1c; //AAB3E0
 	} u122;
 
 	CHotkey u152[91];
 
-	DWORD u42a[23]; //42ah
-	DWORD u486;
-	DWORD u48a;
-	DWORD u48e;
-	DWORD u492;
-	DWORD charType; //496h, 2 = newChar, 5 = BG1Char
+	int u42a[23]; //42ah
+	int u486;
+	int u48a;
+	int u48e;
+	int u492;
+	int charType; //496h, 2 = newChar, 5 = BG1Char
 	Enum eChar; //49ah, global enum value of chargen char
-	DWORD u49e;
-	DWORD u4a2;
-	DWORD nSpellsRemaining; //4a6h
-	DWORD u4aa[13];
-	CPtrList m_OpenPanels; //4deh
-	DWORD u4fa;
-	DWORD u4fe;
-	DWORD nTopHatedRace; //502h, sliderValue for racial enemy
-	DWORD u506;
-	DWORD u50a;
-	DWORD u50e;
-	DWORD u512;
-	DWORD u516;
-	DWORD u51a;
-	DWORD u51e;
-	DWORD u522;
-	DWORD u526;
-	DWORD u52a;
-	DWORD u52e;
-	DWORD u532;
+	int u49e;
+	int u4a2;
+	int nSpellsRemaining; //4a6h
+	int u4aa[13];
+	IECPtrList m_OpenPanels; //4deh
+	int u4fa;
+	int u4fe;
+	int nTopHatedRace; //502h, sliderValue for racial enemy
+	int u506;
+	int u50a;
+	int u50e;
+	int u512;
+	int u516;
+	int u51a;
+	int u51e;
+	int u522;
+	int u526;
+	int u52a;
+	int u52e;
+	int u532;
 	CVidFont u536;
 	CVidFont ua32;
 	CVidFont uf2e;
-	WORD u142a;
+	short u142a;
 	CResRefList MageBookSpells; //142ch (ResRef spells)
-	BYTE u1448;
-	BYTE u1449; //pad
-	DWORD u144a;
-	DWORD u144e;
-	DWORD u1452;
-	BYTE nCurrentMageBookLevel; //1456h, range: 1-9
-	BYTE nMaxMageBookLevel; //1457h
-	WORD u1458;
-	WORD u145a; //pad
-	BYTE m_class; //145ch
-	BYTE u145d; //pad
-	WORD u145e; //holds the kit number
-	WORD u1460;
-	DWORD u1462;
-	BYTE u1466;
-	BYTE u1467; //pad
-	WORD nSpellsChosen; //1468h
-	WORD u146a;
-	WORD u146c;
-	BYTE sliderValue; //146eh, for old skills
-	BYTE u146f;
-	WORD numHatedRaces; //1470h, total number of racial enemy choices
-	DWORD u1472;
+	char u1448;
+	char u1449; //pad
+	int u144a;
+	int u144e;
+	int u1452;
+	char nCurrentMageBookLevel; //1456h, range: 1-9
+	char nMaxMageBookLevel; //1457h
+	short u1458;
+	short u145a; //pad
+	unsigned char m_class; //145ch
+	char u145d; //pad
+	short u145e; //holds the kit number
+	short u1460;
+	int u1462;
+	char u1466;
+	char u1467; //pad
+	short nSpellsChosen; //1468h
+	short u146a;
+	short u146c;
+	char sliderValue; //146eh, for old skills
+	char u146f;
+	short numHatedRaces; //1470h, total number of racial enemy choices
+	int u1472;
 	STRREF strrefSpellDesc2; //1476h
-	WORD u147a;
+	short u147a;
 	STRREF strrefSpellDesc; //147ch
-	DWORD u1480;
-	DWORD u1484;
+	int u1480;
+	int u1484;
 	IECString u1488;
 };
 
 extern void (CCharGen::*CCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&);
 extern void (CCharGen::*CCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_UpdatePanel)(DWORD, CCreatureObject&);
+extern void (CCharGen::*CCharGen_UpdatePanel)(int, CCreatureObject&);
 extern void (CCharGen::*CCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CCharGen::*CCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CCharGen::*CCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);

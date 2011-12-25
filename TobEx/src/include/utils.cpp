@@ -1,12 +1,8 @@
-#include "utils.h"
+#include "stdafx.h"
 
 const char* months[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 const char* days[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-static LPCTSTR szDefault = "0";
-static const DWORD nBufSize = 2;
-static char szBuf[2] = { 0 };
-static LPCTSTR szFile = "./TobEx.ini";
 
 static void* (__cdecl *_New)(size_t) =
 	reinterpret_cast<void* (__cdecl  *)(size_t)>	(0xA50608);
@@ -20,11 +16,6 @@ void* __cdecl operator new[] (size_t size, int i) { return (*_New)(size); }
 void __cdecl operator delete (void* mem, int i) { return (*_Delete)(mem); }
 void __cdecl operator delete[] (void* mem, int i) { return (*_Delete)(mem); }
 int __cdecl IERand() { return (*_Rand)(); }
-
-int GetIniValue(LPCTSTR szSection, LPCTSTR szKey) {
-	GetPrivateProfileString(szSection, szKey, szDefault, szBuf, nBufSize, szFile);
-	return atoi(szBuf);
-}
 
 void* ThisCall(void* func, void* pThis) {
 	void* returnVal;

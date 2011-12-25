@@ -3,9 +3,9 @@
 
 #include "chitin.h"
 
-extern CBaldurChitin& (CBaldurChitin::*Tramp_CBaldurChitin_Construct0)(void);
+extern CBaldurChitin& (CBaldurChitin::*Tramp_CBaldurChitin_Construct)(void);
 
-int __stdcall CBaldurChitin_MessageBox(HWND, LPCSTR, LPCSTR, UINT);
+int __stdcall CBaldurChitin_MessageBox(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
 
 class DETOUR_CBaldurChitin : public CBaldurChitin {
 public:

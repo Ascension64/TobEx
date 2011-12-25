@@ -1,6 +1,6 @@
 #include "UserRecMageSpell.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "chitin.h"
 #include "uicore.h"
 #include "rescore.h"
@@ -19,7 +19,7 @@ void CUIScrollBarRecMageSpell::UpdatePanel() {
 	Enum eChar = ENUM_INVALID_INDEX;
 	CInfGame* pGame = g_pChitin->pGame;
 	CRecord* pCharacter = g_pChitin->pCharacter;
-	DWORD nPlayerIdx = pCharacter->GetActivePlayerIdx();
+	int nPlayerIdx = pCharacter->GetActivePlayerIdx();
 	if (nPlayerIdx < pGame->numInParty) {
 		eChar = pGame->ePlayersPartyOrder[nPlayerIdx];
 	} else {
@@ -27,8 +27,8 @@ void CUIScrollBarRecMageSpell::UpdatePanel() {
 	}
 
 	CCreatureObject* pCre;
-	BYTE threadNum = THREAD_ASYNCH;
-	BYTE threadVal;
+	char threadNum = THREAD_ASYNCH;
+	char threadVal;
 	do {
 		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(eChar, threadNum, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
@@ -45,7 +45,7 @@ CUIScrollBarRecMageSpell::~CUIScrollBarRecMageSpell() {
 }
 
 void CUIScrollBarRecMageSpell::OnMouseDragKnob() {
-	WORD nOld = nCurrentValue;
+	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
 	} else {
@@ -56,7 +56,7 @@ void CUIScrollBarRecMageSpell::OnMouseDragKnob() {
 }
 
 void CUIScrollBarRecMageSpell::OnLMouseBtnDnArrowUp() {
-	WORD nOld = nCurrentValue;
+	short nOld = nCurrentValue;
 	nCurrentValue = max(nCurrentValue - 1, 0);
 	if (nOld != nCurrentValue) {
 		UpdatePanel();
@@ -66,7 +66,7 @@ void CUIScrollBarRecMageSpell::OnLMouseBtnDnArrowUp() {
 }
 
 void CUIScrollBarRecMageSpell::OnLMouseBtnDnArrowDn() {
-	WORD nOld = nCurrentValue;
+	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
 	} else {
@@ -79,10 +79,10 @@ void CUIScrollBarRecMageSpell::OnLMouseBtnDnArrowDn() {
 	return;
 }
 
-void CUIScrollBarRecMageSpell::OnLClickedAboveKnob(DWORD interval) {
-	if (interval > 3) interval = 3;
-	WORD nOld = nCurrentValue;
-	nCurrentValue = max(nCurrentValue - (WORD)interval, 0);
+void CUIScrollBarRecMageSpell::OnLClickedAboveKnob(short interval) {
+	if (interval > 3 || interval < 0) interval = 3;
+	short nOld = nCurrentValue;
+	nCurrentValue = max(nCurrentValue - interval, 0);
 	if (nOld != nCurrentValue) {
 		UpdatePanel();
 		UpdateKnobPosition(nCurrentValue, nValues, nRows);
@@ -90,13 +90,13 @@ void CUIScrollBarRecMageSpell::OnLClickedAboveKnob(DWORD interval) {
 	return;
 }
 
-void CUIScrollBarRecMageSpell::OnLClickedBelowKnob(DWORD interval) {
-	if (interval > 3) interval = 3;
-	WORD nOld = nCurrentValue;
+void CUIScrollBarRecMageSpell::OnLClickedBelowKnob(short interval) {
+	if (interval > 3 || interval < 0) interval = 3;
+	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
 	} else {
-		nCurrentValue = min(nCurrentValue + (WORD)interval, nValues - nRows);
+		nCurrentValue = min(nCurrentValue + interval, nValues - nRows);
 	}
 	if (nOld != nCurrentValue) {
 		UpdatePanel();

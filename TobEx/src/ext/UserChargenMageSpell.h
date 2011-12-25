@@ -2,24 +2,24 @@
 #define USERCHARGENMAGESPELL_H
 
 #include "uiscroll.h"
+#include "cptrlistex.h"
 
 class CUIScrollBarChargenMageSpell : public CUIScrollBar {
 public:
-	CUIScrollBarChargenMageSpell(CPanel&, ChuFileControlInfoBase&);
+	CUIScrollBarChargenMageSpell(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 	void UpdatePanel();
 
 	virtual ~CUIScrollBarChargenMageSpell(); //v0
-	virtual void OnMouseDragKnob(void); //v60
-	virtual void OnLMouseBtnDnArrowUp(void); //v64
-	virtual void OnLMouseBtnDnArrowDn(void); //v68
-	virtual void OnLClickedAboveKnob(DWORD); //v70
-	virtual void OnLClickedBelowKnob(DWORD); //v74
+	virtual void OnMouseDragKnob(); //v60
+	virtual void OnLMouseBtnDnArrowUp(); //v64
+	virtual void OnLMouseBtnDnArrowDn(); //v68
+	virtual void OnLClickedAboveKnob(short interval); //v70
+	virtual void OnLClickedBelowKnob(short interval); //v74
 
-	//members
 	short nCurrentValue;
 	short nValues;
-	int nRows;
-	CPtrList cplTempSpells;
+	short nRows;
+	IECPtrList cplTempSpells;
 };
 
 #endif //USERCHARGENMAGESPELL_H

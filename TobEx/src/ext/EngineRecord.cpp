@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "utils.h"
+#include "stdafx.h"
 #include "objcre.h"
 #include "objcore.h"
 #include "chitin.h"
@@ -15,11 +15,11 @@
 #include "UserCommon.h"
 
 void (CRecord::*Tramp_CRecord_MageBookPanelOnLoad)(CCreatureObject&) =
-	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>			(&CRecord::MageBookPanelOnLoad),	0x6E0FE6);
+	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>	(&CRecord::MageBookPanelOnLoad),	0x6E0FE6);
 void (CRecord::*Tramp_CRecord_MageBookPanelOnUpdate)(CCreatureObject&) =
-	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>			(&CRecord::MageBookPanelOnUpdate),	0x6E563F);
-void (CRecord::*Tramp_CRecord_UpdateCharacter)(void) =
-	SetFP(static_cast<void (CRecord::*)(void)>						(&CRecord::UpdateCharacter),		0x6E9F57);
+	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>	(&CRecord::MageBookPanelOnUpdate),	0x6E563F);
+void (CRecord::*Tramp_CRecord_UpdateCharacter)() =
+	SetFP(static_cast<void (CRecord::*)()>					(&CRecord::UpdateCharacter),		0x6E9F57);
 
 void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	CPanel& panel = manager.GetPanel(8);
@@ -65,8 +65,8 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 	}
 
 	//Depending on offset in MageBookSpells, transfer spells to/from temporary spell pile
-	DWORD nPileCount = scroll.cplTempSpells.GetCount();
-	DWORD nSliderCount = 5 * scroll.nCurrentValue;
+	int nPileCount = scroll.cplTempSpells.GetCount();
+	int nSliderCount = 5 * scroll.nCurrentValue;
 
 	if (nSliderCount > nPileCount) {
 		int i = nSliderCount - nPileCount;
@@ -105,7 +105,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		Enum eChar = ENUM_INVALID_INDEX;
 		CInfGame* pGame = g_pChitin->pGame;
 		CRecord* pCharacter = g_pChitin->pCharacter;
-		DWORD nPlayerIdx = pCharacter->GetActivePlayerIdx();
+		int nPlayerIdx = pCharacter->GetActivePlayerIdx();
 		if (nPlayerIdx < pGame->numInParty) {
 			eChar = pGame->ePlayersPartyOrder[nPlayerIdx];
 		} else {
@@ -113,8 +113,8 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		}
 
 		CCreatureObject* pCre = &cre;
-		BYTE threadNum = THREAD_ASYNCH;
-		BYTE threadVal;
+		char threadNum = THREAD_ASYNCH;
+		char threadVal;
 		do {
 			threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eChar, threadNum, &pCre, INFINITE);
 		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
@@ -129,6 +129,14 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 			control.SetRedraw();
 			g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eChar, threadNum, INFINITE);
 		}
+	}
+
+	if (scroll.cplTempSpells.GetCount() + MageBookSpells.GetCount() > 25) {
+		scroll.SetEnabled(TRUE);
+		scroll.SetVisible(TRUE);
+	} else {
+		scroll.SetEnabled(FALSE);
+		scroll.SetVisible(FALSE);
 	}
 
 	return;
@@ -157,7 +165,7 @@ void DETOUR_CRecord::DETOUR_UpdateCharacter() {
 		}
 
 		CCreatureObject* pCre;
-		BYTE threadVal;
+		char threadVal;
 		do {
 			threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectDeny(ePlayer1, THREAD_ASYNCH, &pCre, INFINITE);
 		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);

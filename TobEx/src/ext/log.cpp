@@ -1,6 +1,6 @@
 #include "log.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "resref.h"
 
 Log L;
@@ -22,15 +22,15 @@ BOOL Log::Init() {
 	return bFileOpen;
 }
 
-Log& Log::append(ResRef* text) {
+Log& Log::append(ResRef& rText) {
 	DWORD size = 8;
-	WriteFile(hFile, (LPCVOID)text, size, &size, NULL);
+	WriteFile(hFile, (LPCVOID)&rText, size, &size, NULL);
 	return *this;
 }
 
-Log& Log::append(LPCTSTR text) {
-	DWORD size = static_cast<DWORD>(strlen(text));
-	WriteFile(hFile, (LPCVOID)text, size, &size, NULL);
+Log& Log::append(LPCTSTR lpsz) {
+	DWORD size = static_cast<int>(strlen(lpsz));
+	WriteFile(hFile, (LPCVOID)lpsz, size, &size, NULL);
 	return *this;
 }
 
@@ -42,7 +42,7 @@ Log& Log::append(CString& s) {
 
 Log& Log::append(LPCTSTR format, int n, ...) {
 	char text[256];
-	DWORD length = sizeof(text);
+	int length = sizeof(text);
 
     va_list v;
     va_start(v, n);
@@ -57,7 +57,7 @@ Log& Log::timestamp() {
 	time_t tmTime = time(NULL);
 	tm tmLocal;
 	localtime_s(&tmLocal, &tmTime);
-	char* buffer = new char [50];
+	char* buffer = new char[50];
 	sprintf_s(buffer, 50, "[%s %.2d %s %.4d %.2d:%.2d:%.2d] ", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 	append(buffer);
 

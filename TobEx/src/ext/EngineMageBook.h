@@ -3,11 +3,11 @@
 
 #include "engmagebk.h"
 
-extern void (CMageBook::*Tramp_CMageBook_SetLevel)(DWORD);
+extern void (CMageBook::*Tramp_CMageBook_SetLevel)(int);
 
 class DETOUR_CMageBook : public CMageBook {
 public:
-	void DETOUR_SetLevel(DWORD);
+	void DETOUR_SetLevel(int nLevel);
 };
 
 #endif //ENGINEMAGEBOOK_H

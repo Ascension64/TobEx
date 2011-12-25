@@ -1,133 +1,133 @@
 #ifndef DATATYPES_H
 #define DATATYPES_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "resref.h"
 
 //Bam, Bah
 struct BamFileFrameEntry { //Size Ch
-	WORD width;
-	WORD height;
-	WORD x;
-	WORD y;
-	DWORD dwFlags;
+	short width;
+	short height;
+	short x;
+	short y;
+	unsigned int dwFlags;
 };
 
 //Chu
 struct ChuFileControlInfoBase { //Size Eh
-	DWORD id; //0h
-	WORD posX; //4h
-	WORD posY; //6h
-	WORD width; //8h
-	WORD height; //ah
-	BYTE type; //ch
-	BYTE ud; //dh
+	int id; //0h
+	short posX; //4h
+	short posY; //6h
+	short width; //8h
+	short height; //ah
+	char type; //ch
+	char ud; //dh
 };
 
 //Cre
 struct ColorRangeValues { //Size 7h
-	BYTE colorMetal; //0h
-	BYTE colorMinor; //1h
-	BYTE colorMajor; //2h
-	BYTE colorSkin; //3h
-	BYTE colorLeather; //4h
-	BYTE colorArmor; //5h
-	BYTE colorHair; //6h
+	unsigned char colorMetal; //0h
+	unsigned char colorMinor; //1h
+	unsigned char colorMajor; //2h
+	unsigned char colorSkin; //3h
+	unsigned char colorLeather; //4h
+	unsigned char colorArmor; //5h
+	unsigned char colorHair; //6h
 };
 
 struct CreFileData { //Size 268h
 	STRREF longNameStrRef; //0h, dialogue
 	STRREF shortNameStrRef; //4h, strref tooltip
-	DWORD dwFlags; //8h
-	DWORD ExpWorth; //ch
-	DWORD currentExp; //10h
-	DWORD gold; //14h
-	DWORD stateFlags; //18h
-	WORD currentHP;
-	WORD maxHP;
-	WORD animID; //20h
-	WORD u22;
+	unsigned int dwFlags; //8h
+	int ExpWorth; //ch
+	int currentExp; //10h
+	int gold; //14h
+	unsigned int stateFlags; //18h
+	short currentHP; //1ch
+	short maxHP; //1eh
+	unsigned short animId; //20h
+	short u22;
 	ColorRangeValues colors; //23h
-	BYTE effType; //2ah, 0 = ITEM_EFFECT (Effect), 1 = CEffect
+	char effType; //2ah, 0 = ITEM_EFFECT (Effect), 1 = CEffect
 	ResRef smallPortrait; //2ch
 	ResRef largePortrait; //34h
-	BYTE reputation; //3ch
-	BYTE hideInShadows;
-	WORD ACNatural;
-	WORD ACEffective; //40h
-	WORD ACCrushingMod;
-	WORD ACMissileMod;
-	WORD ACPiercingMod;
-	WORD ACSlashingMod;
-	BYTE THAC0;
-	BYTE numAttacks;
-	BYTE saveDeath;
-	BYTE saveWands;
-	BYTE savePolymorph;
-	BYTE saveBreath;
-	BYTE saveSpells; //50h
-	BYTE resistFire;
-	BYTE resistCold;
-	BYTE resistElectricity;
-	BYTE resistAcid;
-	BYTE resistMagic;
-	BYTE resistMagicFire;
-	BYTE resistMagicCold;
-	BYTE resistSlashing;
-	BYTE resistCrushing;
-	BYTE resistPiercing;
-	BYTE resistMissile;
-	BYTE detectIllusion;
-	BYTE setTraps;
-	BYTE lore;
-	BYTE lockpicking;
-	BYTE stealth; //60h
-	BYTE findTraps;
-	BYTE pickPockets;
-	BYTE fatigue;
-	BYTE intoxication;
-	BYTE luck;
-	BYTE BG1ProfLSword; //unused
-	BYTE BG1ProfSSword; //unused
-	BYTE BG1ProfBows; //unused
-	BYTE BG1ProfSpears; //unused
-	BYTE BG1ProfBlunt; //unused
-	BYTE BG1ProfSpiked; //unused
-	BYTE BG1ProfAxe; //unused
-	BYTE BG1ProfMissile; //unused
-	BYTE u6e;
-	BYTE u6f;
-	BYTE u70;
-	BYTE u71;
-	BYTE u72;
-	BYTE u73;
-	BYTE u74;
-	BYTE u75;
-	BYTE u76;
-	BYTE u77;
-	BYTE u78;
-	BYTE u79;
-	BYTE u7a;
-	BYTE tracking;
-	BYTE u7c[32];
+	char reputation; //3ch
+	char hideInShadows;
+	short ACNatural;
+	short ACEffective; //40h
+	short ACCrushingMod;
+	short ACMissileMod;
+	short ACPiercingMod;
+	short ACSlashingMod;
+	char THAC0;
+	char numAttacks;
+	char saveDeath;
+	char saveWands;
+	char savePolymorph;
+	char saveBreath;
+	char saveSpells; //50h
+	char resistFire;
+	char resistCold;
+	char resistElectricity;
+	char resistAcid;
+	char resistMagic;
+	char resistMagicFire;
+	char resistMagicCold;
+	char resistSlashing;
+	char resistCrushing;
+	char resistPiercing;
+	char resistMissile;
+	char detectIllusion;
+	char setTraps;
+	char lore;
+	char lockpicking;
+	char stealth; //60h
+	char findTraps;
+	char pickPockets;
+	char fatigue;
+	char intoxication;
+	char luck;
+	char BG1ProfLSword; //unused
+	char BG1ProfSSword; //unused
+	char BG1ProfBows; //unused
+	char BG1ProfSpears; //unused
+	char BG1ProfBlunt; //unused
+	char BG1ProfSpiked; //unused
+	char BG1ProfAxe; //unused
+	char BG1ProfMissile; //unused
+	char u6e;
+	char u6f;
+	char u70;
+	char u71;
+	char u72;
+	char u73;
+	char u74;
+	char u75;
+	char u76;
+	char u77;
+	char u78;
+	char u79;
+	char u7a;
+	char tracking;
+	char u7c[32];
 	STRREF soundset[100]; //9ch
-	BYTE levelPrimary; //22ch
-	BYTE levelSecondary; //22dh
-	BYTE levelTertiary;
-	BYTE sex;
-	BYTE strength;
-	BYTE strengthPercent;
-	BYTE intelligene;
-	BYTE wisdom;
-	BYTE dexterity;
-	BYTE constitution;
-	BYTE charisma;
-	BYTE morale; //237h, range: 0-20, add -1 when PC dies
-	BYTE moraleBreak;
-	BYTE racialEnemy; //239h
-	BYTE moraleRecoveryTime;
-	BYTE u23b;
-	WORD kit[2]; //23ch
+	char levelPrimary; //22ch
+	char levelSecondary; //22dh
+	char levelTertiary;
+	char sex;
+	char strength;
+	char strengthPercent;
+	char intelligene;
+	char wisdom;
+	char dexterity;
+	char constitution;
+	char charisma;
+	char morale; //237h, range: 0-20, add -1 when PC dies
+	char moraleBreak;
+	char racialEnemy; //239h
+	char moraleRecoveryTime;
+	char u23b;
+	unsigned short kit[2]; //23ch
 	ResRef scriptOverride; //240h
 	ResRef scriptClass;
 	ResRef scriptRace; //250h
@@ -136,231 +136,295 @@ struct CreFileData { //Size 268h
 };
 
 struct CreFileMemSpellLevel { //Size 10h
-	WORD level;
-	WORD numSpellsMemMax;
-	WORD numSpellsMemCurrent;
-	WORD type; //0 = priest, 1 = wizard, 2 = innate
-	DWORD index; //of spell table
-	DWORD num; //count of spells
+	short level;
+	short numSpellsMemMax;
+	short numSpellsMemCurrent;
+	short type; //0 = priest, 1 = wizard, 2 = innate
+	int index; //of spell table
+	int num; //count of spells
 };
 
 struct CreFileKnownSpell { //Size Ch
 	ResRef name; //0h
-	WORD level; //8h
-	WORD type; //ah
+	short level; //8h
+	short type; //ah
 };
 
 struct CreFileMemSpell { //Size Ch
 	ResRef name;
-	WORD wFlags; //8h, bit0: memorised, bit1: is a SPIN107, 108, 109, 110, 111 (a Paladin, Ranger, Druid special innate)
-	WORD ua; //pad
+
+	//bit0: memorised
+	//bit1: is a SPIN107, 108, 109, 110, 111 (a Paladin, Ranger, Druid special innate)
+	unsigned short wFlags; //8h
+	short ua; //pad
 };
 
 //Dlg
 struct DlgFileState { //Size 10h
 	STRREF strref; //0h
-	DWORD nResponseIdx; //4h, first response index
-	DWORD nResponses; //8h
-	DWORD nTriggerIdx; //ch
+	int nResponseIdx; //4h, first response index
+	int nResponses; //8h
+	int nTriggerIdx; //ch
 };
 
 struct DlgFileResponse { //Size 20h
-	DWORD flags; //0h
+	unsigned int flags; //0h
 	STRREF strref; //4h
 	STRREF strrefJournal; //8h
-	DWORD nTriggerIdx; //ch
-	DWORD nActionIdx; //10h
+	int nTriggerIdx; //ch
+	int nActionIdx; //10h
 	ResRef NextDialog; //14h
-	DWORD nNextDialogState; //1ch
+	int nNextDialogState; //1ch
 };
 
 //Eff
 struct EffFileData { //size 108h
 //AKA CGameEffectBase
 	ResRef rHeader; //0h
-	DWORD nOpcode; //8h
-	DWORD nTarget; //ch
-	DWORD nSplLvl; //10h
-	DWORD nParam1; //14h
-	DWORD nParam2; //18h
+	int nOpcode; //8h
+	int nTarget; //ch
+	int nSplLvl; //10h
+	int nParam1; //14h
+	int nParam2; //18h
 
-	//0: convert to 1000, Apply now, set duration (duration in sec)
-	//3: convert to 6, Apply later, set duration (duration in sec)
-	//6: if gameTime >= duration (ticks), convert to 1000, Apply now set duration (duration in sec)
-	//4: convert to 7, Apply later, set duration (duration in sec)
+	//note, 'set duration' will always set to a gameTime
+	//0: convert to 1000, Apply now, set duration [sec]
+	//1: Apply now, add to main effect list (permanent until death)
+	//2: Apply now, add to equipped effect list (while equipped)
+	//3: convert to 6, Apply later, set duration [sec]
+	//4: convert to 7, Apply later, set duration [sec]
+	//5: convert to 8, Apply later, set duration [sec]
+	//6: if gameTime >= duration (ticks), convert to 1000, Apply now set duration [sec]
 	//7: if gameTime >= duration (ticks), convert to 1, Apply now
-	//5: convert to 8, Apply later, set duration (duration in sec)
-	//8: if gameTime>= duration (ticks), convert to 2, Apply now
-	//9: will not be removed from CPtrListEffect
+	//8: if gameTime >= duration (ticks), convert to 2, Apply now
+	//9: Apply now, will not be removed from CEffectList
 	//10: convert to 1000, Apply now, set duration (duration in ticks)
 	//1000: if gameTime < duration (ticks), Apply; else purge
-	DWORD nTiming; //1ch, in seconds (converted to ticks)
+	int nTiming; //1ch, in seconds (converted to ticks)
 
-	DWORD nDuration; //20h
-	WORD wProbHigh; //24h
-	WORD wProbLow; //26h
+	int nDuration; //20h
+	short wProbHigh; //24h
+	short wProbLow; //26h
 	ResRef rResource; //28h
-	DWORD nDice; //30h
-	DWORD nDieSides; //34h
-	DWORD nSaveType; //38h
-	DWORD nSaveBonus; //3ch
-	DWORD u44; //40h
-	DWORD nType1; //44h
-	DWORD u4c; //48h
-	DWORD nLevelMin; //4ch
-	DWORD nLevelMax; //50h
+	int nDice; //30h
+	int nDieSides; //34h
+	unsigned int nSaveType; //38h
+	int nSaveBonus; //3ch
+	int u44; //40h
+	int nType1; //44h
+	int u4c; //48h
+	int nLevelMin; //4ch
+	int nLevelMax; //50h
 		
-	//bit 0 = CGAMEEFFECT_DISPELLABLE
-	//bit 1 = CGAMEEFFECT_IGNORE_RESISTANCE
-	//bit 2 = CGAMEEFFECT_IGNORE_SPELL_LEVL_RESISTANCE (only for BounceSplLvl[Dec], ProtSplLvl[Dec], and SplLvlTrap; does not affect ProtSplLvl)
-	DWORD dwFlags; //54h, DispelResistFlags
+	//bit0: CEFFECT_DISPELLABLE
+	//bit1: CEFFECT_IGNORE_RESISTANCE
+	//bit2: CEFFECT_IGNORE_SPELL_LVL_RESISTANCE (only for BounceSplLvl[Dec], ProtSplLvl[Dec], and SplLvlTrap; does not affect ProtSplLvl)
+	unsigned int dwFlags; //54h, DispelResistFlags
 		
-	DWORD nParam3; //58h
-	DWORD nParam4; //5ch
-	DWORD u64; //60h
-	DWORD u68; //64h
-	ResRef rVVC; //68h
-	ResRef rResource2; //70h
+	int nParam3; //58h
+	int nParam4; //5ch
+	int u64; //60h
+	int u68; //64h
+	ResRef rResource2; //68h
+	ResRef rResource3; //70h
 	POINT ptSource; //78h
-	DWORD nDestX; //80h
-	DWORD nDestY; //84h
-	DWORD nParentResourceType; //88h, 1 = SPL
+	int nDestX; //80h
+	int nDestY; //84h
+	int nParentResourceType; //88h, 0 = none, 1 = SPL, 2 = ITM
 	ResRef rParentResource; //8ch
-	DWORD nParentResourceFlags; //94h
-	DWORD nParentProjectile; //98h, PROJECTL.IDS
-	DWORD nParentItemSlot; //9ch
+	unsigned int nParentAbilityFlags; //94h
+	int nParentProjectile; //98h, PROJECTL.IDS
+	int nParentItemSlot; //9ch
 	char variable[32]; //a0h
-	DWORD nSourceCreLevel; //c0h, inherits 0ah for a global effect of an item equipped by a Sprite
-	DWORD uc8; //c4h
-	DWORD nType2; //c8h
-	DWORD ud0[15]; //cch
+	int nSourceCreLevel; //c0h
+	int uc8; //c4h
+	int nType2; //c8h
+	int ud0[15]; //cch
 };
 
 //Itm
 struct ItmFileAbility { //Size 38h
-	BYTE attackType; //0h
-	BYTE idReq; //1h
-	BYTE loc; //2h
-	BYTE u3;
+	char attackType; //0h
+	char idReq; //1h
+	char loc; //2h
+	char u3;
 	ResRef useIcon; //4h
-	BYTE targetType; //ch
-	BYTE targetCnt; //dh
-	WORD range; //eh
-	WORD projType; //10h
-	WORD speed; //12h
-	WORD toHitBonus; //14h
-	WORD sizeDice; //16h
-	WORD nDice; //18h
-	WORD damBonus; //1ah
-	WORD damType; //1ch
-	WORD nEffects; //1eh
-	WORD offEffects; //20h
-	WORD charges; //22h
-	WORD chargeType; //24h
-	WORD flags; //26h
-	WORD u28;
-	WORD projIdx; //2ah
-	WORD meleeIdx[3]; //2ch
-	WORD isArrow; //32h
-	WORD isBolt; //34h
-	WORD isMiscProj; //36h
+	char targetType; //ch
+	char targetCnt; //dh
+	short range; //eh
+	short projType; //10h
+	short speed; //12h
+	short toHitBonus; //14h
+	short sizeDice; //16h
+	short nDice; //18h
+	short damBonus; //1ah
+	short damType; //1ch
+	short nEffects; //1eh
+	short offEffects; //20h
+	short charges; //22h
+	short chargeType; //24h
+	unsigned int flags; //26h
+	short projIdx; //2ah
+	short meleeIdx[3]; //2ch
+	short isArrow; //32h
+	short isBolt; //34h
+	short isMiscProj; //36h
 };
 
 struct ITEM_EFFECT { //Size 30h, ItmFileEffect, SplFileEffect
 //Constructor: 0x4FFC3E
-	WORD opcode; //0h
-	BYTE target; //2h
-	BYTE power; //3h
-	DWORD param1; //4h
-	DWORD param2; //8h
-	BYTE timing; //ch
+	short opcode; //0h
+	char target; //2h
+	char power; //3h
+	int param1; //4h
+	int param2; //8h
+	char timing; //ch
 
 	//bit0: Dispellable
 	//bit1: Ignore Resistance
-	BYTE flags; //dh
+	unsigned char flags; //dh
 
-	DWORD duration; //eh
-	BYTE highProb; //12h
-	BYTE lowProb; //13h
+	int duration; //eh
+	char highProb; //12h
+	char lowProb; //13h
 	ResRef resource; //14h
-	DWORD numDiceOrMaxLevel; //1ch
-	DWORD sizeDiceOrMinLevel; //20h
-	DWORD saveType; //24h
-	DWORD saveBonus; //28h
-	DWORD u2c; //2ch
+	int numDiceOrMaxLevel; //1ch
+	int sizeDiceOrMinLevel; //20h
+	unsigned int saveType; //24h
+	int saveBonus; //28h
+	int u2c; //2ch
 };
 
 //Spl
 struct SplFileAbility { //Size 28h
-	BYTE type; //0h
-	BYTE u1;
-	BYTE loc; //2h
-	BYTE u3;
+	char type; //0h
+	char u1;
+	char loc; //2h
+	char u3;
 	ResRef memIcon; //4h
-	BYTE targetType; //ch
-	BYTE targetNum; //dh
-	WORD range; //eh
-	WORD levelReq; //10h
-	DWORD castSpeed; //12h
-	WORD sizeDice; //16h
-	WORD nDice; //18h
-	WORD enchanted; //1ah
-	WORD damType; //1ch
-	WORD nEffects; //1eh
-	WORD offEffects; //20h
-	WORD nCharges; //22h
-	WORD chargeType; //24h
-	WORD projIdx; //26h
+	char targetType; //ch
+	char targetNum; //dh
+	short range; //eh
+	short levelReq; //10h
+	int castSpeed; //12h
+	short sizeDice; //16h
+	short nDice; //18h
+	short enchanted; //1ah
+	short damType; //1ch
+	short nEffects; //1eh
+	short offEffects; //20h
+	short nCharges; //22h
+	short chargeType; //24h
+	short projIdx; //26h
+};
+
+//Sto
+struct StoFileData { //Size 94h
+	int type; //0h
+	STRREF name; //4h
+	unsigned int flags; //8h
+	int nSellPercent; //ch
+	int nBuyPercent; //10h
+	int nDepreciationRate; //14h
+	short nStealFailPercent; //18h
+	short nMaxItems; //1ah
+	long u1c[2]; //1ch
+	int* pItemTypesBought; //24h
+	int nItemTypesBought; //28h
+	int* pItemsSold; //2ch
+	int nItemsSold; //30h
+	int nLore; //34h
+	int nPriceID; //38h
+	ResRef RumoursTavern; //3ch
+	int* pDrinks; //40h
+	int nDrinks; //48h
+	ResRef RumoursTemple; //4ch
+	int flagsRoom; //54h
+	int nPriceRoomPeasant; //58h
+	int nPriceRoomMerchant; //5ch
+	int nPriceRoomNoble; //60h
+	int nPriceRoomRoyal; //64h
+	int* pCures; //68h
+	int nCures; //6ch
+	int u70[9];
+};
+
+struct StoFileBuyType { //Size 4h
+	int type;
+};
+
+struct StoFileDrink { //Size 14h
+//corresponds to 'Drinks for sale' extended header
+	ResRef rumour; //0h
+	STRREF name; //8h
+	int price; //ch
+	int drinkStrength; //10h
+};
+
+struct StoFileItem { //Size 1Ch
+//corresponds to 'Item for sale' extended header
+	ResRef name; //0h
+	short arg6; //8h
+	short usage1; //ah
+	short usage2; //ch
+	short usage3; //eh
+	unsigned int flags; //10h
+	int nInStock; //14h
+	BOOL bInfinite; //18h
+};
+
+struct StoFileSpell { //Size 10h
+//corresponds to 'Cures for sale' extended header
+	ResRef spell; //0h
+	int price; //8h
 };
 
 //Vef
 struct VefFileComponent { //Size E0h
-	DWORD nStartDelay; //0h, CVisualEffect frame to start
+	int nStartDelay; //0h, CVisualEffect frame to start
 	//the specific AiUpdate to reload the animation
 	//i.e. compares to CVisualEffect.u272, when u272 == this, then is reloaded
 
-	DWORD u4; //unused
-	DWORD nRestartTime; //8h, how many ticks to reload
+	int u4; //unused
+	int nRestartTime; //8h, how many ticks to reload
 	//if 0, purge this VefComponent; otherwise, u0+=u8
 
-	DWORD type; //ch, 1 = load Vvc/Bam, 2 = CreateVisualEffect() from resref (Vef/Vvc/Bam), else = play sound in resref
+	int type; //ch, 1 = load Vvc/Bam, 2 = CreateVisualEffect() from resref (Vef/Vvc/Bam), else = play sound in resref
 	ResRef resource; //10h, vvc/bam/wav
-	DWORD dwFlags; //18h, bit0: sets uae of CVefVidCell (continuous cycles)
-	DWORD u1c[49]; //unmarshalled but unused?
+	unsigned int dwFlags; //18h, bit0: sets uae of CVefVidCell (continuous cycles)
+	int u1c[49]; //unmarshalled but unused?
 };
 
 //Vvc
-struct VvcFileData { //Size 1E0h
-//as per VVC file without char[8] header
+struct VvcFileData { //Size 1E4h
 	ResRef nameAnim1; //0h
 	ResRef nameAnim2; //8h
-	DWORD displayFlags; //10h
-	DWORD u14;
-	DWORD seqFlags; //18h
-	DWORD u1c;
+	unsigned int displayFlags; //10h
+	int u14;
+	unsigned int seqFlags; //18h
+	int u1c;
 	POINT ptOffset; //20h
-	BOOL bUseOrientation;
-	DWORD nFrameRate; //2ch
-	DWORD nOrientations; //30h
-	DWORD nBaseOrientation; //34h
-	DWORD posFlags; //38h
+	BOOL bUseOrientation; //28h
+	int nFrameRate; //2ch
+	int nOrientations; //30h
+	int nBaseOrientation; //34h
+	unsigned int posFlags; //38h
 	ResRef nameBitmapPalette; //3ch
-	DWORD zPos; //44h
-	DWORD centreX; //48h
-	DWORD centreY; //4ch
-	DWORD glowBrightness; //50h
-	DWORD duration; //54h
+	int zPos; //44h
+	POINT ptCentre; //48h
+	int glowBrightness; //50h
+	int duration; //54h
 	ResRef name; //58h, unused
-	DWORD cycleAnim1; //60h
-	DWORD cycleAnim2; //64h
-	DWORD cycleAnimCurrent; //68h
+	int animCycleBegin; //60h
+	int animCycleMiddle; //64h
+	int currCycle; //68h
 	BOOL bMultiCycle; //unused
-	ResRef sound1; //70h
-	ResRef sound2; //78h
+	ResRef soundBegin; //70h
+	ResRef soundMiddle; //78h
 	ResRef nameAnim3; //80h
-	DWORD cycleAnim3; //88h
-	ResRef sound3; //8ch
-	char u90[0x150]; //unused
+	int cycleAnimEnd; //88h
+	ResRef soundEnd; //8ch
+	char u94[0x150]; //unused
 };
 
 #endif //DATATYPES_H

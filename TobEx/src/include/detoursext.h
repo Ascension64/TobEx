@@ -1,10 +1,8 @@
 #ifndef DETOURSEXT_H
 #define DETOURSEXT_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "detours.h"
-
-void ThisToStd(BYTE* target);
 
 #define DetourFunction(target, detour) \
 	DetourTransactionBegin(); \
@@ -16,6 +14,7 @@ void ThisToStd(BYTE* target);
 	DetourAttach(&(PVOID&)target, (PVOID)(&(PVOID&)detour)); \
 	DetourTransactionCommit();
 
+void ThisToStd(BYTE* target);
 void DetourMemberFunctionOld(PVOID* pTargetFunc, PVOID detourFunc, PVOID targetFunc);
 
 #endif //DETOURSEXT_H

@@ -3,12 +3,11 @@
 
 #include "objcore.h"
 
-class CBaldurObject : public CGameSprite {
-//Size: 0x3D8
+class CBaldurObject : public CGameSprite { //Size 3D8h
 //Constructor: 0x67CB92
-//vtable: 0xAA6C28
 public:
-	DWORD u3d4;
+	//AA6C28
+	int u3d4;
 };
 
 #endif //OBJBALDUR_H

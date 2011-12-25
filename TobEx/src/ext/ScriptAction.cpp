@@ -1,14 +1,14 @@
 #include "ScriptAction.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "objcre.h"
 #include "effcore.h"
 #include "msgcore.h"
 #include "chitin.h"
 
 void __stdcall CCreatureObject_ForceVisible(CCreatureObject& creSource) {
-	//In function DWORD CCreatureObject::PickPocket(CCreatureObject& creTarget)
-	CDerivedStats& cds = creSource.bUseCurrentState ? creSource.cdsCurrent : creSource.cdsPrevious;
+	//In function int CCreatureObject::PickPocket(CCreatureObject& creTarget)
+	CDerivedStats& cds = creSource.GetDerivedStats();
 
 	if (cds.stateFlags & STATE_INVISIBLE) {
 		ITEM_EFFECT eff;

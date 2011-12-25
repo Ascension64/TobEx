@@ -7,18 +7,18 @@ extern int CUIButtonPriestBook_KnownSpellOffset;
 
 class CUIButtonPriestBookUp : public CUIButton {
 public:
-	CUIButtonPriestBookUp(CPanel&, ChuFileControlInfoBase&);
+	CUIButtonPriestBookUp(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 
 	virtual ~CUIButtonPriestBookUp(); //v0
-	virtual void OnLClicked(POINT); //v5c
+	virtual void OnLClicked(POINT pt); //v5c
 };
 
 class CUIButtonPriestBookDn : public CUIButton {
 public:
-	CUIButtonPriestBookDn(CPanel&, ChuFileControlInfoBase&);
+	CUIButtonPriestBookDn(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 
 	virtual ~CUIButtonPriestBookDn(); //v0
-	virtual void OnLClicked(POINT); //v5c
+	virtual void OnLClicked(POINT pt); //v5c
 };
 
 #endif //USERPRIESTBOOK_H

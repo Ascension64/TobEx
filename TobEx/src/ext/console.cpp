@@ -1,13 +1,15 @@
 #include "console.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "resref.h"
 
 Console console;
 
 Console::Console() {
 	bAlloc = FALSE;
-    hInput, hOutput, hError = NULL;
+    hInput = NULL;
+	hOutput = NULL;
+	hError = NULL;
 	InitializeCriticalSection(&csConsole);
 }
 
@@ -33,21 +35,21 @@ BOOL Console::Init() {
   return bAlloc;
 }
 
-Console& Console::write(ResRef* text) {
+Console& Console::write(ResRef& rText) {
 	DWORD size = 8;
 
 	EnterCriticalSection(&csConsole);
-	WriteConsole(hOutput, text, size, &size, NULL);
+	WriteConsole(hOutput, &rText, size, &size, NULL);
 	LeaveCriticalSection(&csConsole);
   
 	return *this;
 }
 
-Console& Console::write(LPCTSTR text) {
-	DWORD size = (DWORD)strlen(text);
+Console& Console::write(LPCTSTR lpsz) {
+	DWORD size = (DWORD)strlen(lpsz);
 
 	EnterCriticalSection(&csConsole);
-	WriteConsole(hOutput, text, size, &size, NULL);
+	WriteConsole(hOutput, lpsz, size, &size, NULL);
 	LeaveCriticalSection(&csConsole);
   
 	return *this;
@@ -61,7 +63,7 @@ Console& Console::write(CString& s) {
 
 Console& Console::write(LPCTSTR format, int n, ...) {
 	char text[256];
-	DWORD length = sizeof(text);
+	int length = sizeof(text);
 
     va_list v;
     va_start(v, n);

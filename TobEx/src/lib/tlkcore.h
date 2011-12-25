@@ -1,7 +1,7 @@
 #ifndef TLKCORE_H
 #define TLKCORE_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "cstringex.h"
 #include "sndcore.h"
 
@@ -11,8 +11,8 @@ class CFileTlk : public CFile { //Size 12h
 //Constructor: 0x9AAD00
 public:
 	//AB902C
-	BYTE bOpened; //10h
-	BYTE u11; //pad
+	char bOpened; //10h
+	char u11; //pad
 };
 
 struct CStrRef { //Size 6Eh
@@ -24,10 +24,8 @@ struct CStrRef { //Size 6Eh
 class CTlkTbl { //Size A6h
 //Constructor: 0x9AADCA
 public:
-	//functions
-	bool GetTlkString(STRREF, CStrRef&);
+	bool GetTlkString(STRREF strref, CStrRef& ptr);
 
-	//members
 	CMapWordToPtr files; //0h, key->CFileTlk
 	CMapStringToString u1c;
 #ifdef _DEBUG
@@ -36,8 +34,8 @@ public:
 	CCriticalSection ccs; //38h
 #endif
 
-	BYTE u58;
-	BYTE u59; //pad
+	char u58;
+	char u59; //pad
 	
 	//handles sounds?
 	struct _u5a {
@@ -46,17 +44,17 @@ public:
 		class _u8 : public CFile { //Size 2Eh
 		//Constructor: 0x9E460F
 			//AB9A84
-			BYTE u10;
-			BYTE u11; //pad
-			DWORD* u12; //pArray
-			DWORD u16; //nArraySize
-			DWORD u1a[5];
+			char u10;
+			char u11; //pad
+			int* u12; //pArray
+			int u16; //nArraySize
+			int u1a[5];
 		} u8; //8h
 		class _u36 : public CFile { //Size 16h
 			//AB9080
-		DWORD u10;
-		BYTE u14;
-		BYTE u15; //pad
+		int u10;
+		char u14;
+		char u15; //pad
 		} u36; //36h
 	} u5a; //5ah
 

@@ -3,6 +3,6 @@
 
 #include "objcre.h"
 
-void __stdcall CCreatureObject_ForceVisible(CCreatureObject&);
+void __stdcall CCreatureObject_ForceVisible(CCreatureObject& creSource);
 
 #endif //SCRIPTACTION_H

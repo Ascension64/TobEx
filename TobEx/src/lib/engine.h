@@ -1,7 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "resref.h"
 #include "objcre.h"
 #include "scrcore.h"
@@ -12,11 +12,11 @@
 #include "infgame.h"
 
 struct CHotkey { //Size 8h
-	DWORD u0;
-	BYTE nAsciiKey; //4h
-	BYTE nKeyboardDelay; //5h
-	BYTE nKeyboardSpeed; //6h
-	BYTE u7;
+	int u0;
+	unsigned char nAsciiKey; //4h
+	char nKeyboardDelay; //5h
+	char nKeyboardSpeed; //6h
+	char u7;
 };
 
 class CEngineBase : public CObject { //Size 28h
@@ -90,10 +90,10 @@ class CEngine : protected CEngineBase { //Size FEh
 public:
 	//AA60CC
 	virtual CManager& GetManager() { return manager; } //vcc
-	virtual DWORD GetActivePlayerIdx(); //vd0
-	virtual DWORD GetActivePlayerIdx_copy() { return 0; } //vd4
-	virtual void SetActivePlayerIdx(DWORD) {} //vd8
-	virtual void SetActivePlayerIdx_copy(DWORD) {} //vdc
+	virtual int GetActivePlayerIdx(); //vd0
+	virtual int GetActivePlayerIdx_copy() { return 0; } //vd4
+	virtual void SetActivePlayerIdx(int) {} //vd8
+	virtual void SetActivePlayerIdx_copy(int) {} //vdc
 	virtual void ve0() {}
 	virtual void ve4() {}
 	virtual void ve8() {}
@@ -110,15 +110,15 @@ public:
 	virtual void v114() {}
 	virtual void v118() {}
 
-	DWORD nActivePlayerIdx; //28h, invalid becomes 0
-	DWORD nActivePlayerIdx_copy; //2ch, unused, invalid becomes -1
+	int nActivePlayerIdx; //28h, invalid becomes 0
+	int nActivePlayerIdx_copy; //2ch, unused, invalid becomes -1
 	CManager manager; //30h
 	CUIScrollBar* pScrollActive; //fah, active scroll bar in focus
 };
 
-extern DWORD (CEngine::*CEngine_GetActivePlayerIdx)();
+extern int (CEngine::*CEngine_GetActivePlayerIdx)();
 
-struct CEngineObject : public CObject { //SIze 20h
+struct CEngineObject : public CObject { //Size 20h
 //Constructor: 0x9E32DE
 public:
 	//AB9A6C
@@ -132,93 +132,90 @@ public:
 	virtual void vc() {} //does nothing
 #endif
 
-	//members
 	BOOL bHasDuration; //4h
 	BOOL bRemoveOnExpire; //8h, Arg3
 	BOOL bInList; //ch
 	CEngine* pEngine; //10h
 	POSITION pos; //14h
-	DWORD nDuration; //18h, Arg2 * 10
-	DWORD nTimeElapsed; //1ch
+	int nDuration; //18h, Arg2 * 10
+	int nTimeElapsed; //1ch
 };
 
-class CStart : public CEngine {
-//size: 0x680
+class CStart : public CEngine { //Size 680h
 //constructor: 0x7934E2
-//vtable: 0xAB3BEC
 public:
+	//AB3BEC
 	virtual void v0() {}
 
-	DWORD ufe;
-	DWORD u102;
+	int ufe;
+	int u102;
 	CHotkey u106[5];
-	DWORD u12e;
-	DWORD u132;
-	BYTE u136;
-	BYTE u137;
-	DWORD u138;
-	DWORD u13c;
-	CPtrList u140;
-	DWORD u15c[8];
-	DWORD u17c;
+	int u12e;
+	int u132;
+	char u136;
+	char u137;
+	int u138;
+	int u13c;
+	IECPtrList u140;
+	int u15c[8];
+	int u17c;
 	CVidFont u184; //STONESML
 };
 
-class CStore : public CEngine {
-//size: 0x148a
+class CStore : public CEngine { //Size 148Ah
 //constructor: 0x799A53
-//vtable: 0xAB3FD4
 public:
+	//AB3FD4
 	virtual void v0() {}
 
 	CHotkey ufe[91];
-	DWORD u3d6[22];
+	int u3d6[22];
 	char u42e[3];
-	BYTE u431;
-	BYTE u432;
-	BYTE u433; //pad
-	DWORD u434;
-	DWORD u438;
-	DWORD u43c;
-	CPtrList u440;
-	DWORD u45c;
-	CPtrList u460;
-	DWORD u47c;
-	CPtrList u480;
-	DWORD u49c;
-	CPtrList u4a0;
-	DWORD u4bc;
+	char u431;
+	char u432;
+	char u433; //pad
+	int u434;
+	int u438;
+	int u43c;
+	IECPtrList u440;
+	int u45c;
+	IECPtrList u460;
+	int u47c;
+	IECPtrList u480;
+	int u49c;
+	IECPtrList u4a0;
+	int u4bc;
 	ResRef u4c0;
 	ResRef u4c8;
-	DWORD u4d0[4];
-	DWORD u4e0;
-	DWORD u4e4;
-	DWORD u4e8;
-	DWORD u4ec;
-	DWORD u4f0;
-	DWORD u4f4;
-	DWORD u4f8;
+	int u4d0[4];
+	int u4e0;
+	int u4e4;
+	int u4e8;
+	int u4ec;
+	int u4f0;
+	int u4f4;
+	int u4f8;
 	Object u4fc;
 	Object u510;
-	DWORD u524;
-	DWORD u528;
-	DWORD u52c;
-	CPtrList u530;
-	DWORD u54c[2];
+	int u524;
+	int u528;
+	int u52c;
+	IECPtrList u530;
+	int u54c[2];
 	ResRef u554;
-	DWORD u55c;
-	DWORD u560;
-	DWORD u564;
-	DWORD u568[6];
-	WORD u580;
+	int u55c;
+	int u560;
+	int u564;
+	int u568[6];
+	short u580;
 	CVidFont u582;
 	CVidFont ua7e;
 	CVidFont uf7a;
-	DWORD u1476;
-	DWORD u147a;
-	DWORD u147e;
-	DWORD u1482;
-	DWORD u1486;
+	int u1476;
+	int u147a;
+	int u147e;
+	int u1482;
+	int u1486;
 };
 
 #endif //ENGINE_H

@@ -1,11 +1,11 @@
 #ifndef OBJCORE_H
 #define OBJCORE_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "scrcore.h"
 #include "arecore.h"
 #include "sndcore.h"
-#include "cstringex.h"
+#include "objstats.h"
 
 //CGameObject types
 #define CGAMEOBJECT_TYPE_OBJECT		0x00
@@ -24,50 +24,64 @@
 #define CGAMEOBJECT_TYPE_BALDUR		0x71
 
 //CGameObjectArrayHandler thread indices
-const BYTE THREAD_ASYNCH = 0;
-const BYTE THREAD_1 = 1;
-const BYTE THREAD_2 = 2;
+const char THREAD_ASYNCH	= 0;
+const char THREAD_1			= 1;
+const char THREAD_2			= 2;
 
 //CGameObjectArrayHandler return values (0xAAD1C4)
-const BYTE OBJECT_SUCCESS = 0;
-const BYTE OBJECT_LOCK_FAILED = 1;
-const BYTE OBJECT_DELETED = 2; //Index.id does not match Enum.id
-const BYTE OBJECT_BAD_ENUM = 3;
-const BYTE OBJECT_SHARING = 4;
-const BYTE OBJECT_DENYING = 5;
+const char OBJECT_SUCCESS		= 0;
+const char OBJECT_LOCK_FAILED	= 1;
+const char OBJECT_DELETED		= 2; //Index.id does not match Enum.id
+const char OBJECT_BAD_ENUM		= 3;
+const char OBJECT_SHARING		= 4;
+const char OBJECT_DENYING		= 5;
 
-class _8DF1F2 {
+class _8DF1F2 { //Size 50h
 //Related to current area sprite is in
-//Size: 0x50
 //Constructor: 0x008DF1F2, also 0x008DF105
 public:
 	IECString u0;
-	WORD u4[2];
-	QWORD u8;
-	BYTE u10;
-	BYTE u11; //padding?
-	WORD u12;
+	short u4[2];
+	long u8[2];
+	char u10;
+	char u11; //padding?
+	short u12;
 	POINT u14; //current position?
-	WORD u1c;
-	DWORD u1e;
-	WORD u22[8];
-	DWORD u32;
-	BYTE u36[5];
-	BYTE u3b; //padding?
+	short u1c;
+	int u1e;
+	short u22[8];
+	int u32;
+	char u36[5];
+	char u3b; //padding?
 	IECString u3c; //current area name?
-	BYTE u40;
-	BYTE u41; //padding?
-	DWORD u42;
-	BYTE u46[4];
-	WORD u4a;
-	DWORD u4c;
+	char u40;
+	char u41; //padding?
+	int u42;
+	char u46[4];
+	short u4a;
+	int u4c;
 };
 
-class CGameObject {
-//Size: 0x42
-//Constructor: 0x573470
-//vtable: 0xAA6844
+struct CEventMessage { //Size 1Ah
+	short wEventId;
+	int nParam1;
+	int nParam2;
+	int nParam3;
+	STRREF strrefParam4;
+	BOOL bParam5;
+	IECString sParam6;
+};
+
+class CEventMessageList : public IECPtrList { //Size 1Ch
+//Constructor: 0x55E590
 public:
+	//AA9D28
+};
+
+class CGameObject { //Size 42h
+//Constructor: 0x573470
+public:
+	//AA6844
 	virtual ~CGameObject() {} //v0
 	virtual void v4() {} //GetType() - return byte 0x4h
 	virtual void v8() {} //AddToArea(pArea, POINT, zPos, type)
@@ -75,10 +89,10 @@ public:
 	virtual Object& GetObject() { return o; } //return a value
 	//v14 (dw 3738h) - get some enum?
 	//v18 void GetCurrentPoint(POINT* ptr)
-	//v1c POSITION* GetVerticalListPosition(), gets 16h
-	//v20 GetVertListType(), returns 1ah
+	//v1c POSITION& GetVerticalListPosition(), gets 16h
+	//v20 char GetVertListType(), returns 1ah
 	//v24 bool IsAllowSaving(STRREF), 1 = allow save
-	//v28 bool CompressTime(DWORD)
+	//v28 bool CompressTime(int)
 	//v2c void DebugDump()
 	//v30 ? involves rectangles
 	//v34 ? involves rectangles
@@ -93,8 +107,8 @@ public:
 	//v58 DoNothing
 	//v5c void SetVerticalListPosition(POSITION*), sets 16h
 
-	BYTE nType; //4h, CGameObject type
-	//objectType, e.g. see contants from AAA9E1-AAA9ED
+	char nObjType; //4h, CGameObject type
+	//objectType, e.g. see constants from AAA9E1-AAA9ED
 	//having a 1 means scriptable
 	//CVisualEffectVidCell (0h)
 	//CGameObject (0h)
@@ -112,49 +126,48 @@ public:
 	//CAreaObject (61h) -0x3D8, AA6B74 (list 1)
 	//CBaldurObject (71h) - size: 0x3D8, AA6C28
 
-	BYTE u5; //pad
+	char u5; //pad
 	POINT m_currentLoc;
-	DWORD zPos; //eh
+	int zPos; //eh
 	CArea* pArea; //12h
 	POSITION* posVertList; //16h, ref to pos of vertical list with this enum
-	BYTE m_vertListType; //1ah, which area vertical this is part of
-	BYTE u1b; //pad
+	char m_vertListType; //1ah, which area vertical this is part of
+	char u1b; //pad
 	Object o;  //1ch, this o (main Object used in script triggers)
 	Enum e; //30h, this e
-	WORD u34;
-	DWORD nPlayerID; //36h, network
+	short u34;
+	int nPlayerID; //36h, network
 	Enum u3a; //another enum
-	BYTE u3e;
+	char u3e;
 	bool bIgnoreMessagesToSelf; //3fh, network
-	BYTE u40;
-	BYTE u41; //padding?
+	char u40;
+	char u41; //padding?
 };
 
-class CGameSprite : public CGameObject {
-//Size: 0x3D4
+class CGameSprite : public CGameObject { //Size 3D4h
 //Constructor: 0x476DED
 public:
 	virtual ~CGameSprite() {} //v0
 	//v60, BOOL EvaluateTrigger(Trigger*)
 	//v64, void ClearAllActions(BOOL bExceptFlagged)
-	//v68, ? (pCCreatureObject)
+	//v68, void SetTarget(creTarget)
 	//v6c, void AddActionHead(pAction)
-	//v70, void TryApplyEffect(pCEffect, int, int)
+	//v70, void ApplyEffect(CEffect&, char nEffectListType, BOOL bOnDelayFinished, BOOL bUpdateCare)
 	//v74, update for new round? (BOOL) calls v64, v88
 	//v78, void ExecuteOneAction(), calls v7c
-	//v7c, WORD ExecuteAction()
+	//v7c, short ExecuteAction()
 	//v80, void AddActionTail(Action*)
 	//v84, void AIUpdateActions(), called from AIUpdate
 	//v88, void SetCurrentAction(pAction), calls vb0
 	//v8c
-	//v90 ?
-	//v94 ?
+	//v90, int GetSightRadius(), returned in pixels
+	//v94, TerrainTable& GetTerrainTable()
 	//v98 ?
 	//v9c ?
 	//va0 ?
 	//va4, void ExecuteTriggers()
 		
-	//va8, void SetAutoPauseInfo(DWORD type)
+	//va8, void SetAutoPauseInfo(int type)
 	/* type
 	0x1 WEAPON_UNUSABLE
 	0x2 ATTACKED
@@ -169,14 +182,15 @@ public:
 	0x400 TRAP_FOUND
 	default UNKNOWN_REASON*/
 
-	//vac
+	//vac, BOOL GetSeeInvisible(), returns TRUE if cdsCurrent->seeInivisible is set, or game is in CutSceneMode
 	//vb0
+	//vc0 void RefreshObjects()
 	//...
 	//etc. to v114
 
 	Object oAttacker; //42h, for AttackedBy() trigger, for LastAttackerOf triggerid
 		
-	DWORD nType; //56h
+	int nAttackedType; //56h
 	//ASTYLE.IDS from AttackedBy()
 	//DAMAGES.IDS from HitBy()
 
@@ -204,40 +218,40 @@ public:
 	Object u1fe;
 	Object u212;
 	Object u226;
-	CScript* pOverride; //0x23a
+	CScript* pOverride; //23ah
 	CScript* u23e;
-	CScript* pAreaSpecific; //0x242
-	CScript* pClass; //0x246
-	CScript* pRace; //0x24a
-	CScript* pGeneral; //0x24e
-	CScript* pDefault; //0x252
-	CPtrListAction actions; //0x256, checked in ActionListEmpty()
-	CPtrListTrigger triggers; //0x272
+	CScript* pAreaSpecific; //242h
+	CScript* pClass; //246h
+	CScript* pRace; //24ah
+	CScript* pGeneral; //24eh
+	CScript* pDefault; //252h
+	CActionList actions; //256h, checked in ActionListEmpty()
+	CTriggerList triggers; //272h
 	//Triggers 0x0*** are checked here with == only
 	//Triggers 0x4*** are checked more sophisticatedly
 
-	DWORD u28e;
-	DWORD u292;
-	CPtrList u296; //timers?, AA682C
-	WORD nCurrResponseIdx; //2b2h, gets Response.u2
-	WORD nCurrScriptBlockIdx; //2b4h, gets Response.u4
-	WORD nCurrScriptIdx; //2b6h, gets Response.u6
+	int u28e;
+	int u292;
+	IECPtrList u296; //timers?, AA682C
+	short nCurrResponseIdx; //2b2h, gets Response.u2
+	short nCurrScriptBlockIdx; //2b4h, gets Response.u4
+	short nCurrScriptIdx; //2b6h, gets Response.u6
 	BOOL bUseCurrIdx; //2b8h, use above three values?
-	WORD u2bc; //assoc actions, an upgoing counter of some kind
+	short wActionTicksElapsed; //2ch, how many updates has the current action been running for
 	Action aCurrent; //2beh
-	DWORD u31c; //used with Delay() trigger
-	WORD u320; //random number, 0-15, used with Delay() trigger
-	WORD u322;
+	int u31c; //used with Delay() trigger
+	short u320; //random number, 0-15, used with Delay() trigger
+	short u322;
 	char name[32]; //324h, script name/death var
 	BOOL u344;
-	DWORD u348;
-	DWORD u34c;
-	DWORD u350; //random number 0-37627
-	BYTE u354; //value of 0xa
-	BYTE u355; //pad?
-	WORD u356; //the return value of ExecuteAction()
-	BYTE u358;
-	BYTE u359; //pad?
+	int u348;
+	int u34c;
+	int u350; //random number 0-37627
+	char u354; //value of 0xa
+	char u355; //pad?
+	short u356; //the return value of ExecuteAction()
+	char u358;
+	char u359; //pad?
 	Enum u35a; //contains enum
 	BOOL u35e; //exeucting an action?
 	BOOL u362; //has stored triggers?
@@ -247,49 +261,47 @@ public:
 
 struct CGameObjectEntry { //Size Ch
 public:
-	BYTE m_bShareCounts[3]; //0h
-	BYTE m_bDenyCounts[3]; //3h
-	WORD id; //6h, low WORD
+	char m_bShareCounts[3]; //0h
+	char m_bDenyCounts[3]; //3h
+	short id; //6h, low short
 	CGameObject* pGameObject; //8h
 };
 
 struct CGameObjectArrayHandler { //Size 2Eh
 //Constructor: 0x675FB0
-	//functions
-	BYTE GetGameObjectShare(Enum, BYTE, void*, DWORD);
-	BYTE GetGameObject(Enum, BYTE, void*, DWORD);
-	BYTE GetGameObjectDeny(Enum, BYTE, void*, DWORD);
-	BYTE FreeGameObjectShare(Enum, BYTE, DWORD);
-	BYTE FreeGameObjectDeny(Enum, BYTE, DWORD);
+	char GetGameObjectShare(Enum e, char threadNum, void* ptr, int dwTimeout);
+	char GetGameObject(Enum e, char threadNum, void* ptr, int dwTimeout);
+	char GetGameObjectDeny(Enum e, char threadNum, void* ptr, int dwTimeout);
+	char FreeGameObjectShare(Enum e, char threadNum, int dwTimeout);
+	char FreeGameObjectDeny(Enum e, char threadNum, int dwTimeout);
 
-	//members
 #ifdef _DEBUG
 	_CCriticalSection ccs; //0h
 #else
 	CCriticalSection ccs; //0h
 #endif
 	CGameObjectEntry* m_pArray; //20h
-	WORD nArrayCurrentSize; //24h
-	WORD nArrayGrowSize; //26h
-	WORD nEntries; //28h, enum1 total, high WORD
-	WORD nIdMax; //2ah, enum2 total, low WORD
-	WORD nIdxLink; //2ch, nRemoteIdx?
+	short nArrayCurrentSize; //24h
+	short nArrayGrowSize; //26h
+	short nEntries; //28h, enum1 total, high short
+	short nIdMax; //2ah, enum2 total, low short
+	short nIdxLink; //2ch, nRemoteIdx?
 };
 
 struct CGameRemoteObjectArrayHandler { //Size 90h
 //Constructor: 0x677B5D
-	DWORD* dwArray; //0x0
-	WORD dwArraySize; //0x4, numEntries
-	WORD u6;
-	DWORD u8;
-	DWORD uc;
-	WORD u10;
-	DWORD u12;
-	DWORD u16;
-	WORD u1a;
+	int* dwArray; //0h
+	short dwArraySize; //4h, numEntries
+	short u6;
+	int u8;
+	int uc;
+	short u10;
+	int u12;
+	int u16;
+	short u1a;
 	ResRef u1c[6];
-	DWORD u4c[6];
-	WORD u64[6];
+	int u4c[6];
+	short u64[6];
 #ifdef _DEBUG
 	_CCriticalSection ccs; //70h
 #else
@@ -297,10 +309,10 @@ struct CGameRemoteObjectArrayHandler { //Size 90h
 #endif
 };
 
-extern BYTE (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, BYTE, void*, DWORD);
-extern BYTE (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObject)(Enum, BYTE, void*, DWORD);
-extern BYTE (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectDeny)(Enum, BYTE, void*, DWORD);
-extern BYTE (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, BYTE, DWORD);
-extern BYTE (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, BYTE, DWORD);
+extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, char, void*, int);
+extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObject)(Enum, char, void*, int);
+extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectDeny)(Enum, char, void*, int);
+extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, char, int);
+extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, char, int);
 
 #endif //OBJCORE_H

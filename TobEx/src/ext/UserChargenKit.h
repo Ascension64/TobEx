@@ -5,20 +5,19 @@
 
 class CUIScrollBarChargenKit : public CUIScrollBar {
 public:
-	CUIScrollBarChargenKit(CPanel&, ChuFileControlInfoBase&);
+	CUIScrollBarChargenKit(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 	void UpdatePanel();
 
 	virtual ~CUIScrollBarChargenKit(); //v0
-	virtual void OnMouseDragKnob(void); //v60
-	virtual void OnLMouseBtnDnArrowUp(void); //v64
-	virtual void OnLMouseBtnDnArrowDn(void); //v68
-	virtual void OnLClickedAboveKnob(DWORD); //v70
-	virtual void OnLClickedBelowKnob(DWORD); //v74
+	virtual void OnMouseDragKnob(); //v60
+	virtual void OnLMouseBtnDnArrowUp(); //v64
+	virtual void OnLMouseBtnDnArrowDn(); //v68
+	virtual void OnLClickedAboveKnob(short interval); //v70
+	virtual void OnLClickedBelowKnob(short interval); //v74
 
-	//members
 	short nCurrentValue;
 	short nValues;
-	int nRows;
+	short nRows;
 };
 
 #endif //USERCHARGENKIT_H

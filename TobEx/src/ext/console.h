@@ -1,11 +1,8 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "resref.h"
-
-class Console;
-extern Console console;
 
 class Console {
 public:
@@ -13,15 +10,17 @@ public:
     ~Console();
 	BOOL Init();
 
-    Console& write(ResRef*);
-    Console& write(LPCTSTR);
-	Console& write(CString&);
-	Console& write(LPCTSTR, int, ...);
+    Console& write(ResRef& rText);
+    Console& write(LPCTSTR lpsz);
+	Console& write(CString& s);
+	Console& write(LPCTSTR format, int n, ...);
 
     BOOL bAlloc;
 protected:
     HANDLE hInput, hOutput, hError;
 	CRITICAL_SECTION csConsole;
 };
+
+extern Console console;
 
 #endif //CONSOLE_H

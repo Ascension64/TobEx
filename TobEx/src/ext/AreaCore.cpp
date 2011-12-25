@@ -1,13 +1,13 @@
 #include "AreaCore.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "chitin.h"
 
-BYTE (CArea::*Tramp_CArea_GetSong)(WORD) =
-	SetFP(static_cast<BYTE (CArea::*)(WORD)>	(&CArea::GetSong),		0x4D40D6);
+char (CArea::*Tramp_CArea_GetSong)(short) =
+	SetFP(static_cast<char (CArea::*)(short)>	(&CArea::GetSong),		0x4D40D6);
 
-DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
-	DWORD dwSong;
+int DETOUR_CArea::DETOUR_GetSong(short wType) {
+	int dwSong;
 
 	switch (wType) {
 		case 0: //DAY
@@ -42,8 +42,8 @@ DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 			break;
 		case 0x100: //POST_BATTLE
 			BOOL bIsDay;
-			if ((g_pChitin->pGame->timer.nGameTime % ONE_DAY >= SEVEN_HOURS) &&
-				  (g_pChitin->pGame->timer.nGameTime % ONE_DAY < TWENTYONE_HOURS)) {
+			if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= SEVEN_HOURS) &&
+				  (g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY < TWENTYONE_HOURS)) {
 				bIsDay = TRUE;
 			} else {
 				bIsDay = FALSE;
@@ -53,8 +53,8 @@ DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 				dwSong = nSongDay;
 			} else {
 				BOOL bIsDusk;
-				if ((g_pChitin->pGame->timer.nGameTime % ONE_DAY >= TWENTYONE_HOURS) &&
-					  (g_pChitin->pGame->timer.nGameTime % ONE_DAY < TWENTYTWO_HOURS)) {
+				if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= TWENTYONE_HOURS) &&
+					  (g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY < TWENTYTWO_HOURS)) {
 					bIsDusk = TRUE;
 				} else {
 					bIsDusk = FALSE;
@@ -75,8 +75,8 @@ DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 
 	if (dwSong == -2) { //Continue Area Music
 		BOOL bIsDay;
-		if ((g_pChitin->pGame->timer.nGameTime % ONE_DAY >= SEVEN_HOURS) &&
-			  (g_pChitin->pGame->timer.nGameTime % ONE_DAY < TWENTYONE_HOURS)) {
+		if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= SEVEN_HOURS) &&
+			  (g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY < TWENTYONE_HOURS)) {
 			bIsDay = TRUE;
 		} else {
 			bIsDay = FALSE;
@@ -86,8 +86,8 @@ DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 			dwSong = nSongDay;
 		} else {
 			BOOL bIsNight;
-			if ((g_pChitin->pGame->timer.nGameTime % ONE_DAY < TWENTYTWO_HOURS) &&
-				  (g_pChitin->pGame->timer.nGameTime % ONE_DAY >= SIX_HOURS)) {
+			if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY < TWENTYTWO_HOURS) &&
+				  (g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= SIX_HOURS)) {
 				bIsNight = false;
 			} else {
 				bIsNight = true;
@@ -133,8 +133,8 @@ DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 				break;
 			case 0x100:
 				BOOL bIsDay;
-				if ((g_pChitin->pGame->timer.nGameTime % ONE_DAY >= SEVEN_HOURS) && 
-						(g_pChitin->pGame->timer.nGameTime % ONE_DAY < TWENTYONE_HOURS)) {
+				if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= SEVEN_HOURS) && 
+						(g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY < TWENTYONE_HOURS)) {
 					bIsDay = TRUE;
 				} else {
 					bIsDay = FALSE;
@@ -144,8 +144,8 @@ DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 					dwSong = g_pChitin->pGame->pMasterArea->nSongDay;
 				} else {
 					BOOL  bIsDusk;
-					if ((g_pChitin->pGame->timer.nGameTime % ONE_DAY >= TWENTYONE_HOURS) &&
-							(g_pChitin->pGame->timer.nGameTime % ONE_DAY < TWENTYTWO_HOURS)) {
+					if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= TWENTYONE_HOURS) &&
+							(g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY < TWENTYTWO_HOURS)) {
 						bIsDusk = TRUE;
 					} else {
 						bIsDusk = FALSE;

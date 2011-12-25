@@ -1,7 +1,8 @@
 //don't include this; just a quick reference to structures of some MFC42 objects
 
-class CWnd {
-//size: 0x3C
+#include "win32def.h"
+
+class CWnd { //Size 3Ch
 	DWORD* vtable; //0h
 	long m_dwRef; //4h
 	LPUNKNOWN m_pOuterUnknown; //8h
@@ -20,18 +21,16 @@ class CWnd {
 	COleControlSite* m_pCtrlSite; //38h
 };
 
-class CFile {
-//size: 0x10
-//vtable: 0xABAE4C
-//constructor: 0xA514C1
+class CFile { //Size 10h
+//Constructor: 0xA514C1
+	//ABAE4C
 	UINT m_hFile; //0h
 	BOOL m_bCloseOnDelete; //4h
 	CString m_strFileName; //8h
 };
 
-class CCriticalSection {
-//size: 0x20
-//vtable: 0xAA61F8
+class CCriticalSection { //SIze 20h
+	//AA61F8
 	virtual void u0() {} //replace vtable
 	virtual void u4() {} //~CCriticalSection
 	virtual void u8() {} //empty
@@ -43,9 +42,8 @@ class CCriticalSection {
 	CRITICAL_SECTION cs;
 };
 
-struct CSingleLock {
-	//Size: 0xc
-	//Constructor: 0xA376E3
+struct CSingleLock { //Size Ch
+//Constructor: 0xA376E3
 	CSyncObject* m_pObject;
 	HANDLE  m_hObject;
 	BOOL    m_bAcquired;
@@ -63,16 +61,14 @@ protected:
 	LPTSTR m_pchData; //pointer to data
 };
 
-struct CNode {
-	//Size: 0xc
+struct CNode { //Size Ch
 	CNode* pNext;
 	CNode* pPrev;
 	void* data;
 };
 
-class CPtrList {
-//Size: 0x1c
-//Constructor: 0x00A4E475
+class CPtrList { //SIze 1Ch
+//Constructor: 0xA4E475
 protected:
 	DWORD* vtable; //0h
 	CNode* m_pNodeHead; //first filled node, 4h
@@ -83,8 +79,7 @@ protected:
 	DWORD m_nBlockSize; //size of block, fixed maximum size, default 0xa, 18h
 };
 
-class CPtrArray {
-//Size: 0x14
+class CPtrArray { //Size 14h
 //Constructor 0xA4ECDE
 protected:
 	DWORD* vtable;

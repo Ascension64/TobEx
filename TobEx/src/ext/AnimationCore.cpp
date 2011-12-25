@@ -6,29 +6,29 @@
 #include "log.h"
 #include "InfGameCommon.h"
 
-void (CAnimation::*Tramp_CAnimation_PlayCurrentSequenceSound)(CCreatureObject*) =
-	SetFP(static_cast<void (CAnimation::*)(CCreatureObject*)>	(&CAnimation::PlayCurrentSequenceSound),	0x7F9DF4);
-BOOL (*Tramp_CAnimation_IsPlayableAnimation)(WORD) =
-	reinterpret_cast<BOOL (*)(WORD)>																		(0x85F364);
-LPCTSTR (CAnimation::*Tramp_CAnimation_GetWalkingSound)(WORD) =
-	SetFP(static_cast<LPCTSTR (CAnimation::*)(WORD)>			(&CAnimation::GetWalkingSound),				0x87B7B0);
+void (CAnimation::*Tramp_CAnimation_PlayCurrentSequenceSound)(CCreatureObject&) =
+	SetFP(static_cast<void (CAnimation::*)(CCreatureObject&)>	(&CAnimation::PlayCurrentSequenceSound),	0x7F9DF4);
+BOOL (*Tramp_CAnimation_IsPlayableAnimation)(unsigned short) =
+	reinterpret_cast<BOOL (*)(unsigned short)>																(0x85F364);
+LPCTSTR (CAnimation::*Tramp_CAnimation_GetWalkingSound)(short) =
+	SetFP(static_cast<LPCTSTR (CAnimation::*)(short)>			(&CAnimation::GetWalkingSound),				0x87B7B0);
 
-void DETOUR_CAnimation::DETOUR_PlayCurrentSequenceSound(CCreatureObject* pCre) {
-	(this->*Tramp_CAnimation_PlayCurrentSequenceSound)(pCre);
+void DETOUR_CAnimation::DETOUR_PlayCurrentSequenceSound(CCreatureObject& cre) {
+	(this->*Tramp_CAnimation_PlayCurrentSequenceSound)(cre);
 
-	WORD wCycle, wFrame;
+	short wCycle, wFrame;
 	GetCurrentCycleAndFrame(wCycle, wFrame);
 
-	WORD wCurrentSequence = pCre->m_animation.wCurrentSequence;
+	short wCurrentSequence = cre.m_animation.wCurrentSequence;
 	switch (wCurrentSequence) {
 		case SEQ_ATTACK_SLASH: 
-			soundset[SEQ_ATTACK_SLASH].PlayPrimedSound(wFrame, pCre);
+			soundset[SEQ_ATTACK_SLASH].PlayPrimedSound(wFrame, cre);
 			break;
 		case SEQ_ATTACK_BACKSLASH:
-			soundset[SEQ_ATTACK_BACKSLASH].PlayPrimedSound(wFrame, pCre);
+			soundset[SEQ_ATTACK_BACKSLASH].PlayPrimedSound(wFrame, cre);
 			break;
 		case SEQ_ATTACK_JAB:
-			soundset[SEQ_ATTACK_JAB].PlayPrimedSound(wFrame, pCre);
+			soundset[SEQ_ATTACK_JAB].PlayPrimedSound(wFrame, cre);
 			break;
 		default:
 			break;
@@ -37,7 +37,7 @@ void DETOUR_CAnimation::DETOUR_PlayCurrentSequenceSound(CCreatureObject* pCre) {
 	return;
 }
 
-BOOL DETOUR_CAnimation::DETOUR_IsPlayableAnimation(WORD wAnimId) {
+BOOL DETOUR_CAnimation::DETOUR_IsPlayableAnimation(unsigned short wAnimId) {
 	switch (wAnimId & 0xF00) { //class
 	case 0x200: //MAGE_*
 		switch (wAnimId & 0xF) { //race
@@ -62,7 +62,7 @@ BOOL DETOUR_CAnimation::DETOUR_IsPlayableAnimation(WORD wAnimId) {
 	return Tramp_CAnimation_IsPlayableAnimation(wAnimId);
 }
 
-LPCTSTR DETOUR_CAnimation::DETOUR_GetWalkingSound(WORD wTerrainCode) {
+LPCTSTR DETOUR_CAnimation::DETOUR_GetWalkingSound(short wTerrainCode) {
 	if (!pRuleEx->m_AnimWalkSound.m_2da.bLoaded ||
 		!pRuleEx->m_AnimTerrainSound.m_2da.bLoaded) return (this->*Tramp_CAnimation_GetWalkingSound)(wTerrainCode);
 

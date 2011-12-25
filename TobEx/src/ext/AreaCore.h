@@ -1,15 +1,15 @@
 #ifndef AREACORE_H
 #define AREACORE_H
 
-#include "utils.h"
+#include "stdafx.h"
 
 #include "arecore.h"
 
-extern BYTE (CArea::*Tramp_CArea_GetSong)(WORD);
+extern char (CArea::*Tramp_CArea_GetSong)(short);
 
 class DETOUR_CArea : public CArea {
 public:
-	DWORD DETOUR_GetSong(WORD);
+	int DETOUR_GetSong(short wType);
 };
 
 #endif //AREACORE_H

@@ -82,7 +82,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(6);
 	pScrollActive = &scroll;
-	Object& o = cre.IdsCopy1;
+	Object& o = cre.oBase;
 
 	CUIScrollBarChargenKit& scrollKit = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
 
@@ -126,9 +126,9 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 	IECString sClass, sRace, sKitName, sAlignment, sRowName, sKitFile;
 
 	if (m_class) {
-		sClass = pGame->GetClassString(m_class, TRUECLASS);
+		sClass = pGame->GetClassString(m_class, KIT_TRUECLASS);
 	} else {
-		sClass = pGame->GetClassString(o.GetClass(), TRUECLASS);
+		sClass = pGame->GetClassString(o.GetClass(), KIT_TRUECLASS);
 	}
 
 	sRace = pGame->GetRaceString(o.Race);
@@ -151,14 +151,14 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 		} else {
 			sKit = g_pChitin->pCreateChar->Kit_Class_Race.defaultVal;
 		}
-		int nKitId;
+		unsigned int nKitId;
 		sscanf_s((LPCTSTR)sKit, "%d", &nKitId);
 
 		if (nKitId == 0) { //true class
 			if (m_class) {
-				pGame->GetDetailedClassString(m_class, TRUECLASS, 0, sKitName, cre);
+				pGame->GetDetailedClassString(m_class, KIT_TRUECLASS, 0, sKitName, cre);
 			} else {
-				pGame->GetDetailedClassString(o.GetClass(), TRUECLASS, 0, sKitName, cre);
+				pGame->GetDetailedClassString(o.GetClass(), KIT_TRUECLASS, 0, sKitName, cre);
 			}
 		} else {
 			int col = 1;
@@ -257,7 +257,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 		BOOL bKitAllowedByAlignment = FALSE;
 		BOOL bAlignmentChecked = FALSE;
-		int nKitId = 0;
+		unsigned int nKitId = 0;
 		if ((index < Kit_Class_Race.nRows) && (charType == 5)) {
 			sAlignment = pGame->GetAlignmentString(o.Alignment);
 
@@ -312,7 +312,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	} //for (index)
 
-	DWORD dwKit = cre.m_BaseStats.kit[1] | (cre.m_BaseStats.kit[0] << 16);
+	unsigned int dwKit = cre.m_BaseStats.kit[1] | (cre.m_BaseStats.kit[0] << 16);
 
 	option1.SetToggleState(false);
 	option2.SetToggleState(false);
@@ -326,8 +326,8 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 	option10.SetToggleState(false);
 	option11.SetToggleState(false);
 
-	if ((dwKit & TRUECLASS) && (dwKit & 0xBFFF)) { //has a kit
-		DWORD dwKitOnly = dwKit & 0xBFFF;
+	if ((dwKit & KIT_TRUECLASS) && (dwKit & 0xBFFF)) { //has a kit
+		unsigned int dwKitOnly = dwKit & 0xBFFF;
 
 		for (int row = 0; row < Kit_Class_Race.nRows; row++ ) {
 			int col = 0;
@@ -341,7 +341,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 			} else {
 				sKit = g_pChitin->pCreateChar->Kit_Class_Race.defaultVal;
 			}
-			int nKitId;
+			unsigned int nKitId;
 			sscanf_s((LPCTSTR)sKit, "%d", &nKitId);
 
 			if (nKitId == dwKitOnly) {
@@ -384,7 +384,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 		} //for
 	} else {
 		switch (dwKit) {
-			case TRUECLASS:
+			case KIT_TRUECLASS:
 				switch (scrollKit.nCurrentValue) {
 				case 0:
 					option1.SetToggleState(TRUE);
@@ -393,13 +393,13 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 					break;
 				}
 				break;
-			case BERSERKER:
-			case CAVALIER:
-			case FERALAN:
-			case ASSASIN:
-			case BLADE:
-			case GODTALOS:
-			case TOTEMIC:
+			case KIT_BERSERKER:
+			case KIT_CAVALIER:
+			case KIT_FERALAN:
+			case KIT_ASSASIN:
+			case KIT_BLADE:
+			case KIT_GODTALOS:
+			case KIT_TOTEMIC:
 				switch (scrollKit.nCurrentValue) {
 				case 0:
 					option2.SetToggleState(TRUE);
@@ -411,13 +411,13 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 					break;
 				}
 				break;
-			case WIZARDSLAYER:
-			case INQUISITOR:
-			case STALKER:
-			case BOUNTYHUNTER:
-			case JESTER:
-			case GODHELM:
-			case SHAPESHIFTER:
+			case KIT_WIZARDSLAYER:
+			case KIT_INQUISITOR:
+			case KIT_STALKER:
+			case KIT_BOUNTYHUNTER:
+			case KIT_JESTER:
+			case KIT_GODHELM:
+			case KIT_SHAPESHIFTER:
 				switch (scrollKit.nCurrentValue) {
 				case 0:
 					option1.SetToggleState(TRUE);
@@ -432,13 +432,13 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 					break;
 				}
 				break;
-			case KENSAI:
-			case UNDEADHUNTER:
-			case BEASTMASTER:
-			case SWASHBUCKLER:
-			case SKALD:
-			case GODLATHANDER:
-			case BEASTFRIEND:
+			case KIT_KENSAI:
+			case KIT_UNDEADHUNTER:
+			case KIT_BEASTMASTER:
+			case KIT_SWASHBUCKLER:
+			case KIT_SKALD:
+			case KIT_GODLATHANDER:
+			case KIT_BEASTFRIEND:
 				switch (scrollKit.nCurrentValue) {
 				case 0:
 					option1.SetToggleState(TRUE);
@@ -466,6 +466,13 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	scrollKit.nValues = Kit_Class_Race.nRows;
 	scrollKit.nRows = 11;
+	if (Kit_Class_Race.nRows > 11) {
+		scrollKit.SetEnabled(TRUE);
+		scrollKit.SetVisible(TRUE);
+	} else {
+		scrollKit.SetEnabled(FALSE);
+		scrollKit.SetVisible(FALSE);
+	}
 
 	return;
 };
@@ -481,8 +488,8 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 	}
 
 	//Depending on offset in MageBookSpells, transfer spells to/from temporary spell pile
-	DWORD nPileCount = scroll.cplTempSpells.GetCount();
-	DWORD nSliderCount = 6 * scroll.nCurrentValue;
+	int nPileCount = scroll.cplTempSpells.GetCount();
+	int nSliderCount = 6 * scroll.nCurrentValue;
 
 	if (nSliderCount > nPileCount) {
 		int i = nSliderCount - nPileCount;
@@ -519,8 +526,8 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 	//Update on/off status of spell buttons
 	for (int i = 2; i <= 25; i++ ) {
 		CCreatureObject* pCre = &cre;
-		BYTE threadNum = THREAD_ASYNCH;
-		BYTE threadVal;
+		char threadNum = THREAD_ASYNCH;
+		char threadVal;
 		do {
 			threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(g_pChitin->pCreateChar->eChar, threadNum, &pCre, INFINITE);
 		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
@@ -537,6 +544,14 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		}
 	}
 
+	if (scroll.cplTempSpells.GetCount() + MageBookSpells.GetCount() > 24) {
+		scroll.SetEnabled(TRUE);
+		scroll.SetVisible(TRUE);
+	} else {
+		scroll.SetEnabled(FALSE);
+		scroll.SetVisible(FALSE);
+	}
+
 	return;
 }
 
@@ -547,13 +562,13 @@ void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& 
 	pScrollActive = &scroll;
 	CInfGame* pGame = g_pChitin->pGame;
 	CreFileData& stats = cre.m_BaseStats;
-	Object& o = cre.IdsCopy1;
-	DWORD dwKit = stats.kit[1] | stats.kit[0] << 16;
+	Object& o = cre.oBase;
+	unsigned int dwKit = stats.kit[1] | stats.kit[0] << 16;
 
 	for (int i = 2; i <= 9; i++) {
 		CUICheckButtonChargenClass& button = (CUICheckButtonChargenClass&)panel.GetUIControl(i);
 		if (button.GetClass() == o.Class) {
-			if (o.Class == FIGHTER && dwKit == BARBARIAN) {
+			if (o.Class == CLASS_FIGHTER && dwKit == KIT_BARBARIAN) {
 				button.SetToggleState(FALSE);
 			} else {
 				button.SetToggleState(TRUE);
@@ -563,7 +578,7 @@ void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& 
 		}
 
 		IECString sRace = pGame->GetRaceString(o.Race);
-		IECString sClass = pGame->GetClassString(button.GetClass(), TRUECLASS);
+		IECString sClass = pGame->GetClassString(button.GetClass(), KIT_TRUECLASS);
 		IECString sAllowed = pRuleEx->m_ClassRaceReq.GetValue(sRace, sClass);
 		BOOL bAllowed;
 		sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
@@ -573,7 +588,7 @@ void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& 
 	for (int i = 15; i <= 17; i++) {
 		CUICheckButtonChargenClass& button = (CUICheckButtonChargenClass&)panel.GetUIControl(i);
 		if (button.GetClass() == o.Class) {
-			if (o.Class == FIGHTER && dwKit != BARBARIAN) {
+			if (o.Class == CLASS_FIGHTER && dwKit != KIT_BARBARIAN) {
 				button.SetToggleState(FALSE);
 			} else {
 				button.SetToggleState(TRUE);
@@ -583,7 +598,7 @@ void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& 
 		}
 
 		IECString sRace = pGame->GetRaceString(o.Race);
-		IECString sClass = pGame->GetClassString(button.GetClass(), TRUECLASS);
+		IECString sClass = pGame->GetClassString(button.GetClass(), KIT_TRUECLASS);
 		IECString sAllowed = pRuleEx->m_ClassRaceReq.GetValue(sRace, sClass);
 		BOOL bAllowed;
 		sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
@@ -604,14 +619,14 @@ void DETOUR_CCharGen::DETOUR_MulticlassPanelOnUpdate(CPanel& panel, CCreatureObj
 	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(13);
 	pScrollActive = &scroll;
 	CInfGame* pGame = g_pChitin->pGame;
-	Object& o = cre.IdsCopy1;
+	Object& o = cre.oBase;
 
 	for (int i = 2; i <= 11; i++) {
 		CUICheckButtonChargenMulticlass& button = (CUICheckButtonChargenMulticlass&)panel.GetUIControl(i);
 		button.SetToggleState(button.GetClass() == o.Class);
 
 		IECString sRace = pGame->GetRaceString(o.Race);
-		IECString sClass = pGame->GetClassString(button.GetClass(), TRUECLASS);
+		IECString sClass = pGame->GetClassString(button.GetClass(), KIT_TRUECLASS);
 		IECString sAllowed = pRuleEx->m_ClassRaceReq.GetValue(sRace, sClass);
 		BOOL bAllowed;
 		sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
@@ -631,16 +646,16 @@ void DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObj
 	pScrollActive = &scroll;
 	CInfGame* pGame = g_pChitin->pGame;
 	CreFileData& stats = cre.m_BaseStats;
-	Object& o = cre.IdsCopy1;
-	DWORD dwKit = stats.kit[1] | stats.kit[0] << 16;
+	Object& o = cre.oBase;
+	unsigned int dwKit = stats.kit[1] | stats.kit[0] << 16;
 	BOOL bButtonToggled = FALSE;
 
-	BOOL bMageClass = o.GetClass() == MAGE || o.GetClass() == SORCERER;
+	BOOL bMageClass = o.GetClass() == CLASS_MAGE || o.GetClass() == CLASS_SORCERER;
 	if (!bMageClass) {
-		BYTE class1;
-		BYTE class2;
+		unsigned char class1;
+		unsigned char class2;
 		o.GetClasses(&class1, &class2);
-		bMageClass = class1 == MAGE || class2 == MAGE;
+		bMageClass = class1 == CLASS_MAGE || class2 == CLASS_MAGE;
 	}
 
 	for (int i = 2; i <= 9; i++) {
@@ -669,7 +684,7 @@ void DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObj
 	} else {
 		buttonWildMage.SetToggleState(FALSE);
 		buttonWildMage.SetActive(FALSE);
-		buttonWildMage.SetEnabled(false);
+		buttonWildMage.SetEnabled(FALSE);
 		buttonWildMage.SetVisible(FALSE);
 	}
 

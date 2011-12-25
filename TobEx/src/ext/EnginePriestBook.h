@@ -3,11 +3,11 @@
 
 #include "engpriestbk.h"
 
-extern void (CPriestBook::*Tramp_CPriestBook_SetLevel)(DWORD);
+extern void (CPriestBook::*Tramp_CPriestBook_SetLevel)(int);
 
 class DETOUR_CPriestBook : public CPriestBook {
 public:
-	void DETOUR_SetLevel(DWORD);
+	void DETOUR_SetLevel(int nLevel);
 };
 
 #endif //ENGINEPRIESTBOOK_H

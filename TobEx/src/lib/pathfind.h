@@ -1,25 +1,24 @@
 #ifndef PATHFIND_H
 #define PATHFIND_H
 
-#define TERRAINCODE_OBSTACLE_OPAQUE 0
-#define TERRAINCODE_DIRT 1
-#define TERRAINCODE_METAL 2
-#define TERRAINCODE_PLANK 3
-#define TERRAINCODE_STONE_ECHO 4
-#define TERRAINCODE_CARPET 5
-#define TERRAINCODE_PUDDLE 6
-#define TERRAINCODE_STONE_HARD 7
-#define TERRAINCODE_OBSTACLE_TRANSPARENT 8
-#define TERRAINCODE_WOOD_FIXED 9
-#define TERRAINCODE_WALL 10
-#define TERRAINCODE_WATER_SHALLOW 11
-#define TERRAINCODE_WATER_DEEP 12
-#define TERRAINCODE_MOUNTAIN 13
-#define TERRAINCODE_WORLD_EXIT 14
-#define TERRAINCODE_GRASS 15
+#define TERRAINCODE_OBSTACLE_OPAQUE			0
+#define TERRAINCODE_DIRT					1
+#define TERRAINCODE_METAL					2
+#define TERRAINCODE_PLANK					3
+#define TERRAINCODE_STONE_ECHO				4
+#define TERRAINCODE_CARPET					5
+#define TERRAINCODE_PUDDLE					6
+#define TERRAINCODE_STONE_HARD				7
+#define TERRAINCODE_OBSTACLE_TRANSPARENT	8
+#define TERRAINCODE_WOOD_FIXED				9
+#define TERRAINCODE_WALL					10
+#define TERRAINCODE_WATER_SHALLOW			11
+#define TERRAINCODE_WATER_DEEP				12
+#define TERRAINCODE_MOUNTAIN				13
+#define TERRAINCODE_WORLD_EXIT				14
+#define TERRAINCODE_GRASS					15
 
 struct TerrainTable { //Size 10h
-//Size: 0x10
 //For use with search map, each bit corresponding to the search map pixel value
 //0x05 = passable, 0xFF = impassable
 //Typical for CCreatureObject is Ter1
@@ -43,38 +42,37 @@ Pixel	Col			R	G	B	Ter1	Ter2/3	SurfType
 14		Aqua		0	255	255	-1		5	World Map Exit
 15		White		255	255	255	5		5	Grass
 */
-	BYTE type[16]; //0h
+	unsigned char type[16]; //0h
 };
 
-struct CSearchRequest {
-//Size: 0x60
-	BYTE m_serviceState; //0h, range: 0-5, (AACC98)4 = SERVICE_STALE
-	BYTE u1;
-	DWORD u2;
-	BYTE u6;
-	BYTE u7;
-	BYTE u8;
-	BYTE u9;
-	DWORD ua;
-	BYTE ue;
-	DWORD u10;
-	DWORD u14[4]; //struct
-	DWORD u24;
-	DWORD u28;
-	DWORD u2c;
-	DWORD u30;
-	DWORD u34;
-	DWORD* u38;
-	DWORD* u3c;
-	DWORD* u40;
-	DWORD u44;
-	DWORD u48;
-	DWORD u4c;
-	DWORD u50;
-	DWORD u54;
-	WORD u58;
-	WORD nPath; //5ah
-	DWORD* pPath; //5ch
+struct CSearchRequest { //Size 60h
+	char m_serviceState; //0h, range: 0-5, (AACC98)4 = SERVICE_STALE
+	char u1;
+	int u2;
+	char u6;
+	char u7;
+	char u8;
+	char u9;
+	int ua;
+	char ue;
+	int u10;
+	int u14[4]; //struct
+	int u24;
+	int u28;
+	int u2c;
+	int u30;
+	int u34;
+	int* u38;
+	int* u3c;
+	int* u40;
+	int u44;
+	int u48;
+	int u4c;
+	int u50;
+	int u54;
+	short u58;
+	short nPath; //5ah
+	int* pPath; //5ch
 };
 
 #endif //PATHFIND_H

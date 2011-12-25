@@ -5,12 +5,12 @@
 
 extern void (CRecord::*Tramp_CRecord_MageBookPanelOnLoad)(CCreatureObject&);
 extern void (CRecord::*Tramp_CRecord_MageBookPanelOnUpdate)(CCreatureObject&);
-extern void (CRecord::*Tramp_CRecord_UpdateCharacter)(void);
+extern void (CRecord::*Tramp_CRecord_UpdateCharacter)();
 
 class DETOUR_CRecord : public CRecord {
 public:
-	void DETOUR_MageBookPanelOnLoad(CCreatureObject&);
-	void DETOUR_MageBookPanelOnUpdate(CCreatureObject&);
+	void DETOUR_MageBookPanelOnLoad(CCreatureObject& cre);
+	void DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre);
 	void DETOUR_UpdateCharacter();
 };
 

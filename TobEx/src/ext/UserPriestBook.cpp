@@ -1,6 +1,6 @@
 #include "UserPriestBook.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "uicore.h"
 #include "infgame.h"
 #include "objcre.h"
@@ -30,7 +30,7 @@ void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
 	}
 
 	CCreatureObject* pCre;
-	BYTE threadVal;
+	char threadVal;
 	do {
 		threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
@@ -72,13 +72,13 @@ void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
 	}
 
 	CCreatureObject* pCre;
-	BYTE threadVal;
+	char threadVal;
 	do {
 		threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
-		DWORD nValues = pCre->m_KnownSpellsPriest[pPriestSpell->currLevel].GetCount() / 4;
+		int nValues = pCre->m_KnownSpellsPriest[pPriestSpell->currLevel].GetCount() / 4;
 		if (nValues % 4) nValues++;
 		if (nValues < 6) {
 			CUIButtonPriestBook_KnownSpellOffset = 0;

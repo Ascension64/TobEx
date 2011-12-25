@@ -3,11 +3,11 @@
 
 #include "animext.h"
 
-extern LPCTSTR (CAnimation8000::*Tramp_CAnimation8000_GetWalkingSound)(WORD);
+extern LPCTSTR (CAnimation8000::*Tramp_CAnimation8000_GetWalkingSound)(short);
 
 class DETOUR_CAnimation8000 : public CAnimation8000 {
 public:
-	LPCTSTR DETOUR_GetWalkingSound(WORD);
+	LPCTSTR DETOUR_GetWalkingSound(short wTerrainCode);
 };
 
 #endif //ANIMATION8000_H

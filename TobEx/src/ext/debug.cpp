@@ -1,48 +1,71 @@
 #include "debug.h"
 
 #include "chitin.h"
-#include "sndcore.h"
-#include "vidcore.h"
-#include "rescore.h"
-#include "msgcore.h"
-#include "infgame.h"
-#include "objcre.h"
 #include "engine.h"
-#include "console.h"
+#include "infcursor.h"
+#include "infgame.h"
+#include "msgcore.h"
 #include "network.h"
+#include "objcre.h"
+#include "rescore.h"
+#include "sndcore.h"
 #include "tlkcore.h"
-#include "cstringex.h"
+#include "vidcore.h"
+#include "console.h"
+#include "objvef.h"
 
-void debug() {
-/*
-	console.write("CBaldurChitin ideal size 720Ch, actual size: %Xh\r\n", 1, sizeof(CBaldurChitin));
-	console.write("CSoundMixer size 28DAh, actual size: %Xh\r\n", 1, sizeof(CSoundMixer));
-	console.write("CVideo size 168h, actual size: %Xh\r\n", 1, sizeof(CVideo));
-	console.write("CResHandler size 2A8h, actual size: %Xh\r\n", 1, sizeof(CResHandler));
-	console.write("CGUIMain size 19E8h, actual size: %Xh\r\n", 1, sizeof(CBaldurChitin::CGUIMain));
-	console.write("CBaldurMessage size 114h, actual size: %Xh\r\n", 1, sizeof(CMessageHandler));
-	console.write("CTlkTbl size A6h, actual size: %Xh\r\n", 1, sizeof(CTlkTbl));
+#define SIZE_CBALDURCHITIN			0x720C
+#define SIZE_CBUTTONARRAY			0x1820
+#define SIZE_CCHARGEN				0x148C
+#define SIZE_CCREATUREOBJECT		0x6774
+#define SIZE_CENGINE				0x00FE
+#define SIZE_CGUIMAIN				0x19E8
+#define SIZE_CINFCURSOR				0x08F6
+#define SIZE_CINFGAME				0x4DC8
+#define SIZE_CMESSAGEHANDLER		0x0114
+#define SIZE_CNETWORK				0x0F3A
+#define SIZE_CNETWORKWINDOW			0x0088
+#define SIZE_CRESHANDLER			0x02A8
+#define SIZE_CSOUND					0x006A
+#define SIZE_CSOUNDMIXER			0x28DA
+#define SIZE_CRECORD				0x1520
+#define SIZE_CSERVERSTORE			0x00DC
+#define SIZE_CSTORE					0x148A
+#define SIZE_CTLKTBL				0x00A6
+#define SIZE_CVIDEO					0x0168
+#define SIZE_CVIDEOMODE				0x0732
+#define SIZE_CVISUALEFFECTVIDCELL	0x03A0
 
-	console.write("CNetwork size F3Ah, actual size: %Xh\r\n", 1, sizeof(CNetwork));
-	console.write("CNetworkWindow size 88h, actual size: %Xh\r\n", 1, sizeof(CNetworkWindow));
+void CheckSize(LPCTSTR lpszName, size_t nExpectedSize, size_t nActualSize) {
+	if (nActualSize != nExpectedSize) console.write("Debug(): %s has incorrect size 0x%X (expected 0x%X)\r\n", 3, lpszName, nActualSize, nExpectedSize);
+	return;
+}
 
-	console.write("CInfGame size 4DC8h, actual size: %Xh\r\n", 1, sizeof(CInfGame));
-	console.write("CButtonArray size 1820h, actual size: %Xh\r\n", 1, sizeof(CInfGame::CButtonArray));
-
-	console.write("CVideoMode size 732h, actual size: %Xh\r\n", 1, sizeof(CVideoMode));
-
-	console.write("CCreatureObject size 6774h, actual size: %Xh\r\n", 1, sizeof(CCreatureObject));
-
-	console.write("CSound size 6Ah, actual size: %Xh\r\n", 1, sizeof(CSound));
-
-	console.write("CEngine size FEh, actual size: %Xh\r\n", 1, sizeof(CEngine));
-	console.write("CCharGen size 148Ch, actual size: %Xh\r\n", 1, sizeof(CCharGen));
-	console.write("CRecord size 1520h, actual size: %Xh\r\n", 1, sizeof(CRecord));
-	console.write("CStore size 148ah, actual size: %Xh\r\n", 1, sizeof(CStore));
+void Debug() {
+	_CheckSize(SIZE_CBALDURCHITIN, CBaldurChitin);
+	_CheckSize(SIZE_CBUTTONARRAY, CInfGame::CButtonArray);
+	_CheckSize(SIZE_CCHARGEN, CCharGen);
+	_CheckSize(SIZE_CCREATUREOBJECT, CCreatureObject);
+	_CheckSize(SIZE_CENGINE, CEngine);
+	_CheckSize(SIZE_CGUIMAIN, CBaldurChitin::CGUIMain);
+	_CheckSize(SIZE_CINFCURSOR, CInfCursor);
+	_CheckSize(SIZE_CINFGAME, CInfGame);
+	_CheckSize(SIZE_CMESSAGEHANDLER, CMessageHandler);
+	_CheckSize(SIZE_CNETWORK, CNetwork);
+	_CheckSize(SIZE_CNETWORKWINDOW, CNetworkWindow);
+	_CheckSize(SIZE_CSOUND, CSound);
+	_CheckSize(SIZE_CSOUNDMIXER, CSoundMixer);
+	_CheckSize(SIZE_CRECORD, CRecord);
+	_CheckSize(SIZE_CSERVERSTORE, CServerStore);
+	_CheckSize(SIZE_CSTORE, CStore);
+	_CheckSize(SIZE_CTLKTBL, CTlkTbl);
+	_CheckSize(SIZE_CVIDEO, CVideo);
+	_CheckSize(SIZE_CVIDEOMODE, CVideoMode);
+	_CheckSize(SIZE_CVISUALEFFECTVIDCELL, CVisualEffectVidCell);
 
 	//to check location of members, just replace the temp object type, member name and expected location
-	//CBaldurChitin temp;
-	//console.write("CBaldurChitin.u414e at u414e, actual location: %Xh\r\n", 1, (DWORD)(&temp.u414e) - (DWORD)(&temp));
-*/
+	//CCreatureObject temp;
+	//console.write("CCreatureObject.cscTarget at 3714h, actual location: %Xh\r\n", 1, (int)(&temp.cscTarget) - (int)(&temp));
+
 	return;
 }

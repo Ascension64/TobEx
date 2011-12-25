@@ -1,17 +1,17 @@
 #include "uibutton.h"
 
-#include "utils.h"
+#include "stdafx.h"
 
 //CUIButton
-CUIButton& (CUIButton::*CUIButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL) =
-	SetFP(static_cast<CUIButton& (CUIButton::*)(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL)>
+CUIButton& (CUIButton::*CUIButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, char, BOOL) =
+	SetFP(static_cast<CUIButton& (CUIButton::*)(CPanel&, ChuFileControlInfoBase&, char, BOOL)>
 														(&CUIButton::Construct),		0x586570);
 void (CUIButton::*CUIButton_Deconstruct)() =
 	SetFP(static_cast<void (CUIButton::*)()>			(&CUIButton::Deconstruct),		0x5A54D0);
 void (CUIButton::*CUIButton_SetActive)(BOOL) =
 	SetFP(static_cast<void (CUIButton::*)(BOOL)>		(&CUIButton::SetActive),		0x587C9D);
-void (CUIButton::*CUIButton_OnLoseFocus)(void) =
-	SetFP(static_cast<void (CUIButton::*)(void)>		(&CUIButton::OnLoseFocus),		0x586B6A);
+void (CUIButton::*CUIButton_OnLoseFocus)() =
+	SetFP(static_cast<void (CUIButton::*)()>			(&CUIButton::OnLoseFocus),		0x586B6A);
 void (CUIButton::*CUIButton_OnLMouseDrag)(POINT) =
 	SetFP(static_cast<void (CUIButton::*)(POINT)>		(&CUIButton::OnLMouseDrag),		0x586BBC);
 BOOL (CUIButton::*CUIButton_OnLMouseBtDn)(POINT) =
@@ -24,12 +24,12 @@ BOOL (CUIButton::*CUIButton_OnRMouseBtDn)(POINT) =
 	SetFP(static_cast<BOOL (CUIButton::*)(POINT)>		(&CUIButton::OnRMouseBtDn),		0x586F66);
 void (CUIButton::*CUIButton_OnRMouseBtUp)(POINT) =
 	SetFP(static_cast<void (CUIButton::*)(POINT)>		(&CUIButton::OnRMouseBtUp),		0x587041);
-void (CUIButton::*CUIButton_SetRedraw)(void) =
-	SetFP(static_cast<void (CUIButton::*)(void)>		(&CUIButton::SetRedraw),		0x587C04);
+void (CUIButton::*CUIButton_SetRedraw)() =
+	SetFP(static_cast<void (CUIButton::*)()>			(&CUIButton::SetRedraw),		0x587C04);
 BOOL (CUIButton::*CUIButton_Redraw)(BOOL) =
 	SetFP(static_cast<BOOL (CUIButton::*)(BOOL)>		(&CUIButton::Redraw),			0x587101);
-BOOL (CUIButton::*CUIButton_NeedsRedraw)(void) =
-	SetFP(static_cast<BOOL (CUIButton::*)(void)>		(&CUIButton::NeedsRedraw),		0x586B27);
+BOOL (CUIButton::*CUIButton_NeedsRedraw)() =
+	SetFP(static_cast<BOOL (CUIButton::*)()>			(&CUIButton::NeedsRedraw),		0x586B27);
 void (CUIButton::*CUIButton_OnLClicked)(POINT) =
 	SetFP(static_cast<void (CUIButton::*)(POINT)>		(&CUIButton::OnLClicked),		0x5A55F0);
 void (CUIButton::*CUIButton_OnLDblClicked)(POINT) =
@@ -40,20 +40,20 @@ void (CUIButton::*CUIButton_SetText)(IECString&) =
 	SetFP(static_cast<void (CUIButton::*)(IECString&)>	(&CUIButton::SetText),			0x587DF2);
 
 CUIButton::CUIButton()						{ SetVT(this, 0xAAAE44); }
-CUIButton::CUIButton(CPanel& panel, ChuFileControlInfoBase& controlInfo, BYTE flags, BOOL b)
+CUIButton::CUIButton(CPanel& panel, ChuFileControlInfoBase& controlInfo, char flags, BOOL b)
 											{ (this->*CUIButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(panel, controlInfo, flags, b); }
 void CUIButton::SetActive(BOOL b)			{ return (this->*CUIButton_SetActive)(b); }
 CUIButton::~CUIButton()						{ (this->*CUIButton_Deconstruct)(); }
-void CUIButton::OnLoseFocus(void)			{ return (this->*CUIButton_OnLoseFocus)(); }
+void CUIButton::OnLoseFocus()				{ return (this->*CUIButton_OnLoseFocus)(); }
 void CUIButton::OnLMouseDrag(POINT pt)		{ return (this->*CUIButton_OnLMouseDrag)(pt); }
 BOOL CUIButton::OnLMouseBtDn(POINT pt)		{ return (this->*CUIButton_OnLMouseBtDn)(pt); }
 void CUIButton::OnLMouseBtUp(POINT pt)		{ return (this->*CUIButton_OnLMouseBtUp)(pt); }
 BOOL CUIButton::OnLMouseDblClk(POINT pt)	{ return (this->*CUIButton_OnLMouseDblClk)(pt); }
 BOOL CUIButton::OnRMouseBtDn(POINT pt)		{ return (this->*CUIButton_OnRMouseBtDn)(pt); }
 void CUIButton::OnRMouseBtUp(POINT pt)		{ return (this->*CUIButton_OnRMouseBtUp)(pt); }
-void CUIButton::SetRedraw(void)				{ return (this->*CUIButton_SetRedraw)(); }
+void CUIButton::SetRedraw()					{ return (this->*CUIButton_SetRedraw)(); }
 BOOL CUIButton::Redraw(BOOL bForceRedraw)	{ return (this->*CUIButton_Redraw)(bForceRedraw); }
-BOOL CUIButton::NeedsRedraw(void)			{ return (this->*CUIButton_NeedsRedraw)(); }
+BOOL CUIButton::NeedsRedraw()				{ return (this->*CUIButton_NeedsRedraw)(); }
 void CUIButton::OnLClicked(POINT pt)		{ return (this->*CUIButton_OnLClicked)(pt); }
 void CUIButton::OnLDblClicked(POINT pt)		{ return (this->*CUIButton_OnLDblClicked)(pt); }
 void CUIButton::OnRClicked(POINT pt)		{ return (this->*CUIButton_OnRClicked)(pt); }
@@ -114,8 +114,8 @@ void CUIButtonPriestBookKnownSpell::OnLClicked(POINT pt)		{ return (this->*CUIBu
 void CUIButtonPriestBookKnownSpell::OnRClicked(POINT pt)		{ return (this->*CUIButtonPriestBookKnownSpell_OnRClicked)(pt); }
 
 //CUICheckButton
-CUICheckButton& (CUICheckButton::*CUICheckButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL) =
-	SetFP(static_cast<CUICheckButton& (CUICheckButton::*)(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL)>
+CUICheckButton& (CUICheckButton::*CUICheckButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, char, BOOL) =
+	SetFP(static_cast<CUICheckButton& (CUICheckButton::*)(CPanel&, ChuFileControlInfoBase&, char, BOOL)>
 																						(&CUICheckButton::Construct),		0x587FB2);
 void (CUICheckButton::*CUICheckButton_Deconstruct)() =
 	SetFP(static_cast<void (CUICheckButton::*)()>										(&CUICheckButton::Deconstruct),		0x5A4A30);
@@ -127,7 +127,7 @@ void (CUICheckButton::*CUICheckButton_OnLClicked)(POINT) =
 	SetFP(static_cast<void (CUICheckButton::*)(POINT)>									(&CUICheckButton::OnLClicked),		0x588042);
 
 CUICheckButton::CUICheckButton()					{ SetVT(this, 0xAAAEB0); }
-CUICheckButton::CUICheckButton(CPanel& panel, ChuFileControlInfoBase& controlInfo, BYTE flags, BOOL b)
+CUICheckButton::CUICheckButton(CPanel& panel, ChuFileControlInfoBase& controlInfo, char flags, BOOL b)
 													{ (this->*CUICheckButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(panel, controlInfo, flags, b); }
 CUICheckButton::~CUICheckButton()					{ (this->*CUICheckButton_Deconstruct)(); }
 void CUICheckButton::SetToggleState(BOOL b)			{ return (this->*CUICheckButton_SetToggleState)(b); }
@@ -137,36 +137,36 @@ void CUICheckButton::OnLClicked(POINT pt)			{ return (this->*CUICheckButton_OnLC
 //CUICheckButtonChargenClass
 CUICheckButtonChargenClass& (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
 	SetFP(static_cast<CUICheckButtonChargenClass& (CUICheckButtonChargenClass::*)(CPanel&, ChuFileControlInfoBase&)>
-																	(&CUICheckButtonChargenClass::Construct),	0x733AB4);
-BYTE (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_GetClass)() =
-	SetFP(static_cast<BYTE (CUICheckButtonChargenClass::*)()>		(&CUICheckButtonChargenClass::GetClass),	0x73402E);
+																		(&CUICheckButtonChargenClass::Construct),	0x733AB4);
+unsigned char (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_GetClass)() =
+	SetFP(static_cast<unsigned char (CUICheckButtonChargenClass::*)()>		(&CUICheckButtonChargenClass::GetClass),	0x73402E);
 void (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_Deconstruct)() =
-	SetFP(static_cast<void (CUICheckButtonChargenClass::*)()>		(&CUICheckButtonChargenClass::Deconstruct),	0x73D270);
+	SetFP(static_cast<void (CUICheckButtonChargenClass::*)()>			(&CUICheckButtonChargenClass::Deconstruct),	0x73D270);
 void (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_OnLClicked)(POINT) =
-	SetFP(static_cast<void (CUICheckButtonChargenClass::*)(POINT)>	(&CUICheckButtonChargenClass::OnLClicked),	0x733B95);
+	SetFP(static_cast<void (CUICheckButtonChargenClass::*)(POINT)>		(&CUICheckButtonChargenClass::OnLClicked),	0x733B95);
 
 CUICheckButtonChargenClass::CUICheckButtonChargenClass(CPanel& panel, ChuFileControlInfoBase& controlInfo)
 															{ (this->*CUICheckButtonChargenClass_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
-BYTE CUICheckButtonChargenClass::GetClass()					{ return (this->*CUICheckButtonChargenClass_GetClass)(); }
+unsigned char CUICheckButtonChargenClass::GetClass()		{ return (this->*CUICheckButtonChargenClass_GetClass)(); }
 CUICheckButtonChargenClass::~CUICheckButtonChargenClass()	{ (this->*CUICheckButtonChargenClass_Deconstruct)(); }
 void CUICheckButtonChargenClass::OnLClicked(POINT pt)		{ return (this->*CUICheckButtonChargenClass_OnLClicked)(pt); }
 
 //CUICheckButtonChargenKit
 CUICheckButtonChargenKit& (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
 	SetFP(static_cast<CUICheckButtonChargenKit& (CUICheckButtonChargenKit::*)(CPanel&, ChuFileControlInfoBase&)>
-																	(&CUICheckButtonChargenKit::Construct),		0x73A6B7);
-DWORD (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitId)(Object&) =
-	SetFP(static_cast<DWORD (CUICheckButtonChargenKit::*)(Object&)>	(&CUICheckButtonChargenKit::GetKitId),		0x73A6E8);
+																			(&CUICheckButtonChargenKit::Construct),		0x73A6B7);
+unsigned int (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitId)(Object&) =
+	SetFP(static_cast<unsigned int (CUICheckButtonChargenKit::*)(Object&)>	(&CUICheckButtonChargenKit::GetKitId),		0x73A6E8);
 STRREF (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitHelpText)(Object&) =
-	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
+	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>		(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
 void (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_Deconstruct)() =
-	SetFP(static_cast<void (CUICheckButtonChargenKit::*)()>			(&CUICheckButtonChargenKit::Deconstruct),	0x73E3E0);
+	SetFP(static_cast<void (CUICheckButtonChargenKit::*)()>					(&CUICheckButtonChargenKit::Deconstruct),	0x73E3E0);
 void (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_OnLClicked)(POINT) =
-	SetFP(static_cast<void (CUICheckButtonChargenKit::*)(POINT)>	(&CUICheckButtonChargenKit::OnLClicked),	0x73ABDF);
+	SetFP(static_cast<void (CUICheckButtonChargenKit::*)(POINT)>			(&CUICheckButtonChargenKit::OnLClicked),	0x73ABDF);
 
 CUICheckButtonChargenKit::CUICheckButtonChargenKit(CPanel& panel, ChuFileControlInfoBase& controlInfo)
 															{ (this->*CUICheckButtonChargenKit_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
-DWORD CUICheckButtonChargenKit::GetKitId(Object& o)			{ return (this->*CUICheckButtonChargenKit_GetKitId)(o); }
+unsigned int CUICheckButtonChargenKit::GetKitId(Object& o)	{ return (this->*CUICheckButtonChargenKit_GetKitId)(o); }
 STRREF CUICheckButtonChargenKit::GetKitHelpText(Object& o)	{ return (this->*CUICheckButtonChargenKit_GetKitHelpText)(o); }
 CUICheckButtonChargenKit::~CUICheckButtonChargenKit()		{ (this->*CUICheckButtonChargenKit_Deconstruct)(); }
 void CUICheckButtonChargenKit::OnLClicked(POINT pt)			{ return (this->*CUICheckButtonChargenKit_OnLClicked)(pt); }
@@ -174,34 +174,34 @@ void CUICheckButtonChargenKit::OnLClicked(POINT pt)			{ return (this->*CUICheckB
 //CUICheckButtonChargenMageSchool
 CUICheckButtonChargenMageSchool& (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
 	SetFP(static_cast<CUICheckButtonChargenMageSchool& (CUICheckButtonChargenMageSchool::*)(CPanel&, ChuFileControlInfoBase&)>
-																		(&CUICheckButtonChargenMageSchool::Construct),	0x734E97);
-DWORD (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_GetKit)() =
-	SetFP(static_cast<DWORD (CUICheckButtonChargenMageSchool::*)()>		(&CUICheckButtonChargenMageSchool::GetKit),		0x734F4C);
+																				(&CUICheckButtonChargenMageSchool::Construct),	0x734E97);
+unsigned int (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_GetKit)() =
+	SetFP(static_cast<unsigned int (CUICheckButtonChargenMageSchool::*)()>		(&CUICheckButtonChargenMageSchool::GetKit),		0x734F4C);
 void (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_Deconstruct)() =
-	SetFP(static_cast<void (CUICheckButtonChargenMageSchool::*)()>		(&CUICheckButtonChargenMageSchool::Deconstruct),0x73D770);
+	SetFP(static_cast<void (CUICheckButtonChargenMageSchool::*)()>				(&CUICheckButtonChargenMageSchool::Deconstruct),0x73D770);
 void (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_OnLClicked)(POINT) =
-	SetFP(static_cast<void (CUICheckButtonChargenMageSchool::*)(POINT)>(&CUICheckButtonChargenMageSchool::OnLClicked),	0x735019);
+	SetFP(static_cast<void (CUICheckButtonChargenMageSchool::*)(POINT)>			(&CUICheckButtonChargenMageSchool::OnLClicked),	0x735019);
 
 CUICheckButtonChargenMageSchool::CUICheckButtonChargenMageSchool(CPanel& panel, ChuFileControlInfoBase& controlInfo)
 																	{ (this->*CUICheckButtonChargenMageSchool_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
-DWORD CUICheckButtonChargenMageSchool::GetKit()						{ return (this->*CUICheckButtonChargenMageSchool_GetKit)(); }
+unsigned int CUICheckButtonChargenMageSchool::GetKit()				{ return (this->*CUICheckButtonChargenMageSchool_GetKit)(); }
 CUICheckButtonChargenMageSchool::~CUICheckButtonChargenMageSchool()	{ (this->*CUICheckButtonChargenMageSchool_Deconstruct)(); }
 void CUICheckButtonChargenMageSchool::OnLClicked(POINT pt)			{ return (this->*CUICheckButtonChargenMageSchool_OnLClicked)(pt); }
 
 //CUICheckButtonChargenMulticlass
 CUICheckButtonChargenMulticlass& (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
 	SetFP(static_cast<CUICheckButtonChargenMulticlass& (CUICheckButtonChargenMulticlass::*)(CPanel&, ChuFileControlInfoBase&)>
-																		(&CUICheckButtonChargenMulticlass::Construct),		0x7336BA);
-BYTE (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_GetClass)() =
-	SetFP(static_cast<BYTE (CUICheckButtonChargenMulticlass::*)()>		(&CUICheckButtonChargenMulticlass::GetClass),		0x733A11);
+																				(&CUICheckButtonChargenMulticlass::Construct),		0x7336BA);
+unsigned char (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_GetClass)() =
+	SetFP(static_cast<unsigned char (CUICheckButtonChargenMulticlass::*)()>		(&CUICheckButtonChargenMulticlass::GetClass),		0x733A11);
 void (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_Deconstruct)() =
-	SetFP(static_cast<void (CUICheckButtonChargenMulticlass::*)()>		(&CUICheckButtonChargenMulticlass::Deconstruct),	0x73D120);
+	SetFP(static_cast<void (CUICheckButtonChargenMulticlass::*)()>				(&CUICheckButtonChargenMulticlass::Deconstruct),	0x73D120);
 void (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_OnLClicked)(POINT) =
-	SetFP(static_cast<void (CUICheckButtonChargenMulticlass::*)(POINT)>	(&CUICheckButtonChargenMulticlass::OnLClicked),		0x7336EB);
+	SetFP(static_cast<void (CUICheckButtonChargenMulticlass::*)(POINT)>			(&CUICheckButtonChargenMulticlass::OnLClicked),		0x7336EB);
 
 CUICheckButtonChargenMulticlass::CUICheckButtonChargenMulticlass(CPanel& panel, ChuFileControlInfoBase& controlInfo)
 																	{ (this->*CUICheckButtonChargenMulticlass_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo); }
-BYTE CUICheckButtonChargenMulticlass::GetClass()					{ return (this->*CUICheckButtonChargenMulticlass_GetClass)(); }
+unsigned char CUICheckButtonChargenMulticlass::GetClass()			{ return (this->*CUICheckButtonChargenMulticlass_GetClass)(); }
 CUICheckButtonChargenMulticlass::~CUICheckButtonChargenMulticlass()	{ (this->*CUICheckButtonChargenMulticlass_Deconstruct)(); }
 void CUICheckButtonChargenMulticlass::OnLClicked(POINT pt)			{ return (this->*CUICheckButtonChargenMulticlass_OnLClicked)(pt); }
 

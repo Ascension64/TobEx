@@ -1,36 +1,35 @@
 #ifndef ANIMCORE_H
 #define ANIMCORE_H
 
-#include "utils.h"
+#include "stdafx.h"
 
 #include "vidcore.h"
-#include "resref.h"
 
 class CCreatureObject;
 
-class CAnimationSoundList : public CPtrList { //Size 28h
+class CAnimationSoundList : public IECPtrList { //Size 28h
 //Constructor: 0x87B3E0
-//vtable: 0xAACCA0
 public:
-	BOOL PlayPrimedSound(DWORD, CCreatureObject*);
+	//AACCA0
+	BOOL PlayPrimedSound(int dwFrame, CCreatureObject& cre);
 
 	//Elements are 0xc size objects (0x0 ResRef sound [first row], 0x8 frameToPlay [second row])
 	POSITION posPrimedSound; //1ch
 	BOOL bIgnorePrime; //20h
-	DWORD dwChannel; //24h
+	int dwChannel; //24h
 };
 
-extern BOOL (CAnimationSoundList::*CAnimationSoundList_PlayPrimedSound)(DWORD, CCreatureObject*);
+extern BOOL (CAnimationSoundList::*CAnimationSoundList_PlayPrimedSound)(int, CCreatureObject&);
 
 class CAnimation { //Size 6D8h 
 public:
 	CAnimation(); //7F9211
 	CAnimation& Construct() { return *this; } //dummy
-	void PlayCurrentSequenceSound(CCreatureObject*);
+	void PlayCurrentSequenceSound(CCreatureObject& cre);
 
-	static BOOL IsPlayableAnimation(WORD);
+	static BOOL IsPlayableAnimation(unsigned short wAnimId);
 
-	//0xAB6148
+	//AB6148
 	virtual void v0() {}
 	virtual void v4() {}
 	virtual void v8() {}
@@ -44,7 +43,7 @@ public:
 	virtual void v28() {}
 	virtual void v2c() {}
 	virtual void v30() {}
-	virtual void v34() {}
+	virtual char GetVertListType() { return 0; } //v34
 	virtual void v38() {}
 	virtual void v3c() {}
 	virtual void v40() {}
@@ -54,11 +53,11 @@ public:
 	virtual void v50() {}
 	virtual void v54() {}
 	virtual void v58() {}
-	virtual void v5c() {}
+	virtual char GetFootCircleSize() { return 0; } //v5c
 	virtual void v60() {}
 	virtual void v64() {}
 	virtual void v68() {}
-	virtual LPCTSTR GetWalkingSound(WORD); //v6c
+	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 	virtual void v70() {}
 	virtual void v74() {}
 	virtual void v78() {}
@@ -79,46 +78,48 @@ public:
 	virtual void vb4() {}
 	virtual void vb8() {}
 	virtual void vbc() {}
-	virtual void vc0() {}
+	virtual char GetInRoundAction() { return 0; } //vc0h
 	virtual void vc4() {}
 	virtual void vc8() {}
 	virtual void vcc() {}
 	virtual void vd0() {}
 	virtual void vd4() {}
 	virtual void vd8() {}
-	virtual bool GetCurrentCycleAndFrame(WORD&, WORD&); //vdc
+	virtual bool GetCurrentCycleAndFrame(short& wCycle, short& wFrame); //vdc
 
-	WORD wAnimId; //4h
-	BYTE u6; //related to animId
-	BYTE u7; //related to animId
+	unsigned short wAnimId; //4h
+	char u6; //related to animId
+	char u7; //related to animId
 	RECT rFootcircle; //8h
-	BYTE u18;
-	BYTE u19;
-	DWORD u1a; //related to animId
+	char u18;
+	char u19;
+	int u1a; //related to animId
 	LPCTSTR szFallingSound; //1eh
-	WORD u22[16]; //set by 0x7FA94F proc, either 0, 10, or -10, to do with orientations?
-	CVidBitmap u42[5]; //42h, rndbase1-5
-	BYTE nFootCircleSize; //3d0h, 3, 5, 7, 9, 13
-	BYTE u3d1; //pad
-	WORD wCyclesPerAnimation; //3d2h
-	BYTE u3d4;
-	BYTE u3d5;
-	BYTE u3d6;
+	short u22[16]; //set by 0x7FA94F proc, either 0, 10, or -10, to do with orientations?
+
+	//These graphics determine what to do during each 
+	CVidBitmap cvdRoundBase[5]; //42h, rndbase1-5
+
+	char nFootCircleSize; //3d0h, 3, 5, 7, 9, 13
+	char u3d1; //pad
+	short wCyclesPerAnimation; //3d2h
+	char u3d4;
+	char u3d5;
+	char u3d6;
 	ResRef rAniSnd; //3d7h
-	BYTE u3df; //pad
+	char u3df; //pad
 	CAnimationSoundList soundset[19]; //3e0h, corresponds to rows of anim soundset 2DAs (19 in total)
 };
 
 extern CAnimation& (CAnimation::*CAnimation_Construct)();
-extern void (CAnimation::*CAnimation_PlayCurrentSequenceSound)(CCreatureObject*);
-extern BOOL (*CAnimation_IsPlayableAnimation)(WORD);
-extern LPCTSTR (CAnimation::*CAnimation_GetWalkingSound)(WORD);
-extern bool (CAnimation::*CAnimation_GetCurrentCycleAndFrame)(WORD&, WORD&);
+extern void (CAnimation::*CAnimation_PlayCurrentSequenceSound)(CCreatureObject&);
+extern BOOL (*CAnimation_IsPlayableAnimation)(unsigned short);
+extern LPCTSTR (CAnimation::*CAnimation_GetWalkingSound)(short);
+extern bool (CAnimation::*CAnimation_GetCurrentCycleAndFrame)(short&, short&);
 
-struct AnimData {
-//Size: 0x8
+struct AnimData { //Size 8h
 	CAnimation* pAnimation; //0h
-	WORD wCurrentSequence; //4h
+	short wCurrentSequence; //4h
 };
 
 #endif //ANIMCORE_H

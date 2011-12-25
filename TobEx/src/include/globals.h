@@ -3,6 +3,6 @@
 
 #include "rule.h"
 
-static const unsigned long* g_pEnableWildMage = (const unsigned long*)0xAB3BCC;
+static const unsigned int* g_pEnableWildMage = (const unsigned int*)0xAB3BCC;
 
 #endif //GLOBALS_H

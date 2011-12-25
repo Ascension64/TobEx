@@ -7,18 +7,18 @@ extern int CUIButtonMageBook_KnownSpellOffset;
 
 class CUIButtonMageBookUp : public CUIButton {
 public:
-	CUIButtonMageBookUp(CPanel&, ChuFileControlInfoBase&);
+	CUIButtonMageBookUp(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 
 	virtual ~CUIButtonMageBookUp(); //v0
-	virtual void OnLClicked(POINT); //v5c
+	virtual void OnLClicked(POINT pt); //v5c
 };
 
 class CUIButtonMageBookDn : public CUIButton {
 public:
-	CUIButtonMageBookDn(CPanel&, ChuFileControlInfoBase&);
+	CUIButtonMageBookDn(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 
 	virtual ~CUIButtonMageBookDn(); //v0
-	virtual void OnLClicked(POINT); //v5c
+	virtual void OnLClicked(POINT pt); //v5c
 };
 
 #endif //USERMAGEBOOK_H

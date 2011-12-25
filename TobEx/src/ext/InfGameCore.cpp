@@ -1,6 +1,6 @@
 #include "InfGameCore.h"
 
-#include "utils.h"
+#include "stdafx.h"
 #include "objcre.h"
 #include "chitin.h"
 #include "infgame.h"
@@ -10,17 +10,17 @@
 #include "InfGameCommon.h"
 
 CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)() =
-	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>											(&CRuleTables::Construct),					0x6213DC);
+	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>									(&CRuleTables::Construct),					0x6213DC);
 void (CRuleTables::*Tramp_CRuleTables_Deconstruct)() =
-	SetFP(static_cast<void (CRuleTables::*)()>													(&CRuleTables::Deconstruct),				0x6279D1);
-ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRef)(DWORD, DWORD) =
-	SetFP(static_cast<ResRef (CRuleTables::*)(DWORD, DWORD)>									(&CRuleTables::GetMageSpellRef),			0x633691);
-DWORD (CRuleTables::*Tramp_CRuleTables_GetWeapProfMax)(BYTE, BYTE, BYTE, BOOL, DWORD, DWORD) =
-	SetFP(static_cast<DWORD (CRuleTables::*)(BYTE, BYTE, BYTE, BOOL, DWORD, DWORD)>				(&CRuleTables::GetWeapProfMax),				0x636C57);
-BOOL (CRuleTables::*Tramp_CRuleTables_IsMageSchoolAllowed)(DWORD, BYTE) =
-	SetFP(static_cast<BOOL (CRuleTables::*)(DWORD, BYTE)>										(&CRuleTables::IsMageSchoolAllowed),		0x637DEE);
-ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(BYTE, BYTE) =
-	SetFP(static_cast<ResRef (CRuleTables::*)(BYTE, BYTE)>										(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
+	SetFP(static_cast<void (CRuleTables::*)()>											(&CRuleTables::Deconstruct),				0x6279D1);
+ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRef)(int, int) =
+	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>								(&CRuleTables::GetMageSpellRef),			0x633691);
+int (CRuleTables::*Tramp_CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int) =
+	SetFP(static_cast<int (CRuleTables::*)(char, char, char, BOOL, int, unsigned int)>	(&CRuleTables::GetWeapProfMax),				0x636C57);
+BOOL (CRuleTables::*Tramp_CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char) =
+	SetFP(static_cast<BOOL (CRuleTables::*)(unsigned int, unsigned char)>				(&CRuleTables::IsMageSchoolAllowed),		0x637DEE);
+ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(char, char) =
+	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>								(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
 
 CRuleTables& DETOUR_CRuleTables::DETOUR_Construct() {
 	pRuleEx = new CRuleTablesEx();
@@ -33,14 +33,14 @@ void DETOUR_CRuleTables::DETOUR_Deconstruct() {
 	return (this->*Tramp_CRuleTables_Deconstruct)();
 }
 
-ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(DWORD nSpellLevel, DWORD nIndex) {
+ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 	ResRef rSpell = (this->*Tramp_CRuleTables_GetMageSpellRef)(nSpellLevel, nIndex);
 	return CRuleTables_TryHideSpell(rSpell);
 }
 
-DWORD DETOUR_CRuleTables::DETOUR_GetWeapProfMax(BYTE dwClassId, BYTE bClassPrimary, BYTE bClassSecondary, BOOL bClassMage, DWORD dwWeapProfId, DWORD dwKit) {
-	DWORD dwWeapProfMax = (this->*Tramp_CRuleTables_GetWeapProfMax)(dwClassId, bClassPrimary, bClassSecondary, bClassMage, dwWeapProfId, dwKit);
-	DWORD dwClassProfsMax = g_pChitin->pCharacter->dwProfsMax;
+int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit) {
+	int dwWeapProfMax = (this->*Tramp_CRuleTables_GetWeapProfMax)(dwClassId, bClassPrimary, bClassSecondary, bClassMage, dwWeapProfId, dwKit);
+	int dwClassProfsMax = g_pChitin->pCharacter->dwProfsMax;
 	if (dwClassProfsMax) {
 		return dwClassProfsMax < dwWeapProfMax ? dwClassProfsMax : dwWeapProfMax;
 	} else {
@@ -48,12 +48,12 @@ DWORD DETOUR_CRuleTables::DETOUR_GetWeapProfMax(BYTE dwClassId, BYTE bClassPrima
 	}
 }
 
-BOOL DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed(DWORD dwKit, BYTE race) {
-	if (!pRuleEx->m_MageSchoolRaceReq.m_2da.bLoaded) return (this->*Tramp_CRuleTables_IsMageSchoolAllowed)(dwKit, race);
+BOOL DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace) {
+	if (!pRuleEx->m_MageSchoolRaceReq.m_2da.bLoaded) return (this->*Tramp_CRuleTables_IsMageSchoolAllowed)(dwKit, nRace);
 
 	CInfGame* pGame = g_pChitin->pGame;
-	IECString sRace = pGame->GetRaceString(race);
-	IECString sClass = pGame->GetClassString(MAGE, dwKit);
+	IECString sRace = pGame->GetRaceString(nRace);
+	IECString sClass = pGame->GetClassString(CLASS_MAGE, dwKit);
 	IECString sAllowed = pRuleEx->m_MageSchoolRaceReq.GetValue(sRace, sClass);
 	BOOL bAllowed;
 	sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
@@ -61,7 +61,7 @@ BOOL DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed(DWORD dwKit, BYTE race) {
 	return bAllowed;
 }
 
-ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick(BYTE nSpellLevel, BYTE nIndex) {
+ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) {
 	ResRef rSpell = (this->*Tramp_CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex);
 	return CRuleTables_TryHideSpell(rSpell);
 }
@@ -90,10 +90,10 @@ ResRef CRuleTables_TryHideSpell(ResRef& rSpell) {
 }
 
 IECString& __stdcall CRuleTables_GetMaxProfs(CCreatureObject& cre, IECString& sRowName) {
-	IECString sClass = g_pChitin->pGame->GetClassString(cre.IdsCopy1.GetClass(), TRUECLASS);
+	IECString sClass = g_pChitin->pGame->GetClassString(cre.oBase.GetClass(), KIT_TRUECLASS);
 	IECString sLevel = "2";
 	IECString& sLevelExp = g_pChitin->pGame->XPLEVEL.GetValue(sLevel, sClass);
-	DWORD levelExp = atoi((LPCTSTR)sLevelExp);
+	int levelExp = atoi((LPCTSTR)sLevelExp);
 
 	IECString sColName;
 	cre.m_BaseStats.currentExp < levelExp ? sColName = "FIRST_LEVEL" : sColName = "NONE" /*"OTHER_LEVELS"*/;
@@ -101,8 +101,8 @@ IECString& __stdcall CRuleTables_GetMaxProfs(CCreatureObject& cre, IECString& sR
 	return g_pChitin->pGame->PROFSMAX.GetValue(sColName, sRowName); //placed into g_pChitin->pCharacter->dwProfsMax;
 }
 
-STRREF __stdcall CInfGame_GetRaceText(DWORD nRace) {
-	DWORD Eip;
+STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
+	int Eip;
 	GetEip(Eip);
 
 	if (Eip == 0x734392) {

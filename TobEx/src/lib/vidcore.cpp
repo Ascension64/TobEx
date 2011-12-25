@@ -1,8 +1,13 @@
 #include "vidcore.h"
 
-#include "utils.h"
+#include "stdafx.h"
 
-void (VidPal::*VidPal_SetFxPaletteNo3d)(ARGB*, DWORD, DWORD, DWORD, BOOL) =
-	SetFP(static_cast<void (VidPal::*)(ARGB*, DWORD, DWORD, DWORD, BOOL)>		(&VidPal::SetFxPaletteNo3d),	0x9F5897);
+const ARGB* g_pColorRangeArray = (const ARGB*)0xAB9B78;
+const ARGB g_ColorDefaultText = 0xBED7D7;
 
-void VidPal::SetFxPaletteNo3d(ARGB* pPalette, DWORD nBitsPerPixel, DWORD dwFlags, DWORD dwAlpha, BOOL bIgnoreBrighten) { (this->*VidPal_SetFxPaletteNo3d)(pPalette, nBitsPerPixel, dwFlags, dwAlpha, bIgnoreBrighten); }
+void (VidPal::*VidPal_SetFxPaletteNo3d)(ARGB*, int, unsigned int, int, BOOL) =
+	SetFP(static_cast<void (VidPal::*)(ARGB*, int, unsigned int, int, BOOL)>	(&VidPal::SetFxPaletteNo3d),	0x9F5897);
+
+void VidPal::SetFxPaletteNo3d(ARGB* pPalette, int nBitsPerPixel, unsigned int dwFlags, int dwAlpha, BOOL bIgnoreBrighten) {
+	(this->*VidPal_SetFxPaletteNo3d)(pPalette, nBitsPerPixel, dwFlags, dwAlpha, bIgnoreBrighten);
+}

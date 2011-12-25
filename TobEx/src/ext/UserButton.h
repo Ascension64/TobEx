@@ -3,13 +3,13 @@
 
 #include "uibutton.h"
 
-extern DWORD (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&);
+extern unsigned int (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&);
 extern STRREF (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitHelpText)(Object&);
 
 class DETOUR_CUICheckButtonChargenKit : public CUICheckButtonChargenKit {
 public:
-	DWORD DETOUR_GetKitId(Object&);
-	STRREF DETOUR_GetKitHelpText(Object&);
+	unsigned int DETOUR_GetKitId(Object& o);
+	STRREF DETOUR_GetKitHelpText(Object& o);
 };
 
 #endif //USERBUTTON_H

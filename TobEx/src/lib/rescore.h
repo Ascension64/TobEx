@@ -1,42 +1,40 @@
 #ifndef RESCORE_H
 #define RESCORE_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "datatypes.h"
-#include "resref.h"
-#include "cstringex.h"
 
 //file types
-const DWORD CRES_TYPE_BMP = 0x001;
-const DWORD CRES_TYPE_WAV = 0x004;
-const DWORD CRES_TYPE_WFX = 0x005;
-const DWORD CRES_TYPE_PLT = 0x006;
-const DWORD CRES_TYPE_BAM = 0x3E8;
-const DWORD CRES_TYPE_WED = 0x3E9;
-const DWORD CRES_TYPE_CHU = 0x3EA;
-const DWORD CRES_TYPE_TIS = 0x3EB;
-const DWORD CRES_TYPE_MOS = 0x3EC;
-const DWORD CRES_TYPE_ITM = 0x3ED;
-const DWORD CRES_TYPE_SPL = 0x3EE;
-const DWORD CRES_TYPE_BCS = 0x3EF;
-const DWORD CRES_TYPE_IDS = 0x3F0;
-const DWORD CRES_TYPE_CRE = 0x3F1;
-const DWORD CRES_TYPE_ARE = 0x3F2;
-const DWORD CRES_TYPE_DLG = 0x3F3;
-const DWORD CRES_TYPE_2DA = 0x3F4;
-const DWORD CRES_TYPE_GAM = 0x3F5;
-const DWORD CRES_TYPE_STO = 0x3F6;
-const DWORD CRES_TYPE_WMP = 0x3F7;
-const DWORD CRES_TYPE_EFF = 0x3F8;
-const DWORD CRES_TYPE_BS  = 0x3F9;
-const DWORD CRES_TYPE_CHR = 0x3FA;
-const DWORD CRES_TYPE_VVC = 0x3FB;
-const DWORD CRES_TYPE_VEF = 0x3FC;
-const DWORD CRES_TYPE_PRO = 0x3FD;
-const DWORD CRES_TYPE_BIO = 0x3FE;
-const DWORD CRES_TYPE_BAH = 0x44C; //compressed BAM?
+const int CRES_TYPE_BMP = 0x001;
+const int CRES_TYPE_WAV = 0x004;
+const int CRES_TYPE_WFX = 0x005;
+const int CRES_TYPE_PLT = 0x006;
+const int CRES_TYPE_BAM = 0x3E8;
+const int CRES_TYPE_WED = 0x3E9;
+const int CRES_TYPE_CHU = 0x3EA;
+const int CRES_TYPE_TIS = 0x3EB;
+const int CRES_TYPE_MOS = 0x3EC;
+const int CRES_TYPE_ITM = 0x3ED;
+const int CRES_TYPE_SPL = 0x3EE;
+const int CRES_TYPE_BCS = 0x3EF;
+const int CRES_TYPE_IDS = 0x3F0;
+const int CRES_TYPE_CRE = 0x3F1;
+const int CRES_TYPE_ARE = 0x3F2;
+const int CRES_TYPE_DLG = 0x3F3;
+const int CRES_TYPE_2DA = 0x3F4;
+const int CRES_TYPE_GAM = 0x3F5;
+const int CRES_TYPE_STO = 0x3F6;
+const int CRES_TYPE_WMP = 0x3F7;
+const int CRES_TYPE_EFF = 0x3F8;
+const int CRES_TYPE_BS  = 0x3F9;
+const int CRES_TYPE_CHR = 0x3FA;
+const int CRES_TYPE_VVC = 0x3FB;
+const int CRES_TYPE_VEF = 0x3FC;
+const int CRES_TYPE_PRO = 0x3FD;
+const int CRES_TYPE_BIO = 0x3FE;
+const int CRES_TYPE_BAH = 0x44C; //compressed BAM?
 
-typedef CPtrList CPtrListKeyTableEntry; //AB8E94
+typedef IECPtrList CPtrListKeyTableEntry; //AB8E94
 
 struct KeyTableEntry;
 
@@ -45,7 +43,7 @@ class Res : public CObject { //Size 50h
 public:
 	virtual void v0() {}
 
-	DWORD dwFlags; //0x4
+	unsigned int dwFlags; //0x4
 	//bit 0
 	//bit 1
 	//bit 2 - size loaded into CResHandler::ud2
@@ -54,205 +52,165 @@ public:
 	//bit 5
 	//bit 6
 	//bit 7
-	void* pData; //0x8
-	CObList* pOwner; //0xc, CObList containing this object
-	KeyTableEntry* pKey; //0x10, from CResHandler array
-	DWORD nFileSize; //0x14
-	DWORD u18; //0x18
-	DWORD m_nResSizeActual; //0x1c, copied from 0x14 on OpenRes()
+	void* pData; //8h
+	CObList* pOwner; //ch, CObList containing this object
+	KeyTableEntry* pKey; //10h, from CResHandler array
+	int nFileSize; //14h
+	int u18; //18h
+	int m_nResSizeActual; //1ch, copied from 0x14 on OpenRes()
 #ifdef _DEBUG
-	_CCriticalSection ccs; //0x20
+	_CCriticalSection ccs; //20h
 #else
-	CCriticalSection ccs; //0x20, for pData access
+	CCriticalSection ccs; //20h, for pData access
 #endif
-	DWORD m_nDemands; //0x40, number of times demanded
-	DWORD nRefs; //0x44, number of CPtr objects in master CPtrList containing this object
-	POSITION pNode; //0x48, CNode containing this object
-	DWORD dwFlags2; //0x4c
-};
-
-class ResDlg : public Res {
-//Size: 0x54
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
-	DWORD u50;
-};
-
-class ResEff : public Res {
-//Size: 0x54
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-		
-	BOOL bHeaderValid; //50h, pFile points to file with correct header
-};
-
-class ResBam : public Res {
-//game refers to this as CResCell
-//Size: 0x82
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
-	BOOL bPointersLoaded; //50h
-	DWORD* m_pBamHeaderFile; //54h
-	DWORD* m_pBamHeaderCopy; //58h
-	DWORD* m_pFrames; //5ch, frame entries (IESDP)
-	DWORD* m_pSequences; //60h, cycle entries (IESDP)
-	DWORD* m_pFrameList; //64h, frame lookup table (IESDP)
-	WORD nTotalFrames; //68h
-	DWORD* m_pPalette; //6ah, ARGB[256]
-	BamFileFrameEntry m_CurrentFrame; //6eh
-	BOOL m_bParsing; //7ah
-	BOOL m_bCopyResData; //7eh
+	int m_nDemands; //40h, number of times demanded
+	int nRefs; //44h, number of CPtr objects in master IECPtrList containing this object
+	POSITION pNode; //48h, CNode containing this object
+	unsigned int dwFlags2; //4ch
 };
 
 class ResBah : public Res { //Size 7Ah
 //Constructor: 0x98B355
 public:
-	virtual void v0() {}
-
 	BOOL bPointersLoaded; //50h
-	DWORD* m_pBamHeaderFile; //54h
-	DWORD* m_pBamHeaderCopy; //58h
-	DWORD* m_pFrames; //5ch, frame entries (IESDP)
-	DWORD* m_pSequences; //60h, cycle entries (IESDP)
-	DWORD* m_pFrameList; //64h, frame lookup table (IESDP)
-	WORD nTotalFrames; //68h
+	int* m_pBamHeaderFile; //54h
+	int* m_pBamHeaderCopy; //58h
+	int* m_pFrames; //5ch, frame entries (IESDP)
+	int* m_pSequences; //60h, cycle entries (IESDP)
+	int* m_pFrameList; //64h, frame lookup table (IESDP)
+	short nTotalFrames; //68h
 	BamFileFrameEntry m_CurrentFrame; //6ah
 	BOOL m_bParsing; //76h
 };
 
-class ResBmp : public Res {
-//Size: 0x6c
+class ResBam : public Res { //Size 82h
+//game refers to this as CResCell
 //Constructor: 0x434D1C (find all Res constructors here)
 public:
-	virtual void v0() {}
-
-	DWORD u50; //nColorsUsed
-	DWORD u54; //a manipulation of width
-	DWORD u58; //bLoaded
-	DWORD u5c; //pRasterData
-	DWORD u60; //pHeader
-	DWORD u64; //pBitmapInfoHeader
-	DWORD u68; //pPalette
-};
-
-class ResTis : public Res {
-//Size: 0x64
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
-	DWORD u50;
-	DWORD u54;
-	ResRef owningArea; //58h
-	DWORD u60;
-};
-
-class ResTxt : public Res {
-//Common to BCS, BS, 2DA, and IDS
-//Size: 0x5c
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
 	BOOL bPointersLoaded; //50h
-	DWORD u54; //54h
+	int* m_pBamHeaderFile; //54h
+	int* m_pBamHeaderCopy; //58h
+	int* m_pFrames; //5ch, frame entries (IESDP)
+	int* m_pSequences; //60h, cycle entries (IESDP)
+	int* m_pFrameList; //64h, frame lookup table (IESDP)
+	short nTotalFrames; //68h
+	int* m_pPalette; //6ah, ARGB[256]
+	BamFileFrameEntry m_CurrentFrame; //6eh
+	BOOL m_bParsing; //7ah
+	BOOL m_bCopyResData; //7eh
+};
+
+class ResBmp : public Res { //Size 6Ch
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	int u50; //nColorsUsed
+	int u54; //a manipulation of width
+	int u58; //bLoaded
+	int u5c; //pRasterData
+	int u60; //pHeader
+	int u64; //pBitmapInfoHeader
+	int u68; //pPalette
+};
+
+class ResDlg : public Res { //Size 54h
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	int u50;
+};
+
+class ResEff : public Res { //Size 54h
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	BOOL bHeaderValid; //50h, pFile points to file with correct header
+};
+
+class ResItm : public Res { //Size 60h
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	int* pAbilities; //0x50
+	int* pEffects; //0x54
+	int* pFile; //0x58
+	BOOL bPointersLoaded; //0x5c
+};
+
+class ResSpl : public Res { //Size 60h
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	int* pAbilities; //50h
+	int* pEffects; //54h
+	int* pFile; //58h
+	int* numAbilities; //5ch
+};
+
+class ResSto : public Res { //Size 54h
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	BOOL bPointersLoaded; //50h
+};
+
+class ResTis : public Res { //Size 64h
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	int u50;
+	int u54;
+	ResRef owningArea; //58h
+	int u60;
+};
+
+class ResTxt : public Res { //Size 5Ch
+//Common to BCS, BS, 2DA, and IDS
+//Constructor: 0x434D1C (find all Res constructors here)
+public:
+	BOOL bPointersLoaded; //50h
+	int u54; //54h
 	IECString csData; //58h
 };
 
-class ResWed : public Res {
-//Size: 0x6c
+class ResWav : public Res { //Size 68h
 //Constructor: 0x434D1C (find all Res constructors here)
 public:
-	virtual void v0() {}
-
-	DWORD u50; //pHeader
-	DWORD u54; //pOverlays
-	DWORD u58; //pSecondHeader (wall polygons)
-	DWORD u5c; //pWallGroups
-	DWORD u60; //pWallPolygons
-	DWORD u64; //pVertices
-	DWORD u68; //bPointersLoaded
+	BOOL bCompressed; //50h, 0 = RIFF/WAVE, 1 = WAVC
+	BOOL bPointerLoaded; //54h
+	int nUncompressedSize; //58h
+	int nCompressedSize; //5ch
+	void* pData; //60h
+	int* pWaveFormatEx; //64h
 };
 
-class ResSpl : public Res {
-//Size: 0x60
+class ResWed : public Res { //Size 6Ch
 //Constructor: 0x434D1C (find all Res constructors here)
 public:
-	virtual void v0() {}
-
-	DWORD* pAbilities; //0x50
-	DWORD* pEffects; //0x54
-	DWORD* pFile; //0x58
-	DWORD* numAbilities; //0x5c
+	int* pHeader; //50h
+	int* pOverlays; //54h
+	int* pSecondHeader; //58h, wall polygons
+	int* pWallGroupsu; //5ch
+	int* pWallPolygons; //60h
+	int* pVertices; //64h
+	BOOL bPointerLoaded; //68h
 };
 
-class ResSto : public Res {
-//Size: 0x54
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
-	BOOL bPointersLoaded; //0x50
-};
-
-class ResItm : public Res {
-//Size: 0x60
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
-	DWORD* pAbilities; //0x50
-	DWORD* pEffects; //0x54
-	DWORD* pFile; //0x58
-	DWORD* numAbilities; //0x5c
-};
-
-class ResVid : public Res {
-//Size: 0x58
+class ResVid : public Res { //Size 58h
 //Constructor: 0x434D1C (find all Res constructors here)
 //Used VVC, VEF, PRO, WFX files
 public:
-	virtual void v0() {}
-
-	DWORD u50; //pFile+4
-	DWORD u54; //bPointersLoaded
+	int* u50; //pFile+4
+	BOOL bPointersLoaded; //54h
 };
 
-class ResWav : public Res {
-//Size: 0x68
-//Constructor: 0x434D1C (find all Res constructors here)
-public:
-	virtual void v0() {}
-
-	BOOL bCompressed; //50h, 0 = RIFF/WAVE, 1 = WAVC
-	BOOL bPointerLoaded; //54h
-	DWORD nUncompressedSize; //58h
-	DWORD nCompressedSize; //5ch
-	void* pData; //60h
-	DWORD* pWaveFormatEx; //64h
-};
-
-struct KeyTableEntry {
-//Size: 0x18
+struct KeyTableEntry { //Size 18h
 	ResRef name; //0h
 	Res* pRes; //8h
-	DWORD uc; //ch, two WORD, 0xc ?, 0xe biffIndex
-	WORD nLoaded; //10h
-	WORD nCResType; //12h
-	DWORD u14; //14h
+	int uc; //ch, two short, 0xc ?, 0xe biffIndex
+	short nLoaded; //10h
+	short nCResType; //12h
+	int u14; //14h
 };
 
-struct CResHandler {
-	//Size: 0x2A8
-	//Constructor: 0x98CB00
-	DWORD u0;
+struct CResHandler { //Size 2A8h
+//Constructor: 0x98CB00
+	int u0;
 	BOOL bServiceRequested; //4h, currently demanded or not
-	WORD nRequests; //8h
+	short nRequests; //8h
 		
 	//CRITICAL_SECTION required to access (see CBaldurChitin)
 	CObList ua; //contains Res with flags bit 0 and 1 both not set, for 2DA Res only?
@@ -264,63 +222,61 @@ struct CResHandler {
 	CObList ub2; //for graphic Res only?
 
 	Res* uce; //if this matches currentRes being demanded, will close the Res when demanded
-	DWORD ud2; //filesize of tempRes
-	DWORD ud6; //assoc with uda
-	DWORD uda; //sum of all file sizes that are loaded, if this > ud6, then clear all above CObLists
+	int ud2; //filesize of tempRes
+	int ud6; //assoc with uda
+	int uda; //sum of all file sizes that are loaded, if this > ud6, then clear all above CObLists
 	SIZE_T dwTotalPhys; //deh, from GlobalMemoryStatus
-	DWORD ue2; //flags2, compare to Res
-	DWORD ue6;
-	WORD uea;
-	DWORD* uec; //pointer to array of CBiff* pointers
-	struct CCache { //f0h
-	//Size: 0x15C
+	int ue2; //flags2, compare to Res
+	int ue6;
+	short uea;
+	int* uec; //pointer to array of CBiff* pointers
+	struct CCache { //Size 15Ch
 	//Constructor: 0x99C3BC
-		DWORD u0; //bEnabled?
+		int u0; //bEnabled?
 		char cwd[260]; //4h, getcwd() - current working directory (game path)
 		IECString cacheDirectory; //108h, "hd0:\\cache\\"
 		IECString u10c;
-		DWORD u110;
-		DWORD u114;
-		DWORD u118;
-		DWORD u11c;
-		DWORD u120; //nDumpedFilesize?
-		DWORD u124; //nCacheFiles
-		CPtrList u128; //AB8EAC, 0x0 biffIndex, 0x4 ?, 0x8 DWORD fileSize
-		CRITICAL_SECTION u144; //access to CPtrList u128
-	} m_cache;
+		int u110;
+		int u114;
+		int u118;
+		int u11c;
+		int u120; //nDumpedFilesize?
+		int u124; //nCacheFiles
+		IECPtrList u128; //AB8EAC, 0x0 biffIndex, 0x4 ?, 0x8 int fileSize
+		CRITICAL_SECTION u144; //access to IECPtrList u128
+	} m_cache; //f0h
 		
-	struct KeyTable {
-		//size: 0x24
-		DWORD u0; //isLoaded or bEnabled?
+	struct KeyTable { //Size 24h
+		int u0; //isLoaded or bEnabled?
 
-		DWORD* pBiffs; //4h (0xc size objects) - help to find name of biff
+		int* pBiffs; //4h (0xc size objects) - help to find name of biff
 		//CBiff
 		//size+ 0xc
-		//DWORD m_filesize; //0h
-		//DWORD offset; //pBiffs + offset = char* biffshortpath
-		//WORD u8;
-		//WORD ua;
+		//int m_filesize; //0h
+		//int offset; //pBiffs + offset = char* biffshortpath
+		//short u8;
+		//short ua;
 
-		DWORD nBiffs; //8h
-		DWORD uc; //nKeys
+		int nBiffs; //8h
+		int uc; //nKeys
 		KeyTableEntry* keys; //10h
-		DWORD u14;
-		DWORD u18;
-		DWORD u1c;
-		DWORD u20;
+		int u14;
+		int u18;
+		int u1c;
+		int u20;
 	} m_KeyTable; //0x24c
 	Res* pResTemp; //270h, CRITICAL_SECTION required to access (see CBaldurChitin)
-	DWORD u274;
-	CPtrList directories; //278h, AB8E7C, of CStrings (full path directories, e.g. override, cache)
-	BYTE u294;
-	BYTE u295[3]; //padding
+	int u274;
+	IECPtrList directories; //278h, AB8E7C, of CStrings (full path directories, e.g. override, cache)
+	char u294;
+	char u295[3]; //pad
 	IECString u298;
-	DWORD u29c; //sum of all file sizes that are loaded
-	DWORD u2a0;
-	BYTE u2a4; //padding
-	BYTE u2a5;
-	BYTE u2a6;
-	BYTE u2a7; //padding
+	int u29c; //sum of all file sizes that are loaded
+	int u2a0;
+	char u2a4; //pad
+	char u2a5;
+	char u2a6;
+	char u2a7; //pad
 };
 
 #endif //RESCORE_H

@@ -1,6 +1,6 @@
-#ifndef _H
-#define _H
+#ifndef OBJSOUND_H
+#define OBJSOUND_H
 
-//class CSoundObject; (for area ambients)
+class CSoundObject; //(for area ambients)
 
-#endif //_H
+#endif //OBJSOUND_H

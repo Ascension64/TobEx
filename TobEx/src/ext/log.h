@@ -1,7 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "utils.h"
+#include "stdafx.h"
 #include "resref.h"
 
 class Log;
@@ -13,13 +13,12 @@ public:
 	~Log();
 	BOOL Init();
 
-	Log& append(ResRef*);
-	Log& append(LPCTSTR);
-	Log& append(CString&);
-	Log& append(LPCTSTR, int, ...);
+	Log& append(ResRef& rText);
+	Log& append(LPCTSTR lpsz);
+	Log& append(CString& s);
+	Log& append(LPCTSTR format, int n, ...);
 	Log& timestamp();
 
-	//members
 	BOOL bFileOpen;
 protected:
     HANDLE hFile;

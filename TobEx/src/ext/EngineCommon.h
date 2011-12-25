@@ -3,6 +3,6 @@
 
 #include "objcre.h"
 
-void EngineCommon_ApplySoundset(CCreatureObject&);
+void EngineCommon_ApplySoundset(CCreatureObject& cre);
 
 #endif //ENGINECOMMON_H

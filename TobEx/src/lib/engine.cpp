@@ -1,8 +1,8 @@
 #include "engine.h"
 
-#include "utils.h"
+#include "stdafx.h"
 
-DWORD (CEngine::*CEngine_GetActivePlayerIdx)() =
-	SetFP(static_cast<DWORD (CEngine::*)()>		(&CEngine::GetActivePlayerIdx),		0x43AD5C);
+int (CEngine::*CEngine_GetActivePlayerIdx)() =
+	SetFP(static_cast<int (CEngine::*)()>		(&CEngine::GetActivePlayerIdx),		0x43AD5C);
 
-DWORD CEngine::GetActivePlayerIdx()	{ return (this->*CEngine_GetActivePlayerIdx)(); }
+int CEngine::GetActivePlayerIdx()	{ return (this->*CEngine_GetActivePlayerIdx)(); }

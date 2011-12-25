@@ -1,27 +1,21 @@
 #ifndef PATCH_H
 #define PATCH_H
 
-#include "utils.h"
+#include "stdafx.h"
 
 #include <vector>
 
 #include "infgame.h"
 
 extern CRuleTable** ClassAbilityTable;
-extern BYTE* JumpTableChargenMageSpellScroll;
-extern BYTE* JumpTableRecMageSpellScroll;
-extern BYTE* JumpTableKitScroll;
-extern BYTE* JumpTableMageBookScroll;
-extern BYTE* JumpTablePriestBookScroll;
-extern CPtrList cplChargenMageSpellPile, cplRecMageSpellPile;
 
 typedef CRuleTable* ClAbTable[1281]; //for KitExtend
 
 class Data {
 public:
 	Data();
-	Data(DWORD, SIZE_T, char[]);
-	Data(const Data&);
+	Data(const Data& d);
+	Data(DWORD address, SIZE_T size, char bytes[]);
 	~Data();
 
 	DWORD GetAddress();
@@ -37,12 +31,12 @@ protected:
 class Patch {
 public:
 	std::vector<Data> GetData();
-	Patch(std::vector<Data>);
+	Patch(std::vector<Data> vData);
 protected:
 	std::vector<Data> vData;
 };
 
-void ApplyPatch(Data);
+void ApplyPatch(Data& d);
 void InitPatches();
 
 #endif //PATCH_H

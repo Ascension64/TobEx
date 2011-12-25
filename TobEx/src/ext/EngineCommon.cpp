@@ -10,7 +10,7 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 	IECString voiceset((LPTSTR)cre.voiceset);
 	if (strcmp((LPTSTR)cre.voiceset, "") == 0) { //use default soundset
 
-		BYTE sex = cre.IdsCopy1.Gender;
+		char sex = cre.oBase.Gender;
 
 		for (int nRow = 0; nRow < 100; nRow++) {
 			STRREF ref = g_pChitin->pGame->GetCharSndStrRef(0, nRow, sex);

@@ -1,119 +1,119 @@
 #ifndef CSTRINGEX_H
 #define CSTRINGEX_H
 
-#include "utils.h"
+#include "win32def.h"
 
 class IECString {
 public:
-	IECString(TCHAR, int);
+	IECString(TCHAR ch, int nRepeat = 1);
 	IECString& Construct(TCHAR ch, int nRepeat = 1) {return *this;} //dummy
 
-	IECString(LPCSTR, int);
+	IECString(LPCSTR lpch, int nLength);
 	IECString& Construct(LPCSTR lpch, int nLength) {return *this;} //dummy
 
-	IECString(LPCWSTR, int);
+	IECString(LPCWSTR lpch, int nLength);
 	IECString& Construct(LPCWSTR lpch, int nLength) {return *this;} //dummy
 
-	const IECString& operator=(TCHAR);
+	const IECString& operator=(TCHAR ch);
 	const IECString& OpEq(TCHAR ch) {return *this;} //dummy
 
-	friend IECString AFXAPI operator+(const IECString&, TCHAR);
+	friend IECString AFXAPI operator+(const IECString& string, TCHAR ch);
 	friend IECString AFXAPI IECString_OpAdd(const IECString& string, TCHAR ch) {return string;} //dummy
 
-	friend IECString AFXAPI operator+(TCHAR, const IECString&);
+	friend IECString AFXAPI operator+(TCHAR, const IECString& string);
 	friend IECString AFXAPI IECString_OpAdd(TCHAR ch, const IECString& string) {return string;} //dummy
 
-	int Delete(int, int);
-	int Insert(int, TCHAR);
-	int Insert(int, LPCTSTR);
-	int Replace(TCHAR, TCHAR);
-	int Replace(LPCTSTR, LPCTSTR);
-	int Remove(TCHAR);
-	IECString Mid(int, int) const;
-	IECString Mid(int) const;
-	IECString Left(int) const;
-	IECString Right(int) const;
-	IECString SpanIncluding(LPCTSTR) const;
-	IECString SpanExcluding(LPCTSTR) const;
-	int ReverseFind(TCHAR) const;
-	int Find(LPCTSTR) const;
-	int Find(LPCTSTR, int) const;
-	void FormatV(LPCTSTR, va_list);
-	//void AFX_CDECL Format(LPCTSTR, ...);
-	//void AFX_CDECL Format(UINT, ...);
-	//void AFX_CDECL FormatMessage(LPCTSTR, ...);
-	//void AFX_CDECL FormatMessage(UINT, ...);
-	void TrimRight(LPCTSTR);
-	void TrimRight(TCHAR);
+	int Delete(int nIndex, int nCount = 1);
+	int Insert(int nIndex, TCHAR ch);
+	int Insert(int nIndex, LPCTSTR pstr);
+	int Replace(TCHAR chOld, TCHAR chNew);
+	int Replace(LPCTSTR lpszOld, LPCTSTR lpszNew);
+	int Remove(TCHAR chRemove);
+	IECString Mid(int nFirst, int nCount) const;
+	IECString Mid(int nFirst) const;
+	IECString Left(int nCount) const;
+	IECString Right(int nCount) const;
+	IECString SpanIncluding(LPCTSTR lpszCharSet) const;
+	IECString SpanExcluding(LPCTSTR lpszCharSet) const;
+	int ReverseFind(TCHAR ch) const;
+	int Find(LPCTSTR lpszSub) const;
+	int Find(LPCTSTR lpszSub, int nStart) const;
+	void FormatV(LPCTSTR lpzFormat, va_list argList);
+	//void AFX_CDECL Format(LPCTSTR lpszFormat, ...);
+	//void AFX_CDECL Format(UINT nFormatID, ...);
+	//void AFX_CDECL FormatMessage(LPCTSTR lpszFormat, ...);
+	//void AFX_CDECL FormatMessage(UINT nFormatID, ...);
+	void TrimRight(LPCTSTR lpszTargets);
+	void TrimRight(TCHAR chTarget);
 	void TrimRight();
-	void TrimLeft(LPCTSTR);
-	void TrimLeft(TCHAR);
+	void TrimLeft(LPCTSTR lpszTargets);
+	void TrimLeft(TCHAR chTarget);
 	void TrimLeft();
 
 	IECString();
-	IECString& Construct(void) {return *this;} //dummy
+	IECString& Construct() {return *this;} //dummy
 
-	IECString(const IECString&);
+	IECString(const IECString& stringSrc);
 	IECString& Construct(const IECString& stringSrc) {return *this;} //dummy
 
 	void Empty();
 
 	~IECString();
-	void Deconstruct(void) {} //dummy
+	void Deconstruct() {} //dummy
 
-	IECString(LPCSTR);
+	IECString(LPCSTR lpsz);
 	IECString& Construct(LPCSTR lpsz) {return *this;} //dummy
 
-	IECString(LPCWSTR);
+	IECString(LPCWSTR lpsz);
 	IECString& Construct(LPCWSTR lpsz) {return *this;} //dummy
 
-	const IECString& operator=(const IECString&);
+	const IECString& operator=(const IECString& stringSrc);
 	const IECString& OpEq(const IECString& stringSrc) {return *this;} //dummy
 
-	const IECString& operator=(LPCSTR);
+	const IECString& operator=(LPCSTR lpsz);
 	const IECString& OpEq(LPCSTR lpsz) {return *this;} //dummy
 
-	const IECString& operator=(LPCWSTR);
+	const IECString& operator=(LPCWSTR lpsz);
 	const IECString& OpEq(LPCWSTR lpsz) {return *this;} //dummy
 	
-	friend IECString AFXAPI operator+(const IECString&, const IECString&);
+	friend IECString AFXAPI operator+(const IECString& string1, const IECString& string2);
 	friend IECString AFXAPI IECString_OpAdd(const IECString& string1, const IECString& string2) {return string1;} //dummy
 
-	friend IECString AFXAPI operator+(const IECString&, LPCTSTR);
+	friend IECString AFXAPI operator+(const IECString& string, LPCTSTR lpsz);
 	friend IECString AFXAPI IECString_OpAdd(const IECString& string, LPCTSTR lpsz) {return string;} //dummy
 
-	friend IECString AFXAPI operator+(LPCTSTR, const IECString&);
+	friend IECString AFXAPI operator+(LPCTSTR lpsz, const IECString& string);
 	friend IECString AFXAPI IECString_OpAdd(LPCTSTR lpsz, const IECString& string) {return string;} //dummy
 
-	const IECString& operator+=(LPCTSTR);
+	const IECString& operator+=(LPCTSTR lpsz);
 	const IECString& OpAddEq(LPCTSTR lpsz) {return *this;} //dummy
 
-	const IECString& operator+=(TCHAR);
+	const IECString& operator+=(TCHAR ch);
 	const IECString& OpAddEq(TCHAR ch) {return *this;} //dummy
 
-	const IECString& operator+=(const IECString&);
+	const IECString& operator+=(const IECString& string);
 	const IECString& OpAddEq(const IECString& string) {return *this;} //dummy
 
-	LPTSTR GetBuffer(int);
-	void ReleaseBuffer(int);
-	LPTSTR GetBufferSetLength(int);
+	LPTSTR GetBuffer(int nMinBufLength);
+	void ReleaseBuffer(int nNewLength = -1);
+	LPTSTR GetBufferSetLength(int nNewLength);
 	void FreeExtra();
 	LPTSTR LockBuffer();
 	void UnlockBuffer();
-	int Find(TCHAR) const;
-	int Find(TCHAR, int) const;
-	int FindOneOf(LPCTSTR) const;
+	int Find(TCHAR ch) const;
+	int Find(TCHAR ch, int nStart) const;
+	int FindOneOf(LPCTSTR lpszCharSet) const;
 	void MakeUpper();
 	void MakeLower();
 	void MakeReverse();
-	void SetAt(int, TCHAR);
+	void SetAt(int nIndex, TCHAR ch);
 	void AnsiToOem();
 	void OemToAnsi();
 
 	//integration with IECString
-	void* operator new(size_t);
-	void operator delete(void*);
-	void operator delete[](void*);
+	void* operator new(size_t size);
+	void operator delete(void* mem);
+	void operator delete[](void* mem);
 	operator CString() const;
 	operator LPCTSTR() const;
 
@@ -165,10 +165,10 @@ extern void (IECString::*IECString_TrimLeft_LPCTSTR)(LPCTSTR);
 extern void (IECString::*IECString_TrimLeft_TCHAR)(TCHAR);
 extern void (IECString::*IECString_TrimLeft)();
 
-extern IECString& (IECString::*IECString_Construct_0)(void);
+extern IECString& (IECString::*IECString_Construct_0)();
 extern IECString& (IECString::*IECString_Construct_1CString)(const IECString&);
-extern void (IECString::*IECString_Empty)(void);
-extern void (IECString::*IECString_Deconstruct)(void);
+extern void (IECString::*IECString_Empty)();
+extern void (IECString::*IECString_Deconstruct)();
 extern IECString& (IECString::*IECString_Construct_1LPCSTR)(LPCSTR);
 extern IECString& (IECString::*IECString_Construct_1LPCWSTR)(LPCWSTR);
 extern const IECString& (IECString::*IECString_OpEq_CString)(const IECString&);

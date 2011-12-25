@@ -93,6 +93,14 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectLearnSpell
+extern BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectLearnSpell : public CEffectLearnSpell {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectMagicResistMod
 extern BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&);
 
@@ -101,10 +109,10 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
-//CEffectLearnSpell
-extern BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&);
+//CEffectCastSpellOnCondition
+extern BOOL (CEffectCastSpellOnCondition::*Tramp_CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&);
 
-class DETOUR_CEffectLearnSpell : public CEffectLearnSpell {
+class DETOUR_CEffectCastSpellOnCondition : public CEffectCastSpellOnCondition {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };

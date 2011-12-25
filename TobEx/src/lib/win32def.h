@@ -11,4 +11,6 @@
 //#include "afxdtctl.h"
 #include "afxmt.h"			// MFC multi-threading
 
+#pragma comment (lib, "version.lib")
+
 #endif //WIN32DEF_H

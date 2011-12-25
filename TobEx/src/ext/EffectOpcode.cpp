@@ -40,10 +40,12 @@ BOOL (CEffectDisease::*Tramp_CEffectDisease_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDisease::*)(CCreatureObject&)>			(&CEffectDisease::ApplyEffect),				0x51B1FB);
 BOOL (CEffectRegeneration::*Tramp_CEffectRegeneration_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectRegeneration::*)(CCreatureObject&)>		(&CEffectRegeneration::ApplyEffect),		0x51C615);
-BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&) =
-	SetFP(static_cast<BOOL (CEffectMagicResistMod::*)(CCreatureObject&)>	(&CEffectMagicResistMod::ApplyEffect),		0x52EB97);
 BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectLearnSpell::*)(CCreatureObject&)>		(&CEffectLearnSpell::ApplyEffect),			0x52C250);
+BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectMagicResistMod::*)(CCreatureObject&)>	(&CEffectMagicResistMod::ApplyEffect),		0x52EB97);
+BOOL (CEffectCastSpellOnCondition::*Tramp_CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectCastSpellOnCondition::*)(CCreatureObject&)>	(&CEffectCastSpellOnCondition::ApplyEffect),	0x53AFB7);
 CEffectRepeatingEff& (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int) =
 	SetFP(static_cast<CEffectRepeatingEff& (CEffectRepeatingEff::*)(ITEM_EFFECT&, POINT&, Enum, int, int)>
 																			(&CEffectRepeatingEff::Construct),			0x561AA0);
@@ -125,7 +127,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		!pGameOptionsEx->bEffDamageFix &&
 		!pGameOptionsEx->bEffNoDamageNoSpellInterrupt) {
 
-		(this->*CEffectDamage_ApplyEffect)(creTarget);
+		(this->*Tramp_CEffectDamage_ApplyEffect)(creTarget);
 		
 		if (pGameOptionsEx->bEffDamageAwaken) {
 			creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
@@ -151,6 +153,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		bPurge = TRUE;
 		return TRUE;
 	}
+
 	if (pAnimation->IsImmuneToDamage()) {
 		bPurge = TRUE;
 		return TRUE;
@@ -193,7 +196,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	}
 
 	if (creTarget.m_BaseStats.stateFlags & STATE_STONE_DEATH) {
-		CEffectInstantDeath* pEff = IENew CEffectInstantDeath();
+		CEffectInstantDeath* pEff = new CEffectInstantDeath();
 		pEff->effect.ptSource = effect.ptSource;
 		pEff->eSource = eSource;
 		pEff->enum2 = enum2;
@@ -204,7 +207,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	}
 
 	if (creTarget.m_BaseStats.stateFlags & STATE_FROZEN_DEATH) {
-		CEffectInstantDeath* pEff = IENew CEffectInstantDeath();
+		CEffectInstantDeath* pEff = new CEffectInstantDeath();
 		pEff->effect.ptSource = effect.ptSource;
 		pEff->eSource = eSource;
 		pEff->enum2 = enum2;
@@ -277,9 +280,9 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 		if (g_pChitin->pGame->GetPartyMemberSlot(creTarget.e) != -1) {
 			if (g_pChitin->cNetwork.bSessionOpen) {
-				effect.nParam1 -= effect.nParam1 * g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier / 100;
+				effect.nParam1 += effect.nParam1 * g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier / 100;
 			} else {
-				effect.nParam1 -= effect.nParam1 * g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier / 100;
+				effect.nParam1 += effect.nParam1 * g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier / 100;
 			}
 			
 			if (effect.nParam1 > creTarget.cdsPrevious.maxHP &&
@@ -463,14 +466,14 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			creTarget.m_BaseStats.currentHP > -20) {
 			creTarget.m_BaseStats.currentHP = 0;
 		}
-		CEffectInstantDeath* pEff = IENew CEffectInstantDeath();
+		CEffectInstantDeath* pEff = new CEffectInstantDeath();
 		pEff->eSource = eSource;
 		pEff->enum2 = enum2;
 
 		switch (nDamageType) {
 		case DAMAGETYPE_FIST:
 			{
-			operator delete(pEff, 0);
+			delete pEff;
 			pEff = NULL;
 			ITEM_EFFECT* pIF = IENew ITEM_EFFECT();
 			CreateItemEffect(*pIF, CEFFECT_OPCODE_UNCONSCIOUSNESS);
@@ -1009,7 +1012,7 @@ BOOL DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect(CCreatureObject& creTar
 
 BOOL DETOUR_CEffectBlindness::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	//Remove cumulative penalty
-	if (pGameOptionsEx->nEffBlindnessFix == 1) {
+	if (pGameOptionsEx->bEffBlindnessFix) {
 		if (effect.nTiming == 1) {
 			//permanent
 			if (!(creTarget.m_BaseStats.stateFlags & STATE_BLIND)) creTarget.m_BaseStats.THAC0 -= (-10);
@@ -1027,8 +1030,8 @@ BOOL DETOUR_CEffectBlindness::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		return TRUE;
 	}
 
-	//Change to game description
-	if (pGameOptionsEx->nEffBlindnessFix == 2) {
+	//Change to spell description
+	if (pGameOptionsEx->bEffBlindnessAsSpellDesc) {
 		if (effect.nTiming == 1) {
 			//permanent
 			if (!(creTarget.m_BaseStats.stateFlags & STATE_BLIND)) {
@@ -1057,7 +1060,7 @@ BOOL DETOUR_CEffectBlindness::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		return TRUE;
 	}
 
-	return true;
+	return TRUE;
 }
 
 BOOL DETOUR_CEffectDisease::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
@@ -1208,6 +1211,135 @@ BOOL DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 	return TRUE;
 }
 
+BOOL DETOUR_CEffectLearnSpell::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	int wParam1High = effect.nParam1 >> 16;
+
+	IECString sLearnSpellMod;
+	int nLearnSpellMod;
+	int nRow = creTarget.cdsPrevious.intelligence;
+	int nCol = 0; //LEARN_SPELL
+	if (nCol < g_pChitin->pGame->INTMOD.nCols &&
+		nRow < g_pChitin->pGame->INTMOD.nRows &&
+		nCol >= 0 &&
+		nRow >= 0) {
+		sLearnSpellMod = *((g_pChitin->pGame->INTMOD.pDataArray) + (g_pChitin->pGame->INTMOD.nCols * nRow + nCol));
+	} else {
+		sLearnSpellMod = g_pChitin->pGame->INTMOD.defaultVal;
+	}
+	sscanf_s((LPCTSTR)sLearnSpellMod, "%d", &nLearnSpellMod);
+
+	int nRand = IERand() * 100 >> 15;
+
+	if (g_pChitin->cNetwork.bSessionOpen &&
+		g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier < 0) {
+		nRand = 1;
+	} else
+	if (g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier < 0) {
+		nRand = 1;
+	}
+
+	ResSplContainer resSpell;
+	resSpell.LoadResource(effect.rResource, TRUE, TRUE);
+	if (!resSpell.bLoaded) {
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	short wLevel = resSpell.GetSpellLevel();
+	short wType = resSpell.GetSpellType();
+	int nSchoolExclusionFlags = resSpell.GetExclusionFlags() & 0x3FC0; //keep only spell school bits
+
+	if (wParam1High & EFFECTLEARNSPELL_RESTRICT_SCHOOL &&
+		wType == SPELLTYPE_MAGE &&
+		creTarget.GetKitUnusableFlag() & nSchoolExclusionFlags) {
+		resSpell.Unload();
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	if (wParam1High & EFFECTLEARNSPELL_NO_SORCERER &&
+		creTarget.GetCurrentObject().GetClass() == CLASS_SORCERER) {
+		resSpell.Unload();
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	BOOL bAlreadyKnown = FALSE;
+	POSITION pos;
+	if (wParam1High & EFFECTLEARNSPELL_NO_XP_DUPLICATE) {
+		switch (wType) {
+		case SPELLTYPE_MAGE:
+			pos = creTarget.m_KnownSpellsWizard[wLevel - 1].GetHeadPosition();
+			while (pos != NULL && bAlreadyKnown == FALSE) {
+				CreFileKnownSpell* pKSpell = (CreFileKnownSpell*)creTarget.m_KnownSpellsWizard[wLevel - 1].GetNext(pos);
+				if (pKSpell->name == resSpell.name) {
+					bAlreadyKnown = TRUE;
+				}
+			}
+			break;
+		case SPELLTYPE_PRIEST:
+			pos = creTarget.m_KnownSpellsPriest[wLevel - 1].GetHeadPosition();
+			while (pos != NULL && bAlreadyKnown == FALSE) {
+				CreFileKnownSpell* pKSpell = (CreFileKnownSpell*)creTarget.m_KnownSpellsPriest[wLevel - 1].GetNext(pos);
+				if (pKSpell->name == resSpell.name) {
+					bAlreadyKnown = TRUE;
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (creTarget.m_BaseStats.kit[1] != KIT_TRUECLASS) {
+		if (g_pChitin->pGame->GetMageSchool(creTarget.m_BaseStats.kit[1]) == resSpell.GetSpellSchoolPrimary()) {
+			nLearnSpellMod += 15;
+		} else {
+			nLearnSpellMod -= 15;
+		}
+	}
+
+	if ((nRand <= nLearnSpellMod) ||
+		wParam1High & EFFECTLEARNSPELL_SUCCESS_ALWAYS) { //success
+		switch (wType) {
+		case SPELLTYPE_MAGE:
+			creTarget.AddKnownSpellMage(effect.rResource, wLevel - 1);
+			break;
+		case SPELLTYPE_PRIEST:
+			creTarget.AddKnownSpellPriest(effect.rResource, wLevel - 1);
+			break;
+		default:
+			creTarget.AddKnownSpell(effect.rResource, FALSE);
+			break;
+		}
+
+		if (!bAlreadyKnown &&
+			!(wParam1High & EFFECTLEARNSPELL_NO_XP_ALWAYS) &&
+			creTarget.GetCurrentObject().EnemyAlly <= EA_CONTROLLEDCUTOFF) {
+			IECString sXPBonus;
+			int nXPBonus;
+			nRow = 2; //LEARN_SPELL
+			nCol = wLevel - 1;
+
+			if (nCol < g_pChitin->pGame->XPBONUS.nCols &&
+				nRow < g_pChitin->pGame->XPBONUS.nRows &&
+				nCol >= 0 &&
+				nRow >= 0) {
+				sXPBonus = *((g_pChitin->pGame->XPBONUS.pDataArray) + (g_pChitin->pGame->XPBONUS.nCols * nRow + nCol));
+			} else {
+				sXPBonus = g_pChitin->pGame->XPBONUS.defaultVal;
+			}
+			sscanf_s((LPCTSTR)sXPBonus, "%d", &nXPBonus);
+
+			g_pChitin->pGame->AddExperienceParty(nXPBonus);
+		}
+	}
+
+	resSpell.Unload();
+	bPurge = TRUE;
+	return TRUE;
+}
+
 BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	switch (effect.nParam2) {
 		case 0:
@@ -1264,132 +1396,124 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 	return TRUE;
 }
 
-BOOL DETOUR_CEffectLearnSpell::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
-	//original code
+BOOL DETOUR_CEffectCastSpellOnCondition::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	Trigger t(TRIGGER_NONE, 0);
+	Object o;
 
-	IECString sLearnSpellMod;
-	int nLearnSpellMod;
-	int nRow = creTarget.cdsPrevious.intelligence;
-	int nCol = 0; //LEARN_SPELL
-	if (nCol < g_pChitin->pGame->INTMOD.nCols &&
-		nRow < g_pChitin->pGame->INTMOD.nRows &&
-		nCol >= 0 &&
-		nRow >= 0) {
-		sLearnSpellMod = *((g_pChitin->pGame->INTMOD.pDataArray) + (g_pChitin->pGame->INTMOD.nCols * nRow + nCol));
-	} else {
-		sLearnSpellMod = g_pChitin->pGame->INTMOD.defaultVal;
-	}
-	sscanf_s((LPCTSTR)sLearnSpellMod, "%d", &nLearnSpellMod);
+	CConditionalSpell* pConditionalSpell = new CConditionalSpell();
+	pConditionalSpell->dwFlags = 0;
+	pConditionalSpell->rResource1 = effect.rResource;
+	pConditionalSpell->rResource2 = effect.rResource2;
+	pConditionalSpell->rResource3 = effect.rResource3;
 
-	int nRand = IERand() * 100 >> 15;
+	short wParam3High = effect.nParam3 >> 16; //bool game ticks set
+	short wParam3Low = effect.nParam3 & 0xFFFF; //set flags, portrait icon, purge after trigger
+	unsigned short wParam2High = effect.nParam2 >> 16; //condition check period
+	short wParam2Low = effect.nParam2 & 0xFFFF; //condition
 
-	if (g_pChitin->cNetwork.bSessionOpen &&
-		g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier < 0) {
-		nRand = 1;
-	} else
-	if (g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier < 0) {
-		nRand = 1;
+	if (wParam3High == 0) {
+		effect.nParam4 = g_pChitin->pGame->m_WorldTimer.nGameTime; //time effect first applied
+		wParam3High = 1;
+		effect.nParam3 = wParam3High << 16 | wParam3Low;
 	}
 
-	ResSplContainer resSpell;
-	resSpell.LoadResource(effect.rResource, TRUE, TRUE);
-	if (!resSpell.bLoaded) {
-		bPurge = TRUE;
-		return TRUE;
+	switch (wParam2Low) {
+	case 0:
+		t.opcode = TRIGGER_HIT_BY;
+		break;
+	case 1:
+		t.opcode = TRIGGER_SEE;
+		t.o.oids.id1 = OBJECT_NEARESTENEMYOF;
+		break;
+	case 2:
+		t.opcode = TRIGGER_HP_PERCENT_LT;
+		t.i = 50;
+		t.o.oids.id1 = OBJECT_MYSELF;
+		break;
+	case 3:
+		t.opcode = TRIGGER_HP_PERCENT_LT;
+		t.i = 25;
+		t.o.oids.id1 = OBJECT_MYSELF;
+		break;
+	case 4:
+		t.opcode = TRIGGER_HP_PERCENT_LT;
+		t.i = 10;
+		t.o.oids.id1 = OBJECT_MYSELF;
+		break;
+	case 5:
+		t.opcode = TRIGGER_STATE_CHECK;
+		t.i = STATE_HELPLESS;
+		t.o.oids.id1 = OBJECT_MYSELF;
+		break;
+	case 6:
+		t.opcode = TRIGGER_STATE_CHECK;
+		t.i = STATE_POISONED;
+		t.o.oids.id1 = OBJECT_MYSELF;
+		break;
+	case 7:
+		t.opcode = TRIGGER_ATTACKED_BY;
+		break;
+	case 8:
+		t.opcode = TRIGGER_PERSONAL_SPACE_DISTANCE;
+		t.i = 4;
+		break;
+	case 9:
+		t.opcode = TRIGGER_PERSONAL_SPACE_DISTANCE;
+		t.i = 10;
+		break;
+	case 11:
+		t.opcode = TRIGGER_TOOK_DAMAGE;
+		break;
+	default:
+		break;
 	}
+	pConditionalSpell->t = t;
 
-	short wLevel = resSpell.GetSpellLevel();
-	short wType = resSpell.GetSpellType();
-	int nExclusionFlags = resSpell.GetExclusionFlags();
-
-	if (effect.nParam2 & EFFECTLEARNSPELL_RESTRICT_SCHOOL &&
-		wType == SPELLTYPE_MAGE &&
-		creTarget.GetKitUnusableFlag() & nExclusionFlags) {
-		resSpell.Unload();
-		bPurge = TRUE;
-		return TRUE;
+	switch (effect.nParam1) {
+	case 0:
+		o.oids.id1 = OBJECT_MYSELF;
+		break;
+	case 1:
+		o.oids.id1 = OBJECT_LASTHITTER;
+		break;
+	case 2:
+		o.oids.id1 = OBJECT_NEARESTENEMYOF;
+		break;
+	case 3:
+		o.oids.id1 = OBJECT_NOTHING;
+		break;
+	default:
+		break;
 	}
+	pConditionalSpell->oTarget = o;
 
-	if (effect.nParam2 & EFFECTLEARNSPELL_NO_SORCERER &&
-		creTarget.GetCurrentObject().GetClass() == CLASS_SORCERER) {
-		resSpell.Unload();
-		bPurge = TRUE;
-		return TRUE;
-	}
-
-	BOOL bAlreadyKnown = FALSE;
-	POSITION pos;
-	if (effect.nParam2 & EFFECTLEARNSPELL_NO_XP_DUPLICATE) {
-		switch (wType) {
-		case SPELLTYPE_MAGE:
-			pos = creTarget.m_KnownSpellsWizard[wLevel - 1].GetHeadPosition();
-			while (pos != NULL && bAlreadyKnown == FALSE) {
-				CreFileKnownSpell* pKSpell = (CreFileKnownSpell*)creTarget.m_KnownSpellsWizard[wLevel - 1].GetNext(pos);
-				if (pKSpell->name == resSpell.name) {
-					bAlreadyKnown = TRUE;
-				}
-			}
-			break;
-		case SPELLTYPE_PRIEST:
-			pos = creTarget.m_KnownSpellsPriest[wLevel - 1].GetHeadPosition();
-			while (pos != NULL && bAlreadyKnown == FALSE) {
-				CreFileKnownSpell* pKSpell = (CreFileKnownSpell*)creTarget.m_KnownSpellsPriest[wLevel - 1].GetNext(pos);
-				if (pKSpell->name == resSpell.name) {
-					bAlreadyKnown = TRUE;
-				}
-			}
-			break;
-		default:
-			break;
+	if (wParam3Low) {
+		pConditionalSpell->dwFlags |= 0x1;
+		if (!creTarget.m_PortraitIcons.Find((void*)0x4B, NULL)) {
+			creTarget.m_PortraitIcons.AddTail((void*)0x4B);
 		}
 	}
 
-	if (creTarget.m_BaseStats.kit[1] != KIT_TRUECLASS) {
-		if (g_pChitin->pGame->GetMageSchool(creTarget.m_BaseStats.kit[1]) == resSpell.GetSpellSchoolPrimary()) {
-			nLearnSpellMod += 15;
-		} else {
-			nLearnSpellMod -= 15;
-		}
+	pConditionalSpell->eff = *this;
+	
+	STRREF strrefName;
+	STRREF strrefDescription;
+	g_pChitin->pGame->GetContingencyConditionTexts(&strrefName, &strrefDescription, (short)effect.nParam2);
+	pConditionalSpell->strrefName = strrefName;
+
+	g_pChitin->pGame->GetContingencyTargetTexts(&strrefName, &strrefDescription, (short)effect.nParam2);
+	pConditionalSpell->strrefTarget = strrefName;
+
+	creTarget.cdsCurrent.m_ConditionalSpells.AddTail(pConditionalSpell);
+
+	if (effect.nParentResourceType == 1 && //spell
+		effect.rParentResource.IsNotEmpty()) {
+		CSpellProtection* pSpellProt = IENew CSpellProtection();
+		pSpellProt->rSpell = effect.rParentResource;
+		pSpellProt->strrefMsg = creTarget.GetCurrentObject().EnemyAlly <= EA_CONTROLLEDCUTOFF ? 0x806C : -1;
+		creTarget.cdsCurrent.m_SpellProtections.AddTail(pSpellProt);
 	}
 
-	if ((nRand <= nLearnSpellMod) ||
-		effect.nParam2 & EFFECTLEARNSPELL_SUCCESS_ALWAYS) { //success
-		switch (wType) {
-		case SPELLTYPE_MAGE:
-			creTarget.AddKnownSpellMage(effect.rResource, wLevel - 1);
-			break;
-		case SPELLTYPE_PRIEST:
-			creTarget.AddKnownSpellPriest(effect.rResource, wLevel - 1);
-			break;
-		default:
-			creTarget.AddKnownSpell(effect.rResource, FALSE);
-			break;
-		}
-
-		if (!bAlreadyKnown &&
-			!(effect.nParam2 & EFFECTLEARNSPELL_NO_XP_ALWAYS) &&
-			creTarget.GetCurrentObject().EnemyAlly <= EA_CONTROLLEDCUTOFF) {
-			IECString sXPBonus;
-			int nXPBonus;
-			nRow = 2; //LEARN_SPELL
-			nCol = wLevel - 1;
-
-			if (nCol < g_pChitin->pGame->XPBONUS.nCols &&
-				nRow < g_pChitin->pGame->XPBONUS.nRows &&
-				nCol >= 0 &&
-				nRow >= 0) {
-				sXPBonus = *((g_pChitin->pGame->XPBONUS.pDataArray) + (g_pChitin->pGame->XPBONUS.nCols * nRow + nCol));
-			} else {
-				sXPBonus = g_pChitin->pGame->XPBONUS.defaultVal;
-			}
-			sscanf_s((LPCTSTR)sXPBonus, "%d", &nXPBonus);
-
-			g_pChitin->pGame->AddExperienceParty(nXPBonus);
-		}
-	}
-
-	resSpell.Unload();
-	bPurge = TRUE;
 	return TRUE;
 }
 
@@ -1514,7 +1638,7 @@ BOOL DETOUR_CEffectDisintegrate::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 	}
 
 	if (bMatch) {
-		CEffectInstantDeath* pEffect = IENew CEffectInstantDeath();
+		CEffectInstantDeath* pEffect = new CEffectInstantDeath();
 		pEffect->effect.nParam2 = EFFECTINSTANTDEATH_TYPE_DISINTEGRATE;
 		pEffect->effect.ptSource = effect.ptSource;
 		pEffect->eSource = eSource;
@@ -1625,8 +1749,8 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 
 	DWORD nSize = pRuleEx->m_nStats;
 
-	if (nOpcode < 301) {
-		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to set a stat with index < 301 (expected 301-%d)\r\n";
+	if (nOpcode < 400) {
+		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to set a stat with index < 400 (expected 400-%d)\r\n";
 		L.timestamp();
 		L.append(lpsz, 1, nSize);
 		console.write(lpsz, 1, nSize);

@@ -7,20 +7,23 @@
 
 void Init() {
 
+	char* lpVersion = NULL;
+	DllGetVersion(&lpVersion);
+	
 	time_t tmTime = time(NULL);
 	tm tmLocal;
 	localtime_s(&tmLocal, &tmTime);
-	const char* buffer = "%sTobEx: Throne of Bhaal Extender (%s %.2d %s %.4d %.2d:%.2d:%.2d)\r\n";
+	const char* buffer = "%sTobEx: Throne of Bhaal Extender%s%s (%s %.2d %s %.4d %.2d:%.2d:%.2d)\r\n";
 	const char* bufferD = "%sTobEx Dialogue Log (%s %.2d %s %.4d %.2d:%.2d:%.2d)\r\n";
 
 	//init console
 	if (console.Init())
-		console.write(buffer, 8, "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		console.write(CONSOLEFORECOLOR_HEADER, buffer, 10, "", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
 	//init log
-	int nDebugLogFileMode = GetIniValue("Debug", "Log File Mode");
+	int nDebugLogFileMode = GetCoreIniValue("Debug", "Log File Mode");
 	if (L.Init(nDebugLogFileMode))
-		L.append(buffer, 8, "-----", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		L.append(buffer, 10, "-----", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
 	char lpFile[MAX_PATH];
 	if (GetModuleFileName(NULL, lpFile, MAX_PATH)) {
@@ -52,9 +55,38 @@ void Init() {
 		L.append(lpsz);
 	}
 
+	delete[] lpVersion;
+
 	return;
 }
 
 void Deinit() {
   return;
+}
+
+BOOL DllGetVersion(char** lplpsz) {
+ 	LPVOID lpFileVerInfo;
+	LPVOID lpFileVer;
+	UINT nProdVerSize;
+	BOOL bSuccess = FALSE;
+
+	DWORD dwFileVerInfoSize = GetFileVersionInfoSizeA(DLL_INTERNAL_NAME, NULL);
+
+	if (dwFileVerInfoSize) {
+  		lpFileVerInfo = (LPVOID)new BYTE[dwFileVerInfoSize];
+		if ( GetFileVersionInfoA(DLL_INTERNAL_NAME, 0, dwFileVerInfoSize, lpFileVerInfo) ) {
+			//0409 = US English, 04E4 = charset
+			if ( VerQueryValueA(lpFileVerInfo, "\\StringFileInfo\\040904E4\\FileVersion", &lpFileVer, &nProdVerSize) ) {
+				size_t nLength = strlen((LPCTSTR)lpFileVer);
+				char* lpsz = new char[nLength + 1];
+				strcpy_s(lpsz, nLength + 1, (LPCTSTR)lpFileVer);
+				lpsz[nLength] = '\0';
+				*lplpsz = lpsz;
+
+				bSuccess = TRUE;
+			}
+		}
+		delete[] lpFileVerInfo;
+	}
+	return bSuccess;
 }

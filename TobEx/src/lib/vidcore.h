@@ -111,7 +111,7 @@ public:
 	virtual void vc() {} //9CCA89(lpSurface, dwLinearSize, centreX, centreY, dispflags, 0)
 	virtual void v10() {} //9FE56C
 	virtual void v14() {}
-	virtual void v18() {} //BOOL GetFrame(nFrame)
+	virtual void v18() {} //BOOL LoadFrame(nFrame)
 
 	struct ResBamContainer {
 		BOOL bLoaded;

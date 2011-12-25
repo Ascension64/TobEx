@@ -226,12 +226,18 @@ BOOL __stdcall CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(CCreatureOb
 	if (pItm == NULL) return FALSE;
 	pItm->Demand();
 	ItmFileAbility& ability = pItm->GetAbility(cre.m_Inventory.nAbilitySelected);
-	if (&ability == NULL) return FALSE;
+	if (&ability == NULL) {
+		pItm->Release();
+		return FALSE;
+	}
 
 	int nSlot;
 	if (ability.attackType == ITEMABILITYATTACKTYPE_RANGED &&
 		cre.m_Inventory.nSlotSelected >= SLOT_WEAPON0 &&
 		cre.m_Inventory.nSlotSelected <= SLOT_WEAPON3 &&
+		pItm->GetType() != ITEMTYPE_BOW &&
+		pItm->GetType() != ITEMTYPE_SLING &&
+		pItm->GetType() != ITEMTYPE_XBOW &&
 		&cre.GetFirstEquippedLauncherOfAbility(ability, &nSlot) == NULL) {
 		
 		//restrict to humanoid animation IDs only (this is Infinity Animations-friendly)
@@ -245,15 +251,17 @@ BOOL __stdcall CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(CCreatureOb
 			if (
 				(pAnimation->wAnimId >= 0x5000 &&
 				pAnimation->wAnimId < 0x5400 &&
-				((CAnimation5000*)pAnimation)->sPrefix1[0] == 'C' //avoid clash with Infinity Animations
+				((CAnimation5000*)pAnimation)->sPrefix[0] == 'C' //avoid clash with Infinity Animations
 				) ||
 				pAnimation->wAnimId & 0x6000
 				) {
+				pItm->Release();
 				return TRUE;
 			}
 		}
 
 	}
+	pItm->Release();
 	return FALSE;
 };
 

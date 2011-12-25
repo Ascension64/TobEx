@@ -28,11 +28,17 @@ struct ResEffContainer { //Size 10h
 
 class CEffect { //Size 19Ah
 public:
+	void* operator new(size_t size);
+	void operator delete(void* mem);
+
 	CEffect();
 	CEffect& Construct() { return *this; } //dummy
 
 	CEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, int destX, int destY, BOOL bUseDice, Enum e2); //4F34C8
 	CEffect& Construct(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum) {return *this;} //dummy
+
+	void operator=(CEffect& eff);
+	void OpAssign(CEffect& eff) {} //dummy
 
 	void Unmarshal(EffFileData&);
 
@@ -75,6 +81,7 @@ public:
 
 extern CEffect& (CEffect::*CEffect_Construct_0)();
 extern CEffect& (CEffect::*CEffect_Construct_7)(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum);
+extern void (CEffect::*CEffect_OpAssign)(CEffect&);
 extern void (CEffect::*CEffect_Unmarshal)(EffFileData&);
 extern CEffect& (CEffect::*CEffect_Construct_1)(EffFileData&);
 extern CEffect& (*CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum);

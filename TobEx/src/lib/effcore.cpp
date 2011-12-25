@@ -7,6 +7,8 @@ CEffect& (CEffect::*CEffect_Construct_0)() =
 	SetFP(static_cast<CEffect& (CEffect::*)()>														(&CEffect::Construct),			0x465440);
 CEffect& (CEffect::*CEffect_Construct_7)(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum) =
 	SetFP(static_cast<CEffect& (CEffect::*)(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum)>		(&CEffect::Construct),			0x4F34C8);
+void (CEffect::*CEffect_OpAssign)(CEffect&) =
+	SetFP(static_cast<void (CEffect::*)(CEffect&)>													(&CEffect::OpAssign),			0x4F3A61);
 void (CEffect::*CEffect_Unmarshal)(EffFileData&) =
 	SetFP(static_cast<void (CEffect::*)(EffFileData&)>												(&CEffect::Unmarshal),			0x4F3BEC);
 CEffect& (CEffect::*CEffect_Construct_1)(EffFileData&) =
@@ -42,11 +44,14 @@ void (CEffect::*CEffect_PrintEffectText)(CCreatureObject&) =
 void (CEffect::*CEffect_OnRemove)(CCreatureObject&) =
 	SetFP(static_cast<void (CEffect::*)(CCreatureObject&)>											(&CEffect::OnRemove),			0x4657D0);
 
+void* CEffect::operator new(size_t size) { return ::operator new(size, 0); }
+void CEffect::operator delete(void* mem) { return ::operator delete(mem, 0); } 
 CEffect::CEffect() { (this->*CEffect_Construct_0)(); }
 CEffect::CEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, int destX, int destY, BOOL bUseDice, Enum e2) {
 	(this->*CEffect_Construct_7)(data, ptSource, eSource, destX, destY, bUseDice, e2);
 }
-void CEffect::Unmarshal(EffFileData& data) { (this->*CEffect_Unmarshal)(data); }
+void CEffect::operator=(CEffect& eff) { return (this->*CEffect_OpAssign)(eff); }
+void CEffect::Unmarshal(EffFileData& data) { return (this->*CEffect_Unmarshal)(data); }
 CEffect::CEffect(EffFileData& data)	{ (this->*CEffect_Construct_1)(data); }																						
 CEffect& CEffect::CreateEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2) {
 	return (*CEffect_CreateEffect)(data, ptSource, eSource, ptDest, e2);

@@ -110,6 +110,7 @@
     <ClCompile Include="src\ext\AnimationC000.cpp" />
     <ClCompile Include="src\ext\AnimationCore.cpp" />
     <ClCompile Include="src\ext\Animation7000.cpp" />
+    <ClCompile Include="src\ext\AnimationE000.cpp" />
     <ClCompile Include="src\ext\AreaCommon.cpp" />
     <ClCompile Include="src\ext\ChitinCore.cpp" />
     <ClCompile Include="src\ext\EffectCommon.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
     <ClCompile Include="src\ext\ObjectStats.cpp" />
     <ClCompile Include="src\ext\options.cpp" />
+    <ClCompile Include="src\ext\ScriptCore.cpp" />
     <ClCompile Include="src\ext\ScriptTrigger.cpp" />
     <ClCompile Include="src\ext\UserButton.cpp" />
     <ClCompile Include="src\include\globals.cpp" />
@@ -206,6 +208,7 @@
     <ClInclude Include="src\ext\AnimationA000.h" />
     <ClInclude Include="src\ext\AnimationC000.h" />
     <ClInclude Include="src\ext\AnimationCore.h" />
+    <ClInclude Include="src\ext\AnimationE000.h" />
     <ClInclude Include="src\ext\AreaCommon.h" />
     <ClInclude Include="src\ext\ChitinCore.h" />
     <ClInclude Include="src\ext\EffectCommon.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="src\ext\ObjectCreature.h" />
     <ClInclude Include="src\ext\ObjectStats.h" />
     <ClInclude Include="src\ext\options.h" />
+    <ClInclude Include="src\ext\ScriptCore.h" />
     <ClInclude Include="src\ext\ScriptTrigger.h" />
     <ClInclude Include="src\ext\UserButton.h" />
     <ClInclude Include="src\lib\cptrlistex.h" />
@@ -315,6 +319,9 @@
     <ClInclude Include="src\ext\EngineRecord.h" />
     <ClInclude Include="src\ext\VideoCommon.h" />
     <ClInclude Include="src\ext\VideoCore.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\TobEx.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

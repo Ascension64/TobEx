@@ -34,7 +34,7 @@ void (CCharGen::*Tramp_CCharGen_InitSoundset)(CCreatureObject&) =
 void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenKit& scroll = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnLoad(): Kit scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnLoad(): Kit scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -56,7 +56,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre)
 void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenMageSpell& scroll = (CUIScrollBarChargenMageSpell&)panel.GetUIControl(31);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(): Chargen mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(): Chargen mage spell selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -124,7 +124,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	if (&scrollKit == NULL ||
 		&option11 == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(): Kit selection scroll bar or button 11 not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(): Kit selection scroll bar or button 11 not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -266,7 +266,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 		BOOL bKitAllowedByAlignment = FALSE;
 		BOOL bAlignmentChecked = FALSE;
 		unsigned int nKitId = 0;
-		if ((index < Kit_Class_Race.nRows) && (charType == 5)) {
+		if ((index < Kit_Class_Race.nRows) && (nChargenProgress == 5)) {
 			sAlignment = pGame->GetAlignmentString(o.Alignment);
 
 			int col = 0;
@@ -496,7 +496,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenMageSpell& scroll = (CUIScrollBarChargenMageSpell&)panel.GetUIControl(31);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Chargen mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Chargen mage spell selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -724,4 +724,8 @@ void DETOUR_CCharGen::DETOUR_InitSoundset(CCreatureObject& cre) {
 	(this->*Tramp_CCharGen_InitSoundset)(cre);
 	EngineCommon_ApplySoundset(cre);
 	return;
+}
+
+BOOL CCharGen_MageSchoolPanelCanContinue(CCreatureObject& cre) {
+	return g_pChitin->pGame->IsMageSchoolAllowed(cre.GetKitUnusableFlag(), cre.oBase.Race);
 }

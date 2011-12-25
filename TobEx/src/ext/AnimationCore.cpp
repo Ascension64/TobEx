@@ -64,7 +64,8 @@ BOOL DETOUR_CAnimation::DETOUR_IsPlayableAnimation(unsigned short wAnimId) {
 
 LPCTSTR DETOUR_CAnimation::DETOUR_GetWalkingSound(short wTerrainCode) {
 	if (!pRuleEx->m_AnimWalkSound.m_2da.bLoaded ||
-		!pRuleEx->m_AnimTerrainSound.m_2da.bLoaded) return (this->*Tramp_CAnimation_GetWalkingSound)(wTerrainCode);
+		!pRuleEx->m_AnimTerrainSound.m_2da.bLoaded)
+		return (this->*Tramp_CAnimation_GetWalkingSound)(wTerrainCode);
 
 	IECString sColSound = "WALK_SOUND";
 	IECString sColRand = "WALK_NUM";

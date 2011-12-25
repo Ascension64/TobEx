@@ -4,6 +4,11 @@
 #include "win32def.h"
 #include "resref.h"
 
+#define CONSOLEFORECOLOR_NORMAL		0x07
+#define CONSOLEFORECOLOR_ERROR		0x0C
+#define CONSOLEFORECOLOR_WARNING	0x0E
+#define CONSOLEFORECOLOR_HEADER		0x0F
+
 class Console {
 public:
     Console();
@@ -14,6 +19,7 @@ public:
     Console& write(LPCTSTR lpsz);
 	Console& write(CString& s);
 	Console& write(LPCTSTR format, int n, ...);
+	Console& write(char color, LPCTSTR format, int n, ...);
 
     BOOL bAlloc;
 protected:

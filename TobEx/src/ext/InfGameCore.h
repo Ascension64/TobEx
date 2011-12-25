@@ -34,5 +34,6 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef);
 BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance);
 BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance);
+int __stdcall CRuleTables_GetWeightAllowance(CDerivedStats& cds);
 
 #endif //INFGAMECORE_H

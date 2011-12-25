@@ -83,7 +83,7 @@ void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
 		if (nValues < 6) {
 			CUIButtonPriestBook_KnownSpellOffset = 0;
 		} else {
-			CUIButtonPriestBook_KnownSpellOffset = min(CUIButtonPriestBook_KnownSpellOffset + 4, nValues - 6);
+			CUIButtonPriestBook_KnownSpellOffset = min(CUIButtonPriestBook_KnownSpellOffset + 4, 4 * (nValues - 6));
 		}
 
 		for (int i = 27; i <= 50; i++ ) {

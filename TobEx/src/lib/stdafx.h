@@ -18,6 +18,8 @@
 
 #include "options.h"
 
+#define DLL_INTERNAL_NAME "TobEx.dll\0"
+
 typedef int STRREF;
 typedef unsigned int Enum; //index to CGameObjectArrayHandler element
 
@@ -32,6 +34,5 @@ extern const char* months[];
 extern const char* days[];
 
 const DWORD g_nPEAddressDefault = 0x400000;
-
 
 #endif //STDAFX_H

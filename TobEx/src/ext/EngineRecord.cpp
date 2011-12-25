@@ -27,7 +27,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	CUIScrollBarRecMageSpell& scroll = (CUIScrollBarRecMageSpell&)panel.GetUIControl(30);
 	
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_MageBookPanelOnLoad(): Level-up mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_MageBookPanelOnLoad(): Level-up mage spell selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -59,7 +59,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 	CUIScrollBarRecMageSpell& scroll = (CUIScrollBarRecMageSpell&)panel.GetUIControl(30);
 
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_MageBookPanelOnUpdate(): Level-up mage spell selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_MageBookPanelOnUpdate(): Level-up mage spell selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -131,12 +131,19 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 
 		if (threadVal == OBJECT_SUCCESS) {
 			CUICheckButtonRecMageSpell& control = (CUICheckButtonRecMageSpell&)panel.GetUIControl(i);
-			if (UserCommon_HasKnownSpell(&cre, control.m_rSpell, nCurrentMageBookLevel)) {
-				control.bToggle = TRUE;
+			if (&control != NULL) {
+				if (UserCommon_HasKnownSpell(&cre, control.m_rSpell, nCurrentMageBookLevel)) {
+					control.bToggle = TRUE;
+				} else {
+					control.bToggle = FALSE;
+				}
+				control.SetRedraw();
 			} else {
-				control.bToggle = FALSE;
+				LPCTSTR lpsz = "DETOUR_MageBookPanelOnUpdate(): pButton == NULL\r\n";
+				L.timestamp();
+				L.append(lpsz);
+				console.write(lpsz);
 			}
-			control.SetRedraw();
 			g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eChar, threadNum, INFINITE);
 		}
 	}

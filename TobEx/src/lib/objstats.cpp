@@ -1,6 +1,7 @@
 #include "objstats.h"
 
 //CConditionalSpell
+void* CConditionalSpell::operator new(size_t size)	{ return ::operator new(size, 0); }
 void CConditionalSpell::operator delete(void* mem)	{ return ::operator delete(mem, 0); } 
 
 //CConditionalSpellList
@@ -92,6 +93,9 @@ CRepeatingRegen::CRepeatingRegen() {
 	wSecondsElapsed = 0;
 	bExpired = FALSE;
 }
+
+//CSpellProtection
+CSpellProtection::CSpellProtection() { strrefMsg = 0; }
 
 //CDerivedStats
 CDerivedStats& (CDerivedStats::*CDerivedStats_Construct_3)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) =

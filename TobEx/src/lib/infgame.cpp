@@ -61,36 +61,40 @@ IECString& CRuleTable::GetColName(int nCol) {
 
 //CRuleTables
 CRuleTables& (CRuleTables::*CRuleTables_Construct)() =
-	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>										(&CRuleTables::Construct),					0x6213DC);
+	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>										(&CRuleTables::Construct),						0x6213DC);
 void (CRuleTables::*CRuleTables_Deconstruct)() =
-	SetFP(static_cast<void (CRuleTables::*)()>												(&CRuleTables::Deconstruct),				0x6279D1);
+	SetFP(static_cast<void (CRuleTables::*)()>												(&CRuleTables::Deconstruct),					0x6279D1);
 IECString (CRuleTables::*CRuleTables_GetRaceString)(unsigned char) =
-	SetFP(static_cast<IECString (CRuleTables::*)(unsigned char)>							(&CRuleTables::GetRaceString),				0x62ACC5);
+	SetFP(static_cast<IECString (CRuleTables::*)(unsigned char)>							(&CRuleTables::GetRaceString),					0x62ACC5);
 IECString (CRuleTables::*CRuleTables_GetAlignmentString)(char) =
-	SetFP(static_cast<IECString (CRuleTables::*)(char)>										(&CRuleTables::GetAlignmentString),			0x62AEA4);
+	SetFP(static_cast<IECString (CRuleTables::*)(char)>										(&CRuleTables::GetAlignmentString),				0x62AEA4);
 IECString (CRuleTables::*CRuleTables_GetClassString)(unsigned char, unsigned int) =
-	SetFP(static_cast<IECString (CRuleTables::*)(unsigned char, unsigned int)>				(&CRuleTables::GetClassString),				0x62B072);
+	SetFP(static_cast<IECString (CRuleTables::*)(unsigned char, unsigned int)>				(&CRuleTables::GetClassString),					0x62B072);
 int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int) =
 	SetFP(static_cast<int (CRuleTables::*)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int)>
-																							(&CRuleTables::CalculateNewHPRule),			0x630ED4);
+																							(&CRuleTables::CalculateNewHPRule),				0x630ED4);
 int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int) =
 	SetFP(static_cast<int (CRuleTables::*)(char, char, CDerivedStats&, CDerivedStats&, int, int)>
-																							(&CRuleTables::CalculateNewHPSubclass),		0x631055);
+																							(&CRuleTables::CalculateNewHPSubclass),			0x631055);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int) =
-	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>									(&CRuleTables::GetMageSpellRef),			0x633691);
+	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>									(&CRuleTables::GetMageSpellRef),				0x633691);
 STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char) =
-	SetFP(static_cast<STRREF (CRuleTables::*)(int, int, char)>								(&CRuleTables::GetCharSndStrRef),			0x63511C);
+	SetFP(static_cast<STRREF (CRuleTables::*)(int, int, char)>								(&CRuleTables::GetCharSndStrRef),				0x63511C);
 void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned int, unsigned int, IECString&, CCreatureObject&) =
 	SetFP(static_cast<void (CRuleTables::*)(char, unsigned int, unsigned int, IECString&, CCreatureObject&)>
-																							(&CRuleTables::GetDetailedClassString),		0x635238);
+																							(&CRuleTables::GetDetailedClassString),			0x635238);
 int (CRuleTables::*CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int) =
-	SetFP(static_cast<int (CRuleTables::*)(char, char, char, BOOL, int, unsigned int)>		(&CRuleTables::GetWeapProfMax),				0x636C57);
+	SetFP(static_cast<int (CRuleTables::*)(char, char, char, BOOL, int, unsigned int)>		(&CRuleTables::GetWeapProfMax),					0x636C57);
 BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char) =
-	SetFP(static_cast<BOOL (CRuleTables::*)(unsigned int, unsigned char)>					(&CRuleTables::IsMageSchoolAllowed),		0x637DEE);
+	SetFP(static_cast<BOOL (CRuleTables::*)(unsigned int, unsigned char)>					(&CRuleTables::IsMageSchoolAllowed),			0x637DEE);
 char (CRuleTables::*CRuleTables_GetMageSchool)(short) =
-	SetFP(static_cast<char (CRuleTables::*)(short)>											(&CRuleTables::GetMageSchool),				0x639D4A);
+	SetFP(static_cast<char (CRuleTables::*)(short)>											(&CRuleTables::GetMageSchool),					0x639D4A);
+bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, STRREF*, short) =
+	SetFP(static_cast<bool (CRuleTables::*)(STRREF*, STRREF*, short)>						(&CRuleTables::GetContingencyConditionTexts),	0x639E94);
+bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short) =
+	SetFP(static_cast<bool (CRuleTables::*)(STRREF*, STRREF*, short)>						(&CRuleTables::GetContingencyTargetTexts),		0x639FD5);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char) =
-	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>									(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
+	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>									(&CRuleTables::GetMageSpellRefAutoPick),		0x63AD1A);
 
 CRuleTables::CRuleTables() { (this->*CRuleTables_Construct)(); }
 CRuleTables::~CRuleTables() { (this->*CRuleTables_Deconstruct)(); }
@@ -109,6 +113,8 @@ int CRuleTables::GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassS
 	{ return (this->*CRuleTables_GetWeapProfMax)(dwClassId, bClassPrimary, bClassSecondary, bClassMage, dwWeapProfId, dwKit); }
 BOOL CRuleTables::IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace) { return (this->*CRuleTables_IsMageSchoolAllowed)(dwKit, nRace); }
 char CRuleTables::GetMageSchool(short wKitLow) { return (this->*CRuleTables_GetMageSchool)(wKitLow); }
+bool CRuleTables::GetContingencyConditionTexts(STRREF* pStrref, STRREF* pDescription, short wIndex) { return (this->*CRuleTables_GetContingencyConditionTexts)(pStrref, pDescription, wIndex); }
+bool CRuleTables::GetContingencyTargetTexts(STRREF* pStrref, STRREF* pDescription, short wIndex) { return (this->*CRuleTables_GetContingencyTargetTexts)(pStrref, pDescription, wIndex); }
 ResRef CRuleTables::GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) { return (this->*CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex); }
 
 //CInfGame

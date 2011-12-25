@@ -2,6 +2,13 @@
 
 #include "stdafx.h"
 
+//CGameObject
+Enum (CGameObject::*CGameObject_GetEnum)() =
+	SetFP(static_cast<Enum (CGameObject::*)()>	(&CGameObject::GetEnum),	0x494D00);
+
+Enum CGameObject::GetEnum()	{ return (this->*CGameObject_GetEnum)(); }
+
+//CGameObjectArrayHandler
 char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, char, void*, int) =
 	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, void*, int)>	(&CGameObjectArrayHandler::GetGameObjectShare),		0x67626B);
 char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObject)(Enum, char, void*, int) =

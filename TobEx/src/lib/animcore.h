@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 
+#include "arecore.h"
 #include "vidcore.h"
 
 class CCreatureObject;
@@ -30,62 +31,63 @@ public:
 	static BOOL IsPlayableAnimation(unsigned short wAnimId);
 
 	//AB6148
-	virtual void v0() {}
+	virtual ~CAnimation() {} //v0
 	virtual void GetCurrentFrameDimensions(RECT* pFrame, POINT* pCentre, int zPos) {} //v4
-	virtual void v8() {}
-	virtual void vc() {}
-	virtual void v10() {}
-	virtual void v14() {}
-	virtual void v18() {}
-	virtual void v1c() {}
-	virtual void v20() {}
-	virtual void v24() {}
+	virtual void v8() {} //? void GetBoundsRect(RECT* pBounds, POINT* ppt1, POINT* ppt2, zPos, width, height)
+	virtual BOOL SetOrientation(short wOrient) { return TRUE; } //vc
+	virtual void SetArmorLevel(char szArmorLevel, ColorRangeValues& colors) {} //v10
+	virtual void v14() {} //void LoadAnimGroup3?(IECString& suffix, ColorRangeValues& colors)
+	virtual void v18() {} //void LoadAnimGroup2[Shield]?(IECString& suffix, ColorRangeValues& colors)
+	virtual void v1c() {} //void LoadAnimGroup1[twohanded]?(IECString& suffix, ColorRangeValues& colors, nItemFlags, pAttackProb)
+	virtual void v20() {} //VidPal& GetAnimGroupVidPal(nGroupId) (ids use second lowest digit i.e. 0xX0)
+	virtual void GetAnimGroupPaperdollName(IECString* ptr, int nGroupId) {} //v24, ids use as above
 	virtual bool CanUseMiddleVertList() { return false; } //v28
-	virtual void v2c() {}
-	virtual void v30() {}
-	virtual char GetVertListType() { return 0; } //v34, u18
-	virtual void v38() {} //GetSomeGoreThing? u19
+	virtual void v2c() {} //bool, 0 arg
+	virtual short GetNumCyclesPerAnimation() { return 0; } //v30
+	virtual char GetVertListType() { return 0; } //v34, get 18h
+	virtual void v38() {} //GetSomeGoreThing?, get 19h
 	virtual char GetDefaultVertListType() { return 0; } //v3c
-	virtual unsigned char GetCurrentMovementRate() { return 0; } //v40
+	virtual unsigned char GetCurrentMovementRate() { return 0; } //v40, get 7h
 	virtual void SetCurrentMovementRate(unsigned char n) {} //v44
 	virtual void ResetCurrentMovementRate() {} //v48, put 6h into 7h
 	virtual char GetDefaultMovementRate() { return 0; } //v4c
-	virtual void v50() {} //get u22[idx]
+	virtual void v50() {} //int* Get22h(int* ptr, short idx)
 	virtual RECT* GetFootCircle() { return 0; } //v54
-	virtual void v58() {}
+	virtual void v58() {} //BOOL?, 0 arg
 	virtual char GetFootCircleSize() { return 0; } //v5c
-	virtual void v60() {}
-	virtual void v64() {}
-	virtual void v68() {}
+	virtual void v60() {} //LPCTSTR GetArmorLevelName()?
+	virtual LPCTSTR GetFallingSound() { return 0; } //v64
+	virtual void v68() {} //LPCTSTR, 0 arg
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
-	virtual void v70() {}
-	virtual void v74() {}
+	virtual void v70() {} //int, 0 arg, get 1ah
+	virtual BOOL GetUseColorRange() { return FALSE; } //v74
 	virtual bool IsImmuneToDamage() { return false; } //v78
-	virtual void v7c() {}
-	virtual void v80() {}
-	virtual void v84() {}
-	virtual void v88() {}
-	virtual void v8c() {}
-	virtual void v90() {}
-	virtual void v94() {}
+	virtual BOOL IsInMirrorOrientation() { return FALSE; } //v7c
+	virtual BOOL IsCurrentFrameFirstFrame() { return FALSE; } //v80
+	virtual BOOL IsAtEndOfCycle() { return FALSE; } //v84
+	virtual void v88() {} //BOOL, 0 args, another cycle related thing
+	virtual void DeleteCurrentVidCell() {} //v8c
+	virtual void DecrementFrame() {} //v90
+	virtual BOOL BltToBack(CInfinity& infinity, CVideoMode& vidmode) { return FALSE; } //v94
 	virtual void DeinitColor(char nGroupRangeID) {} //v98
 	virtual void DeinitAllColors() {} //v9c
 	virtual void InitColor(int nColorGroup, int nGroupRangeId, ABGR rgbColor, char n) {} //va0
 	virtual void InitAllColors(int nGroupId, ABGR rgbColor, char n) {} //va4
 	virtual void SetColorRange(int nColorIdx, int nGroupRangeId) {} //va8
-	virtual void vac() {}
+	virtual void SetAllColorRanges(int nGroupRangeId) {} //vac
 	virtual short SetAnimationSequence(short wSeq) { return SEQ_READY; } //vb0
-	virtual void vb4() {}
-	virtual void vb8() {}
-	virtual void vbc() {}
+	virtual void vb4() {} //void, 3 args (pRect, pPt, ?)
+	virtual void SetFootCircle() {} //vb8
+	virtual void vbc() {} //set 22h
 	virtual char GetInRoundAction() { return 0; } //vc0
 	virtual BOOL CanBeTargetted() { return FALSE; } //vc4, for ankhegs
-	virtual void vc8() {}
-	virtual void vcc() {}
-	virtual void vd0() {}
-	virtual void vd4() {}
-	virtual void vd8() {}
+	virtual void vc8() {} //short, 1 arg
+	virtual void vcc() {} //void, 1 arg (byte), set 3d4h
+	virtual void vd0() {} //void, 1 arg (byte), set 3d5h
+	virtual void vd4() {} //short, 0 arg
+	virtual void vd8() {} //void, 1 arg (pPt)
 	virtual bool GetCurrentCycleAndFrame(short& wCycle, short& wFrame); //vdc
+	virtual bool GetAnimationResRefs(IECString& s1, IECString& s2, IECString& s3, IECString& s4) { return false; } //ve0, specific animations only?
 
 	unsigned short wAnimId; //4h
 	unsigned char nMovementRateDefault; //6h

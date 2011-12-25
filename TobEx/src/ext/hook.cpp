@@ -17,6 +17,7 @@
 #include "Animation9000.h"
 #include "AnimationA000.h"
 #include "AnimationC000.h"
+#include "AnimationE000.h"
 #include "AreaCore.h"
 #include "ChitinCore.h"
 #include "EffectCore.h"
@@ -32,11 +33,11 @@
 #include "LogCore.h"
 #include "ObjectCreature.h"
 #include "ObjectStats.h"
+#include "ScriptCore.h"
 #include "SoundCore.h"
 #include "UserCore.h"
 #include "UserButton.h"
 #include "VideoCore.h"
-
 
 void InitHooks() {
 
@@ -66,8 +67,12 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffAttacksPerRoundFix) {
 		DetourMemberFunction(Tramp_CEffectAttacksPerRoundMod_ApplyEffect, DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect);
 	}
-	if (pGameOptionsEx->nEffBlindnessFix)
+	if (pGameOptionsEx->bEffBlindnessFix || pGameOptionsEx->bEffBlindnessAsSpellDesc)
 		DetourMemberFunction(Tramp_CEffectBlindness_ApplyEffect, DETOUR_CEffectBlindness::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffCastSpellConditionMod) {
+		DetourMemberFunction(Tramp_CEffectCastSpellOnCondition_ApplyEffect, DETOUR_CEffectCastSpellOnCondition::DETOUR_ApplyEffect);
+		DetourMemberFunction(Tramp_CConditionalSpellList_EvaluateTriggers, DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers);
+	}
 	if (pGameOptionsEx->bEffDiseaseFix)
 		DetourMemberFunction(Tramp_CEffectDisease_ApplyEffect, DETOUR_CEffectDisease::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffDisintegrateFix)
@@ -99,8 +104,6 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CEffectRepeatingEff_ApplyEffect, DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect);
 	}
 
-	if (pGameOptionsEx->nEngineContingencyTriggerDelay)
-		DetourMemberFunction(Tramp_CConditionalSpellList_EvaluateTriggers, DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers);
 	if (pGameOptionsEx->bEngineModifyEffectStacking)
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 	if (pGameOptionsEx->bEngineDisableInvPauseSP)
@@ -155,11 +158,16 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CAnimation9000_GetWalkingSound, DETOUR_CAnimation9000::DETOUR_GetWalkingSound);
 		DetourMemberFunction(Tramp_CAnimationA000_GetWalkingSound, DETOUR_CAnimationA000::DETOUR_GetWalkingSound);
 		DetourMemberFunction(Tramp_CAnimationC000_GetWalkingSound, DETOUR_CAnimationC000::DETOUR_GetWalkingSound);
+		DetourMemberFunction(Tramp_CAnimationE000_GetWalkingSound, DETOUR_CAnimationE000::DETOUR_GetWalkingSound);
 	}
 
 	if (pGameOptionsEx->bSoundSoundsetSubtitles) {
 		DetourMemberFunction(Tramp_CRecord_UpdateCharacter, DETOUR_CRecord::DETOUR_UpdateCharacter);
 		DetourMemberFunction(Tramp_CCharGen_InitSoundset, DETOUR_CCharGen::DETOUR_InitSoundset);
+	}
+
+	if (pGameOptionsEx->bTriggerExpandedTriggers) {
+		DetourMemberFunction(Tramp_CScriptBlock_Evaluate, DETOUR_CScriptBlock::DETOUR_Evaluate);
 	}
 
 	DetourFunction(Tramp_CreateUIControl, DETOUR_CreateUIControl);

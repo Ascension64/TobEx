@@ -37,48 +37,62 @@ void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre)
 		g_pChitin->pGame->m_GameSave.mode == 0x3016E) //CutSceneLite
 		return;
 
-	if (pGameOptionsEx->nEngineContingencyTriggerDelay > 0) {
-		cre.m_nContingencyDelay = pGameOptionsEx->nEngineContingencyTriggerDelay;
-	} else {
-		cre.m_nContingencyDelay = 100;
-	}
+	cre.m_nContingencyDelay = 0;
+	int nGameTime = g_pChitin->pGame->m_WorldTimer.nGameTime;
 	
 	POSITION pos = this->GetHeadPosition();
 	POSITION posPrev = pos;
 	while (pos != NULL) {
 		CConditionalSpell* pccs = (CConditionalSpell*)(this->GetNext(pos));
-		pccs->eff.effect.nParam3--;
-		if (pccs->t.opcode & 0x4000) {
-			if (cre.EvaluateTrigger(pccs->t)) {
-				o = pccs->oTarget;
-				o.DecodeIdentifiers(cre);
-				CGameObject& cgoTarget = cre.SetTarget(o, CGAMEOBJECT_TYPE_SPRITE);
-				if (&cgoTarget != NULL) {
-					cre.CastSpell(pccs->rResource1, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
-					if (pccs->rResource2 != "") cre.CastSpell(pccs->rResource2, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
-					if (pccs->rResource3 != "") cre.CastSpell(pccs->rResource3, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
-					g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(cgoTarget.e, THREAD_ASYNCH, INFINITE);
-				}
 
-				if (pccs->dwFlags & 0x1) {
-					CMessageDisplayDialogue* pcmDD = IENew CMessageDisplayDialogue();
-					pcmDD->eTarget = cre.e;
-					pcmDD->eSource = cre.e;
-					pcmDD->srOwner = cre.GetLongNameStrRef();
-					pcmDD->srText = 0x9048;
-					pcmDD->rgbOwner = cre.m_BaseStats.colors.colorMajor;
-					pcmDD->rgbText = g_ColorDefaultText;
-					pcmDD->u1c = -1;
-					pcmDD->u20 = 0;
-					pcmDD->bFloatText = false;
-					pcmDD->bPlaySound = true;
+		unsigned int nDelay = pccs->eff.effect.nParam2 >> 16;
+		if (nDelay == 0) nDelay = 100;
 
-					g_pChitin->messages.Send(*pcmDD, FALSE);
+		if ((pccs->eff.effect.nParam3 >> 16) == 0) {
+			if (pGameOptionsEx->bDebugVerbose) {
+				LPCTSTR lpsz = "DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(): effect application time not set\r\n";
+				L.timestamp();
+				L.append(lpsz);
+				console.write(lpsz);
+			}
+			
+			pccs->eff.effect.nParam4 = nGameTime;
+			pccs->eff.effect.nParam3 |= (1 << 16);
+		}
 
-					cre.m_EffectsEquipped.RemoveOneEffect(pccs->eff, cre, TRUE);
-					cre.m_EffectsMain.RemoveOneEffect(pccs->eff, cre, TRUE);
-					this->RemoveAt(posPrev);
-					delete pccs;
+		if ((nGameTime - pccs->eff.effect.nParam4) % nDelay == 0) {
+			if (pccs->t.opcode & 0x4000) {
+				if (cre.EvaluateTrigger(pccs->t)) {
+					o = pccs->oTarget;
+					o.DecodeIdentifiers(cre);
+					CGameObject& cgoTarget = cre.SetTarget(o, CGAMEOBJECT_TYPE_SPRITE);
+					if (&cgoTarget != NULL) {
+						cre.CastSpell(pccs->rResource1, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
+						if (pccs->rResource2 != "") cre.CastSpell(pccs->rResource2, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
+						if (pccs->rResource3 != "") cre.CastSpell(pccs->rResource3, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
+						g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(cgoTarget.e, THREAD_ASYNCH, INFINITE);
+					}
+
+					if (pccs->dwFlags & 0x1) {
+						CMessageDisplayDialogue* pcmDD = IENew CMessageDisplayDialogue();
+						pcmDD->eTarget = cre.e;
+						pcmDD->eSource = cre.e;
+						pcmDD->srOwner = cre.GetLongNameStrRef();
+						pcmDD->srText = 0x9048;
+						pcmDD->rgbOwner = g_pColorRangeArray[cre.m_BaseStats.colors.colorMajor];
+						pcmDD->rgbText = g_ColorDefaultText;
+						pcmDD->u1c = -1;
+						pcmDD->u20 = 0;
+						pcmDD->bFloatText = false;
+						pcmDD->bPlaySound = true;
+
+						g_pChitin->messages.Send(*pcmDD, FALSE);
+
+						cre.m_EffectsEquipped.RemoveOneEffect(pccs->eff, cre, TRUE);
+						cre.m_EffectsMain.RemoveOneEffect(pccs->eff, cre, TRUE);
+						this->RemoveAt(posPrev);
+						delete pccs;
+					}
 				}
 			}
 		}
@@ -344,10 +358,12 @@ float CDerivedStats_NumAttacksShortToFloat(short s) {
 		if (f >= 6.0 && f <= 10.0) {
 			f -= 5.5;
 		} else {
-			LPCTSTR lpsz = "CDerivedStats_NumAttacksShortToFloat(): Number of attacks out of range (%d)\r\n";
-			console.write(lpsz, 1, s);
-			L.timestamp();
-			L.append(lpsz, 1, s);
+			if (pGameOptionsEx->bDebugVerbose) {
+				LPCTSTR lpsz = "CDerivedStats_NumAttacksShortToFloat(): Number of attacks out of range (%d)\r\n";
+				console.write(lpsz, 1, s);
+				L.timestamp();
+				L.append(lpsz, 1, s);
+			}
 			f = 0.0;
 		}
 	}

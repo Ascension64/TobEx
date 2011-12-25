@@ -8,6 +8,7 @@
 #include "console.h"
 #include "log.h"
 #include "InfGameCommon.h"
+#include "ObjectStats.h"
 
 CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)() =
 	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>									(&CRuleTables::Construct),					0x6213DC);
@@ -172,6 +173,8 @@ STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
 	int Eip;
 	GetEip(Eip);
 
+	STRREF strref;
+
 	if (Eip == 0x734392) {
 		if (nRace == 5) {
 			nRace = 3;
@@ -196,11 +199,9 @@ STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
 			sStrRef = pRuleEx->m_RaceText.defaultVal;
 		}
 
-		STRREF strref;
 		sscanf_s((LPCTSTR)sStrRef, "%d", &strref);
 		return strref;
 	} else {
-		STRREF strref;
 		switch (nRace) {
 		case 0:
 			strref = 0x1C19; //human
@@ -439,24 +440,44 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 
 BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance) {
 	if (pRuleEx->m_nEncumbranceLowThreshold == 0) return FALSE;
-	if (nWeightAllowance == 0) {
-		LPCTSTR lpsz = "CRuleTables_IsLowEncumbrance(): division by zero\r\n";
-		L.timestamp();
-		L.append(lpsz);
-		console.write(lpsz);
-		return TRUE;
-	}
-	return (nWeight * 100 / nWeightAllowance) > pRuleEx->m_nEncumbranceLowThreshold;
+	return nWeight > (nWeightAllowance * pRuleEx->m_nEncumbranceLowThreshold / 100);
 }
 
 BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance) {
 	if (pRuleEx->m_nEncumbranceHighThreshold == 0) return FALSE;
-	if (nWeightAllowance == 0) {
-		LPCTSTR lpsz = "CRuleTables_IsHighEncumbrance(): division by zero\r\n";
-		L.timestamp();
-		L.append(lpsz);
-		console.write(lpsz);
-		return TRUE;
+	return nWeight > (nWeightAllowance * pRuleEx->m_nEncumbranceHighThreshold / 100);
+}
+
+int __stdcall CRuleTables_GetWeightAllowance(CDerivedStats& cds) {
+	int nWeightAllowanceStr;
+	int nWeightAllowanceStrEx;
+	int nWeightAllowanceMod;
+
+	short nCol = 3; //WEIGHT_ALLOWANCE
+	short nRow = cds.strength;
+	IECString sWeightAllowanceStr;
+	if (nCol < g_pChitin->pGame->STRMOD.nCols &&
+		nRow < g_pChitin->pGame->STRMOD.nRows &&
+		nCol >= 0 &&
+		nRow >= 0) {
+		sWeightAllowanceStr = *((g_pChitin->pGame->STRMOD.pDataArray) + (g_pChitin->pGame->STRMOD.nCols * nRow + nCol));
+	} else {
+		sWeightAllowanceStr = g_pChitin->pGame->STRMOD.defaultVal;
 	}
-	return (nWeight * 100 / nWeightAllowance) > pRuleEx->m_nEncumbranceHighThreshold;
+	sscanf_s((LPCTSTR)sWeightAllowanceStr, "%d", &nWeightAllowanceStr);
+
+	nCol = 3; //WEIGHT_ALLOWANCE
+	nRow = cds.strengthEx; 
+	IECString sWeightAllowanceStrEx;
+	if (nCol < g_pChitin->pGame->STRMODEX.nCols &&
+		nRow < g_pChitin->pGame->STRMODEX.nRows &&
+		nCol >= 0 &&
+		nRow >= 0) {
+		sWeightAllowanceStrEx = *((g_pChitin->pGame->STRMODEX.pDataArray) + (g_pChitin->pGame->STRMODEX.nCols * nRow + nCol));
+	} else {
+		sWeightAllowanceStrEx = g_pChitin->pGame->STRMODEX.defaultVal;
+	}
+	sscanf_s((LPCTSTR)sWeightAllowanceStrEx, "%d", &nWeightAllowanceStrEx);
+
+	return max(0, nWeightAllowanceStr + nWeightAllowanceStrEx + cds.GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_WEIGHTALLOWANCEMOD));
 }

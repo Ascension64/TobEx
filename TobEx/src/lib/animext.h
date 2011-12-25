@@ -10,6 +10,7 @@ class CAnimation0000 : public CAnimation { //Size 976h
 //Constructor: 0x7FAA53
 public:
 	//AB622C
+	virtual ~CAnimation0000() {} //v0
 	virtual bool CanUseMiddleVertList() { return true; } //v28
 
 	CVidCell* m_pCurrentVidCell; //6d8h
@@ -34,6 +35,7 @@ class CAnimation1000 : public CAnimation { //Size 73Ah
 //Constructor: 0x8356F3
 public:
 	//AB6C00
+	virtual ~CAnimation1000() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -69,6 +71,7 @@ class CAnimation1200 : public CAnimation { //Size AC6h
 //Constructor: 0x82C8AE
 public:
 	//AB6B1C
+	virtual ~CAnimation1200() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -107,6 +110,7 @@ class CAnimation1300 : public CAnimation { //Size 7F4h
 //Constructor: 0x8746B1
 public:
 	//AB7158
+	virtual ~CAnimation1300() {} //v0
 	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
@@ -146,6 +150,7 @@ class CAnimation2000 : public CAnimation { //Size E0Ch
 //Constructor: 0x83D12A
 public:
 	//AB6DC8
+	virtual ~CAnimation2000() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -189,6 +194,7 @@ class CAnimation3000 : public CAnimation { //Size 1106h
 //Constructor: 0x841063
 public:
 	//AB6EAC
+	virtual ~CAnimation3000() {} //v0
 	virtual BOOL CanBeTargetted() { return bCanBeTargetted; } //vc4
 
 	IECString sPrefix; //6d8h
@@ -226,6 +232,7 @@ class CAnimation4000 : public CAnimation { //Size 7E4h
 //Constructor: 0x801EDE
 public:
 	//AB63F4
+	virtual ~CAnimation4000() {} //v0
 	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
 
 	CVidCell* m_pCurrentVidCellBase; //6d8h
@@ -249,16 +256,17 @@ public:
 	CAnimation5000& Construct(unsigned short, ColorRangeValues&, int) { return *this; }
 
 	//AB6F90
+	virtual ~CAnimation5000() {} //v0
 	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
-	IECString sPrefix1; //6d8h, C<RACE><SEX>B
-	IECString sPrefix2; //6dch, C<RACE><SEX>B - main
-	IECString u6e0; //WQ*
+	IECString sPrefix; //6d8h, C<RACE><SEX>B
+	IECString sPrefixAndArmorLevel; //6dch, C<RACE><SEX>B - main
+	IECString u6e0; //WQ* (single weapon prefix?)
 	IECString u6e4; //WQ*
 	IECString u6e8; //WQ*
-	char u6ec; //suffix - main
-	char u6ed; //suffix
+	char charCurrentArmorLevel; //6ech, suffix - main
+	char charMaxArmorLevel; //6edh, suffix
 
 	CVidCell* m_pCurrentVidCell; //6eeh
 	CVidCell* m_pCurrentVidCellBase; //6f2h
@@ -280,7 +288,7 @@ public:
 	VidPal ueac;
 	
 	IECString ued0;
-	CVidCell* ued4;
+	CVidCell* m_pCurrentVidCellShield; //ed4h
 	CVidCell* ued8;	
 	CVidCell uedc;
 	CVidCell ufb2;
@@ -300,22 +308,24 @@ public:
 
 	short wCurrentAnimation; //16b6h
 	short wCurrentOrientation; //16b8h
-	BOOL bUseAuxiliaryVidCells; //16bah, groups 2 and 3
-	BOOL bUseAuxiliaryVidCells2; //16beh, group 4
-	int u16c2;
+	BOOL bUseAuxiliaryVidCells; //16bah, group indices 1 and 2
+	BOOL bUseAuxiliaryVidCells2; //16beh, group index 3
+	BOOL u16c2;
 	int u16c6;
 	BOOL bUseColorRange; //16cah, for first group of VidCells, other groups automatically use VidPals
-	char u16ce;
+	
+	//bit4: MELEE_1HLR_MASK (16)
+	char m_weaponCode; //16ceh //4, 5, 16, 1, 2, 3, controls which animations to load up into first group
 	char nOrientations; //16cfh
 	char u16d0;
 	bool m_bImmuneToDamage; //16d1h
 	bool m_bCanUseMiddleVertList; //16d2h, only SAREVOK (X404) is false
-	char u16d3;
-	char u16d4;
+	char u16d3; //armor level suffix char
+	char u16d4; //armor level suffix char
 	char u16d5;
 	int u16d6;
 	int u16da;
-	char u16de;
+	char u16de; //final suffix (after armor level)
 	char u16df; //pad
 };
 
@@ -327,6 +337,7 @@ class CAnimation6400 : public CAnimation { //Size 36B0h
 //Constructor: 0x8586AC
 public:
 	//AB7074
+	virtual ~CAnimation6400() {} //v0
 	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
@@ -455,6 +466,7 @@ class CAnimation7000 : public CAnimation { //Size B2Ch
 //Constructor: 0x8176A5
 public:
 	//AB678C
+	virtual ~CAnimation7000() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -485,6 +497,7 @@ class CAnimation7300 : public CAnimation { //Size D3Ch
 //Constructor: 0x807184
 public:
 	//AB66A0
+	virtual ~CAnimation7300() {} //v0
 	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
@@ -535,6 +548,7 @@ class CAnimation8000 : public CAnimation { //Size E02h
 //Constructor: 0x839BE6
 public:
 	//AB6CE4
+	virtual ~CAnimation8000() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -573,6 +587,7 @@ class CAnimation9000 : public CAnimation { //Size C1Ah
 //Constructor: 0x828165
 public:
 	//AB6954
+	virtual ~CAnimation9000() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -601,6 +616,7 @@ class CAnimationA000 : public CAnimation { //Size C1Ah
 //Constructor: 0x82A22F
 public:
 	//AB6A38
+	virtual ~CAnimationA000() {} //v0
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -629,6 +645,7 @@ class CAnimationB000 : public CAnimation { //Size 8C2h
 //Constructor: 0x803352
 public:
 	//AB64D8
+	virtual ~CAnimationB000() {} //v0
 
 	CVidCell* m_pCurrentVidCell; //6d8h
 	CVidCell* m_pCurrentVidCellBase; //6dch
@@ -641,7 +658,7 @@ public:
 	short wCurrentAnimation; //8b4h
 	short wCurrentOrientation; //8b6h
 	BOOL bUseColorRange; //8b8h
-	int u8bc;
+	BOOL bImmuneToDamage; //8bch
 	char nOrientations; //8c0h
 	char u8c1; //pad
 };
@@ -651,6 +668,7 @@ class CAnimationC000 : public CAnimation { //Size 8CAh
 //Constructor: 0x804D2B
 public:
 	//AB65BC
+	virtual ~CAnimationC000() {} //v0
 	virtual char GetDefaultVertListType() { return nDefaultVertListType; } //v3c
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
@@ -678,6 +696,7 @@ class CAnimationD000 : public CAnimation { //Size 7E4h
 //Constructor: 0x800D4F
 public:
 	//AB6310
+	virtual ~CAnimationD000() {} //v0
 	virtual bool CanUseMiddleVertList() { return false; } //v28
 	virtual char GetDefaultVertListType() { return LIST_BACK; } //v3c
 
@@ -697,6 +716,9 @@ class CAnimationE000 : public CAnimation { //Size 3278h
 //Constructor: 0x81C723
 public:
 	//AB6870
+	virtual ~CAnimationE000() {} //v0
+	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
+
 	IECString sPrefix; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
 	CVidCell* m_pCurrentVidCellBase; //6e0h
@@ -766,5 +788,7 @@ public:
 	char u3276;
 	char nOrientations; //3277h
 };
+
+extern LPCTSTR (CAnimationE000::*CAnimationE000_GetWalkingSound)(short);
 
 #endif //ANIMEXT_H

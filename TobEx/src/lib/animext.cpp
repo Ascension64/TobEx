@@ -79,3 +79,9 @@ LPCTSTR (CAnimationC000::*CAnimationC000_GetWalkingSound)(short) =
 	SetFP(static_cast<LPCTSTR (CAnimationC000::*)(short)>	(&CAnimationC000::GetWalkingSound),				0x805F7E);
 
 LPCTSTR CAnimationC000::GetWalkingSound(short wTerrainCode)	{ return (this->*CAnimationC000_GetWalkingSound)(wTerrainCode); }
+
+//CAnimationE000
+LPCTSTR (CAnimationE000::*CAnimationE000_GetWalkingSound)(short) =
+	SetFP(static_cast<LPCTSTR (CAnimationE000::*)(short)>	(&CAnimationE000::GetWalkingSound),				0x82483B);
+
+LPCTSTR CAnimationE000::GetWalkingSound(short wTerrainCode)	{ return (this->*CAnimationE000_GetWalkingSound)(wTerrainCode); }

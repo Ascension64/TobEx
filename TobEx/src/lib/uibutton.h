@@ -38,7 +38,7 @@ public:
 	short wRedrawAmount; //126h
 	BOOL bLock; //128h, 1: grabbed by mouse
 
-	//bit0: enable LMB double-click
+	//bit0: enable LMB, double-click
 	//bit1: enable RMB
 	unsigned char m_flags; //12ch, Arg3
 	char u12d;
@@ -75,16 +75,16 @@ extern void (CUIButton::*CUIButton_OnLDblClicked)(POINT);
 extern void (CUIButton::*CUIButton_OnRClicked)(POINT);
 extern void (CUIButton::*CUIButton_SetText)(IECString&);
 
-class CUIButton654 : public CUIButton { //Size 654h
-//Constructor: 0x6F82C3 (profs), 0x6F889F (thief skills)
-//Note: for the + and - arrows in proficiencies
+class CUIButtonChargenPlusMinus : public CUIButton { //Size 654h
+//Constructor: 0x6F82C3 (profs), 0x6F889F (thief skills) -> 0x5A3C3A
+//Note: for the + and - arrows in proficiencies/thief skills
 public:
 	//vtable: 0xAADAD0 (profs), 0xAADB40 (thief skills)
-	virtual ~CUIButton654(); //v0
+	virtual ~CUIButtonChargenPlusMinus(); //v0
 
-	virtual void v6c() {} //CallbackProc (differs between the two button types)
+	virtual void UpdateCharacter() {} //v6c, called by LMouseBtDn (differs between the two button types)
 			
-	int u650;
+	BOOL m_bLMouseBtState; //650h, 1 = down, 0 = up
 };
 
 class CUIButtonMageBookKnownSpell : public CUIButton { //Size 668h

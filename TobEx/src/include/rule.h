@@ -144,6 +144,41 @@ const unsigned int KIT_SHAPESHIFTER			= 0x10000000;
 const unsigned int KIT_BEASTFRIEND			= 0x20000000;
 const unsigned int KIT_BARBARIAN			= 0x40000000;
 
+//OBJECT.IDS
+const unsigned char OBJECT_NOTHING			= 0;
+const unsigned char OBJECT_MYSELF			= 1;
+const unsigned char OBJECT_LEADEROF			= 2;
+const unsigned char OBJECT_GROUPOF			= 3;
+const unsigned char OBJECT_WEAKESTOF		= 4;
+const unsigned char OBJECT_STRONGESTOF		= 5;
+const unsigned char OBJECT_MOSTDAMAGEDOF	= 6;
+const unsigned char OBJECT_LEASTDAMAGEDOF	= 7;
+const unsigned char OBJECT_PROTECTEDBY		= 8;
+const unsigned char OBJECT_PROTECTOROF		= 9;
+const unsigned char OBJECT_LASTATTACKEROF	= 10;
+const unsigned char OBJECT_LASTTARGETEDBY	= 11;
+const unsigned char OBJECT_NEARESTENEMYOF	= 12;
+const unsigned char OBJECT_LASTCOMMANDEDBY	= 13;
+const unsigned char OBJECT_NEAREST			= 14;
+const unsigned char OBJECT_LASTHITTER		= 15;
+const unsigned char OBJECT_LASTHELP			= 16;
+const unsigned char OBJECT_LASTTRIGGER		= 17;
+const unsigned char OBJECT_LASTSEENBY		= 18;
+const unsigned char OBJECT_LASTTALKEDTOBY	= 19;
+const unsigned char OBJECT_LASTHEARDBY		= 20;
+const unsigned char OBJECT_PLAYER1			= 21;
+const unsigned char OBJECT_PLAYER2			= 22;
+const unsigned char OBJECT_PLAYER3			= 23;
+const unsigned char OBJECT_PLAYER4			= 24;
+const unsigned char OBJECT_PLAYER5			= 25;
+const unsigned char OBJECT_PLAYER6			= 26;
+const unsigned char OBJECT_PROTAGONIST		= 27;
+const unsigned char OBJECT_STRONGESTOFMALE	= 28;
+const unsigned char OBJECT_2NEARESTENEMYOF	= 29;
+const unsigned char OBJECT_3NEARESTENEMYOF	= 30;
+const unsigned char OBJECT_4NEARESTENEMYOF	= 31;
+const unsigned char OBJECT_5NEARESTENEMYOF	= 32;
+
 //RACE.IDS
 const unsigned char RACE_HUMAN		= 1;
 const unsigned char RACE_ELF		= 2;
@@ -248,6 +283,14 @@ const unsigned int STATE_MIRRORIMAGE			= 0x40000000;
 const unsigned int STATE_CONFUSED				= 0x80000000;
 
 //TRIGGER.IDS
-const short TRIGGER_TOOK_DAMAGE		= 0x00CC;
+const short TRIGGER_NONE					= 0x0000;
+const short TRIGGER_ATTACKED_BY				= 0x0002;
+const short TRIGGER_SEE						= 0x401C;
+const short TRIGGER_HIT_BY					= 0x0020;
+const short TRIGGER_HP_PERCENT_LT			= 0x402D;
+const short TRIGGER_STATE_CHECK				= 0x4037;
+const short TRIGGER_OR						= 0x4089;
+const short TRIGGER_PERSONAL_SPACE_DISTANCE = 0x40B3;
+const short TRIGGER_TOOK_DAMAGE				= 0x00CC;
 
 #endif //RULE_H

@@ -25,7 +25,10 @@ struct CGameOptionsEx {
 	BOOL bEffAttacksPerRoundFix;
 	BOOL bEffAwakenFix;
 	BOOL bEffDamageAwaken;
-	int nEffBlindnessFix;
+	BOOL bEffBlindnessAsSpellDesc;
+	BOOL bEffBlindnessFix;
+	BOOL bEffCastSpellConditionMod;
+	BOOL bEffCastingLevelModFix;
 	BOOL bEffBackstabEveryHitConfig;
 	BOOL bEffDamageBypassMirrorImageConfig;
 	BOOL bEffDispelMagicalItemConfig;
@@ -54,13 +57,15 @@ struct CGameOptionsEx {
 	BOOL bEnginePriestKnownSpellsExtend;
 	BOOL bEngineAllowDualClassAll;
 	BOOL bEngineAllowEquipArmorCombat;
-	BOOL bEngineCastingLevelBonus;
+	BOOL bEngineAllowZeroStartXP;
 	BOOL bEngineAssBHPenaltyKit;
 	BOOL bEngineClericRangerHLAFix;
-	BOOL bEngineExperienceFix;
-	int nEngineContingencyTriggerDelay;
+	BOOL bEngineXPReportFix;
+	int nEngineCustomSoAStartXP;
+	int nEngineCustomToBStartXP;
 	BOOL bEngineModifyEffectStacking;
 	BOOL bEngineDisableInvPauseSP;
+	BOOL bEngineDisableXPBoost;
 	BOOL bEngineCharmSilenceRemoval;
 	BOOL bEngineExpandedStats;
 	BOOL bEngineExternHPTables;
@@ -70,6 +75,7 @@ struct CGameOptionsEx {
 	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;
 	BOOL bEngineTargetDeadFix;
+	BOOL bEngineWeapSpecNumAttacksMod;
 
 	BOOL bItemsBackstabRestrictionsConfig;
 	BOOL bItemsCriticalHitAversionConfig;
@@ -90,6 +96,7 @@ struct CGameOptionsEx {
 	BOOL bSpellsTargetInvisConfig;
 
 	BOOL bTriggerPickpocketFailed;
+	BOOL bTriggerExpandedTriggers;
 	BOOL bTriggerKitFix;
 
 	BOOL bUserKitsExtend;
@@ -105,6 +112,7 @@ struct CGameOptionsEx {
 	BOOL bUserFourInventorySlots;
 
 	BOOL bVideoDisableBrightestFix;
+	BOOL bVideoEnableMorePaperdolls;
 	BOOL bVideoIWDAnimAttack3Fix;
 	BOOL bVideoVvcAlphaCrashFix;
 
@@ -114,7 +122,10 @@ protected:
 
 extern CGameOptionsEx* pGameOptionsEx;
 
-int GetIniValue(LPCTSTR, LPCTSTR);
+int GetCoreIniValue(LPCTSTR szSection, LPCTSTR szKey);
+int GetCoreIniValue(LPCTSTR szSection, LPCTSTR szKey, LPCTSTR szDefault);
+int GetTweakIniValue(LPCTSTR szSection, LPCTSTR szKey);
+int GetTweakIniValue(LPCTSTR szSection, LPCTSTR szKey, LPCTSTR szDefault);
 void InitOptions();
 
 #endif //OPTIONS_H

@@ -83,7 +83,7 @@ void CUIButtonMageBookDn::OnLClicked(POINT pt) {
 		if (nValues < 6) {
 			CUIButtonMageBook_KnownSpellOffset = 0;
 		} else {
-			CUIButtonMageBook_KnownSpellOffset = min(CUIButtonMageBook_KnownSpellOffset + 4, nValues - 6);
+			CUIButtonMageBook_KnownSpellOffset = min(CUIButtonMageBook_KnownSpellOffset + 4, 4 * (nValues - 6));
 		}
 
 		for (int i = 27; i <= 50; i++ ) {

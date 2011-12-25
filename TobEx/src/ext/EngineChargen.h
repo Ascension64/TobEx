@@ -24,4 +24,6 @@ public:
 	void DETOUR_InitSoundset(CCreatureObject& cre);
 };
 
+BOOL CCharGen_MageSchoolPanelCanContinue(CCreatureObject&);
+
 #endif //ENGINECHARGEN_H

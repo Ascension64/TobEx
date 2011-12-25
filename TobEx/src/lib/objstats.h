@@ -10,6 +10,7 @@
 typedef IECPtrList COnAttackEffList; //AA657C
 
 struct CConditionalSpell { //Size 204h
+	void* operator new (size_t size);
 	void operator delete(void* mem);
 
 	Trigger t; //0h
@@ -216,18 +217,20 @@ public:
 	short wSecondsElapsed; //24h, range 0-(wPeriod) to determine when to apply for mode 3
 };
 
-class CRepeatingEffList : public IECPtrList { //20h
+class CRepeatingEffList : public IECPtrList { //Size 20h
 public:
 	//AA65A0
 	int nTicksElapsed; //1ch
 };
 
 struct CSpellProtection { //Size Ch
+	CSpellProtection();
+
 	ResRef rSpell; //0h
-	STRREF strrefMsg; //08h
+	STRREF strrefMsg; //8h
 };
 
-class CSpellProtectionList : public IECPtrList {
+class CSpellProtectionList : public IECPtrList { //Size 1Ch
 public:
 	//AA65C4
 };

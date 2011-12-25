@@ -31,14 +31,23 @@ public:
 		CPtrArray u1c; //AAB3E0
 	} u122;
 
-	CHotkey u152[91];
-
-	int u42a[23]; //42ah
+	CHotkey keymap[91]; //152h
+	char keybuffer[92]; //42ah
 	int u486;
 	int u48a;
 	int u48e;
 	int u492;
-	int charType; //496h, 2 = newChar, 5 = BG1Char
+	
+	//0: before Gender
+	//1: before Race
+	//2: before Class
+	//3: before Abilities
+	//4: before Alignment
+	//5: before Skills/Proficiencies
+	//6: before Color Choices
+	//7: before Name
+	int nChargenProgress; //496h
+
 	Enum eChar; //49ah, global enum value of chargen char
 	int u49e;
 	int u4a2;

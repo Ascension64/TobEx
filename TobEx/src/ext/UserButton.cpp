@@ -20,7 +20,7 @@ unsigned int DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 	CUIScrollBarChargenKit& scroll = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
 
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_GetKitId(): Kit selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_GetKitId(): Kit selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
@@ -94,7 +94,7 @@ STRREF DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitHelpText(Object& o) {
 	CUIScrollBarChargenKit& scroll = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
 
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_GetKitHelpText(): Kit selection scroll bar not found. Did you install the required WeiDU component?\r\n";
+		LPCTSTR lpsz = "DETOUR_GetKitHelpText(): Kit selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);

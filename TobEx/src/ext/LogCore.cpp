@@ -60,7 +60,7 @@ void __cdecl DETOUR_AssertFailedQuit(int dwLine, LPCTSTR szPath, LPCTSTR szExpre
 	LPCTSTR szReason = szMessage == NULL ? Assertion_GetReason(Eip) : szMessage;
 	LPCTSTR szFormat = "ASSERTION FAILED! Return Address: 0x%X File: %s Line: %d Expression: %s Message: %s\r\n";
 
-	console.write(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
+	console.write(CONSOLEFORECOLOR_ERROR, szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 	L.timestamp();
 	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 
@@ -80,7 +80,7 @@ void __cdecl DETOUR_AssertFailedContinue(int dwLine, LPCTSTR szPath, LPCTSTR szE
 	LPCTSTR szReason = szMessage == NULL ? Assertion_GetReason(Eip) : szMessage;
 	LPCTSTR szFormat = "Assertion warning. Return Address: 0x%X File: %s Line: %d Expression: %s Message: %s\r\n";
 
-	console.write(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
+	console.write(CONSOLEFORECOLOR_WARNING, szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 	L.timestamp();
 	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 

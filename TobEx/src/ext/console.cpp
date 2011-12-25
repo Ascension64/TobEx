@@ -74,3 +74,23 @@ Console& Console::write(LPCTSTR format, int n, ...) {
 
 	return *this;
 }
+
+Console& Console::write(char color, LPCTSTR format, int n, ...) {
+	CString s;
+    va_list v;
+    va_start(v, n);
+	s.FormatV(format, v);
+	DWORD size = s.GetLength();
+
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+
+	GetConsoleScreenBufferInfo(hOutput, &cbsi);
+
+	EnterCriticalSection(&csConsole);
+	SetConsoleTextAttribute(hOutput, color);
+	WriteConsoleA(hOutput, (LPCTSTR)s, size, &size, NULL);
+	SetConsoleTextAttribute(hOutput, cbsi.wAttributes);
+	LeaveCriticalSection(&csConsole);
+
+	return *this;
+}

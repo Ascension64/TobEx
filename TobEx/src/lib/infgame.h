@@ -88,6 +88,8 @@ struct CRuleTables { //Size 1DB0h
 	int GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit);
 	BOOL IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace);
 	char GetMageSchool(short wKitLow);
+	bool GetContingencyConditionTexts(STRREF* pStrref, STRREF* pDescription, short wIndex);
+	bool GetContingencyTargetTexts(STRREF* pStrref, STRREF* pDescription, short wIndex);
 	ResRef GetMageSpellRefAutoPick(char nSpellLevel, char nIndex);
 
 	CRuleTable RMODCHR; //0h
@@ -284,6 +286,8 @@ extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned in
 extern int (CRuleTables::*CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int);
 extern BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char);
 extern char (CRuleTables::*CRuleTables_GetMageSchool)(short);
+extern bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, STRREF*, short);
+extern bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h
@@ -361,7 +365,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		int ua8;
 		char uac;
 		char uad; //padding?
-	} m_CMultiplayerSettings; //1e46h
+	} m_MultiplayerSettings; //1e46h
 
 	struct CRemoteGameMode { //Size 1Ch
 	//Constructor: 0x5B0C30
@@ -669,8 +673,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	IECString u4cdc;
 	int u4ce0;
 	int u4ce4;
-	int u4ce8;
-	BOOL m_bThroneOfBhaalSong; //4cech - used to determine which song to play at start screen
+	BOOL m_bTutorialGame; //4ce8h
+	BOOL m_bThroneOfBhaalGame; //4cech - used to determine which song to play at start screen, 1 = use MP in STARTARE.2DA
 	Enum eBaldurObject; //4cf0h, BALDUR.BCS CBaldurObject
 	int nTimeStopObjectsTicksLeft; //4cf4h, remaining timestop (area sprites) ticks
 	Enum eTimeStopExempt; //4cf8h, exempt from timestop (area sprites)

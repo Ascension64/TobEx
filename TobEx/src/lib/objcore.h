@@ -118,6 +118,8 @@ public:
 	virtual void v58() {} //v58 DoNothing
 	virtual void v5c() {} //v5c void SetVerticalListPosition(POSITION*), sets 16h
 
+	Enum GetEnum();
+
 	char nObjType; //4h, CGameObject type
 	//objectType, e.g. see constants from AAA9E1-AAA9ED
 	//having a 1 means scriptable
@@ -154,6 +156,8 @@ public:
 	char u40; // gets +1 then %3, set to 1 when there are no triggers
 	char u41; //padding?
 };
+
+extern Enum (CGameObject::*CGameObject_GetEnum)();
 
 class CGameSprite : public CGameObject { //Size 3D4h
 //Constructor: 0x476DED

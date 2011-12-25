@@ -21,7 +21,7 @@ BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellPriest)(int, int, int*)
 BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellMage)(int, int, int*) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(int, int, int*)>			(&CCreatureObject::AddMemSpellMage),		0x8CBBEA);
 void (CCreatureObject::*Tramp_CCreatureObject_ValidateAttackSequence)(char*) =
-	SetFP(static_cast<void (CCreatureObject::*)(char*)>					(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
+	SetFP(static_cast<void (CCreatureObject::*)(char*)>						(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
 
 CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest(int nLevel, int nIndex) {
 	int Eip;

@@ -233,12 +233,12 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
 					break;
 				}
 			}
+		} else {
+			LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_OpAdd(): this->pStatsEx == NULL || cds.pStatsEx == NULL\r\n";
+			L.timestamp();
+			L.append(lpsz);
+			console.write(lpsz);
 		}
-	} else {
-		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_OpAdd(): this->pStatsEx == NULL || cds.pStatsEx == NULL\r\n";
-		L.timestamp();
-		L.append(lpsz);
-		console.write(lpsz);
 	}
 
 	(this->*Tramp_CDerivedStats_OpAdd)(cds);

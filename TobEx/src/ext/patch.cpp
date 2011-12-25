@@ -10,6 +10,7 @@
 #include "log.h"
 #include "ChitinCore.h"
 #include "InfGameCore.h"
+#include "ItemCommon.h"
 #include "ScriptAction.h"
 #include "ScriptTrigger.h"
 #include "UserCommon.h"
@@ -105,36 +106,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	if (pGameOptionsEx->bActionSpellTargetInvisConfig) {
-		//mov edx,dword ptr ss:[ebp+8]
-		//mov ecx,dword ptr ss:[ebp-764]
-		//push edx
-		//push ecx
-		//call ...
-		char bytes[] = {0x8B, 0x8D, 0x9C, 0xF8, 0xFF, 0xFF,
-						0x52,
-						0x51,
-						0xE8};
-		vDataList.push_back( Data(0x911EA7, 9, bytes) );
-
-		//CALL address
-		void* ptr = (void*)CCreatureObject_IsValidSpellTarget_CheckInvisible;
-		DWORD address = (DWORD)ptr - 5  - 0x911EAF;
-		char* bytes2 = (char*)&address;
-		vDataList.push_back( Data(0x911EB0, 4, bytes2) );
-
-		//test eax,eax
-		//je 911FA7
-		//jmp 91222F
-		char bytes3[] = {0x85, 0xC0,
-						0x0F, 0x84, 0xEB, 0x00, 0x00, 0x00,
-						0xE9, 0x6E, 0x03, 0x00, 0x00};
-		vDataList.push_back( Data(0x911EB4, 13, bytes3) );
-
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-	
 	if (pGameOptionsEx->bActionEquipRangedFix) {
 		//mov al,byte ptr ds:[edx]
 		//cmp al,2 (TYPE_RANGED)
@@ -1112,6 +1083,25 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bItemsNonAmmoLauncherDamageFix) {
+		//mov ecx,dword ptr ss:[ebp+c]
+		//push ecx
+		//nop
+		char bytes[] = {0x8B, 0x4D, 0x0C,
+						0x51,
+						0x90};
+	    vDataList.push_back( Data(0x90C946, 5, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CItem_GetFirstLauncherAbility;
+		DWORD address = (DWORD)ptr - 5  - 0x90C94B;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x90C94C, 4, bytes2) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bItemsUseAnimPercentThrowingWeapons) {
 		//these changes significantly reduce the amount of CMessageSetAnimationSequence objects sent during a round because throwing weapons are not matching SEQ_SHOOT
 
@@ -1235,6 +1225,36 @@ void InitPatches() {
 		bytes[0] = 0xAA;
 		vDataList.push_back( Data(0x8A3BB6, 1, bytes) );
 	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bSpellsTargetInvisConfig) {
+		//mov edx,dword ptr ss:[ebp+8]
+		//mov ecx,dword ptr ss:[ebp-764]
+		//push edx
+		//push ecx
+		//call ...
+		char bytes[] = {0x8B, 0x8D, 0x9C, 0xF8, 0xFF, 0xFF,
+						0x52,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x911EA7, 9, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_IsValidSpellTarget_CheckInvisible;
+		DWORD address = (DWORD)ptr - 5  - 0x911EAF;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x911EB0, 4, bytes2) );
+
+		//test eax,eax
+		//je 911FA7
+		//jmp 91222F
+		char bytes3[] = {0x85, 0xC0,
+						0x0F, 0x84, 0xEB, 0x00, 0x00, 0x00,
+						0xE9, 0x6E, 0x03, 0x00, 0x00};
+		vDataList.push_back( Data(0x911EB4, 13, bytes3) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

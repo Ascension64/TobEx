@@ -33,6 +33,8 @@ void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL) =
 	SetFP(static_cast<void (CCreatureObject::*)(BOOL)>						(&CCreatureObject::UnequipAll),				0x8CA628);
 void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL) =
 	SetFP(static_cast<void (CCreatureObject::*)(BOOL)>						(&CCreatureObject::EquipAll),				0x8CA88D);
+void (CCreatureObject::*CCreatureObject_AddKnownSpell)(ResRef&, BOOL) =
+	SetFP(static_cast<void (CCreatureObject::*)(ResRef&, BOOL)>				(&CCreatureObject::AddKnownSpell),			0x8CAFE4);
 CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellPriest)(int, int) =
 	SetFP(static_cast<CreFileKnownSpell& (CCreatureObject::*)(int, int)>	(&CCreatureObject::GetKnownSpellPriest),	0x8CB91F);
 CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellMage)(int, int) =
@@ -51,6 +53,12 @@ BOOL (CCreatureObject::*CCreatureObject_AddMemSpellMage)(int, int, int*) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(int, int, int*)>			(&CCreatureObject::AddMemSpellMage),		0x8CBBEA);
 BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(int, int, int*)>			(&CCreatureObject::AddMemSpellInnate),		0x8CBC70);
+BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellPriest)(ResRef&, int) =
+	SetFP(static_cast<BOOL (CCreatureObject::*)(ResRef&, int)>				(&CCreatureObject::AddKnownSpellPriest),	0x8CC4F4);
+BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellMage)(ResRef&, int) =
+	SetFP(static_cast<BOOL (CCreatureObject::*)(ResRef&, int)>				(&CCreatureObject::AddKnownSpellMage),		0x8CC524);
+BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellInnate)(ResRef&, int) =
+	SetFP(static_cast<BOOL (CCreatureObject::*)(ResRef&, int)>				(&CCreatureObject::AddKnownSpellInnate),	0x8CC554);
 IECString& (CCreatureObject::*CCreatureObject_GetLongName)() =
 	SetFP(static_cast<IECString& (CCreatureObject::*)()>					(&CCreatureObject::GetLongName),			0x8D49D9);
 STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)() =
@@ -81,6 +89,7 @@ CItem& CCreatureObject::GetFirstEquippedLauncherOfAbility(ItmFileAbility& abilit
 	{ return (this->*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ability, pnSlot); }
 void CCreatureObject::UnequipAll(BOOL bKeepEffects)								{ return (this->*CCreatureObject_UnequipAll)(bKeepEffects); }
 void CCreatureObject::EquipAll(BOOL bDoNotApplyEffects)							{ return (this->*CCreatureObject_EquipAll)(bDoNotApplyEffects); }
+void CCreatureObject::AddKnownSpell(ResRef& name, BOOL bPrintEventMessage)		{ return (this->*CCreatureObject_AddKnownSpell)(name, bPrintEventMessage); }
 CreFileKnownSpell& CCreatureObject::GetKnownSpellPriest(int nLevel, int nIndex)	{ return (this->*CCreatureObject_GetKnownSpellPriest)(nLevel, nIndex); }
 CreFileKnownSpell& CCreatureObject::GetKnownSpellMage(int nLevel, int nIndex)	{ return (this->*CCreatureObject_GetKnownSpellMage)(nLevel, nIndex); }
 CreFileKnownSpell& CCreatureObject::GetKnownSpellInnate(int nLevel, int nIndex)	{ return (this->*CCreatureObject_GetKnownSpellInnate)(nLevel, nIndex); }
@@ -90,6 +99,9 @@ CreFileMemSpell& CCreatureObject::GetMemSpellInnate(int nLevel, int nIndex)		{ r
 BOOL CCreatureObject::AddMemSpellPriest(int nLevel, int nIndex, int* pIndex)	{ return (this->*CCreatureObject_AddMemSpellPriest)(nLevel, nIndex, pIndex); }
 BOOL CCreatureObject::AddMemSpellMage(int nLevel, int nIndex, int* pIndex)		{ return (this->*CCreatureObject_AddMemSpellMage)(nLevel, nIndex, pIndex); }
 BOOL CCreatureObject::AddMemSpellInnate(int nLevel, int nIndex, int* pIndex)	{ return (this->*CCreatureObject_AddMemSpellInnate)(nLevel, nIndex, pIndex); }
+BOOL CCreatureObject::AddKnownSpellPriest(ResRef& name, int nLevel)				{ return (this->*CCreatureObject_AddKnownSpellPriest)(name, nLevel); }
+BOOL CCreatureObject::AddKnownSpellMage(ResRef& name, int nLevel)				{ return (this->*CCreatureObject_AddKnownSpellMage)(name, nLevel); }
+BOOL CCreatureObject::AddKnownSpellInnate(ResRef& name, int nLevel)				{ return (this->*CCreatureObject_AddKnownSpellInnate)(name, nLevel); }
 IECString& CCreatureObject::GetLongName()										{ return (this->*CCreatureObject_GetLongName)(); }
 STRREF CCreatureObject::GetLongNameStrRef()										{ return (this->*CCreatureObject_GetLongNameStrRef)(); }
 void CCreatureObject::ValidateAttackSequence(char* pSeq)						{ return (this->*CCreatureObject_ValidateAttackSequence)(pSeq); }

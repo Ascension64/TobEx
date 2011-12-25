@@ -7,7 +7,6 @@ struct CGameOptionsEx {
 	CGameOptionsEx();
 
 	BOOL bActionAddKitFix;
-	BOOL bActionSpellTargetInvisConfig;
 	BOOL bActionEquipRangedFix;
 	
 	BOOL bDebugCriticalMsgBoxFix;
@@ -43,6 +42,7 @@ struct CGameOptionsEx {
 	BOOL bEffIWDMageMemSpellMod;
 	BOOL bEffIWDPriestMemSpellMod;
 	BOOL bEffIWDStrengthMod;
+	BOOL bEffLearnSpellMod;
 	BOOL bEffMagicResistFix;
 	BOOL bEffNoDamageNoSpellInterrupt;
 	BOOL bEffPoisonFix;
@@ -75,6 +75,7 @@ struct CGameOptionsEx {
 	BOOL bItemsCriticalHitAversionConfig;
 	BOOL bItemsRandomTreasureExtend;
 	BOOL bItemsExternCreExcl;
+	BOOL bItemsNonAmmoLauncherDamageFix;
 	BOOL bItemsUseAnimPercentThrowingWeapons;
 
 	BOOL bMusicSonglistExtend;
@@ -85,6 +86,8 @@ struct CGameOptionsEx {
 	BOOL bSoundExistenceFix;
 	BOOL bSoundExternWalkSounds;
 	BOOL bSoundSoundsetSubtitles;
+
+	BOOL bSpellsTargetInvisConfig;
 
 	BOOL bTriggerPickpocketFailed;
 	BOOL bTriggerKitFix;

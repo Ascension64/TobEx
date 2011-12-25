@@ -72,10 +72,10 @@ IECString (CRuleTables::*CRuleTables_GetClassString)(unsigned char, unsigned int
 	SetFP(static_cast<IECString (CRuleTables::*)(unsigned char, unsigned int)>				(&CRuleTables::GetClassString),				0x62B072);
 int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int) =
 	SetFP(static_cast<int (CRuleTables::*)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int)>
-																							(&CRuleTables::CalculateNewHPRule),	0x630ED4);
+																							(&CRuleTables::CalculateNewHPRule),			0x630ED4);
 int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int) =
 	SetFP(static_cast<int (CRuleTables::*)(char, char, CDerivedStats&, CDerivedStats&, int, int)>
-																							(&CRuleTables::CalculateNewHPSubclass),	0x631055);
+																							(&CRuleTables::CalculateNewHPSubclass),		0x631055);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>									(&CRuleTables::GetMageSpellRef),			0x633691);
 STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char) =
@@ -87,6 +87,8 @@ int (CRuleTables::*CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsi
 	SetFP(static_cast<int (CRuleTables::*)(char, char, char, BOOL, int, unsigned int)>		(&CRuleTables::GetWeapProfMax),				0x636C57);
 BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char) =
 	SetFP(static_cast<BOOL (CRuleTables::*)(unsigned int, unsigned char)>					(&CRuleTables::IsMageSchoolAllowed),		0x637DEE);
+char (CRuleTables::*CRuleTables_GetMageSchool)(short) =
+	SetFP(static_cast<char (CRuleTables::*)(short)>											(&CRuleTables::GetMageSchool),				0x639D4A);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>									(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
 
@@ -106,6 +108,7 @@ void CRuleTables::GetDetailedClassString(char Class, unsigned int dwKit, unsigne
 int CRuleTables::GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit)
 	{ return (this->*CRuleTables_GetWeapProfMax)(dwClassId, bClassPrimary, bClassSecondary, bClassMage, dwWeapProfId, dwKit); }
 BOOL CRuleTables::IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace) { return (this->*CRuleTables_IsMageSchoolAllowed)(dwKit, nRace); }
+char CRuleTables::GetMageSchool(short wKitLow) { return (this->*CRuleTables_GetMageSchool)(wKitLow); }
 ResRef CRuleTables::GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) { return (this->*CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex); }
 
 //CInfGame
@@ -113,9 +116,12 @@ short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum) =
 	SetFP(static_cast<short (CInfGame::*)(Enum)>			(&CInfGame::GetPartyMemberSlot),	0x69410C);
 CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString) =
 	SetFP(static_cast<CArea& (CInfGame::*)(IECString)>		(&CInfGame::GetLoadedArea),			0x69A7D4);
+void (CInfGame::*CInfGame_AddExperienceParty)(int) =
+	SetFP(static_cast<void (CInfGame::*)(int)>				(&CInfGame::AddExperienceParty),	0x6A97C1);
 void (CInfGame::*CInfGame_StorePartyLocations)(BOOL) =
 	SetFP(static_cast<void (CInfGame::*)(BOOL)>				(&CInfGame::StorePartyLocations),	0x6B7D93);
 
 short CInfGame::GetPartyMemberSlot(Enum e)				{ return (this->*CInfGame_GetPartyMemberSlot)(e); }
 CArea& CInfGame::GetLoadedArea(IECString sAreaName)		{ return (this->*CInfGame_GetLoadedArea)(sAreaName); }
+void CInfGame::AddExperienceParty(int n)				{ return (this->*CInfGame_AddExperienceParty)(n); }
 void CInfGame::StorePartyLocations(BOOL bUseSecondList)	{ return (this->*CInfGame_StorePartyLocations)(bUseSecondList); }

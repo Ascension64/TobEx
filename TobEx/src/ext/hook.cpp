@@ -84,6 +84,8 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CEffectMageMemSpellMod_ApplyEffect, DETOUR_CEffectMageMemSpellMod::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffIWDPriestMemSpellMod)
 		DetourMemberFunction(Tramp_CEffectPriestMemSpellMod_ApplyEffect, DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffLearnSpellMod)
+		DetourMemberFunction(Tramp_CEffectLearnSpell_ApplyEffect, DETOUR_CEffectLearnSpell::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffMagicResistFix)
 		DetourMemberFunction(Tramp_CEffectMagicResistMod_ApplyEffect, DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffPoisonFix)

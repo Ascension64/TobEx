@@ -94,6 +94,7 @@ public:
 	CItem& GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot);
 	void UnequipAll(BOOL bKeepEffects);
 	void EquipAll(BOOL bDoNotApplyEffects);
+	void AddKnownSpell(ResRef& name, BOOL bPrintEventMessage);
 	CreFileKnownSpell& GetKnownSpellPriest(int nLevel, int nIndex);
 	CreFileKnownSpell& GetKnownSpellMage(int nLevel, int nIndex);
 	CreFileKnownSpell& GetKnownSpellInnate(int nLevel, int nIndex);
@@ -103,6 +104,9 @@ public:
 	BOOL AddMemSpellPriest(int nLevel, int nIndex, int* pIndex);
 	BOOL AddMemSpellMage(int nLevel, int nIndex, int* pIndex);
 	BOOL AddMemSpellInnate(int nLevel, int nIndex, int* pIndex);
+	BOOL AddKnownSpellPriest(ResRef& name, int nLevel);
+	BOOL AddKnownSpellMage(ResRef& name, int nLevel);
+	BOOL AddKnownSpellInnate(ResRef& name, int nLevel);
 	IECString& GetLongName();
 	STRREF GetLongNameStrRef();
 	void ValidateAttackSequence(char* pSeq);
@@ -559,6 +563,7 @@ extern void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, in
 extern CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot);
 extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
 extern void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL);
+extern void (CCreatureObject::*CCreatureObject_AddKnownSpell)(ResRef&, BOOL);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellPriest)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellMage)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellInnate)(int, int);
@@ -568,6 +573,9 @@ extern CreFileMemSpell& (CCreatureObject::*CCreatureObject_GetMemSpellInnate)(in
 extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellPriest)(int, int, int*);
 extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellMage)(int, int, int*);
 extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*);
+extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellPriest)(ResRef&, int);
+extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellMage)(ResRef&, int);
+extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellInnate)(ResRef&, int);
 extern IECString& (CCreatureObject::*CCreatureObject_GetLongName)();
 extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
 extern void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*);

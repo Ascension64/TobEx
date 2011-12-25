@@ -42,6 +42,8 @@ BOOL (CEffectRegeneration::*Tramp_CEffectRegeneration_ApplyEffect)(CCreatureObje
 	SetFP(static_cast<BOOL (CEffectRegeneration::*)(CCreatureObject&)>		(&CEffectRegeneration::ApplyEffect),		0x51C615);
 BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectMagicResistMod::*)(CCreatureObject&)>	(&CEffectMagicResistMod::ApplyEffect),		0x52EB97);
+BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectLearnSpell::*)(CCreatureObject&)>		(&CEffectLearnSpell::ApplyEffect),			0x52C250);
 CEffectRepeatingEff& (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int) =
 	SetFP(static_cast<CEffectRepeatingEff& (CEffectRepeatingEff::*)(ITEM_EFFECT&, POINT&, Enum, int, int)>
 																			(&CEffectRepeatingEff::Construct),			0x561AA0);
@@ -1259,6 +1261,135 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 			bPurge = TRUE;
 			break;
 	}
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectLearnSpell::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	//original code
+
+	IECString sLearnSpellMod;
+	int nLearnSpellMod;
+	int nRow = creTarget.cdsPrevious.intelligence;
+	int nCol = 0; //LEARN_SPELL
+	if (nCol < g_pChitin->pGame->INTMOD.nCols &&
+		nRow < g_pChitin->pGame->INTMOD.nRows &&
+		nCol >= 0 &&
+		nRow >= 0) {
+		sLearnSpellMod = *((g_pChitin->pGame->INTMOD.pDataArray) + (g_pChitin->pGame->INTMOD.nCols * nRow + nCol));
+	} else {
+		sLearnSpellMod = g_pChitin->pGame->INTMOD.defaultVal;
+	}
+	sscanf_s((LPCTSTR)sLearnSpellMod, "%d", &nLearnSpellMod);
+
+	int nRand = IERand() * 100 >> 15;
+
+	if (g_pChitin->cNetwork.bSessionOpen &&
+		g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier < 0) {
+		nRand = 1;
+	} else
+	if (g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier < 0) {
+		nRand = 1;
+	}
+
+	ResSplContainer resSpell;
+	resSpell.LoadResource(effect.rResource, TRUE, TRUE);
+	if (!resSpell.bLoaded) {
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	short wLevel = resSpell.GetSpellLevel();
+	short wType = resSpell.GetSpellType();
+	int nExclusionFlags = resSpell.GetExclusionFlags();
+
+	if (effect.nParam2 & EFFECTLEARNSPELL_RESTRICT_SCHOOL &&
+		wType == SPELLTYPE_MAGE &&
+		creTarget.GetKitUnusableFlag() & nExclusionFlags) {
+		resSpell.Unload();
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	if (effect.nParam2 & EFFECTLEARNSPELL_NO_SORCERER &&
+		creTarget.GetCurrentObject().GetClass() == CLASS_SORCERER) {
+		resSpell.Unload();
+		bPurge = TRUE;
+		return TRUE;
+	}
+
+	BOOL bAlreadyKnown = FALSE;
+	POSITION pos;
+	if (effect.nParam2 & EFFECTLEARNSPELL_NO_XP_DUPLICATE) {
+		switch (wType) {
+		case SPELLTYPE_MAGE:
+			pos = creTarget.m_KnownSpellsWizard[wLevel - 1].GetHeadPosition();
+			while (pos != NULL && bAlreadyKnown == FALSE) {
+				CreFileKnownSpell* pKSpell = (CreFileKnownSpell*)creTarget.m_KnownSpellsWizard[wLevel - 1].GetNext(pos);
+				if (pKSpell->name == resSpell.name) {
+					bAlreadyKnown = TRUE;
+				}
+			}
+			break;
+		case SPELLTYPE_PRIEST:
+			pos = creTarget.m_KnownSpellsPriest[wLevel - 1].GetHeadPosition();
+			while (pos != NULL && bAlreadyKnown == FALSE) {
+				CreFileKnownSpell* pKSpell = (CreFileKnownSpell*)creTarget.m_KnownSpellsPriest[wLevel - 1].GetNext(pos);
+				if (pKSpell->name == resSpell.name) {
+					bAlreadyKnown = TRUE;
+				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (creTarget.m_BaseStats.kit[1] != KIT_TRUECLASS) {
+		if (g_pChitin->pGame->GetMageSchool(creTarget.m_BaseStats.kit[1]) == resSpell.GetSpellSchoolPrimary()) {
+			nLearnSpellMod += 15;
+		} else {
+			nLearnSpellMod -= 15;
+		}
+	}
+
+	if ((nRand <= nLearnSpellMod) ||
+		effect.nParam2 & EFFECTLEARNSPELL_SUCCESS_ALWAYS) { //success
+		switch (wType) {
+		case SPELLTYPE_MAGE:
+			creTarget.AddKnownSpellMage(effect.rResource, wLevel - 1);
+			break;
+		case SPELLTYPE_PRIEST:
+			creTarget.AddKnownSpellPriest(effect.rResource, wLevel - 1);
+			break;
+		default:
+			creTarget.AddKnownSpell(effect.rResource, FALSE);
+			break;
+		}
+
+		if (!bAlreadyKnown &&
+			!(effect.nParam2 & EFFECTLEARNSPELL_NO_XP_ALWAYS) &&
+			creTarget.GetCurrentObject().EnemyAlly <= EA_CONTROLLEDCUTOFF) {
+			IECString sXPBonus;
+			int nXPBonus;
+			nRow = 2; //LEARN_SPELL
+			nCol = wLevel - 1;
+
+			if (nCol < g_pChitin->pGame->XPBONUS.nCols &&
+				nRow < g_pChitin->pGame->XPBONUS.nRows &&
+				nCol >= 0 &&
+				nRow >= 0) {
+				sXPBonus = *((g_pChitin->pGame->XPBONUS.pDataArray) + (g_pChitin->pGame->XPBONUS.nCols * nRow + nCol));
+			} else {
+				sXPBonus = g_pChitin->pGame->XPBONUS.defaultVal;
+			}
+			sscanf_s((LPCTSTR)sXPBonus, "%d", &nXPBonus);
+
+			g_pChitin->pGame->AddExperienceParty(nXPBonus);
+		}
+	}
+
+	resSpell.Unload();
+	bPurge = TRUE;
 	return TRUE;
 }
 

@@ -22,6 +22,7 @@
 #define CEFFECT_OPCODE_PRIEST_MEM_SPELL_MOD	0x03E
 #define CEFFECT_OPCODE_DISEASE				0x04E
 #define CEFFECT_OPCODE_REGENERATION			0x062
+#define CEFFECT_OPCODE_LEARN_SPELL			0x093
 #define CEFFECT_OPCODE_WING_BUFFET			0x0EB
 #define CEFFECT_OPCODE_DISINTEGRATE			0x0EE
 #define CEFFECT_OPCODE_FREEDOM				0x0D4
@@ -232,6 +233,26 @@ public:
 };
 
 extern BOOL (CEffectMagicResistMod::*CEffectMagicResistMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectLearnSpell
+#define EFFECTLEARNSPELL_NO_XP_ALWAYS		0x00000001 //new in GemRB, TobEx
+#define EFFECTLEARNSPELL_PRINT_MESSAGE		0x00000002 //reserved for GemRB
+#define EFFECTLEARNSPELL_SUCCESS_ALWAYS		0x00000004 //new in GemRB, TobEx
+#define EFFECTLEARNSPELL_MEMORIZE_NOW		0x00000008 //reserved for GemRB
+#define EFFECTLEARNSPELL_NO_XP_DUPLICATE	0x00000010 //new in TobEx
+#define EFFECTLEARNSPELL_RESTRICT_SCHOOL	0x00000020 //new in TobEx
+#define EFFECTLEARNSPELL_NO_SORCERER		0x00000040 //new in TobEx
+
+class CEffectLearnSpell : public CEffect { //opcode A6h
+public:
+	//AA7F70
+	virtual ~CEffectLearnSpell() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectLearnSpell::*CEffectLearnSpell_ApplyEffect)(CCreatureObject&);
+
 
 //CEffectWingBuffet
 class CEffectWingBuffet : public CEffect { //opcode EBh

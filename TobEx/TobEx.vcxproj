@@ -121,7 +121,9 @@
     <ClCompile Include="src\ext\EnginePriestBook.cpp" />
     <ClCompile Include="src\ext\EngineWorld.cpp" />
     <ClCompile Include="src\ext\InfGameCommon.cpp" />
+    <ClCompile Include="src\ext\ItemCommon.cpp" />
     <ClCompile Include="src\ext\ItemCore.cpp" />
+    <ClCompile Include="src\ext\LogCommon.cpp" />
     <ClCompile Include="src\ext\MessageExt.cpp" />
     <ClCompile Include="src\ext\ObjectCommon.cpp" />
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
@@ -217,7 +219,9 @@
     <ClInclude Include="src\ext\EngineWorld.h" />
     <ClInclude Include="src\ext\InfGameCommon.h" />
     <ClInclude Include="src\ext\InfGameCore.h" />
+    <ClInclude Include="src\ext\ItemCommon.h" />
     <ClInclude Include="src\ext\ItemCore.h" />
+    <ClInclude Include="src\ext\LogCommon.h" />
     <ClInclude Include="src\ext\MessageExt.h" />
     <ClInclude Include="src\ext\ObjectCommon.h" />
     <ClInclude Include="src\ext\ObjectCreature.h" />

@@ -6,15 +6,16 @@
 #include "options.h"
 #include "console.h"
 #include "log.h"
+#include "LogCommon.h"
 
 void (__cdecl *Tramp_AssertFailedQuit)(int, LPCTSTR, LPCTSTR, LPCTSTR) =
 	reinterpret_cast<void (__cdecl *)(int, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F06C);
 void (__cdecl *Tramp_AssertFailedContinue)(int, LPCTSTR, LPCTSTR, LPCTSTR) =
 	reinterpret_cast<void (__cdecl *)(int, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F193);
 void (__cdecl *Tramp_WriteToFile)(CFile&, CString&) =
-	reinterpret_cast<void (__cdecl *)(CFile&, CString&)>					(0x99F371);
+	reinterpret_cast<void (__cdecl *)(CFile&, CString&)>				(0x99F371);
 void (__stdcall *Tramp_CloseLogAndErr)() =
-	reinterpret_cast<void (__stdcall *)()>									(0x99F1BA);
+	reinterpret_cast<void (__stdcall *)()>								(0x99F1BA);
 
 void __stdcall DETOUR_CloseLogAndErr() {
 	Tramp_CloseLogAndErr();
@@ -56,11 +57,12 @@ void __cdecl DETOUR_AssertFailedQuit(int dwLine, LPCTSTR szPath, LPCTSTR szExpre
 		sFile = sFile.Mid(n+1, sFile.GetLength() - 1);
 	}
 
+	LPCTSTR szReason = szMessage == NULL ? Assertion_GetReason(Eip) : szMessage;
 	LPCTSTR szFormat = "ASSERTION FAILED! Return Address: 0x%X File: %s Line: %d Expression: %s Message: %s\r\n";
 
-	console.write(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szMessage);
+	console.write(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 	L.timestamp();
-	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szMessage);
+	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 
 	return Tramp_AssertFailedQuit(dwLine, szPath, szExpression, szMessage);
 }
@@ -75,11 +77,12 @@ void __cdecl DETOUR_AssertFailedContinue(int dwLine, LPCTSTR szPath, LPCTSTR szE
 		sFile = sFile.Mid(n+1, sFile.GetLength() - 1);
 	}
 
+	LPCTSTR szReason = szMessage == NULL ? Assertion_GetReason(Eip) : szMessage;
 	LPCTSTR szFormat = "Assertion warning. Return Address: 0x%X File: %s Line: %d Expression: %s Message: %s\r\n";
 
-	console.write(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szMessage);
+	console.write(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 	L.timestamp();
-	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szMessage);
+	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szReason);
 
 	return Tramp_AssertFailedContinue(dwLine, szPath, szExpression, szMessage);
 }

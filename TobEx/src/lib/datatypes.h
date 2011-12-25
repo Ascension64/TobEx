@@ -117,7 +117,7 @@ struct CreFileData { //Size 268h
 	char sex;
 	char strength;
 	char strengthEx;
-	char intelligene;
+	char intelligence;
 	char wisdom;
 	char dexterity;
 	char constitution;
@@ -236,7 +236,7 @@ struct EffFileData { //size 108h
 	int nParentItemSlot; //9ch
 	char variable[32]; //a0h
 	int nSourceCreLevel; //c0h
-	int uc8; //c4h, related to berserk modifier
+	BOOL bDoSingleUse; //c4h, all effects start with 1, some opcodes will check this, do once off stuff, and then set to 0
 	int nType2; //c8h
 	int ud0[15]; //cch
 };

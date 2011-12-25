@@ -11,7 +11,7 @@ CGameOptionsEx* pGameOptionsEx = NULL;
 
 CGameOptionsEx::CGameOptionsEx() {
 	bActionAddKitFix = FALSE;
-	bActionSpellTargetInvisConfig = FALSE;
+	bSpellsTargetInvisConfig = FALSE;
 	bActionEquipRangedFix = FALSE;
 
 	bDebugCriticalMsgBoxFix = FALSE;
@@ -47,6 +47,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffIWDMageMemSpellMod = FALSE;
 	bEffIWDPriestMemSpellMod = FALSE;
 	bEffIWDStrengthMod = FALSE;
+	bEffLearnSpellMod = FALSE;
 	bEffMagicResistFix = FALSE;
 	bEffNoDamageNoSpellInterrupt = FALSE;
 	bEffPoisonFix = FALSE;
@@ -78,6 +79,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bItemsBackstabRestrictionsConfig = FALSE;
 	bItemsCriticalHitAversionConfig = FALSE;
 	bItemsRandomTreasureExtend = FALSE;
+	bItemsNonAmmoLauncherDamageFix = FALSE;
 	bItemsUseAnimPercentThrowingWeapons = FALSE;
 
 	bMusicSonglistExtend = FALSE;
@@ -113,7 +115,6 @@ CGameOptionsEx::CGameOptionsEx() {
 
 void CGameOptionsEx::Init() {
 	bActionAddKitFix = GetIniValue("Action", "AddKit Actions Fix");
-	bActionSpellTargetInvisConfig = GetIniValue("Action", "Configurable Spells Can Target Invisible");
 	bActionEquipRangedFix = GetIniValue("Action", "EquipRanged Action Fix");
 
 	bDebugCriticalMsgBoxFix = GetIniValue("Debug", "Critical Error Message Box Fix");
@@ -149,6 +150,7 @@ void CGameOptionsEx::Init() {
 	bEffIWDMageMemSpellMod = GetIniValue("Effect Opcodes", "IWD Style Mage Spell Slots Mod");
 	bEffIWDPriestMemSpellMod = GetIniValue("Effect Opcodes", "IWD Style Priest Spell Slots Mod");
 	bEffIWDStrengthMod = GetIniValue("Effect Opcodes", "IWD Style Strength Mod");
+	//bEffLearnSpellMod = GetIniValue("Effect Opcodes", "Learn Spell Mod");
 	bEffMagicResistFix = GetIniValue("Effect Opcodes", "Magic Resistance Mod Fix");
 	bEffNoDamageNoSpellInterrupt = GetIniValue("Effect Opcodes", "No Spell Interruption On Zero Damage");
 	bEffPoisonFix = GetIniValue("Effect Opcodes", "Poison Fix");
@@ -181,6 +183,7 @@ void CGameOptionsEx::Init() {
 	bItemsCriticalHitAversionConfig = GetIniValue("Items", "Configurable Critial Hit Aversion");
 	bItemsRandomTreasureExtend = GetIniValue("Items", "Enable 99 Random Treasure Rows");
 	bItemsExternCreExcl = GetIniValue("Items", "Externalise Item-Creature Exclusions");
+	bItemsNonAmmoLauncherDamageFix = GetIniValue("Items", "Non-Ammo Launcher Damage Fix");
 	bItemsUseAnimPercentThrowingWeapons = GetIniValue("Items", "Use Animation Percentages for Throwing Weapons");
 
 	bMusicSonglistExtend = GetIniValue("Music", "Extended Songlist");
@@ -191,6 +194,8 @@ void CGameOptionsEx::Init() {
 	bSoundExistenceFix = GetIniValue("Sound", "Existence Sound Fix");
 	bSoundExternWalkSounds = GetIniValue("Sound", "Externalise Animation Walking Sounds");
 	bSoundSoundsetSubtitles = GetIniValue("Sound", "Soundset Subtitles");
+
+	bSpellsTargetInvisConfig = GetIniValue("Spells", "Configurable Spells Can Target Invisible");
 
 	bTriggerPickpocketFailed = GetIniValue("Trigger", "Enable PickpocketFailed Trigger");
 	bTriggerKitFix = GetIniValue("Trigger", "Kit Trigger Fix");

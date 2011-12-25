@@ -101,6 +101,14 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectLearnSpell
+extern BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectLearnSpell : public CEffectLearnSpell {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectRepeatingEff
 extern CEffectRepeatingEff& (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int);
 extern BOOL (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_ApplyEffect)(CCreatureObject&);

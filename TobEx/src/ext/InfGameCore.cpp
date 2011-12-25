@@ -439,10 +439,24 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 
 BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance) {
 	if (pRuleEx->m_nEncumbranceLowThreshold == 0) return FALSE;
+	if (nWeightAllowance == 0) {
+		LPCTSTR lpsz = "CRuleTables_IsLowEncumbrance(): division by zero\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+		return TRUE;
+	}
 	return (nWeight * 100 / nWeightAllowance) > pRuleEx->m_nEncumbranceLowThreshold;
 }
 
 BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance) {
 	if (pRuleEx->m_nEncumbranceHighThreshold == 0) return FALSE;
+	if (nWeightAllowance == 0) {
+		LPCTSTR lpsz = "CRuleTables_IsHighEncumbrance(): division by zero\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+		return TRUE;
+	}
 	return (nWeight * 100 / nWeightAllowance) > pRuleEx->m_nEncumbranceHighThreshold;
 }

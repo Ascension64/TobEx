@@ -156,7 +156,7 @@ public:
 	char u137;
 	int u138;
 	int u13c;
-	IECPtrList u140;
+	IECPtrList m_OpenPanels; //140h
 	int u15c[8];
 	int u17c;
 	CVidFont u184; //STONESML

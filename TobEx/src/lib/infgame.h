@@ -87,6 +87,7 @@ struct CRuleTables { //Size 1DB0h
 	void GetDetailedClassString(char Class, unsigned int dwKit, unsigned int dwFlags, IECString& ptr, CCreatureObject& cre);
 	int GetWeapProfMax(char dwClassId, char bClassPrimary, char bClassSecondary, BOOL bClassMage, int dwWeapProfId, unsigned int dwKit);
 	BOOL IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace);
+	char GetMageSchool(short wKitLow);
 	ResRef GetMageSpellRefAutoPick(char nSpellLevel, char nIndex);
 
 	CRuleTable RMODCHR; //0h
@@ -282,12 +283,14 @@ extern STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char);
 extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned int, unsigned int, IECString&, CCreatureObject&);
 extern int (CRuleTables::*CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int);
 extern BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char);
+extern char (CRuleTables::*CRuleTables_GetMageSchool)(short);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
 	short GetPartyMemberSlot(Enum e);
 	CArea& GetLoadedArea(IECString sAreaName);
+	void AddExperienceParty(int n);
 	void StorePartyLocations(BOOL);
 	
 #ifdef _DEBUG
@@ -702,6 +705,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 
 extern short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum);
 extern CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString);
+extern void (CInfGame::*CInfGame_AddExperienceParty)(int);
 extern void (CInfGame::*CInfGame_StorePartyLocations)(BOOL);
 
 #endif //INFGAME_H

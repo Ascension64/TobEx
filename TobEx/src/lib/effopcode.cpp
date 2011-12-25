@@ -95,6 +95,23 @@ BOOL (CEffectMagicResistMod::*CEffectMagicResistMod_ApplyEffect)(CCreatureObject
 
 BOOL CEffectMagicResistMod::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectMagicResistMod_ApplyEffect)(cre); }
 
+//CEffectLearnSpell
+BOOL (CEffectLearnSpell::*CEffectLearnSpell_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectLearnSpell::*)(CCreatureObject&)>			(&CEffectLearnSpell::ApplyEffect),			0x52C250);
+
+BOOL CEffectLearnSpell::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectLearnSpell_ApplyEffect)(cre); }
+
+//CEffectWingBuffet
+CEffectWingBuffet& (CEffectWingBuffet::*CEffectWingBuffet_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int) =
+	SetFP(static_cast<CEffectWingBuffet& (CEffectWingBuffet::*)(ITEM_EFFECT&, POINT&, Enum, int, int)>
+																				(&CEffectWingBuffet::Construct),			0x55E050);
+BOOL (CEffectWingBuffet::*CEffectWingBuffet_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectWingBuffet::*)(CCreatureObject&)>			(&CEffectWingBuffet::ApplyEffect),			0x53C791);
+
+CEffectWingBuffet::CEffectWingBuffet(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY) {
+	(this->*CEffectWingBuffet_Construct_5)(eff, ptSource, eSource, ptDestX, ptDestY); }
+BOOL CEffectWingBuffet::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectWingBuffet_ApplyEffect)(cre); }
+
 //CEffectDisintegrate
 BOOL (CEffectDisintegrate::*CEffectDisintegrate_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDisintegrate::*)(CCreatureObject&)>			(&CEffectDisintegrate::ApplyEffect),		0x53F01D);
@@ -111,17 +128,6 @@ BOOL (CEffectRepeatingEff::*CEffectRepeatingEff_ApplyEffect)(CCreatureObject&) =
 CEffectRepeatingEff::CEffectRepeatingEff(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY) {
 	(this->*CEffectRepeatingEff_Construct_5)(eff, ptSource, eSource, ptDestX, ptDestY); }
 BOOL CEffectRepeatingEff::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectRepeatingEff_ApplyEffect)(cre); }
-
-//CEffectWingBuffet
-CEffectWingBuffet& (CEffectWingBuffet::*CEffectWingBuffet_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int) =
-	SetFP(static_cast<CEffectWingBuffet& (CEffectWingBuffet::*)(ITEM_EFFECT&, POINT&, Enum, int, int)>
-																				(&CEffectWingBuffet::Construct),			0x55E050);
-BOOL (CEffectWingBuffet::*CEffectWingBuffet_ApplyEffect)(CCreatureObject&) =
-	SetFP(static_cast<BOOL (CEffectWingBuffet::*)(CCreatureObject&)>			(&CEffectWingBuffet::ApplyEffect),			0x53C791);
-
-CEffectWingBuffet::CEffectWingBuffet(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY) {
-	(this->*CEffectWingBuffet_Construct_5)(eff, ptSource, eSource, ptDestX, ptDestY); }
-BOOL CEffectWingBuffet::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectWingBuffet_ApplyEffect)(cre); }
 
 //CEffectRemoveProjectile
 BOOL (CEffectRemoveProjectile::*CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&) =

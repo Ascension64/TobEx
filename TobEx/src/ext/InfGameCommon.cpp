@@ -80,5 +80,60 @@ void CRuleTablesEx::Init() {
 		}
 	}
 
+	if (pGameOptionsEx->bItemsExternCreExcl) {
+		m_ItemCreExclude.LoadTable(ResRef("ITCREXCL"));
+		if (!m_ItemCreExclude.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): ITCREXCL.2DA not found. Did you install the required WeiDU component?\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		}
+	}
+
+	if (pGameOptionsEx->bEngineExpandedStats) {
+		Identifiers idStats("STATS");
+		if (!idStats.m_ids.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): Something went wrong with loading STATS.IDS. Expanded Stats is disabled.\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+			m_nStats = 201;
+		} else {
+			int nHighestStat = 201;
+			POSITION pos = idStats.entries.GetHeadPosition();
+			while (pos != NULL) {
+				IdsEntry* pIde = (IdsEntry*)(idStats.entries.GetNext(pos));
+				nHighestStat = max(nHighestStat, pIde->nOpcode);
+			}
+			m_nStats = nHighestStat;
+		}
+	}
+
+	m_nEncumbranceLowThreshold = -1;
+	m_nEncumbranceHighThreshold = -1;
+
+	if (pGameOptionsEx->bEngineExternEncumbrance) {
+		m_Encumbrance.LoadTable(ResRef("ENCUMBER"));
+		if (!m_Encumbrance.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): ENCUMBER.2DA not found. Did you install the required WeiDU component?\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		} else {
+			short s;
+			IECString sLowThreshold = m_Encumbrance.GetValue(IECString("THRESHOLD"), IECString("LOW_ENCUMBRANCE"));
+			IECString sHighThreshold = m_Encumbrance.GetValue(IECString("THRESHOLD"), IECString("HIGH_ENCUMBRANCE"));
+
+			sscanf_s((LPCTSTR)sLowThreshold, "%d", &s);
+			m_nEncumbranceLowThreshold = s;
+
+			sscanf_s((LPCTSTR)sHighThreshold, "%d", &s);
+			m_nEncumbranceHighThreshold = s;
+		}
+	}
+
+	if (m_nEncumbranceLowThreshold < 0) m_nEncumbranceLowThreshold = 100;
+	if (m_nEncumbranceHighThreshold < 0) m_nEncumbranceHighThreshold = 120;
+
 	return;
 }

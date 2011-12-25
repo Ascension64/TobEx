@@ -16,14 +16,14 @@ public:
 	CPanel& GetTopPanel();
 	void UpdateCharacter();
 
-	CHotkey ufe[91];
-	int u3d6[23];
+	CHotkey keymap[91]; //feh
+	char keybuffer[92]; //3d6h
 
 	IECPtrList cplOpenPanels; //432h
 	int dwProfsMax; //44eh, set but not used in-game
 	int u452;
 	CPtrArray u456; //AAD7D0
-	int u46a;
+	int nThievingPointsRemaining; //46ah
 	int u46e[7];
 	char u48a;
 	char u48b; //pad

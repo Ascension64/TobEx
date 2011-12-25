@@ -38,10 +38,13 @@ public:
 	Enum eSource; //0x8
 };
 
-class CPtrListMessage : public IECPtrList { //Size 1Ch
+class CPtrListMessage : public IECPtrList { //Size 1Eh
 public:
 	//AAB854
 	short Send(CMessage& msg, BOOL bForceAddToQueue);
+
+	char u1c; //gets u90 from CMultiplayerSettings
+	char u1d; //pad
 };
 
 extern short (CPtrListMessage::*CPtrListMessage_Send)(CMessage&, BOOL);

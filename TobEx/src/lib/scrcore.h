@@ -21,7 +21,16 @@ struct ResIdsContainer { //Size 10h
 class Identifiers { //Size 40h
 //Constructor: 0x40FB70
 public:
-	int* vtable; //0h
+	//AA5CF0
+	Identifiers();
+	Identifiers& Construct() { return *this; } //dummy
+
+	Identifiers(ResRef rFile);
+	Identifiers& Construct(ResRef rFile) { return *this; } //dummy
+
+	virtual ~Identifiers();
+	void Deconstruct() { return; } //dummy
+
 	ResIdsContainer m_ids; //4h
 	IECString u14; //14h
 	IECPtrList entries; //18h, contain IdsEntry objects
@@ -29,6 +38,11 @@ public:
 	int* pDataArray; //38h, ptr to array of pIdsEntry
 	int nArraySize; //3ch
 };
+
+extern Identifiers& (Identifiers::*Identifiers_Construct_0)();
+extern Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef);
+extern void (Identifiers::*Identifiers_Deconstruct)();
+
 
 struct CVariable { //Size 54h
 	char name[32]; //0h
@@ -106,8 +120,8 @@ struct Trigger { //Size 2Eh
 	Object o; //6h (O)
 	unsigned int dwFlags; //1ah
 	//bit0: NOT[!]
-	//bit1: trigger has been executed on CCreatureObject (added internally)
-	//bit2: checked with ? CDerivedStats.u640 involved? (added internally)
+	//bit1: TRIGGER_EXECUTED (added internally on purge)
+	//bit2: TRIGGER_UPDATED_SPRITE (added internally on add or purge)
 
 	int i2; //1eh (I)
 	int u22; //22h (unknown usage)

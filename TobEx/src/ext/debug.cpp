@@ -1,12 +1,15 @@
 #include "debug.h"
 
+#include "animext.h"
 #include "chitin.h"
 #include "engine.h"
 #include "infcursor.h"
 #include "infgame.h"
 #include "msgcore.h"
 #include "network.h"
+#include "objare.h"
 #include "objcre.h"
+#include "objtext.h"
 #include "rescore.h"
 #include "sndcore.h"
 #include "tlkcore.h"
@@ -15,17 +18,38 @@
 #include "objvef.h"
 #include "uitext.h"
 
+#define SIZE_CANIMATION0000			0x0976
+#define SIZE_CANIMATION1000			0x073A
+#define SIZE_CANIMATION1200			0x0AC6
+#define SIZE_CANIMATION1300			0x07F4
+#define SIZE_CANIMATION2000			0x0E0C
+#define SIZE_CANIMATION3000			0x1106
+#define SIZE_CANIMATION4000			0x07E4
+#define SIZE_CANIMATION5000			0x16E0
+#define SIZE_CANIMATION6400			0x36B0
+#define SIZE_CANIMATION7000			0x0B2C
+#define SIZE_CANIMATION7300			0x0D3C
+#define SIZE_CANIMATION8000			0x0E02
+#define SIZE_CANIMATION9000			0x0C1A
+#define SIZE_CANIMATIONA000			0x0C1A
+#define SIZE_CANIMATIONB000			0x08C2
+#define SIZE_CANIMATIONC000			0x08CA
+#define SIZE_CANIMATIOND000			0x07E4
+#define SIZE_CANIMATIONE000			0x3278
 #define SIZE_CBALDURCHITIN			0x720C
 #define SIZE_CBUTTONARRAY			0x1820
 #define SIZE_CCHARGEN				0x148C
 #define SIZE_CCREATUREOBJECT		0x6774
 #define SIZE_CENGINE				0x00FE
+#define SIZE_CGAMETEXT				0x0620
 #define SIZE_CGUIMAIN				0x19E8
 #define SIZE_CINFCURSOR				0x08F6
 #define SIZE_CINFGAME				0x4DC8
+#define SIZE_CINVENTORY				0x1424
 #define SIZE_CMESSAGEHANDLER		0x0114
 #define SIZE_CNETWORK				0x0F3A
 #define SIZE_CNETWORKWINDOW			0x0088
+#define SIZE_COBJECTMARKER			0x005E
 #define SIZE_CRESHANDLER			0x02A8
 #define SIZE_CSOUND					0x006A
 #define SIZE_CSOUNDMIXER			0x28DA
@@ -45,17 +69,37 @@ void CheckSize(LPCTSTR lpszName, size_t nExpectedSize, size_t nActualSize) {
 }
 
 void Debug() {
+	_CheckSize(SIZE_CANIMATION0000, CAnimation0000);
+	_CheckSize(SIZE_CANIMATION1000, CAnimation1000);
+	_CheckSize(SIZE_CANIMATION1200, CAnimation1200);
+	_CheckSize(SIZE_CANIMATION1300, CAnimation1300);
+	_CheckSize(SIZE_CANIMATION2000, CAnimation2000);
+	_CheckSize(SIZE_CANIMATION3000, CAnimation3000);
+	_CheckSize(SIZE_CANIMATION4000, CAnimation4000);
+	_CheckSize(SIZE_CANIMATION5000, CAnimation5000);
+	_CheckSize(SIZE_CANIMATION6400, CAnimation6400);
+	_CheckSize(SIZE_CANIMATION7000, CAnimation7000);
+	_CheckSize(SIZE_CANIMATION8000, CAnimation8000);
+	_CheckSize(SIZE_CANIMATION9000, CAnimation9000);
+	_CheckSize(SIZE_CANIMATIONA000, CAnimationA000);
+	_CheckSize(SIZE_CANIMATIONB000, CAnimationB000);
+	_CheckSize(SIZE_CANIMATIONC000, CAnimationC000);
+	_CheckSize(SIZE_CANIMATIOND000, CAnimationD000);
+	_CheckSize(SIZE_CANIMATIONE000, CAnimationE000);
 	_CheckSize(SIZE_CBALDURCHITIN, CBaldurChitin);
 	_CheckSize(SIZE_CBUTTONARRAY, CInfGame::CButtonArray);
 	_CheckSize(SIZE_CCHARGEN, CCharGen);
 	_CheckSize(SIZE_CCREATUREOBJECT, CCreatureObject);
 	_CheckSize(SIZE_CENGINE, CEngine);
+	_CheckSize(SIZE_CGAMETEXT, CGameText);
 	_CheckSize(SIZE_CGUIMAIN, CBaldurChitin::CGUIMain);
 	_CheckSize(SIZE_CINFCURSOR, CInfCursor);
 	_CheckSize(SIZE_CINFGAME, CInfGame);
+	_CheckSize(SIZE_CINVENTORY, CInventory);
 	_CheckSize(SIZE_CMESSAGEHANDLER, CMessageHandler);
 	_CheckSize(SIZE_CNETWORK, CNetwork);
 	_CheckSize(SIZE_CNETWORKWINDOW, CNetworkWindow);
+	_CheckSize(SIZE_COBJECTMARKER, CObjectMarker);
 	_CheckSize(SIZE_CSOUND, CSound);
 	_CheckSize(SIZE_CSOUNDMIXER, CSoundMixer);
 	_CheckSize(SIZE_CRECORD, CRecord);

@@ -3,6 +3,13 @@
 
 #include "stdafx.h"
 
+struct CNetworkMessagePacket { //Size 10h
+	int u0; //0h
+	int nPlayerID; //4h
+	void* pDataChunk; //8h
+	unsigned int dwSIze; //ch
+};
+
 struct CNetworkWindow { //Size 88h
 //Constructor: 0x9BE2B9
 	bool bInit; //0h
@@ -20,7 +27,7 @@ struct CNetworkWindow { //Size 88h
 	int u1e[2];
 	int u26;
 	int u2a;
-	IECPtrList u2e; //AB9870, Messages (0x10 size))
+	IECPtrList u2e; //AB9870, Messages (0x10 size) DataChunk
 	IECPtrList u4a; //AB9870, Messages (0x10 size)
 	char u66;
 	char u67; //pad
@@ -123,7 +130,7 @@ public:
 	CNetworkWindow ServerWindows[6]; //752h
 	CNetworkWindow SoloServerWindow; //a82h
 	int ub0a[256];
-	CRITICAL_SECTION uf0a;
+	CRITICAL_SECTION csWindowMessages; //f0ah, for access to u2e of CNetworkWindow
 	CRITICAL_SECTION uf22;
 };
 

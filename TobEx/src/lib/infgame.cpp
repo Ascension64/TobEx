@@ -3,29 +3,60 @@
 #include "stdafx.h"
 #include "resref.h"
 
+//CWorldTimer
+void (CWorldTimer::*CWorldTimer_UnpauseGame)() =
+	SetFP(static_cast<void (CWorldTimer::*)()>		(&CWorldTimer::UnpauseGame),	0x649F8E);
+void (CWorldTimer::*CWorldTimer_PauseGame)() =
+	SetFP(static_cast<void (CWorldTimer::*)()>		(&CWorldTimer::PauseGame),		0x64A068);
+
+void CWorldTimer::UnpauseGame()	{ return (this->*CWorldTimer_UnpauseGame)(); }
+void CWorldTimer::PauseGame()	{ return (this->*CWorldTimer_PauseGame)(); }
+
 //CRuleTable
 CRuleTable& (CRuleTable::*CRuleTable_Construct)() =
 	SetFP(static_cast<CRuleTable& (CRuleTable::*)()>						(&CRuleTable::Construct),	0x63E230);
 void (CRuleTable::*CRuleTable_LoadRes)(ResRef&) =
 	SetFP(static_cast<void (CRuleTable::*)(ResRef&)>						(&CRuleTable::LoadTable),	0x402D85);
-IECString& (CRuleTable::*CRuleTable_GetValue)(IECString&, IECString&) =
+IECString& (CRuleTable::*CRuleTable_GetValue_2)(IECString&, IECString&) =
 	SetFP(static_cast<IECString& (CRuleTable::*)(IECString&, IECString&)>	(&CRuleTable::GetValue),	0x4047EF);
 extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL) =
 	SetFP(static_cast<bool (CRuleTable::*)(IECString&, POSITION*, BOOL)>	(&CRuleTable::FindString),	0x404D61);
 void (CRuleTable::*CRuleTable_UnloadRes)() =
 	SetFP(static_cast<void (CRuleTable::*)()>								(&CRuleTable::UnloadRes),	0x43C010);
+extern IECString& (CRuleTable::*CRuleTable_GetValue_1)(POINT&) =
+	SetFP(static_cast<IECString& (CRuleTable::*)(POINT&)>					(&CRuleTable::GetValue),	0x63E2B0);
 
 CRuleTable::CRuleTable() { (this->*CRuleTable_Construct)(); nRows = 0; nCols = 0; }
 void CRuleTable::LoadTable(ResRef& r) { return (this->*CRuleTable_LoadRes)(r); }
-IECString& CRuleTable::GetValue(IECString& sColName, IECString& sRowName) { return (this->*CRuleTable_GetValue)(sColName, sRowName); }
+IECString& CRuleTable::GetValue(IECString& sColName, IECString& sRowName) { return (this->*CRuleTable_GetValue_2)(sColName, sRowName); }
 bool CRuleTable::FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders) { return (this->*CRuleTable_FindString)(s, ppos, bCheckHeaders); }
 void CRuleTable::UnloadRes() { return (this->*CRuleTable_UnloadRes)(); }
+IECString& CRuleTable::GetValue(POINT& ptColRow) { return (this->*CRuleTable_GetValue_1)(ptColRow); }
+
 CRuleTable::~CRuleTable() { //as 0x43C420 except for ~CString()
 	if (pColHeaderArray) delete[] pColHeaderArray;
 	if (pRowHeaderArray) delete[] pRowHeaderArray;
 	if (pDataArray) delete[] pDataArray;
 	UnloadRes();
 	//CString defaultVal is automatically removed
+}
+
+IECString& CRuleTable::GetRowName(int nRow) {
+	if (nRow < nRows &&
+		nRow >= 0) {
+		return *(pRowHeaderArray + nRow);
+	} else {
+		return defaultVal;
+	}
+}
+
+IECString& CRuleTable::GetColName(int nCol) {
+	if (nCol < nCols &&
+		nCol >= 0) {
+		return *(pColHeaderArray + nCol);
+	} else {
+		return defaultVal;
+	}
 }
 
 //CRuleTables

@@ -24,9 +24,12 @@
 #define CEFFECT_OPCODE_WING_BUFFET			0x0EB
 #define CEFFECT_OPCODE_DISINTEGRATE			0x0EE
 #define CEFFECT_OPCODE_FREEDOM				0x0D4
+#define CEFFECT_OPCODE_AVATAR_REMOVAL		0x10F
 #define CEFFECT_OPCODE_REPEATING_EFFECT		0x110
 #define CEFFECT_OPCODE_REMOVE_PROJECTILE	0x111
 #define CEFFECT_OPCODE_CUTSCENE_2			0x12A
+#define CEFFECT_OPCODE_ANIMATION_REMOVAL	0x13B
+#define CEFFECT_OPCODE_SET_STAT				0x13E //added by TobEx
 
 //CEffectAttacksPerRoundMod
 class CEffectAttacksPerRoundMod : public CEffect { //opcode 1h
@@ -283,5 +286,16 @@ public:
 };
 
 extern BOOL (CEffectCutScene2::*CEffectCutScene2_ApplyEffect)(CCreatureObject&);
+
+//CEffectAnimationRemoval
+class CEffectAnimationRemoval : public CEffect { //opcode 10Fh
+public:
+	//AAA858
+	virtual ~CEffectAnimationRemoval() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectAnimationRemoval::*CEffectAnimationRemoval_ApplyEffect)(CCreatureObject&);
 
 #endif //EFFOPCODE_H

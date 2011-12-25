@@ -1,8 +1,20 @@
 #include "scrcore.h"
 
-static Object* poInvalid = reinterpret_cast<Object*>(0xB75AB8);
+//Identifiers
+Identifiers& (Identifiers::*Identifiers_Construct_0)() =
+	SetFP(static_cast<Identifiers& (Identifiers::*)()>			(&Identifiers::Construct),		0x40FB70);
+Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef) =
+	SetFP(static_cast<Identifiers& (Identifiers::*)(ResRef)>	(&Identifiers::Construct),		0x40FC37);
+void (Identifiers::*Identifiers_Deconstruct)() =
+	SetFP(static_cast<void (Identifiers::*)()>					(&Identifiers::Deconstruct),	0x40FE31);
+
+Identifiers::Identifiers()				{ (this->*Identifiers_Construct_0)(); }
+Identifiers::Identifiers(ResRef rFile)	{ (this->*Identifiers_Construct_1_ResRef)(rFile); }
+Identifiers::~Identifiers()				{ (this->*Identifiers_Deconstruct)(); }
 
 //Object
+static Object* poInvalid = reinterpret_cast<Object*>(0xB75AB8);
+
 Object* (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&) =
 	SetFP(static_cast<Object* (Object::*)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&)>
 																		(&Object::Construct),			0x410C14);

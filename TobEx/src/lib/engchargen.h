@@ -43,7 +43,8 @@ public:
 	int u49e;
 	int u4a2;
 	int nSpellsRemaining; //4a6h
-	int u4aa[13];
+	int nThievingPointsRemaining; //4aah, used only for the BG1 Skills panel
+	int u4ae[12];
 	IECPtrList m_OpenPanels; //4deh
 	int u4fa;
 	int u4fe;

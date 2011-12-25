@@ -14,6 +14,11 @@ public:
 	CRuleTable m_RaceText;
 	CRuleTable m_AnimWalkSound;
 	CRuleTable m_AnimTerrainSound;
+	CRuleTable m_ItemCreExclude;
+	int m_nStats;
+	CRuleTable m_Encumbrance;
+	short m_nEncumbranceLowThreshold;
+	short m_nEncumbranceHighThreshold;
 
 protected:
 	void Init();

@@ -168,3 +168,214 @@ STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
 	}
 
 }
+
+BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef) {
+	BOOL bPass = TRUE;
+
+	if (pRuleEx->m_ItemCreExclude.m_2da.bLoaded) {
+		for (int row = 0; row < pRuleEx->m_ItemCreExclude.nRows; row++) {
+			IECString sRowName = pRuleEx->m_ItemCreExclude.GetRowName(row);
+			IECString sCreName(cre.name);
+
+			POINT loc;
+			loc.y = row;
+
+			loc.x = 0;
+			IECString sItm = pRuleEx->m_ItemCreExclude.GetValue(loc);
+
+			loc.x = 1;
+			BOOL bNoPickupEquip = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+
+			loc.x = 3;
+			BOOL bOnlyEquip = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+
+			loc.x = 9;
+			BOOL bNoEquip = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+
+			if (cre.m_Inventory.items[wSlot] != NULL) {
+				if (!sRowName.CompareNoCase((LPCTSTR)sCreName) &&
+					!sItm.CompareNoCase(cre.m_Inventory.items[wSlot]->m_itm.name) &&
+					bNoPickupEquip) {
+					loc.x = 2;
+					STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+					*pStrRef = strref;
+					if (pGameOptionsEx->bDebugVerbose) {
+						LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s with NO_PICKUP_E %s\r\n";
+						L.timestamp();
+						L.append(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+						console.write(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+					}
+					bPass = FALSE;
+				}
+			}
+
+			if (&itmGrabbed != NULL) {
+				if (sRowName.CompareNoCase((LPCTSTR)sCreName) &&
+					!sItm.CompareNoCase(itmGrabbed.m_itm.name) &&
+					bOnlyEquip) {
+					loc.x = 4;
+					STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+					*pStrRef = strref;
+					if (pGameOptionsEx->bDebugVerbose) {
+						LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s with ONLY_EQUIP %s\r\n";
+						L.timestamp();
+						L.append(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+						console.write(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+					}
+					bPass = FALSE;
+				}
+			}
+
+			if (&itmGrabbed != NULL) {
+				if (!sRowName.CompareNoCase((LPCTSTR)sCreName) &&
+					!sItm.CompareNoCase(itmGrabbed.m_itm.name) &&
+					bNoEquip) {
+					loc.x = 10;
+					STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+					*pStrRef = strref;
+					if (pGameOptionsEx->bDebugVerbose) {
+						LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s with NO_DROP_E %s\r\n";
+						L.timestamp();
+						L.append(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+						console.write(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+					}
+					bPass = FALSE;
+				}
+			}
+
+		}
+	} else {
+		IECString sName(cre.name);
+
+		if (cre.m_Inventory.items[wSlot] != NULL) {
+			//fail if target slot has cre-specific item
+			if (!sName.CompareNoCase("MINSC") && cre.m_Inventory.items[wSlot]->m_itm.name == "MISC84") {
+				*pStrRef = 0x27EA;
+				bPass = FALSE;
+			}
+			if (!sName.CompareNoCase("ALORA") && cre.m_Inventory.items[wSlot]->m_itm.name == "MISC88") {
+				*pStrRef = 0x27EB;
+				bPass = FALSE;
+			}
+			if (!sName.CompareNoCase("EDWIN") && cre.m_Inventory.items[wSlot]->m_itm.name == "MISC89") {
+				*pStrRef = 0x27EE;
+				bPass = FALSE;
+			}
+		}
+
+		//fail if active item to be equipped is cre-specific
+		if (&itmGrabbed != NULL) {
+			if (sName.CompareNoCase("XAN") && itmGrabbed.m_itm.name == "SW1H13") {
+				*pStrRef = 0x27EC;
+				bPass = FALSE;
+			}
+			if (sName.CompareNoCase("ELDOTH") && itmGrabbed.m_itm.name == "AROW14") {
+				*pStrRef = 0x27EC;
+				bPass = FALSE;
+			}
+			if (sName.CompareNoCase("MINSC") && itmGrabbed.m_itm.name == "MISC84") {
+				*pStrRef = 0x27EA;
+				bPass = FALSE;
+			}
+			if (sName.CompareNoCase("ALORA") && itmGrabbed.m_itm.name == "MISC88") {
+				*pStrRef = 0x27EB;
+				bPass = FALSE;
+			}
+			if (sName.CompareNoCase("EDWIN") && itmGrabbed.m_itm.name == "MISC89") {
+				*pStrRef = 0x27EE;
+				bPass = FALSE;
+			}
+		}
+
+	}
+
+	return bPass;
+}
+
+BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef) {
+	BOOL bPass = TRUE;
+
+	if (pRuleEx->m_ItemCreExclude.m_2da.bLoaded) {
+		for (int row = 0; row < pRuleEx->m_ItemCreExclude.nRows; row++) {
+			IECString sRowName = pRuleEx->m_ItemCreExclude.GetRowName(row);
+			IECString sCreName(cre.name);
+
+			POINT loc;
+			loc.y = row;
+
+			loc.x = 0;
+			IECString sItm = pRuleEx->m_ItemCreExclude.GetValue(loc);
+
+			loc.x = 5;
+			BOOL bNoPickupInv = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+
+			loc.x = 7;
+			BOOL bNoDropInv = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+
+			if (cre.m_Inventory.items[wSlot] != NULL) {
+				if (!sRowName.CompareNoCase((LPCTSTR)sCreName) &&
+					!sItm.CompareNoCase(cre.m_Inventory.items[wSlot]->m_itm.name) &&
+					bNoPickupInv) {
+					loc.x = 6;
+					STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+					*pStrRef = strref;
+					if (pGameOptionsEx->bDebugVerbose) {
+						LPCTSTR lpsz = "CRuleTables_DoesInvSlotPassCreExclude(): Found %s with NO_PICKUP_I %s\r\n";
+						L.timestamp();
+						L.append(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+						console.write(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+					}
+					bPass = FALSE;
+				}
+			}
+
+			if (&itmGrabbed != NULL) {
+				if (!sRowName.CompareNoCase((LPCTSTR)sCreName) &&
+					!sItm.CompareNoCase(itmGrabbed.m_itm.name) &&
+					bNoDropInv) {
+					loc.x = 8;
+					STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
+					*pStrRef = strref;
+					if (pGameOptionsEx->bDebugVerbose) {
+						LPCTSTR lpsz = "CRuleTables_DoesInvSlotPassCreExclude(): Found %s with NO_DROP_I %s\r\n";
+						L.timestamp();
+						L.append(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+						console.write(lpsz, 2, (LPCTSTR)sRowName, (LPCTSTR)sItm);
+					}
+					bPass = FALSE;
+				}
+			}
+
+		}
+	} else {
+		IECString sName(cre.name);
+
+		if (cre.m_Inventory.items[wSlot] != NULL) {
+			//fail if target slot has cre-specific item
+			if (!sName.CompareNoCase("MINSC") && cre.m_Inventory.items[wSlot]->m_itm.name == "MISC84") {
+				*pStrRef = 0x27EA;
+				bPass = FALSE;
+			}
+			if (!sName.CompareNoCase("ALORA") && cre.m_Inventory.items[wSlot]->m_itm.name == "MISC88") {
+				*pStrRef = 0x27EB;
+				bPass = FALSE;
+			}
+			if (!sName.CompareNoCase("EDWIN") && cre.m_Inventory.items[wSlot]->m_itm.name == "MISC89") {
+				*pStrRef = 0x27EE;
+				bPass = FALSE;
+			}
+		}
+	}
+
+	return bPass;
+}
+
+BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight) {
+	if (pRuleEx->m_nEncumbranceLowThreshold == 0) return FALSE;
+	return nWeight > pRuleEx->m_nEncumbranceLowThreshold;
+}
+
+BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight) {
+	if (pRuleEx->m_nEncumbranceHighThreshold == 0) return FALSE;
+	return nWeight > pRuleEx->m_nEncumbranceHighThreshold;
+}

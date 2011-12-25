@@ -22,7 +22,7 @@ void DETOUR_CItem::DETOUR_Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotAppl
 		Eip != 0x8C0AE6 &&
 		Eip != 0x8C0C6F &&
 		Eip != 0x8C1B9E &&
-		Eip != 0x8C1BE0) { //CInventory::Unmarshal calls should not apply these effects
+		Eip != 0x8C1BE0) { //CCreInventory::Unmarshal calls should not apply these effects
 
 		if (m_itm.name.IsEmpty()) return;
 		if (m_itm.pRes == NULL) return;

@@ -1,5 +1,6 @@
 #include "ObjectCreature.h"
 
+#include "animext.h"
 #include "chitin.h"
 #include "itmcore.h"
 #include "vidcore.h"
@@ -19,6 +20,8 @@ BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellPriest)(int, int, int*)
 	SetFP(static_cast<BOOL (CCreatureObject::*)(int, int, int*)>			(&CCreatureObject::AddMemSpellPriest),		0x8CBB64);
 BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellMage)(int, int, int*) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(int, int, int*)>			(&CCreatureObject::AddMemSpellMage),		0x8CBBEA);
+void (CCreatureObject::*Tramp_CCreatureObject_ValidateAttackSequence)(char*) =
+	SetFP(static_cast<void (CCreatureObject::*)(char*)>					(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
 
 CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest(int nLevel, int nIndex) {
 	int Eip;
@@ -63,6 +66,43 @@ BOOL DETOUR_CCreatureObject::DETOUR_AddMemSpellMage(int nLevel , int nIndex, int
 
 	return (this->*Tramp_CCreatureObject_AddMemSpellMage)(nLevel, nIndex, pIndex);
 }
+
+void DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence(char* pSeq) {
+	if (*pSeq == SEQ_SHOOT) {
+		CItem* pItm = m_Inventory.items[m_Inventory.nSlotSelected];
+		if (pItm) {
+			pItm->Demand();
+			ItmFileAbility& ability = pItm->GetAbility(m_Inventory.nAbilitySelected);
+			if (&ability) {
+				if (ability.attackType != ITEMABILITYATTACKTYPE_RANGED) *pSeq = SEQ_ATTACK;
+
+				if (CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(*this)) *pSeq = SEQ_ATTACK; //new line
+			} else {
+				*pSeq = SEQ_READY;
+			}
+			pItm->Release();
+		} else {
+			*pSeq = SEQ_READY;
+		}
+	} else if (*pSeq == SEQ_ATTACK) {
+		CItem* pItm = m_Inventory.items[m_Inventory.nSlotSelected];
+		if (pItm) {
+			pItm->Demand();
+			ItmFileAbility& ability = pItm->GetAbility(m_Inventory.nAbilitySelected);
+			if (&ability) {
+				if (ability.attackType == ITEMABILITYATTACKTYPE_RANGED) *pSeq = SEQ_SHOOT;
+
+				if (CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(*this)) *pSeq = SEQ_ATTACK; //new line
+			} else {
+				*pSeq = SEQ_READY;
+			}
+			pItm->Release();
+		} else {
+			*pSeq = SEQ_READY;
+		}
+	}
+	return;
+};
 
 void __stdcall CCreatureObject_PrintExtraCombatInfoText(CCreatureObject& creSelf, IECString& sText) {
 	if (g_pChitin->pGame->m_GameOptions.m_bDisplayExtraCombatInfo) {
@@ -180,3 +220,39 @@ BOOL CCreatureObject_TryBackstab(CCreatureObject& creSource, CItem& itmMain, Itm
 
 	return FALSE;
 }
+
+BOOL __stdcall CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(CCreatureObject& cre) {
+	CItem* pItm = cre.m_Inventory.items[cre.m_Inventory.nSlotSelected];
+	if (pItm == NULL) return FALSE;
+	pItm->Demand();
+	ItmFileAbility& ability = pItm->GetAbility(cre.m_Inventory.nAbilitySelected);
+	if (&ability == NULL) return FALSE;
+
+	int nSlot;
+	if (ability.attackType == ITEMABILITYATTACKTYPE_RANGED &&
+		cre.m_Inventory.nSlotSelected >= SLOT_WEAPON0 &&
+		cre.m_Inventory.nSlotSelected <= SLOT_WEAPON3 &&
+		&cre.GetFirstEquippedLauncherOfAbility(ability, &nSlot) == NULL) {
+		
+		//restrict to humanoid animation IDs only (this is Infinity Animations-friendly)
+		CAnimation* pAnimation = cre.m_animation.pAnimation;
+		if (pAnimation == NULL) {
+			LPCTSTR lpsz = "CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly(): cre.m_animation.pAnimation == NULL\r\n";
+			L.timestamp();
+			L.append(lpsz);
+			console.write(lpsz);
+		} else {
+			if (
+				(pAnimation->wAnimId >= 0x5000 &&
+				pAnimation->wAnimId < 0x5400 &&
+				((CAnimation5000*)pAnimation)->sPrefix1[0] == 'C' //avoid the mu (0xB5) symbol in Infinity Animations
+				) ||
+				pAnimation->wAnimId & 0x6000
+				) {
+				return TRUE;
+			}
+		}
+
+	}
+	return FALSE;
+};

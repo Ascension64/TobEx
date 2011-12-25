@@ -14,6 +14,11 @@ CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)() =
 	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetEquippedEffectsList),	0x567540);
 CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)() =
 	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetMainEffectsList),		0x567560);
+void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short) =
+	SetFP(static_cast<void (CCreatureObject::*)(short)>						(&CCreatureObject::SetAnimationSequence),	0x8AD630);
+CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot) =
+	SetFP(static_cast<CItem& (CCreatureObject::*)(ItmFileAbility&, int*)>	(&CCreatureObject::GetFirstEquippedLauncherOfAbility),
+																														0x8C5981);
 void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL) =
 	SetFP(static_cast<void (CCreatureObject::*)(BOOL)>						(&CCreatureObject::UnequipAll),				0x8CA628);
 void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL) =
@@ -40,6 +45,8 @@ IECString& (CCreatureObject::*CCreatureObject_GetLongName)() =
 	SetFP(static_cast<IECString& (CCreatureObject::*)()>					(&CCreatureObject::GetLongName),			0x8D49D9);
 STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)() =
 	SetFP(static_cast<STRREF (CCreatureObject::*)()>						(&CCreatureObject::GetLongNameStrRef),		0x8D4AAC);
+void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*) =
+	SetFP(static_cast<void (CCreatureObject::*)(char*)>					(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
 unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 	SetFP(static_cast<unsigned int (CCreatureObject::*)()>					(&CCreatureObject::GetKitUnusableFlag),		0x8E066B);
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
@@ -53,6 +60,9 @@ ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarge
 void CCreatureObject::RemoveItem(CCreatureObject& cre, int nSlot)				{ return (*CCreatureObject_RemoveItem)(cre, nSlot); }
 CEffectList& CCreatureObject::GetEquippedEffectsList()							{ return (this->*CCreatureObject_GetEquippedEffectsList)(); }
 CEffectList& CCreatureObject::GetMainEffectsList()								{ return (this->*CCreatureObject_GetMainEffectsList)(); }
+void CCreatureObject::SetAnimationSequence(short wSeq)							{ return (this->*CCreatureObject_SetAnimationSequence)(wSeq); }
+CItem& CCreatureObject::GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot)
+	{ return (this->*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ability, pnSlot); }
 void CCreatureObject::UnequipAll(BOOL bKeepEffects)								{ return (this->*CCreatureObject_UnequipAll)(bKeepEffects); }
 void CCreatureObject::EquipAll(BOOL bDoNotApplyEffects)							{ return (this->*CCreatureObject_EquipAll)(bDoNotApplyEffects); }
 CreFileKnownSpell& CCreatureObject::GetKnownSpellPriest(int nLevel, int nIndex)	{ return (this->*CCreatureObject_GetKnownSpellPriest)(nLevel, nIndex); }
@@ -66,6 +76,7 @@ BOOL CCreatureObject::AddMemSpellMage(int nLevel, int nIndex, int* pIndex)		{ re
 BOOL CCreatureObject::AddMemSpellInnate(int nLevel, int nIndex, int* pIndex)	{ return (this->*CCreatureObject_AddMemSpellInnate)(nLevel, nIndex, pIndex); }
 IECString& CCreatureObject::GetLongName()										{ return (this->*CCreatureObject_GetLongName)(); }
 STRREF CCreatureObject::GetLongNameStrRef()										{ return (this->*CCreatureObject_GetLongNameStrRef)(); }
+void CCreatureObject::ValidateAttackSequence(char* pSeq)						{ return (this->*CCreatureObject_ValidateAttackSequence)(pSeq); }
 unsigned int CCreatureObject::GetKitUnusableFlag()								{ return (this->*CCreatureObject_GetKitUnusableFlag)(); }
 void CCreatureObject::PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6) {
 	return (this->*CCreatureObject_PrintEventMessage)(wEventId, nParam1, nParam2, nParam3, strrefParam4, bParam5, sParam6);

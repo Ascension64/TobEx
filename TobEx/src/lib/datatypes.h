@@ -48,7 +48,7 @@ struct CreFileData { //Size 268h
 	unsigned short animId; //20h
 	short u22;
 	ColorRangeValues colors; //24h
-	char effType; //2ah, 0 = ITEM_EFFECT (Effect), 1 = CEffect
+	char effType; //2bh, 0 = ITEM_EFFECT (Effect), 1 = CEffect
 	ResRef smallPortrait; //2ch
 	ResRef largePortrait; //34h
 	char reputation; //3ch

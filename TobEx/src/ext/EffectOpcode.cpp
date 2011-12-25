@@ -49,9 +49,11 @@ BOOL (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_ApplyEffect)(CCreatureObje
 BOOL (CEffectDisintegrate::*Tramp_CEffectDisintegrate_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDisintegrate::*)(CCreatureObject&)>		(&CEffectDisintegrate::ApplyEffect),		0x53F01D);
 BOOL (CEffectRemoveProjectile::*Tramp_CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&) =
-	SetFP(static_cast<BOOL (CEffectRemoveProjectile::*)(CCreatureObject&)>		(&CEffectRemoveProjectile::ApplyEffect),	0x53F5D8);
+	SetFP(static_cast<BOOL (CEffectRemoveProjectile::*)(CCreatureObject&)>	(&CEffectRemoveProjectile::ApplyEffect),	0x53F5D8);
 BOOL (CEffectCutScene2::*Tramp_CEffectCutScene2_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectCutScene2::*)(CCreatureObject&)>			(&CEffectCutScene2::ApplyEffect),			0x542815);
+BOOL (CEffectAnimationRemoval::*Tramp_CEffectAnimationRemoval_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectAnimationRemoval::*)(CCreatureObject&)>	(&CEffectAnimationRemoval::ApplyEffect),	0x549C0C);
 
 BOOL DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
@@ -1238,28 +1240,108 @@ BOOL DETOUR_CEffectCutScene2::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	return TRUE;
 }
 
-CEffect13E::CEffect13E(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, int destX, int destY, BOOL bUseDice, Enum e2) \
+BOOL DETOUR_CEffectAnimationRemoval::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	/*original function
+	creTarget.cdsCurrent.animationRemoval = effect.nParam2;
+	return TRUE;*/
+
+	DWORD nSize = pRuleEx->m_nStats - 200;
+
+	if (creTarget.cdsCurrent.animationRemoval) {
+		int* pStatsEx = (int*)creTarget.cdsCurrent.animationRemoval;
+		pStatsEx[0] = effect.nParam2;
+	} else {
+		LPCTSTR lpsz = "DETOUR_CEffectAnimationRemoval::DETOUR_ApplyEffect(): pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	return TRUE;
+}
+
+CEffectSetStat::CEffectSetStat(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, int destX, int destY, BOOL bUseDice, Enum e2) \
 	: CEffect(data, ptSource, eSource, destX, destY, bUseDice, e2) {}
 
-CEffect& CEffect13E::Duplicate() {
-	CEffect13E* pceff = new CEffect13E(ToItemEffect(), effect.ptSource, eSource, effect.nDestX, effect.nDestY, FALSE, ENUM_INVALID_INDEX);
+CEffect& CEffectSetStat::Duplicate() {
+	CEffectSetStat* pceff = new CEffectSetStat(ToItemEffect(), effect.ptSource, eSource, effect.nDestX, effect.nDestY, FALSE, ENUM_INVALID_INDEX);
 	pceff->Unmarshal(effect);
 	return *pceff;
 }
 
-BOOL CEffect13E::ApplyEffect(CCreatureObject& creTarget) {
-	CMessageDisplayText* pcmDT = IENew CMessageDisplayText();
-	pcmDT->eTarget = creTarget.e;
-	pcmDT->eSource = creTarget.e;
-	pcmDT->sLeft = "TobEx";
-	pcmDT->sRight = "Applied effect 0x13E via AddMessage()";
-	pcmDT->rgbLeft = 0x239526;
-	pcmDT->rgbRight = 0x728460;
-	pcmDT->bFloatText = TRUE;
+BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
+	short nOpcode = effect.nParam2 & 0xFFFF;
+	short nModType = effect.nParam2 >> 16;
 
-	g_pChitin->messages.Send(*pcmDT, FALSE);
+	DWORD nSize = pRuleEx->m_nStats;
 
-	g_pChitin->pWorld->PrintToConsole(IECString("TobEx"), IECString("Applied effect 0x13E directly through CWorld"), 0x239526, 0xAB3FEC, -1, 0);
+	if (nOpcode < 301) {
+		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to set a stat with index < 301 (expected 301-%d)\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, nSize);
+		console.write(lpsz, 1, nSize);
+		return TRUE;
+	}
+
+	if (nOpcode > nSize) {
+		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): nOpcode out of bounds (expected maximum %d)\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, nSize);
+		console.write(lpsz, 1, nSize);
+		return TRUE;
+	}
+
+	if (!creTarget.cdsCurrent.animationRemoval) {
+		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): creTarget.cdsCurrent.pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+		return TRUE;
+	}
+
+	int* pStatsEx = (int*)creTarget.cdsCurrent.animationRemoval;
+
+	switch (nModType) {
+	case 0: //sum
+		pStatsEx[nOpcode - 200 - 1] += effect.nParam1;
+		break;
+	case 1: //set
+		pStatsEx[nOpcode - 200 - 1] = effect.nParam1;
+		break;
+	case 2: //percent
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] * effect.nParam1 / 100;
+		break;
+	case 3: //multiply
+		pStatsEx[nOpcode - 200 - 1] *= effect.nParam1;
+		break;
+	case 4: //divide
+		pStatsEx[nOpcode - 200 - 1] /= effect.nParam1;
+		break;
+	case 5: //modulus
+		pStatsEx[nOpcode - 200 - 1] %= effect.nParam1;
+		break;
+	case 6: //logical and
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] && effect.nParam1;
+		break;
+	case 7: //logical or
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] || effect.nParam1;
+		break;
+	case 8: //bitwise and
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] && effect.nParam1;
+		break;
+	case 9: //bitwise or
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] || effect.nParam1;
+		break;
+	case 10: //not
+		pStatsEx[nOpcode - 200 - 1] = !pStatsEx[nOpcode - 200 - 1];
+		break;
+	default:
+		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): nModType %d invalid (expected 0-10)\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, nModType);
+		console.write(lpsz, 1, nModType);
+		break;
+	}
 
 	return TRUE;
 }

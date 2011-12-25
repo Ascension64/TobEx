@@ -63,7 +63,7 @@
 
 //Item ability attack types
 #define ITEMABILITYATTACKTYPE_DEFAULT	0
-#define ITEMABILITYATTACKTYPE_MELEE	1
+#define ITEMABILITYATTACKTYPE_MELEE		1
 #define ITEMABILITYATTACKTYPE_RANGED	2
 #define ITEMABILITYATTACKTYPE_MAGICAL	3
 #define ITEMABILITYATTACKTYPE_LAUNCHER	4
@@ -82,9 +82,9 @@ typedef IECPtrList CItemList;
 class CCreatureObject;
 
 struct ResItmContainer { //Size 10h
-	BOOL bLoaded; //0x0
-	ResItm* pRes; //0x4
-	ResRef name; //0x8
+	BOOL bLoaded; //0h
+	ResItm* pRes; //4h
+	ResRef name; //8h
 };
 
 class CItem { //Size FAh
@@ -94,6 +94,7 @@ public:
 	BOOL Release();
 	void LoadResource(ResRef& res, BOOL bAddToHandler);
 	void Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotApplyEffects);
+	ItmFileAbility& GetAbility(int nAbilityIdx);
 	short GetType();
 	unsigned int GetFlags();
 	unsigned int GetUnusableFlags();
@@ -103,11 +104,11 @@ public:
 
 	ResItmContainer m_itm; //4h
 	int numAbilities; //14h
-	short Arg3; //18h, usage1? is it a randomly generated item?
-	short Arg4; //1ah, usage2?
-	short Arg5; //1ch, usage3? (time to recharge in ai updates?)
-	short Arg6; //1eh, related to usage3 (time to recharge in days?)
-	BOOL bIdentified; //20h, Arg7
+	short Arg3; //18h, nUsesAbility0, usage1, is it a randomly generated item?
+	short Arg4; //1ah, nUsesAbility1, usage2
+	short Arg5; //1ch, nUsesAbility2, usage3 (time to recharge in ai updates?)
+	short wRechargeTimeGameHours; //1eh, Arg6, time to recharge in hours
+	int dwFlags; //20h, Arg7 (more like dwFlags, with bit0 bIdentified, bit3 used during simulacrum)
 	CSound sound; //24h
 	CSound sound2; //8eh
 	short uf8; //f8h
@@ -117,17 +118,18 @@ extern BOOL (CItem::*CItem_Demand)();
 extern BOOL (CItem::*CItem_Release)();
 extern void (CItem::*CItem_LoadResource)(ResRef&, BOOL);
 extern void (CItem::*CItem_Equip)(CCreatureObject&, int, BOOL);
+extern ItmFileAbility& (CItem::*CItem_GetAbility)(int);
 extern short (CItem::*CItem_GetType)();
 extern unsigned int (CItem::*CItem_GetFlags)();
 extern unsigned int (CItem::*CItem_GetUnusableFlags)();
 
-struct CInventory { //Size A4h
+struct CCreInventory { //Size A4h
 //Constructor: 0x8BE36A
 	CItem* items[39]; //0h, slots follow SLOTS.IDS
 	char nSlotSelected; //9ch
 	char u9d; //pad
 	short nAbilitySelected; //9eh
-	int a0h; //pCItem is bit 16 set in creature flags
+	CItem* pGrabbedItem; //a0h, pCItem is bit 16 set in creature flags
 };
 
 #endif //ITMCORE_H

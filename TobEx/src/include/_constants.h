@@ -245,15 +245,15 @@
 //0xAA6AB0, 10h, DW
 //0xAA6ACC, 6ah, Action
 //0xAA6AE8, 16h, ResRef
-//0xAA6B04, 10h, DW
+//0xAA6B04, 10h, DW [treated as char] (CMessageSetBaseReaction)
 //0xAA6B58, 20h, Object oAttacker (CMessageSetLastAttacker)
-//0xAA6CE0, 1ah, CString (scope), CString (variable), DW nValue, unsigned char, CMessageSetVariable
+//0xAA6CE0, 1ah, CString (scope), CString (variable), DW nValueToAdd, unsigned char, CMessageSetVariable
 //0xAA6CFC, 22h, CString areaName, DW (Windowwidth / 2 + ScreenOffsetX), DW (Windowheight / 2 + ScreenOffsetY), DW x, DW y, unsigned char int, pad
 //0xAA6D18, 2ah, ResRef (visualeffectname), CString (areaname), POINT, Point2, W zPos (CMessageCreateVisualEffect)
-//0xAA6D6C, eh unsigned char (SEQ.IDS ref), pad (CMessagePlayAnimationSound)
+//0xAA6D6C, eh unsigned char (SEQ.IDS ref), pad (CMessageSetAnimationSequence)
 //0xAA6D88, ch
 //0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
-//0xAA6DC0 38h, Response, DW, DW, DW (CMessageInsertResponse)
+//0xAA6DC0 38h, Response, DW, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue (CMessageInsertResponse)
 //0xAA6DDC, ch (CMessageClearAllActions)
 //0xAA6E14, eh, W
 //0xAA6E4C, 12h, DW, unsigned char, unsigned char
@@ -263,6 +263,8 @@
 //0xAA6ED8, eh, unsigned char
 //0xAA6EF4, 18h, CString, POINT (CMessageMoveGlobal)
 //0xAA6F10, 10h, unsigned char FadeDirection (0 = ToColor, 1 = FromColor), unsigned char (FadeAmountBlue - all negative, so FF is -1 each time), unsigned char (Green), unsigned char (Red) (CMessageScreenFade) - B61512 = targetBrightness
+//0xAA6F2C, eh, bool bOn, pad (CMessageSetSpawnPtState)
+//0xAA6F48, 14h, POINT pt (CMessageSpawnPtSpawn)
 
 //0xAA7134, ch
 //0xAA727C, 14h, ResRef rAreaName (CMessageRemoveAreaAirEffects)
@@ -337,6 +339,7 @@ f area_forest
 //0xAAB528, 10h, DW mode (CMessageSetRemoteGameMode)
 //0xAAB544, 28h, ResRef storename, ResRef itemname, W arg6, W usage1, W usage2, W usage3, B bIdentified (CMessageAddStoreItem)
 //0xAAB598, 1ah, c, 10, 14, DW, unsigned char, pad (CMessageSetTarget)
+//0xAAB5B4, eh, bool bOn, pad (CMessageSetInStoreState)
 //0xAAB5EC, eh, W (action opcode)
 //0xAAB608, eh, unsigned char, pad
 //0xAAB65C, 14h, CString, Enum source (CMessageNonControlledDialogStart)
@@ -352,7 +355,7 @@ f area_forest
 //0xAAB8A4, 16h, DW, W, W, pad?, unsigned char (constructor: 0x5C353B (pSprite, enum, enum))
 //0xAAB8C0, 1eh, W (projIdx), Enum, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
 //0xAAB8DC, 24h, W, DW* , W, DW, DW, DW, CString
-//0xAAB8F8, b4h, CInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
+//0xAAB8F8, b4h, CCreInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
 //! 0xAAB914 CMessageSpriteUpdate
 //0xAAB930, 28h, IECPtrList, constructor: 0x5E998E
 //0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)

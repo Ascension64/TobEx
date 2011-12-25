@@ -26,8 +26,8 @@ public:
 	int u13a;
 	int u13e;
 	int u142;
-	bool bPausedForDialog; //146h
-	char u147; //pad
+	bool bPaused; //146h
+	bool u147; //if 1, makes inventory inactive ;; (during rest, chapter info, or movie)
 	char u148;
 	char u149; //pad
 	int u14a;
@@ -38,8 +38,8 @@ public:
 	int u15c;
 	CVidFont u160;
 	CVidFont u65c;
-	CHotkey ub58[93];
-	int ue40[23];
+	CHotkey keymap[93]; //b58h
+	char keybuffer[92]; //e40h
 	short ue9c;
 	int nActiveBottomPanelIndex; //e9eh
 	CUITextArea* pTextAreaCurrent; //ea2h
@@ -191,7 +191,7 @@ public:
 	int u11d4;
 	int u11d8;
 	Enum u11dc;
-	int u11e0;
+	BOOL u11e0; //bInDialogueMode?
 	char u11e4;
 	char u11e5; //pad
 	int u11e6;

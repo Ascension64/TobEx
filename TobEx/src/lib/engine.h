@@ -12,7 +12,7 @@
 #include "infgame.h"
 
 struct CHotkey { //Size 8h
-	int u0;
+	int nTicksPressed; //0h
 	unsigned char nAsciiKey; //4h
 	char nKeyboardDelay; //5h
 	char nKeyboardSpeed; //6h
@@ -33,8 +33,8 @@ public:
 	virtual void vc() {} //involves CopyRect (moving the manager?)
 	virtual void v10() {} //does nothing
 #endif
-	virtual void v14() {} //init
-	virtual void v18() {}
+	virtual void Init() {} //v14, show engine
+	virtual void Deinit() {} //v18, hide engine
 	virtual void v1c() {} //deconstruct panels
 	virtual void v20() {} //construct manager, panels, etc.
 	virtual void v24() {} //resets kit?
@@ -68,10 +68,10 @@ public:
 	virtual void v94() {}
 	virtual void v98() {}
 	virtual void v9c() {}
-	virtual void va0() {}
-	virtual void va4() {}
-	virtual void va8() {}
-	virtual void vac() {}
+	virtual int GetNumHotkeys() { return 0; } //va0
+	virtual CHotkey* GetKeymap() { return NULL; } //va4
+	virtual char* GetKeyBuffer() { return NULL; } //va8
+	virtual void ProcessKeyBuffer(short wKeysPressed) {} //vac
 	virtual void vb0() {}
 	virtual void vb4() {}
 	virtual void vb8() {}
@@ -100,13 +100,13 @@ public:
 	virtual void vec() {}
 	virtual void vf0() {}
 	virtual void vf4() {}
-	virtual void vf8() {}
-	virtual void vfc() {}
+	virtual void UpdatePartyMemberControlStates(int nPanelIndex); //vf8
+	virtual void UpdatePartyMemberControlSelectedState(); //vfc
 	virtual void v100() {}
 	virtual void v104() {}
 	virtual void v108() {}
 	virtual void v10c() {}
-	virtual void v110() {}
+	virtual void SetEnableAndVisible(int nPanelIndex, int nControlIndex, BOOL bActive) {} //v100
 	virtual void v114() {}
 	virtual void v118() {}
 

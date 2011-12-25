@@ -28,7 +28,7 @@ public:
 	short nPointsImpededWhenDoorClosed; //41eh
 
 	POINT ptToOpen; //420h
-	POINT ptToCLose; //428h
+	POINT ptToClose; //428h
 	char script[8]; //430h, doorScript
 	struct Object18h {
 		int u0;

@@ -7,6 +7,8 @@
 #include "itmcore.h"
 #include "scrcore.h"
 
+typedef IECPtrList COnAttackEffList; //AA657C
+
 struct CConditionalSpell { //Size 204h
 	void operator delete(void* mem);
 
@@ -244,163 +246,213 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	unsigned int stateFlags; //0h
 
 	//stats 1-200
-	short maxHP; //4h
-	short ACEffective; //6h
-	short ACCrushingMod; //8h
-	short ACMissileMod; //ah
-	short ACPiercingMod; //ch
-	short ACSlashingMod; //eh
-	short THAC0; //10h
-	short numAttacks;
-	short saveDeath;
-	short saveWands;
-	short savePolymorph;
-	short saveBreath;
-	short saveSpells; //1ch
-	short resistFire; //1eh
-	short resistCold; //20h
-	short resistElectricity; //22h
-	short resistAcid; //24h
-	short resistMagic; //26h
-	short resistMagicFire;
-	short resistMagicCold;
-	short resistSlashing; //2ch
-	short resistCrushing; //2eh
-	short resistPiercing; //30h
-	short resistMissile;
-	short lore;
-	short lockpicking;
-	short stealth;
-	short findTraps;
-	short pickPockets;
-	short fatigue;
-	short intoxication; //40h
-	short luck; //42h
-	short tracking; //44h
-	short levelPrimary; //46h
-	short levelSecondary;
-	short levelTertiary;
-	short sex;
-	short strength; //4eh
-	short strengthEx; //50h
-	short intelligence; //52h
-	short wisdom; //54h
-	short dexterity; //56h
-	short constitution; //58h
-	short charisma; //5ah
-	int XPWorth; //5ch
-	int currentXP; //60h
-	int gold;
-	int morale;
-	int reputation;
-	short moraleBreak; //70h
-	short racialEnemy; //72h
-	int hideInShadows;
-	int detectIllusion;
-	int setTraps;
-	short damageBonus; //80h
-	short spellFailMage; //82h
-	short spellFailPriest; //84h
-	short spellDurationModMage; //86h
-	short spellDurationModPriest; //88h
-	short turnUndeadLevel; //8ah, priestLevel
-	short m_BackstabDamageMultiplier; //8ch, backstabMod
-	short layOnHandsAmount; //8eh
-	int held; //90h
-	int polymorph; //94h
-	int identifyMode; //98h
-	int entangle; //9ch
-	int sanctuary; //a0h
-	int minorGlobe; //a4h
-	int shieldGlobe; //a8h
-	int grease; //ach
-	int web; //b0h
-	int casterHold; //b4h, pause
-	short translucent; //b8h
-	short encumberance; //bah
-	short missileToHitBonus; //bch
-	short magicResistance; //beh
-	short resistPoison; //c0h
-	int doNotJump; //c2h - i.e. will not jump coordinates to search map allowable position
-	int auraCleansing; //c6h
-	short mentalSpeed; //cah
-	short physicalSpeed; //cch
-	short castinglevelbonusmage; //ceh
-	short castinglevelbonuscleric; //d0h
-	int seeInvisible; //d2h
-	int ignoreDialoguPause; //d6h
-	int minHitPoints; //dah, 1 = immune to opcode instant death
-	int toHitBonusRight; //deh
-	int toHitBonusLeft; //e2h
-	int damageBonusRight; //e6h
-	int damageBonusLeft; //eah
-	int m_nStoneSkins; //eeh
+	short maxHP; //4h, MAXHITPOINTS (1)
+	short ACEffective; //6h, ARMORCLASS (2)
+	short ACCrushingMod; //8h, ACCRUSHINGMOD (3)
+	short ACMissileMod; //ah, ACMISSILEMOD (4)
+	short ACPiercingMod; //ch, ACPIERCINGMOD (5)
+	short ACSlashingMod; //eh, ACSLASHINGMOD (6)
+	short THAC0; //10h, THAC0 (7)
+	short numAttacks; //12h, NUMBEROFATTACKS (8)
+	short saveDeath; //14h, SAVEVSDEATH (9)
+	short saveWands; //16h, SAVEVSWANDS (10)
+	short savePolymorph; //18h, SAVEVSPOLY (11)
+	short saveBreath; //1ah, SAVEVSBREATH (12)
+	short saveSpells; //1ch, SAVEVSSPELL (13)
+	short resistFire; //1eh, RESISTFIRE (14)
+	short resistCold; //20h, RESISTCOLD (15)
+	short resistElectricity; //22h, RESISTELECTRICITY
+	short resistAcid; //24h, RESISTACID
+	short resistMagic; //26h, RESISTMAGIC
+	short resistMagicFire; //28h, RESISTMAGICFIRE
+	short resistMagicCold; //2ah, RESISTMAGICCOLD (20)
+	short resistSlashing; //2ch, RESISTSLASHING
+	short resistCrushing; //2eh, RESISTCRUSHING
+	short resistPiercing; //30h, RESISTPIERCING
+	short resistMissile; //32h, RESISTMISSILE
+	short lore; //34h, LORE
+	short lockpicking; //36h, LOCKPICKING
+	short stealth; //38h, STEALTH
+	short findTraps; //3ah, TRAPS
+	short pickPockets; //3ch, PICKPOCKET
+	short fatigue; //3eh, FATIGUE (30)
+	short intoxication; //40h, INTOXICATION
+	short luck; //42h, LUCK
+	short tracking; //44h, TRACKING
+	short levelPrimary; //46h, LEVEL (34)
+	short levelSecondary; //48h, LEVEL2 (68)
+	short levelTertiary; //4ah, LEVEL3 (69)
+	short sex; //4ch, SEX (35)
+	short strength; //4eh, STR
+	short strengthEx; //50h, STREXTRA
+	short intelligence; //52h, INT
+	short wisdom; //54h, WIS
+	short dexterity; //56h, DEX (40)
+	short constitution; //58h, CON
+	short charisma; //5ah, CHR
+	int XPWorth; //5ch, XPVALUE
+	int currentXP; //60h, XP
+	int gold; //64h, GOLD
+	int morale; //68h, MORALEBREAK
+	int moraleRecovery; //6ch, MORALERECOVERYTIME
+	short reputation; //70h, REPUTATION
+	short racialEnemy; //72h, HATEDRACE (49)
+	int hideInShadows; //74h, HIDEINSHADOWS (135)
+	int detectIllusion; //78h, DETECTILLUSIONS (136)
+	int setTraps; //7ch, SETTRAPS (137)
+	short damageBonus; //80h, DAMAGEBONUS (50)
+	short spellFailMage; //82h, SPELLFAILUREMAGE
+	short spellFailPriest; //84h, SPELLFAILUREPRIEST
+	short spellDurationModMage; //86h, SPELLDURATIONMODMAGE
+	short spellDurationModPriest; //88h, SPELLDURATIONMODPRIEST
+	short turnUndeadLevel; //8ah, TURNUNDEADLEVEL, priestLevel
+	short m_BackstabDamageMultiplier; //8ch, BACKSTABDAMAGEMULTIPLIER, backstabMod
+	short layOnHandsAmount; //8eh, LAYONHANDSAMOUNT
+	int held; //90h, HELD
+	int polymorph; //94h, POLYMORPHED (59)
+	int identifyMode; //98h, IDENTIFYMODE (61)
+	int entangle; //9ch, ENTANGLE (62)
+	int sanctuary; //a0h, SANCTUARY (63)
+	int minorGlobe; //a4h, MINORGLOBE (64)
+	int shieldGlobe; //a8h, SHIELDGLOBE (65)
+	int grease; //ach, GREASE (66)
+	int web; //b0h, WEB (67)
+	int casterHold; //b4h, CasterHold, pause (70)
+	short translucent; //b8h, TRANSLUCENT (60)
+	short encumberance; //bah, ENCUMBERANCE (71)
+	short missileToHitBonus; //bch, MISSILETHAC0BONUS (72)
+	short magicResistance; //beh, MAGICDAMAGERESISTANCE (73)
+	short resistPoison; //c0h, RESISTPOISON (74)
+	int doNotJump; //c2h, DONOTJUMP, i.e. will not jump coordinates to search map allowable position
+	int auraCleansing; //c6h, AURACLEANSING
+	short mentalSpeed; //cah, MENTALSPEED
+	short physicalSpeed; //cch, PHYSICALSPEED
+	short castinglevelbonusmage; //ceh, CASTINGLEVELBONUSMAGE
+	short castinglevelbonuscleric; //d0h, CASTINGLEVELBONUSCLERIC
+	int seeInvisible; //d2h, SEEINVISIBLE
+	int ignoreDialogPause; //d6h, IGNOREDIALOGPAUSE
+	int minHitPoints; //dah, MINHITPOINTS, 1 = immune to opcode instant death
+	int toHitBonusRight; //deh, THAC0BONUSRIGHT
+	int toHitBonusLeft; //e2h, THAC0BONUSLEFT
+	int damageBonusRight; //e6h, DAMAGEBONUSRIGHT
+	int damageBonusLeft; //eah, DAMAGEBONUSLEFT
+	int m_nStoneSkins; //eeh, STONESKINS
+	
+	/*
+	89 PROFICIENCYBASTARDSWORD				
+	90 PROFICIENCYLONGSWORD				
+	91 PROFICIENCYSHORTSWORD				
+	92 PROFICIENCYAXE						
+	93 PROFICIENCYTWOHANDEDSWORD			
+	94 PROFICIENCYKATANA					
+	95 PROFICIENCYSCIMITARWAKISASHININJATO	
+	96 PROFICIENCYDAGGER					
+	97 PROFICIENCYWARHAMMER				
+	98 PROFICIENCYSPEAR					
+	99 PROFICIENCYHALBERD					
+	100 PROFICIENCYFLAILMORNINGSTAR			
+	101 PROFICIENCYMACE						
+	102 PROFICIENCYQUARTERSTAFF				
+	103 PROFICIENCYCROSSBOW					
+	104 PROFICIENCYLONGBOW					
+	105 PROFICIENCYSHORTBOW					
+	106 PROFICIENCYDART						
+	107 PROFICIENCYSLING					
+	108 PROFICIENCYBLACKJACK				
+	109 PROFICIENCYGUN						
+	110 PROFICIENCYMARTIALARTS				
+	111 PROFICIENCY2HANDED				    
+	112 PROFICIENCYSWORDANDSHIELD			
+	113 PROFICIENCYSINGLEWEAPON				
+	114 PROFICIENCY2WEAPON				                 
+	115 EXTRAPROFICIENCY1 		 
+	116 EXTRAPROFICIENCY2 		 
+	117 EXTRAPROFICIENCY3 		 
+	118 EXTRAPROFICIENCY4 		 
+	119 EXTRAPROFICIENCY5 		 
+	120 EXTRAPROFICIENCY6 		 
+	121 EXTRAPROFICIENCY7 		 
+	122 EXTRAPROFICIENCY8 		 
+	123 EXTRAPROFICIENCY9 		 
+	124 EXTRAPROFICIENCY10 		 
+	125 EXTRAPROFICIENCY11 		 
+	126 EXTRAPROFICIENCY12 		 
+	127 EXTRAPROFICIENCY13 		 
+	128 EXTRAPROFICIENCY14 		 
+	129 EXTRAPROFICIENCY15 		 
+	130 EXTRAPROFICIENCY16 		 
+	131 EXTRAPROFICIENCY17 		 
+	132 EXTRAPROFICIENCY18 		 
+	133 EXTRAPROFICIENCY19 		 
+	134 EXTRAPROFICIENCY20 		 
+	*/
 	int proficiencies[46]; //f2h
-	Enum puppermasterId; //1aah
-	int puppermasterType; //1aeh
-	int puppetType; //1b2h
-	Enum puppetId; //1b6h
-	int checkForBerserk; //1bah
-	int berserkStage1; //1beh
-	int berserkStage2; //1c2h
-	int damageLuck; //1c6h
+
+	Enum puppermasterId; //1aah, PUPPETMASTERID
+	int puppermasterType; //1aeh, PUPPETMASTERTYPE, 1 or 2
+	int puppetType; //1b2h, PUPPETTYPE
+	Enum puppetId; //1b6h, PUPPETID
+	int checkForBerserk; //1bah, CHECKFORBERSERK
+	int berserkStage1; //1beh, BERSERKSTAGE1
+	int berserkStage2; //1c2h, BERSERKSTAGE2
+	int damageLuck; //1c6h, DAMAGELUCK
 	ResRef BardSongEffect; //1cah
-	int criticalHitBonus; //1d2h
-	int visualRange; //1d6h
-	int explore; //1dah
-	int thrullCharm; //1deh
-	int summonDisable; //1e2h
-	int avatarRemoval; //1e6h
-	short hitBonus; //1eah
-	unsigned short kit[2];
-	int forceSurge; //1f0h
-	int surgeMod; //1f4h
-	int improvedHaste; //1f8h
-	int u1fc;
-	int u200;
-	int u204;
-	int u208;
-	int u20c;
-	int u210;
-	int u214;
-	int u218;
-	int u21c;
-	int u220; //220h
-	int meleeTHAC0Mod; //224h
-	int meleeDamageMod; //228h
-	int missileDamageMod; //22ch
-	int hideSelectionCircle; //230h
-	int firstTHAC0Mod; //234h
-	int firstDamageMod; //238h
-	STRREF title0; //23ch
-	STRREF title1; //240h
-	int disableVisualEffect; //244h
-	int m_BackstabImmunity; //248h
-	int openLocks9; //24ch
-	int moveSilently9; //250h
-	int findTraps9; //254h
-	int pickPockets9; //258h
-	int hideInShadows9; //25ch
-	int detectIllusions9; //260h
-	int setTraps9; //264h
-	int offscreenAI; //268h
-	int existanceSoundChance; //26ch
-	int speedHasteWithoutAttackBonuses; //270h
-	int disablePermanentDeath; //274h
-	int immunityTurnUndead; //278h
-	int chaosShield; //27ch
-	int npcBump; //280h
-	int useAnyItem; //284h
-	int m_BackstabEveryHit; //288h
-	int reverseGender; //28ch
-	int spellFailInnate; //290h
-	int immunityTracking; //294h
-	int deadMagic; //298h
-	int immunityTimeStop; //29ch
-	int u2a0;
-	int m_StoneSkinGolem; //2a4h, immune to poison and display special effect icon?
-	int levelDrain; //2a8h
-	int animationRemoval; //2ach
+	int criticalHitBonus; //1d2h, CRITICALHITBONUS
+	int visualRange; //1d6h, VISUALRANGE
+	int explore; //1dah, EXPLORE
+	int thrullCharm; //1deh, THRULLCHARM
+	int summonDisable; //1e2h, SUMMONDISABLE
+	int avatarRemoval; //1e6h (188)
+	short hitBonus; //1eah, HITBONUS
+	unsigned short kit[2]; //1ec, KIT
+	int forceSurge; //1f0h, FORCESURGE
+	int surgeMod; //1f4h, SURGEMOD
+	int improvedHaste; //1f8h, IMPROVEDHASTE
+	int scriptingState1; //1fch, SCRIPTINGSTATE1
+	int scriptingState2; //200h, SCRIPTINGSTATE2
+	int scriptingState3; //204h, SCRIPTINGSTATE3
+	int scriptingState4; //208h, SCRIPTINGSTATE4
+	int scriptingState5; //20ch, SCRIPTINGSTATE5
+	int scriptingState6; //210h, SCRIPTINGSTATE6
+	int scriptingState7; //214h, SCRIPTINGSTATE7
+	int scriptingState8; //218h, SCRIPTINGSTATE8
+	int scriptingState9; //21ch, SCRIPTINGSTATE9
+	int scriptingState10; //220h, SCRIPTINGSTATE10 (165)
+	int meleeTHAC0Mod; //224h, MELEETHAC0MOD (166)
+	int meleeDamageMod; //228h, MELEEDAMAGE (167)
+	int missileDamageMod; //22ch, MISSILEDAMAGE (168)
+	int hideSelectionCircle; //230h, NOCIRCLE (169)
+	int fistTHAC0Mod; //234h, FISTTHAC0 (170)
+	int fistDamageMod; //238h, FISTDAMAGE (171)
+	STRREF title0; //23ch, TITLE1 (172)
+	STRREF title1; //240h, TITLE2 (173)
+	int disableVisualEffect; //244h, DISABLEOVERLAY (174)
+	int m_BackstabImmunity; //248h, DISABLEBACKSTAB (175)
+	int openLocks9; //24ch, LOCKPICKINGCP (176)
+	int moveSilently9; //250h, STEALTHCP (177)
+	int findTraps9; //254h, TRAPSCP (178)
+	int pickPockets9; //258h, PICKPOCKETCP (179)
+	int hideInShadows9; //25ch, HIDEINSHADOWSCP (180)
+	int detectIllusions9; //260h, DETECTILLUSIONSCP (181)
+	int setTraps9; //264h, SETTRAPSCP (182)
+	int offscreenAI; //268h, ENABLEOFFSCREENAI (183)
+	int existanceSoundChance; //26ch, EXISTANCESOUND (184)
+	int speedHasteWithoutAttackBonuses; //270h, HASTE (185)
+	int disablePermanentDeath; //274h, DISABLECHUNKYDEATH (186)
+	int immunityTurnUndead; //278h, DISABLETURNUNDEAD (187)
+	int chaosShield; //27ch, CHAOSSHIELD (189)
+	int npcBump; //280h, NPCBUMP (190)
+	int useAnyItem; //284h, CANUSEANYITEM (191)
+	int m_BackstabEveryHit; //288h, ALWAYSBACKSTAB (192)
+	int reverseGender; //28ch, SEXCHANGE (193)
+	int spellFailInnate; //290h, SPELLFAILUREINNATE (194)
+	int immunityTracking; //294h, DISABLETRACKING (195)
+	int deadMagic; //298h, DEADMAGIC (196)
+	int immunityTimeStop; //29ch, DISABLETIMESTOP (197)
+	int freedom; //2a0h, FREEDOM (198)
+	int m_StoneSkinGolem; //2a4h, STONESKINGOLEM (199), immune to poison and display special effect icon?
+	int levelDrain; //2a8h, LEVELDRAIN (200)
+	int animationRemoval; //2ach, ANIMATIONREMOVAL (201)
 };
 
 struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
@@ -421,10 +473,14 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	CDerivedStats& OpAdd(CDerivedStats&) { return *this; } //dummy
 
 	void LimitStats();
-	short GetStat(int index);
-	void LoadStats(CDerivedStatsTemplate& cds, int nSize);
+	int GetStat(short nOpcode);
+	void MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize);
+	void UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize);
 	char GetEffectiveClericLevel(unsigned char nClass);
 	char GetEffectiveMageLevel(unsigned char nClass);
+
+	~CDerivedStats();
+	void Deconstruct() { return; } //dummy
 
 	IECPtrList ProtProjId; //2b0h, AA6624, holds DWORDS of PROJECTL.IDS Idx
 	IECPtrList ProtEff; //2cch, AA6618, CEffects
@@ -486,8 +542,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	int ButtonDisableSplPriest; //858h
 	int ButtonDisableSplWizard; //85ch
 	int ButtonDisableSplInnate; //860h
-	IECPtrList MeleeEffects; //864h, AA657C
-	IECPtrList RangedEffects; //880h, AA657C
+	COnAttackEffList m_MeleeEffects; //864h, is checked on non-ranged attack, but FX never added to this list
+	COnAttackEffList m_RangedEffects; //880h, is checked on ranged attack, but FX never added to this list
 	CStatModVsObjectList m_SaveBonusVsObject; //89ch
 };
 
@@ -498,9 +554,11 @@ extern CDerivedStats& (CDerivedStats::*CDerivedStats_OpAssign)(CDerivedStats&);
 extern void (CDerivedStats::*CDerivedStats_ClearStats)();
 extern CDerivedStats& (CDerivedStats::*CDerivedStats_OpAdd)(CDerivedStats&);
 extern void (CDerivedStats::*CDerivedStats_LimitStats)();
-extern short (CDerivedStats::*CDerivedStats_GetStat)(int);
-extern void (CDerivedStats::*CDerivedStats_LoadStats)(CDerivedStatsTemplate&, int);
+extern int (CDerivedStats::*CDerivedStats_GetStat)(short);
+extern void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*);
+extern void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int);
 extern char (CDerivedStats::*CDerivedStats_GetEffectiveClericLevel)(unsigned char);
 extern char (CDerivedStats::*CDerivedStats_GetEffectiveMageLevel)(unsigned char);
+extern void (CDerivedStats::*CDerivedStats_Deconstruct)();
 
 #endif //OBJSTATS_H

@@ -116,6 +116,7 @@
     <ClCompile Include="src\ext\EffectOpcode.cpp" />
     <ClCompile Include="src\ext\EngineChargen.cpp" />
     <ClCompile Include="src\ext\EngineCommon.cpp" />
+    <ClCompile Include="src\ext\EngineInventory.cpp" />
     <ClCompile Include="src\ext\EngineMageBook.cpp" />
     <ClCompile Include="src\ext\EnginePriestBook.cpp" />
     <ClCompile Include="src\ext\EngineWorld.cpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
     <ClCompile Include="src\ext\ObjectStats.cpp" />
     <ClCompile Include="src\ext\options.cpp" />
+    <ClCompile Include="src\ext\ScriptTrigger.cpp" />
     <ClCompile Include="src\ext\UserButton.cpp" />
     <ClCompile Include="src\include\globals.cpp" />
     <ClCompile Include="src\lib\animext.cpp" />
@@ -136,6 +138,7 @@
     <ClCompile Include="src\lib\effopcode.cpp" />
     <ClCompile Include="src\lib\engchargen.cpp" />
     <ClCompile Include="src\lib\engine.cpp" />
+    <ClCompile Include="src\lib\enginv.cpp" />
     <ClCompile Include="src\lib\engmagebk.cpp" />
     <ClCompile Include="src\lib\engpriestbk.cpp" />
     <ClCompile Include="src\lib\engrecord.cpp" />
@@ -207,6 +210,7 @@
     <ClInclude Include="src\ext\EffectOpcode.h" />
     <ClInclude Include="src\ext\EngineChargen.h" />
     <ClInclude Include="src\ext\EngineCommon.h" />
+    <ClInclude Include="src\ext\EngineInventory.h" />
     <ClInclude Include="src\ext\EngineMageBook.h" />
     <ClInclude Include="src\ext\EnginePriestBook.h" />
     <ClInclude Include="src\ext\EngineWorld.h" />
@@ -218,18 +222,24 @@
     <ClInclude Include="src\ext\ObjectCreature.h" />
     <ClInclude Include="src\ext\ObjectStats.h" />
     <ClInclude Include="src\ext\options.h" />
+    <ClInclude Include="src\ext\ScriptTrigger.h" />
     <ClInclude Include="src\ext\UserButton.h" />
     <ClInclude Include="src\lib\cptrlistex.h" />
     <ClInclude Include="src\lib\cstringex.h" />
     <ClInclude Include="src\lib\datatypes.h" />
     <ClInclude Include="src\lib\effopcode.h" />
     <ClInclude Include="src\lib\engchargen.h" />
+    <ClInclude Include="src\lib\enginv.h" />
+    <ClInclude Include="src\lib\engjourn.h" />
     <ClInclude Include="src\lib\engmagebk.h" />
     <ClInclude Include="src\lib\engpriestbk.h" />
+    <ClInclude Include="src\lib\engproj.h" />
     <ClInclude Include="src\lib\engrecord.h" />
     <ClInclude Include="src\lib\engworld.h" />
     <ClInclude Include="src\lib\infcursor.h" />
+    <ClInclude Include="src\lib\objare.h" />
     <ClInclude Include="src\lib\objstats.h" />
+    <ClInclude Include="src\lib\objtext.h" />
     <ClInclude Include="src\lib\stdafx.h" />
     <ClInclude Include="src\lib\tlkcore.h" />
     <ClInclude Include="src\lib\uibutton.h" />
@@ -246,7 +256,6 @@
     <ClInclude Include="src\lib\dlgcore.h" />
     <ClInclude Include="src\lib\effcore.h" />
     <ClInclude Include="src\lib\engine.h" />
-    <ClInclude Include="src\lib\icon.h" />
     <ClInclude Include="src\lib\infgame.h" />
     <ClInclude Include="src\lib\itmcore.h" />
     <ClInclude Include="src\lib\msgcore.h" />

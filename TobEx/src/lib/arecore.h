@@ -21,6 +21,7 @@
 
 class CInfGame;
 class CArea;
+class CObjectMarker;
 
 struct CAreaNotes { //Size 8Ch
 //Constructor: 0x4D6B40
@@ -72,10 +73,8 @@ struct CInfinity { //Size 29Eh
 	int u7c; //g_windowRectHeight/64 + 1 (window height in tiles?)
 	int m_areaWidth; //80h (53eh), in pixels, u38*64 (range: 320-5120)
 	int m_areaHeight; //84h (542h), in pixels u3c*64 (range: 320-5120)
-	int u88; //u90/64
-	int u8c; //u94/64
-	int u90; //0
-	int u94; //0
+	POINT u88; //u90/64.u94/64
+	POINT u90; //0.0
 
 	int u98;
 	int u9c;
@@ -103,10 +102,10 @@ struct CInfinity { //Size 29Eh
 	int u156;
 	int u15a;
 	unsigned short dwAreaTypeFlags; //15eh, gets 40h of CArea (areaType)
-	char u160; //gets AAD291 for night Wed, AAD290 for day Wed
+	char u160; //bit0: day, bit1: night, gets AAD291 for night Wed, AAD290 for day Wed
 	char u161; //gets AAD291 for night Wed, AAD290 for day Wed
-	char u162;
-	char u163;
+	char u162; //FF during day, 0 during night
+	char u163; //bit0: day, bit1: night
 	char u164;
 	char u165;
 	int u166; //KERNEL32.GetTickCount()
@@ -132,9 +131,8 @@ struct CInfinity { //Size 29Eh
 	int u1b0; //additive lighting (can be used to control fades)
 	int u1b4; //lighting
 	int u1b8; //current lightmask, copied to CVideoMode.ua4
-	int u1bc; //lighting
-
-	int u1c0;
+	ARGB u1bc; //lighting (FFFFFF day, C86464 night)
+	ARGB u1c0; //lighting (6E6E6E day, 5A4646 night)
 	int u1c4; //assoc u16a, u16e
 	CArea* pArea; //1c8h, owning area
 	CVidBitmap u1cc;
@@ -153,10 +151,10 @@ struct CSearchBitmap : public CVidBitmap { //Size F0h
 //Constructor: 0x63E360
 	char* pTerrainMap; //b6h, ptr to 2D search map char array
 	//values of the BYTEs in array
-	//1 = override with DarkGrey(TerrainTable[8]), if not set, gets terraintable[2]
-	//e = if not set, gets terraintable[2]
-	//70 = if not set, gets terraintable[2]
-	//80 = if not set, gets terraintable[0]
+	//1 (bit 0) = override with DarkGrey(TerrainTable[8]), if set, gets terraintable[2] (metal)
+	//e (bits 1, 2, 3) = if set, gets terraintable[2] (metal)
+	//70 (bits 4, 5, 6) = if set, gets terraintable[2] (metal)
+	//80 (bit 7) = if set, gets terraintable[0] (opaque obstacle)
 
 	int uba;
 	int ube;
@@ -165,9 +163,9 @@ struct CSearchBitmap : public CVidBitmap { //Size F0h
 #else
 	CCriticalSection uc2; //c2h
 #endif
-	int width; //ue2h (842h)
-	int height; //ue6h (846h)
-	CArea* pArea; //ueah, owning area
+	int width; //e2h (842h)
+	int height; //e6h (846h)
+	CArea* pArea; //eah, owning area
 	char uee;
 	char uef; //pad
 };
@@ -180,8 +178,8 @@ struct CVisibilityMap { //Size 72h
 	//bit 15 = discovered
 	//bit 1 = visible (no fog)
 
-	short u4; //width of map (nAreaX/32 + 1)
-	short u6; //height of map (nAreaY/32 + 1)
+	short wWidth; //4h, width of map (nAreaX/32 + 1)
+	short wHeight; //6h, height of map (nAreaY/32 + 1)
 	char u8; //bOutdoor (based on AreaType)
 	char u9; //pad
 #ifdef _DEBUG
@@ -242,8 +240,19 @@ public:
 	char ua4[0x3c];
 
 	//entire Rest spawn struct
-	char restSpawnName[32]; //0xe0
-	char u100[0xc4];
+	char restSpawnName[32]; //e0h
+	STRREF strrefSpawnReasons[10]; //100h
+	ResRef rSpawnTypes[10]; //128h
+	short wSpawnTypes; //178h
+	short wDifficulty; //17ah
+	int nRemovalTime; //17ch
+	short wMaxMvtDistance; //180h
+	short wMaxMvtDistanceToObject; //182h
+	short wMaxNumSpawns; //184h
+	short wEnabled; //186h
+	short wProbDay; //188h
+	short wProbNight; //18ah
+	char u100[56]; //18ch
 
 	IECPtrList u1c4; //AA7044 of CEntrance (68h size; as per area entrance struct)
 	char idxLoadedArea; //1e0h, refers CInfGame::38b6
@@ -261,9 +270,9 @@ public:
 	int u238;
 	char u23c;
 	char u23d;
-	int u23e; //contains enum
-	int u242; //contains enum
-	int u246; //contains enum
+	Enum u23e;
+	Enum u242;
+	Enum u246;
 	int u24a;
 	int u24e;
 	int u252;
@@ -271,19 +280,18 @@ public:
 	CVidBitmap m_bmLum; //25ah, luminosity map (LM)
 	CVidBitmap* m_pbmLumNight; //310h, night luminosity map (LN)
 	CVidBitmap m_bmHeight; //314h, height map (HM)
-	int* u3ca; //pC5EObject (:: CGameObject) (c: 0x95BC40)
-	char u3ce; //used by CPtrListMessage?
+	CObjectMarker* m_pObjectMarker; //3cah
+	bool u3ce; //3ceh, something to do with the message handler, checked by CPtrListMessage::ExecuteMessages()
 	char u3cf; //unused?
 	int u3d0;
 	int u3d4;
-	int u3d8;
-	int u3dc;
+	POINT u3d8;
 	short u3e0; //unused?
 	long long u3e2;
 	int u3ea;
 	TerrainTable u3ee;
 	TerrainTable u3fe;
-	Enum u40e; //this area CGameSprite
+	Enum eAreaObject; //40eh, this area CGameSprite
 	int u412; //nRefs?
 	int nPlayerID; //416h
 	int u41a;
@@ -303,7 +311,7 @@ public:
 	CSearchBitmap m_SearchMap; //760h
 	CVisibilityMap m_VisMap; //850h
 
-	int u8c2; //ptr to char array (search bitmap table)
+	char* m_SearchBitmapTableArray; //8c2h, ptr to char array (search bitmap table)
 	int u8c6; //0h
 	int u8ca; //50h
 			
@@ -326,7 +334,7 @@ public:
 
 	IECPtrList u9ca; //AA7014 - gets CDoorObject 438h objects
 	CDwordList u9e6;
-	long long ua02;
+	POINT ua02;
 	CVariableArray AreaVariables; //a0ah
 	CVariableArray ObjectNames; //a12h, contains all CGameObjects from ARE file (value is the enum?)
 	char ua1a;
@@ -350,12 +358,12 @@ public:
 	int ua84;
 	int ua88;
 	int ua8c;
-	int u90; //unused?
-	CSound ua94;
-	CSound uafe;
-	char ub68;
+	int u900; //unused?
+	CSound sndAmbDay; //a94h
+	CSound sndAmbNight; //afeh
+	char nSndAmbVolumePercent; //b68h (of 100%)
 	char ub69; //pad
-	int ub6a; //unused?
+	int nSndAmbVolume; //b6ah
 };
 
 extern char (CArea::*CArea_GetSong)(short);

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "engine.h"
 #include "engchargen.h"
+#include "enginv.h"
 #include "engrecord.h"
 #include "engpriestbk.h"
 #include "engmagebk.h"
@@ -125,7 +126,7 @@ public:
 	int ubc; //timer event CObject from timeSetEvent()
 	int uc0; //timer resolution from timeGetDevCaps()
 	CRITICAL_SECTION uc4;
-	IECString CmdLine; //dch
+	IECString sCmdLine; //dch
 	char bDisableWindow; //e0h, Window Disabled?
 	char bFullScreen; //e1h
 	char ue2; //copy of e1h
@@ -140,23 +141,23 @@ public:
 	int nScreenHeight; //104h, GetSystemMetrics(SM_CY[FULL]SCREEN)
 	int nScreenPosX; //108h
 	int nScreenPosY; //10ch
-	int u110; //(+host)
-	int u114; //(+host)
-	IECString connectParam; //118h for cmd (+connect)
-	IECString hostParam; //11ch for cmd (+host)
-	IECString nameParam; //120h for cmd (+name)
-	IECString passwordParam; //124h for cmd (+password)
-	int u128; //(+newgame)
-	int u12c; //(+loadgame)
-	IECString hostnameParam; //130h for cmd (+hostname)
-	bool m_bAutoConnect; //134h, (+location)
-	char u135;
-	IECString locationParam; //136h for cmd (+location)
-	char u13a; //(+tob)
+	BOOL bIsHost; //110h, (+host"<text>")
+	BOOL bIsClient; //114h (+connect"<text>")
+	IECString sClientArg; //118h for cmd (+connect"<text>"), name to use as a client
+	IECString sHostArg; //11ch for cmd (+host"<text>")
+	IECString sNameArg; //120h for cmd (+name"<text>")
+	IECString sPasswordArg; //124h for cmd (+password"<text>")
+	BOOL bNewGameParam; //128h (+newgame)
+	BOOL bLoadGameParam; //u2ch (+loadgame)
+	IECString sHostnameArg; //130h (+hostname), for client to connect to
+	bool m_bAutoConnect; //134h
+	bool bHasLocationArg; //135h (+location)
+	IECString sLocationArg; //136h for cmd (+location"<text>")
+	bool bHasTobArg; //13ah for cmd (+tob)
 	char u13b;
 	BOOL m_bDisableBrightest; //13ch - Disable Brighten (if 3d acceleration, never disabled)
 	BOOL m_bLimitTransparency; //140h - Force 50% Transparency
-	int nMaxPlayers; //144h
+	int nMaxPlayers; //144h for cmd (+maxplayers"<num>")
 	int dwSong; //148h
 	RECT u14c; //current PropertyData for CSoundProperties IKsPropertySet::Set()
 	BOOL bInitSound; //15ch
@@ -241,8 +242,7 @@ public:
 
 	CRogerWilco m_CRogerWilco; //4016h
 	int u4026;
-	int nCursorX; //402ah
-	int nCursorY; //402eh
+	POINT ptCursor; //402ah
 	int nChitinUpdates; //4032h
 	int u4036;
 	CObList GameDirectories; //403ah, Contains 0x8 CObjects (vt, dwLoaded, IECString* directoryName) for directories for the game, AB8ED0
@@ -305,9 +305,9 @@ public:
 	void* u42be; //size 0xfe, CStartingEngine
 	void* pBaldurProjector; //42c2h, size 0x6d0, uses NORMAL.BAM, for movies
 	void* u42c6; //size 0x212, uses SPLASHSC.2DA
-	CRecord* pCharacter; //0x42ca, size 0x1520
-	CCharGen* pCreateChar; //0x42ce, GUICG
-	void* u42d2; //size 0x1424, GUIINV, pInventory
+	CRecord* pCharacter; //42cah, size 0x1520
+	CCharGen* pCreateChar; //42ceh, GUICG
+	CInventory* pInventory; //42d2h, GUIINV
 	void* u42d6; //size 0xeaa, GUIJRNL
 	void* u42da; //size 0xb84, GUILOAD
 	void* u42de; //size 0x1376, GUIMAP
@@ -321,7 +321,7 @@ public:
 	void* u42fe; //size 0x1384, pMultiplayer, GUIMP
 	void* u4302; //size 0xeb0, GUICONN
 	void* u4306; //size 0x1a44, GUIWMAP
-	void* pChapter; //430ah, size 0x70a, GUICHAP
+	void* pChapter; //430ah, size 0x70a, GUICHAP, 0x138 nDreamIdx, 0x13C rDrmTxtFileName, 0x144 m_pTextList (CStrRefList), 0x148 m_pBmpList, 0x1FE rPower
 	void* pMovies; //430eh, size 0x7a4, GUIMOVIE
 	CTlkTbl TlkTbl; //4312h
 			
@@ -381,7 +381,6 @@ public:
 
 	CMessageHandler BaldurMessageHandler; //6b34h
 	CPtrListMessage messages; //6c48h
-	short u6c64;
 	int u6c66;
 	int u6c6a;
 	STRREF OnWindowClosePrompt; //6c6eh

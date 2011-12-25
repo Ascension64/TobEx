@@ -22,6 +22,7 @@
 #include "EffectCore.h"
 #include "EffectOpcode.h"
 #include "EngineChargen.h"
+#include "EngineInventory.h"
 #include "EngineRecord.h"
 #include "EngineMageBook.h"
 #include "EnginePriestBook.h"
@@ -101,6 +102,20 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CConditionalSpellList_EvaluateTriggers, DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers);
 	if (pGameOptionsEx->bEngineModifyEffectStacking)
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
+	if (pGameOptionsEx->bEngineDisableInvPauseSP)
+		DetourMemberFunction(Tramp_CInventory_Init, DETOUR_CInventory::DETOUR_Init);
+	if (pGameOptionsEx->bEngineExpandedStats) {
+		DetourMemberFunction(Tramp_CEffectAnimationRemoval_ApplyEffect, DETOUR_CEffectAnimationRemoval::DETOUR_ApplyEffect);
+		DetourMemberFunction(Tramp_CDerivedStats_Construct_3, DETOUR_CDerivedStats::DETOUR_Construct3);
+		DetourMemberFunction(Tramp_CDerivedStats_Construct_0, DETOUR_CDerivedStats::DETOUR_Construct0);
+		DetourMemberFunction(Tramp_CDerivedStats_Init, DETOUR_CDerivedStats::DETOUR_Init);
+		DetourMemberFunction(Tramp_CDerivedStats_OpAssign, DETOUR_CDerivedStats::DETOUR_OpAssign);
+		DetourMemberFunction(Tramp_CDerivedStats_ClearStats, DETOUR_CDerivedStats::DETOUR_ClearStats);
+		DetourMemberFunction(Tramp_CDerivedStats_GetStat, DETOUR_CDerivedStats::DETOUR_GetStat);
+		DetourMemberFunction(Tramp_CDerivedStats_MarshalTemplate, DETOUR_CDerivedStats::DETOUR_MarshalTemplate);
+		DetourMemberFunction(Tramp_CDerivedStats_UnmarshalTemplate, DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate);
+		DetourMemberFunction(Tramp_CDerivedStats_Deconstruct, DETOUR_CDerivedStats::DETOUR_Deconstruct);
+	}
 	if (pGameOptionsEx->bEngineExternClassRaceRestrictions) {
 		DetourFunction(Tramp_CAnimation_IsPlayableAnimation, DETOUR_CAnimation::DETOUR_IsPlayableAnimation);
 		DetourMemberFunction(Tramp_CAnimation5000_Construct, DETOUR_CAnimation5000::DETOUR_Construct);
@@ -109,9 +124,11 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CCharGen_MulticlassPanelOnUpdate, DETOUR_CCharGen::DETOUR_MulticlassPanelOnUpdate);
 		DetourMemberFunction(Tramp_CCharGen_MageSchoolPanelOnUpdate, DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate);
 	}
-	if (pGameOptionsEx->bEngineProficiencyRestrictions) {
+	if (pGameOptionsEx->bEngineProficiencyRestrictions)
 		DetourMemberFunction(Tramp_CRuleTables_GetWeapProfMax, DETOUR_CRuleTables::DETOUR_GetWeapProfMax);
-	}
+
+	if (pGameOptionsEx->bItemsUseAnimPercentThrowingWeapons)
+		DetourMemberFunction(Tramp_CCreatureObject_ValidateAttackSequence, DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence);
 
 	if (pGameOptionsEx->bMusicSonglistExtend) {
 		DetourMemberFunction(Tramp_CSoundMixer_InitSonglist, DETOUR_CSoundMixer::DETOUR_InitSonglist);

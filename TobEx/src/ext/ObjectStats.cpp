@@ -1,11 +1,34 @@
 #include "ObjectStats.h"
+#include "InfGameCommon.h"
 
 #include "chitin.h"
 
 void (CConditionalSpellList::*Tramp_CConditionalSpellList_EvaluateTriggers)(CCreatureObject&) =
 	SetFP(static_cast<void (CConditionalSpellList::*)(CCreatureObject&)>	(&CConditionalSpellList::EvaluateTriggers),	0x46BE04);
+
+CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_Construct_3)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) =
+	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*)>
+																			(&CDerivedStats::Construct),				0x46CB40);
+CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_Construct_0)() =
+	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)()>					(&CDerivedStats::Construct),				0x46D1B2);
+void (CDerivedStats::*Tramp_CDerivedStats_Init)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) =
+	SetFP(static_cast<void (CDerivedStats::*)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*)>
+																			(&CDerivedStats::Init),						0x46DB9C);
+CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_OpAssign)(CDerivedStats&) =
+	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAssign),					0x46EAC6);
+void (CDerivedStats::*Tramp_CDerivedStats_ClearStats)() =
+	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::ClearStats),				0x46FCF5);
 CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_OpAdd)(CDerivedStats&) =
-	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAdd),	0x470945);
+	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAdd),					0x470945);
+int (CDerivedStats::*Tramp_CDerivedStats_GetStat)(short) =
+	SetFP(static_cast<int (CDerivedStats::*)(short)>						(&CDerivedStats::GetStat),					0x473162);
+void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*) =
+	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate*, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
+void (CDerivedStats::*Tramp_CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int) =
+	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate&, int)>
+																			(&CDerivedStats::UnmarshalTemplate),		0x474AF2);
+void (CDerivedStats::*Tramp_CDerivedStats_Deconstruct)() =
+	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::Deconstruct),				0x567770);
 
 void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre) {
 	Object o = Object();
@@ -67,6 +90,106 @@ void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre)
 	return;
 }
 
+CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct3(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest) {
+	DWORD nSize = pRuleEx->m_nStats - 200;
+
+	//init pStatsEx
+	int* pStatsEx = IENew int[nSize];
+	for (int i = 0; i < nSize; i++ ) {
+		pStatsEx[i] = 0;
+	}
+
+	animationRemoval = (int)pStatsEx;
+
+	return (this->*Tramp_CDerivedStats_Construct_3)(stats, memArrayMage, memArrayPriest);
+}
+
+CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct0() {
+	DWORD nSize = pRuleEx->m_nStats - 200;
+
+	//init pStatsEx
+	int* pStatsEx = IENew int[nSize];
+	for (int i = 0; i < nSize; i++ ) {
+		pStatsEx[i] = 0;
+	}
+
+	animationRemoval = (int)pStatsEx;
+
+	return (this->*Tramp_CDerivedStats_Construct_0)();
+}
+	
+void DETOUR_CDerivedStats::DETOUR_Init(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest) {
+	DWORD nSize = pRuleEx->m_nStats - 200;
+
+	int* pStatsEx = NULL;
+	if (animationRemoval) {
+		pStatsEx = (int*)animationRemoval;
+		for (int i = 0; i < nSize; i++ ) {
+			pStatsEx[i] = 0;
+		}
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_Init(): pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	(this->*Tramp_CDerivedStats_Init)(stats, memArrayMage, memArrayPriest);
+
+	
+
+	animationRemoval = (int)pStatsEx;
+
+	return;
+}
+
+CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAssign(CDerivedStats& cds) {
+	DWORD nSize = pRuleEx->m_nStats - 200;
+
+	int* pStatsEx = NULL;
+	if (animationRemoval && cds.animationRemoval) {
+		pStatsEx = (int*)animationRemoval;
+		int* pStatsExAdd = (int*)cds.animationRemoval;
+		for (int i = 0; i < nSize; i++ ) {
+			pStatsEx[i] = pStatsExAdd[i];
+		}
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_OpAssign(): this->pStatsEx == NULL || cds.pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	(this->*Tramp_CDerivedStats_OpAssign)(cds);
+
+	animationRemoval = (int)pStatsEx;
+
+	return *this;
+}
+
+void DETOUR_CDerivedStats::DETOUR_ClearStats() {
+	DWORD nSize = pRuleEx->m_nStats - 200;
+
+	int* pStatsEx = NULL;
+	if (animationRemoval) {
+		pStatsEx = (int*)animationRemoval;
+		for (int i = 0; i < nSize; i++ ) {
+			pStatsEx[i] = 0;
+		}
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_ClearStats(): pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	(this->*Tramp_CDerivedStats_ClearStats)();
+
+	animationRemoval = (int)pStatsEx;
+
+	return;
+}
+
 CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
 	if (pGameOptionsEx->bEffAttacksPerRoundFix) {
 		float fNumAttacks = CDerivedStats_NumAttacksShortToFloat(numAttacks) + CDerivedStats_NumAttacksShortToFloat(cds.numAttacks);
@@ -75,8 +198,122 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
 		numAttacks = CDerivedStats_NumAttacksFloatToShort(fNumAttacks);
 	}
 
-	return (this->*Tramp_CDerivedStats_OpAdd)(cds);
+	int* pStatsEx = NULL;
+	if (pGameOptionsEx->bEngineExpandedStats) {
+		if (animationRemoval && cds.animationRemoval) {
+			DWORD nSize = pRuleEx->m_nStats - 200;
+			pStatsEx = (int*)animationRemoval;
+			int* pStatsExAdd = (int*)cds.animationRemoval;
+			for (int i = 0; i < nSize; i++ ) {
+				switch (i + 200 + 1) { //make equivalent to the STATS.IDS opcode for easier viewing
+				case 201: //ANIMATIONREMOVAL
+					pStatsEx[i] |= pStatsExAdd[i];
+					break;
+				default:
+					pStatsEx[i] += pStatsExAdd[i];
+					break;
+				}
+			}
+		}
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_OpAdd(): this->pStatsEx == NULL || cds.pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	(this->*Tramp_CDerivedStats_OpAdd)(cds);
+
+	if (pGameOptionsEx->bEngineExpandedStats) {
+		animationRemoval = (int)pStatsEx;
+	}
+
+	return *this;
+
 }
+
+int DETOUR_CDerivedStats::DETOUR_GetStat(short nOpcode) {
+	if (nOpcode < 201) return (this->*Tramp_CDerivedStats_GetStat)(nOpcode);
+
+	if (nOpcode > 200 && nOpcode <= pRuleEx->m_nStats) {
+		if (animationRemoval) {
+			int* pStatsEx = (int*)animationRemoval;
+			if (pGameOptionsEx->bDebugVerbose && nOpcode > 201) {
+				LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_GetStat(): stat %d = %d\r\n";
+				L.timestamp();
+				L.append(lpsz, 2, nOpcode, pStatsEx[nOpcode - 200 - 1]);
+				console.write(lpsz, 2, nOpcode, pStatsEx[nOpcode - 200 - 1]);
+			}
+			return pStatsEx[nOpcode - 200 - 1];
+		} else {
+			LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_GetStat(): pStatsEx == NULL\r\n";
+			L.timestamp();
+			L.append(lpsz);
+			console.write(lpsz);
+			return 0;
+		}
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_GetStat(): nOpcode out of bounds (%d; expected 1-%d)\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz, 2, nOpcode, pRuleEx->m_nStats);
+		return 0;
+	}
+}
+
+void DETOUR_CDerivedStats::DETOUR_MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize) {
+	DWORD size = pRuleEx->m_nStats - 200;
+
+	(this->*Tramp_CDerivedStats_MarshalTemplate)(pcdst, pnSize);
+
+	int* pStatsEx = NULL;
+	if (animationRemoval) {
+		pStatsEx = (int*)animationRemoval;
+		pcdst->animationRemoval = pStatsEx[0];
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_MarshalTemplate(): pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	return;
+}
+
+void DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(CDerivedStatsTemplate& cdst, int nSize) {
+	DWORD size = pRuleEx->m_nStats - 200;
+
+	int* pStatsEx = NULL;
+	if (animationRemoval) {
+		pStatsEx = (int*)animationRemoval;
+		pStatsEx[0] = cdst.animationRemoval;
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(): pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	(this->*Tramp_CDerivedStats_UnmarshalTemplate)(cdst, nSize);
+
+	animationRemoval = (int)pStatsEx;
+
+	return;
+}
+
+void DETOUR_CDerivedStats::DETOUR_Deconstruct() {
+	if (animationRemoval) {
+		operator delete((int*)animationRemoval, 0);
+		animationRemoval = 0;
+	} else {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_Deconstruct(): pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	return (this->*Tramp_CDerivedStats_Deconstruct)();
+};
 
 float CDerivedStats_NumAttacksShortToFloat(short s) {
 	bool bNegative = s < 0 ? true : false;
@@ -209,4 +446,37 @@ void CDerivedStats_GetRealStrengthSpell(char strengthEffective, char& strength, 
 	} else
 		strength = strengthEffective;
 	return;
+}
+
+void CDerivedStats_SetStat(CDerivedStats& cds, short nOpcode, int nValue) {
+	DWORD nSize = pRuleEx->m_nStats;
+
+	if (nOpcode < 202) {
+		LPCTSTR lpsz = "CDerivedStats_SetStat(): Tried to set a stat with index < 202 (expected 202-%d)\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, nSize);
+		console.write(lpsz, 1, nSize);
+		return;
+	}
+
+	if (nOpcode > nSize) {
+		LPCTSTR lpsz = "CDerivedStats_SetStat(): nOpcode out of bounds (maximum %d)\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, nSize);
+		console.write(lpsz, 1, nSize);
+		return;
+	}
+
+	if (cds.animationRemoval) {
+		int* pStatsEx = (int*)cds.animationRemoval;
+		pStatsEx[nOpcode - 200 - 1] = nValue;
+	} else {
+		LPCTSTR lpsz = "CDerivedStats_SetStat(): cds.pStatsEx == NULL\r\n";
+		L.timestamp();
+		L.append(lpsz);
+		console.write(lpsz);
+	}
+
+	return;
+
 }

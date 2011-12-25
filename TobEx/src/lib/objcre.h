@@ -8,7 +8,6 @@
 #include "objcore.h"
 #include "scrcore.h"
 #include "itmcore.h"
-#include "icon.h"
 #include "sndcore.h"
 #include "vidcore.h"
 #include "pathfind.h"
@@ -50,6 +49,24 @@ public:
 	int nIndexMageStart; //1ch, index at which wizard spells start (since order is priest, mage, innate)
 };
 
+struct CQuickSlot { //Size 30h
+//Constructor: 0x549D30
+	ResRef name; //0h
+	int u8; //-1
+	ResRef uc; //second name?
+	int u14;
+	short u18;
+	short u1a;
+	short nQuickSlot; //1ch
+	short nQuickAbilityIdx; //1eh
+	ResRef rSpellName; //20h
+	char u28;
+	char u29;
+	int u2a; //-1
+	char u2e;
+	char u2f;
+};
+
 struct CFavorite { //Size Eh
 //Constructor: 0x579E70
 	unsigned int* vtable; //0h
@@ -66,6 +83,8 @@ public:
 	static void RemoveItem(CCreatureObject& cre, int nSlot);
 	CEffectList& GetEquippedEffectsList();
 	CEffectList& GetMainEffectsList();
+	void SetAnimationSequence(short wSeq);
+	CItem& GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot);
 	void UnequipAll(BOOL bKeepEffects);
 	void EquipAll(BOOL bDoNotApplyEffects);
 	CreFileKnownSpell& GetKnownSpellPriest(int nLevel, int nIndex);
@@ -79,6 +98,7 @@ public:
 	BOOL AddMemSpellInnate(int nLevel, int nIndex, int* pIndex);
 	IECString& GetLongName();
 	STRREF GetLongNameStrRef();
+	void ValidateAttackSequence(char* pSeq);
 	unsigned int GetKitUnusableFlag();
 	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
 
@@ -89,11 +109,11 @@ public:
 	short u3d6;
 	ResRef saveName; //3d8h, CRE name with * prefix
 	short isSpawned; //3e0h, bHasSpawned
-	int Arg4; //3e2h, TicksTillRemove
-	short Arg5; //3e6h, Actor3C
-	short Arg6; //3e8h, Actor3E
-	int destY; //3eah
-	int destX; //3eeh
+	int nTicksTillRemove; //3e2h, Arg4
+	short nMaxMvtDistance; //3e6h, Arg5, Actor3C
+	short nMaxMvtDistanceToObject; //3e8h, Arg6, Actor3E
+	int destX; //3eah
+	int destY; //3eeh
 	int timesOfDay; //3f2h, creature schedule
 	CreFileData m_BaseStats; //3f6h
 	CKnownSpellList m_KnownSpellsPriest[7]; //65eh
@@ -106,7 +126,7 @@ public:
 	CMemSpellList m_MemSpellsWizard[9]; //942h
 	CMemSpellList m_MemSpellsInnate; //a3eh
 
-	CInventory m_Inventory; //a5ah
+	CCreInventory m_Inventory; //a5ah
 	/*CItem* m_pItemAmulet; //a5ah
 	CItem* m_pItemArmor; //a5eh
 	CItem* m_pItemBelt; //a62h
@@ -149,23 +169,23 @@ public:
 	char nSlotSelected; //af6h
 	short nAbilitySelected; //af8h*/
 
-	CGameObject* pThis;
+	CGameObject* pThis; //afeh
 	int ub02;
 	int ub06;
-	CDerivedStats cdsCurrent; //0xub0a
-	CDerivedStats cdsPrevious; //0x13c2, previous state to restore after effect finishes
-	CDerivedStats cdsDiff; //0x1c7a, difference to add to currentState
+	CDerivedStats cdsCurrent; //b0ah
+	CDerivedStats cdsPrevious; //13c2h, previous state to restore after effect finishes
+	CDerivedStats cdsDiff; //1c7ah, difference to add to currentState
 	int u2532;
-	CIcon weapon0; //2536h
-	CIcon weapon1; //2566h
-	CIcon weapon2; //2596h
-	CIcon weapon3; //25c6h
-	CIcon spell0; //25f6h
-	CIcon spell1; //2626h
-	CIcon spell2; //2656h
-	CIcon item0; //2686h
-	CIcon item1; //26b6h
-	CIcon item2; //26e6h
+	CQuickSlot weapon0; //2536h
+	CQuickSlot weapon1; //2566h
+	CQuickSlot weapon2; //2596h
+	CQuickSlot weapon3; //25c6h
+	CQuickSlot spell0; //25f6h
+	CQuickSlot spell1; //2626h
+	CQuickSlot spell2; //2656h
+	CQuickSlot item0; //2686h
+	CQuickSlot item1; //26b6h
+	CQuickSlot item2; //26e6h
 	IECString sLongName; //2716h
 	char u271a;
 	char u271b; //padding?
@@ -185,27 +205,27 @@ public:
 	ResRef currentArea;
 	char m_bGlobal; //27b8h, is this Cre Global
 	char m_nModalState; //27b9h, 0: None, 1: Battle Song, 2: Detecting Traps, 3: Hide in Shadows, 4: Turn Undead
-	CSound WalkingSounds[2]; //27bah
+	CSound m_sndWalking[2]; //27bah
 	int u288e;
-	CSound u2892[2];
+	CSound m_sndArmor[2]; //2892h
 	char bCurrentWalkingSoundIdx; //2966h
-	char u2967; //which CSound of u2892 to use
-	CSound u2968;
-	CSound u29d2;
-	CSound u2a3c; //casting sound
+	char bCurrentArmorSoundIdx; //2967h
+	CSound u2968; //uses walking sound channel
+	CSound m_sndMissile; //29d2h
+	CSound m_sndCasting; //2a3ch
 	CSound u2aa6;
 	CSound u2b10; //associated with overlays
 	int nTimesTalkedTo; //2b7ah, for NumTimesTalkedTo() trigger
 	int u2b7e;
-	ResRef areaSpecificScriptName;
+	ResRef areaSpecificScriptName; //2b82h
 	int nTimesInteractedWith[24]; //2b8ah, each element associated with NPC.IDS //copied from saved game unknown area under happiness
-	short u2bea;
+	short wHappiness; //2beah
 	Object oInteractee; //2bech, for InteractingWith() trigger
 	Enum u2c00;
 	BOOL bScheduled; //2c04h, not outside 24-hour schedule
 	BOOL bActive; //2c08h, not diseased/deactivated
 	BOOL bFree; //2c0ch, not mazed/imprisoned
-	int u2c10;
+	int nSelectionState; //2c10h, as per GAM NPC
 	int u2c14;
 	char u2c18;
 	TerrainTable tt; //2c19h
@@ -229,16 +249,16 @@ public:
 	char u2e5a[24]; //don't know the type here
 	char u2e72; //don't know the type here
 	char u2e73;
-	int isAnimationMovable; //0 = static animation (ANIMATE.IDS values < 0x1000)
+	BOOL m_bIsAnimationMovable; //0 = static animation (ANIMATE.IDS values < 0x1000)
 	int u2e78;
 	char u2e7c; //3
 	char m_nMirrorImages; //2e7dh, immune to poison and display special effect icon?
 	bool m_bBlur; //2e7eh
-	bool m_bInvisible; //invisibility and improved invisibility
+	bool m_bInvisible; //2e7fh, invisibility and improved invisibility
 	bool m_bSanctuary;
 	char u2e81;
-	CVidCell SANCTRY; //0x2e82
-	bool m_bEntangle; //0x2f58
+	CVidCell SANCTRY; //2e82h
+	bool m_bEntangle; //2f58h
 	char u2f59; //padding
 	CVidCell SPEntaCl;
 	bool m_bInvGlobe;
@@ -255,7 +275,7 @@ public:
 	CVidCell WebEntD;
 
 	float u3390;
-	int u3394;
+	float u3394;
 	float u3398;
 	float u339c; //1.875f
 	short u33a0; //range?
@@ -294,7 +314,7 @@ public:
 	int u344e;
 	CVidBitmap smallPortrait; //3452h
 	int u3508;
-	int u350c;
+	BOOL u350c; //if set, will set search bitmap bits 1, 2, 3 in foot circle area, else 4, 5, 6
 	char u3510;
 	char u3511; //padding?
 	long u3512[2];
@@ -310,10 +330,10 @@ public:
 	int u3550; //assoc actions
 	short u3554;
 	short u3556; //assoc actions
-	short u3558;
-	short u355a;
-	int u355c;
-	int u3560;
+	short m_wMoveToFrontDelay; //3558h, countdown to move to front vertical list on resurrect?
+	short m_wMoveToMiddleDelay; //355ah, countdown to move to middle vertical list on death?
+	BOOL m_bDead; //355ch, set by CEffectInstandDeath
+	BOOL m_bResurrect; //3560h, set by CEffectResurrect
 	CEffectList m_EffectsEquipped; //3564h, for while equipped effects
 	CEffectList m_EffectsMain; //3590h, for all other effects
 	IECPtrList u35bc; //AAA8FC, CPermRepeatingEffList
@@ -321,7 +341,8 @@ public:
 	POINT u35ec; //assoc actions
 	int u35f4;
 	int u35f8;
-	int u35fc;
+	short u35fc; //confusion timer?
+	short u35fe;
 	int u3600;
 	int u3604;
 	int u3608;
@@ -359,7 +380,7 @@ public:
 	int u36dc; //assoc with items
 	int u36e0; //set to 1 when Set Item Color effect used
 	int u36e4; //assoc with items
-	int u36e8;
+	BOOL m_bRemoveFromArea; //36e8h
 	int u36ec;
 	CSelectionCircle cscSelf; //36f0h
 	CSelectionCircle cscTarget; //3714h
@@ -415,7 +436,7 @@ public:
 	int u63ac; //0x105cc
 	int u63b0; //assoc with berserk state?
 	short u63b4;
-	int u63b6; //related to constitution?
+	int u63b6; //related to constitution? used to subtract from current and max HP
 	int u63ba[6];
 	char u63d2[2];
 	int nUnselectableVariable; //63d4h
@@ -430,9 +451,9 @@ public:
 	short u63fc; //contains an actionOpcode (a dialoge or escape area action?)
 	int u63fe; //assoc actions
 	int u6402; //assoc actions
-	int u6406;
-	int u640a;
-	short u640e;
+	int u6406; //timer
+	int u640a; //timer
+	short u640e; //timer
 	short u6410;
 	BOOL bUseCurrentState; //6412h, 0 = uses prevState, 1 = uses currentState, set to 0 when refreshing repeating effects
 	short u6416;
@@ -447,7 +468,7 @@ public:
 	Enum u6450; //contains enum of CVisualEffect
 	int u6454;
 	CQuickObjectList* pSelectSpellSpells; //6458h
-	CScript* pDream; //645ch
+	CScript* pDreamScript; //645ch
 	CGameDialog dlgCurrent; //6460h
 	CGameDialog dlgCurrent2; //64c4h
 	short u6528;
@@ -471,13 +492,14 @@ public:
 	int u668e;
 	int u6692;
 	int u6696; //assoc actions
-	int u669a;
-	int u669e;
+	BOOL m_bLeavingArea; //669ah
+	Enum ePuppetMaster; //669eh
 	int u66a2;
 	int u66a6;
 	int u66aa;
 	CEventMessageList m_EventMessages; //66aeh
-	int u66ca[2];
+	BOOL u66ca; //set when search bitmap has set 3 bits
+	BOOL u66ce; //set when search bitmap has set 2 bits
 	_8DF1F2 u66d2;
 	int u6722;
 	int nDamageTaken; //6726h
@@ -494,7 +516,13 @@ public:
 	BOOL m_bEquippingItem; //674eh
 	char u6752; //default = 2a; if CRE name does not start with *, will put first character in here; inherits value from GAM (unknown above killXP(chapter), inherits from Actor2E (char)
 	char u6753;
-	int u6754[7];
+	int u6754;
+	int u6758;
+	int u675c;
+	int u6760;
+	int u6764;
+	int u6768;
+	BOOL m_bInitToB; //676ch
 	int u6770;
 };
 
@@ -504,9 +532,10 @@ extern ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGame
 extern void (*CCreatureObject_RemoveItem)(CCreatureObject&, int);
 extern CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)();
 extern CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)();
+extern void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short);
+extern CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot);
 extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
 extern void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL);
-extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellPriest)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellMage)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellInnate)(int, int);
@@ -518,6 +547,8 @@ extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellMage)(int, int, int*);
 extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*);
 extern IECString& (CCreatureObject::*CCreatureObject_GetLongName)();
 extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
+extern void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*);
+extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
 extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
 
 #endif //OBJCRE_H

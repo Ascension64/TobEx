@@ -12,7 +12,7 @@ struct CManager { //CAh
 //Constructor: 0x584BE3
 	CPanel& GetPanel(int index);
 
-	int u0; //0h
+	int* u0; //0h
 	BOOL bConstructed; //4h, checks if run constructor yet
 	ResRef name; //8h
 	CEngine* pEngine; //10h
@@ -62,7 +62,7 @@ struct CPanel { //Size 122h, in IESDP this is Window
 	bool u104; //set if byte dh of controlInfo == 1
 	char u105;
 	BOOL bVisible; //106h
-	int u10a;
+	BOOL bActive; //10ah, if 0 greys out the area
 	RECT u10e;
 	int u11e;
 };

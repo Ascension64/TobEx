@@ -10,6 +10,8 @@ void (CItem::*CItem_LoadResource)(ResRef&, BOOL) =
 	SetFP(static_cast<void (CItem::*)(ResRef&, BOOL)>				(&CItem::LoadResource),		0x5AA0A7);
 void (CItem::*CItem_Equip)(CCreatureObject&, int, BOOL) =
 	SetFP(static_cast<void (CItem::*)(CCreatureObject&, int, BOOL)>	(&CItem::Equip),			0x5AA430);
+ItmFileAbility& (CItem::*CItem_GetAbility)(int) =
+	SetFP(static_cast<ItmFileAbility& (CItem::*)(int)>				(&CItem::GetAbility),		0x5AB0D7);
 short (CItem::*CItem_GetType)() =
 	SetFP(static_cast<short (CItem::*)()>							(&CItem::GetType),			0x5AB32B);
 unsigned int (CItem::*CItem_GetFlags)() =
@@ -21,6 +23,7 @@ BOOL CItem::Demand()														{ return (this->*CItem_Demand)(); }
 BOOL CItem::Release()														{ return (this->*CItem_Release)(); }
 void CItem::LoadResource(ResRef& res, BOOL bAddToHandler)					{ return (this->*CItem_LoadResource)(res, bAddToHandler); }
 void CItem::Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotApplyEffects)	{ return (this->*CItem_Equip)(cre, nSlot, bDoNotApplyEffects); }
+ItmFileAbility& CItem::GetAbility(int nAbilityIdx)							{ return (this->*CItem_GetAbility)(nAbilityIdx); }
 short CItem::GetType()														{ return (this->*CItem_GetType)(); }
-unsigned int CItem::GetFlags()								{ return (this->*CItem_GetFlags)(); }
-unsigned int CItem::GetUnusableFlags()						{ return (this->*CItem_GetUnusableFlags)(); }
+unsigned int CItem::GetFlags()												{ return (this->*CItem_GetFlags)(); }
+unsigned int CItem::GetUnusableFlags()										{ return (this->*CItem_GetUnusableFlags)(); }

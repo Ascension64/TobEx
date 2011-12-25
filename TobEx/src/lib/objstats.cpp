@@ -110,28 +110,34 @@ CDerivedStats& (CDerivedStats::*CDerivedStats_OpAdd)(CDerivedStats&) =
 	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAdd),					0x470945);
 void (CDerivedStats::*CDerivedStats_LimitStats)() =
 	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::LimitStats),				0x471B36);
-short (CDerivedStats::*CDerivedStats_GetStat)(int) =
-	SetFP(static_cast<short (CDerivedStats::*)(int)>						(&CDerivedStats::GetStat),					0x473162);
-void (CDerivedStats::*CDerivedStats_LoadStats)(CDerivedStatsTemplate&, int) =
+int (CDerivedStats::*CDerivedStats_GetStat)(short) =
+	SetFP(static_cast<int (CDerivedStats::*)(short)>						(&CDerivedStats::GetStat),					0x473162);
+void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*) =
+	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate*, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
+void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int) =
 	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate&, int)>
-																			(&CDerivedStats::LoadStats),				0x474AF2);
+																			(&CDerivedStats::UnmarshalTemplate),		0x474AF2);
 char (CDerivedStats::*CDerivedStats_GetEffectiveClericLevel)(unsigned char) =
 	SetFP(static_cast<char (CDerivedStats::*)(unsigned char)>				(&CDerivedStats::GetEffectiveClericLevel),	0x4758AD);
 char (CDerivedStats::*CDerivedStats_GetEffectiveMageLevel)(unsigned char) =
 	SetFP(static_cast<char (CDerivedStats::*)(unsigned char)>				(&CDerivedStats::GetEffectiveMageLevel),	0x4759FA);
+void (CDerivedStats::*CDerivedStats_Deconstruct)() =
+	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::Deconstruct),				0x567770);
 
 CDerivedStats::CDerivedStats(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest) {
 	(this->*CDerivedStats_Construct_3)(stats, memArrayMage, memArrayPriest);
 }
-CDerivedStats::CDerivedStats()															{ (this->*CDerivedStats_Construct_0)(); }
+CDerivedStats::CDerivedStats()											{ (this->*CDerivedStats_Construct_0)(); }
 void CDerivedStats::Init(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest) {
 	return (this->*CDerivedStats_Init)(stats, memArrayMage, memArrayPriest);
 }
-CDerivedStats& CDerivedStats::operator=(CDerivedStats& cds)				{ return (this->*CDerivedStats_OpAssign)(cds); }
-void CDerivedStats::ClearStats()										{ return (this->*CDerivedStats_ClearStats)(); }
-CDerivedStats& CDerivedStats::operator+(CDerivedStats& cds)				{ return (this->*CDerivedStats_OpAdd)(cds); }
-void CDerivedStats::LimitStats()										{ return (this->*CDerivedStats_LimitStats)(); }
-short CDerivedStats::GetStat(int index)									{ return (this->*CDerivedStats_GetStat)(index); }
-void CDerivedStats::LoadStats(CDerivedStatsTemplate& cds, int nSize)	{ return (this->*CDerivedStats_LoadStats)(cds, nSize); }
-char CDerivedStats::GetEffectiveClericLevel(unsigned char nClass)		{ return (this->*CDerivedStats_GetEffectiveClericLevel)(nClass); }
-char CDerivedStats::GetEffectiveMageLevel(unsigned char nClass)			{ return (this->*CDerivedStats_GetEffectiveMageLevel)(nClass); }
+CDerivedStats& CDerivedStats::operator=(CDerivedStats& cds)						{ return (this->*CDerivedStats_OpAssign)(cds); }
+void CDerivedStats::ClearStats()												{ return (this->*CDerivedStats_ClearStats)(); }
+CDerivedStats& CDerivedStats::operator+(CDerivedStats& cds)						{ return (this->*CDerivedStats_OpAdd)(cds); }
+void CDerivedStats::LimitStats()												{ return (this->*CDerivedStats_LimitStats)(); }
+int CDerivedStats::GetStat(short nOpcode)										{ return (this->*CDerivedStats_GetStat)(nOpcode); }
+void CDerivedStats::MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize)	{ return (this->*CDerivedStats_MarshalTemplate)(pcdst, pnSize); }
+void CDerivedStats::UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize)	{ return (this->*CDerivedStats_UnmarshalTemplate)(cds, nSize); }
+char CDerivedStats::GetEffectiveClericLevel(unsigned char nClass)				{ return (this->*CDerivedStats_GetEffectiveClericLevel)(nClass); }
+char CDerivedStats::GetEffectiveMageLevel(unsigned char nClass)					{ return (this->*CDerivedStats_GetEffectiveMageLevel)(nClass); }
+CDerivedStats::~CDerivedStats()													{ (this->*CDerivedStats_Deconstruct)(); }

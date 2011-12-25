@@ -10,6 +10,8 @@ static LPCTSTR szFile = "./TobEx.ini";
 CGameOptionsEx* pGameOptionsEx = NULL;
 
 CGameOptionsEx::CGameOptionsEx() {
+	bActionEquipRangedFix = FALSE;
+
 	bDebugCriticalMsgBoxFix = FALSE;
 	bDebugExternalLogging = FALSE;
 	bDebugLogDialogueBar = FALSE;
@@ -41,7 +43,6 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffIWDPriestMemSpellMod = FALSE;
 	bEffIWDStrengthMod = FALSE;
 	bEffMagicResistFix = FALSE;
-	bEffOpcode13E = FALSE;
 	bEffPoisonFix = FALSE;
 	bEffRegenerationFix = FALSE;
 	bEffRemoveProjectileMod = FALSE;
@@ -50,18 +51,25 @@ CGameOptionsEx::CGameOptionsEx() {
 
 	bEnginePriestKnownSpellsExtend = FALSE;
 	bEngineAllowDualClassAll = FALSE;
+	bEngineAllowEquipArmorCombat = FALSE;
 	bEngineCastingLevelBonus = FALSE;
+	bEngineAssBHPenaltyKit = FALSE;
 	bEngineExperienceFix = FALSE;
 	nEngineContingencyTriggerDelay = 0;
 	bEngineModifyEffectStacking = FALSE;
+	bEngineDisableInvPauseSP = FALSE;
 	bEngineCharmSilenceRemoval = FALSE;
+	bEngineExpandedStats = FALSE;
 	bEngineExternClassRaceRestrictions = FALSE;
+	bEngineExternEncumbrance = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
 	bEnginePickpocketRemainHidden = FALSE;
+	bEngineRestSpawnsAdvanceTime = FALSE;
 
 	bItemsBackstabRestrictionsConfig = FALSE;
 	bItemsCriticalHitAversionConfig = FALSE;
 	bItemsRandomTreasureExtend = FALSE;
+	bItemsUseAnimPercentThrowingWeapons = FALSE;
 
 	bMusicSonglistExtend = FALSE;
 
@@ -73,6 +81,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bSoundSoundsetSubtitles = FALSE;
 
 	bTriggerPickpocketFailed = FALSE;
+	bTriggerKitFix = FALSE;
 
 	bUserKitsExtend = FALSE;
 	nUserCustomDlgBarSize = 0;
@@ -94,6 +103,8 @@ CGameOptionsEx::CGameOptionsEx() {
 }
 
 void CGameOptionsEx::Init() {
+	bActionEquipRangedFix = GetIniValue("Action", "EquipRanged Action Fix");
+
 	bDebugCriticalMsgBoxFix = GetIniValue("Debug", "Critical Error Message Box Fix");
 	bDebugExternalLogging = GetIniValue("Debug", "Externalise Logging");
 	bDebugLogDialogueBar = GetIniValue("Debug", "Log Dialogue Bar");
@@ -125,7 +136,6 @@ void CGameOptionsEx::Init() {
 	bEffIWDPriestMemSpellMod = GetIniValue("Effect Opcodes", "IWD Style Priest Spell Slots Mod");
 	bEffIWDStrengthMod = GetIniValue("Effect Opcodes", "IWD Style Strength Mod");
 	bEffMagicResistFix = GetIniValue("Effect Opcodes", "Magic Resistance Mod Fix");
-	bEffOpcode13E = GetIniValue("Effect Opcodes", "Opcode 0x13E");
 	bEffPoisonFix = GetIniValue("Effect Opcodes", "Poison Fix");
 	bEffRegenerationFix = GetIniValue("Effect Opcodes", "Regeneration Fix");
 	bEffRemoveProjectileMod = GetIniValue("Effect Opcodes", "Remove Projectile Mod");
@@ -134,18 +144,26 @@ void CGameOptionsEx::Init() {
 
 	bEnginePriestKnownSpellsExtend = GetIniValue("Engine", "Allow 99 Priest Known Spells Per Level");
 	bEngineAllowDualClassAll = GetIniValue("Engine", "Allow All Races to Dual Class");
+	bEngineAllowEquipArmorCombat = GetIniValue("Engine", "Allow Equipping Armor in Combat");
 	bEngineCastingLevelBonus = GetIniValue("Engine", "Apply Casting Level Bonus");
+	bEngineAssBHPenaltyKit = GetIniValue("Engine", "Assassin and Bounty Hunter Penalty to Similar Kits");
 	bEngineExperienceFix = GetIniValue("Engine", "Correct Experience Gain");
 	nEngineContingencyTriggerDelay = GetIniValue("Engine", "Custom Contingency Trigger Check Delay");
 	bEngineModifyEffectStacking = GetIniValue("Engine", "Disable Duplicate Effect Stacking");
+	bEngineDisableInvPauseSP = GetIniValue("Engine", "Disable Force Inventory Pause");
 	bEngineCharmSilenceRemoval = GetIniValue("Engine", "Disable Silence On Charm");
+	bEngineExpandedStats = GetIniValue("Engine", "Expanded Stats");
 	bEngineExternClassRaceRestrictions = GetIniValue("Engine", "Externalise Class-Race Restrictions");
+	bEngineExternEncumbrance = GetIniValue("Engine", "Externalise Encumbrance Restrictions");
 	bEngineProficiencyRestrictions = GetIniValue("Engine", "Level One Proficiency Restrictions");
 	bEnginePickpocketRemainHidden = GetIniValue("Engine", "Remain Hidden On Pickpocket Success");
+	bEngineRestSpawnsAdvanceTime = GetIniValue("Engine", "Rest Spawns Advance Time");
 
 	bItemsBackstabRestrictionsConfig = GetIniValue("Items", "Configurable Backstab Restrictions");
 	bItemsCriticalHitAversionConfig = GetIniValue("Items", "Configurable Critial Hit Aversion");
 	bItemsRandomTreasureExtend = GetIniValue("Items", "Enable 99 Random Treasure Rows");
+	bItemsExternCreExcl = GetIniValue("Items", "Externalise Item-Creature Exclusions");
+	bItemsUseAnimPercentThrowingWeapons = GetIniValue("Items", "Use Animation Percentages for Throwing Weapons");
 
 	bMusicSonglistExtend = GetIniValue("Music", "Extended Songlist");
 
@@ -157,6 +175,7 @@ void CGameOptionsEx::Init() {
 	bSoundSoundsetSubtitles = GetIniValue("Sound", "Soundset Subtitles");
 
 	bTriggerPickpocketFailed = GetIniValue("Trigger", "Enable PickpocketFailed Trigger");
+	bTriggerKitFix = GetIniValue("Trigger", "Kit Trigger Fix");
 
 	bUserKitsExtend = GetIniValue("UI", "Allow 1280 Total Kits");
 	nUserCustomDlgBarSize = GetIniValue("UI", "Custom Dialogue Bar Buffer Size");

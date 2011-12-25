@@ -11,6 +11,7 @@
 #include "ChitinCore.h"
 #include "InfGameCore.h"
 #include "ScriptAction.h"
+#include "ScriptTrigger.h"
 #include "UserCommon.h"
 #include "ObjectCreature.h"
 
@@ -66,6 +67,38 @@ void InitPatches() {
 	std::vector<Patch> vPatchList;
 	std::vector<Patch>::iterator vPatchItr;
 	std::vector<Data> vDataList;
+
+	if (pGameOptionsEx->bActionEquipRangedFix) {
+		//mov al,byte ptr ds:[edx]
+		//cmp al,2 (TYPE_RANGED)
+		//jnz short 0094FAAE
+		//mov ecx,dword ptr ss:[ebp-8]
+		//call CItem::GetFlags()
+		//and eax,2 (ITEMFLAG_TWOHANDED)
+		//test eax,eax
+		//je short 0094FA6A
+		//mov ecx,dword ptr ss:[ebp-C]
+		//nop
+		//mov dl,byte ptr ds:[ecx+10]
+		//cmp dl,3 (PROJTYPE_BULLET)
+		char bytes[] = {0x8A, 0x02,
+						0x3C, 0x02,
+						0x75, 0x65,
+						0x8B, 0x4D, 0xF8,
+						0xE8, 0x40, 0xBB, 0xC5, 0xFF,
+						0x83, 0xE0, 0x02,
+						0x85, 0xC0,
+						0x74, 0x12,
+						0x8B, 0x4D, 0xF4,
+						0x90,
+						0x8A, 0x51, 0x10,
+						0x80, 0xFA, 0x03};
+		vDataList.push_back( Data(0x94FA43, 31, bytes) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 
 	if (pGameOptionsEx->bDebugCriticalMsgBoxFix) {
 		//NOP, CALL
@@ -282,6 +315,14 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bEngineAllowEquipArmorCombat) {
+		//jle -> jmp
+		char bytes[] = {0xEB};
+		vDataList.push_back( Data(0x69BEDF, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bEngineAllowDualClassAll) {
 		//nop a jnz
 		char bytes[] = {0x90, 0x90};
@@ -303,6 +344,99 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bEngineExpandedStats) {
+		//je short BGMain.008A7311
+		//add ecx, 0B0A
+		//jmp short BGMain.008A7317
+		//add ecx, 13C2
+		//mov dword ptr ss:[ebp-DC], ecx
+		//push 0C9
+		//mov ecx, dword ptr ss:[ebp-DC]
+		//call CDerivedStats::GetStat(index)
+		//cmp eax, 0
+		//nop
+		char bytes[] = {0x74, 0x08,
+						0x81, 0xC1, 0x0A, 0x0B, 0x00, 0x00,
+						0xEB, 0x06,
+						0x81, 0xC1, 0xC2, 0x13, 0x00, 0x00,
+						0x89, 0x8D, 0x24, 0xFF, 0xFF, 0xFF,
+						0x68, 0xC9, 0x00, 0x00, 0x00,
+						0x8B, 0x8D, 0x24, 0xFF, 0xFF, 0xFF,
+						0xE8, 0x35, 0xBE, 0xBC, 0xFF,
+						0x83, 0xF8, 0x00,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x8A7307, 52, bytes) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
+	if (pGameOptionsEx->bEngineAssBHPenaltyKit) {
+		//1. CRecord::LevelUpPanelOnLoad()
+		char bytes[] = {0x25, 0x00, 0x00, 0x08, 0x00,
+						0x85, 0xC0,
+						0x90, 0x90, 0x90, 0x90,
+						0x74, 0x25,
+						0x8A, 0x8D, 0xC0, 0xF6, 0xFF, 0xFF,
+						0x8A, 0x95, 0xBC, 0xF6, 0xFF, 0xFF,
+						0x81, 0xE1, 0xFF, 0x00, 0x00, 0x00,
+						0x2A, 0xCA};
+		vDataList.push_back( Data(0x6DF0B4, 33, bytes) );
+
+		char bytes2[] = {0x25, 0x00, 0x00, 0x04, 0x00,
+						0x85, 0xC0,
+						0x90, 0x90, 0x90, 0x90,
+						0x74, 0x25,
+						0x8A, 0x8D, 0xC0, 0xF6, 0xFF, 0xFF,
+						0x8A, 0x95, 0xBC, 0xF6, 0xFF, 0xFF,
+						0x81, 0xE1, 0xFF, 0x00, 0x00, 0x00,
+						0x2A, 0xCA};
+		vDataList.push_back( Data(0x6DF0EE, 33, bytes2) );
+
+		//2. CCharGen::SkillsBG1PanelOnLoad()
+		char bytes3[] = {0x25, 0x00, 0x00, 0x08, 0x00,
+						0x85, 0xC0,
+						0x90, 0x90, 0x90,
+						0x74, 0x26,
+						0x6A, 0x04};
+		vDataList.push_back( Data(0x71CDD0, 14, bytes3) );
+
+		char bytes4[] = {0x25, 0x00, 0x00, 0x04, 0x00,
+						0x85, 0xC0,
+						0x90, 0x90, 0x90,
+						0x74, 0x26,
+						0x6A, 0x04};
+		vDataList.push_back( Data(0x71CE0A, 14, bytes4) );
+
+		//3. CEffectLevelDrain::ApplyEffect()
+		char bytes5[] = {0x25, 0x00, 0x00, 0x08, 0x00,
+						0x85, 0xC0,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+						0x74, 0x3F,
+						0x8B, 0x95, 0x4C, 0xEE, 0xFF, 0xFF,
+						0x2B, 0x95, 0x48, 0xEE, 0xFF, 0xFF,
+						0x6B, 0xD2, 0x14,
+						0x39, 0x95, 0x6C, 0xEE, 0xFF, 0xFF,
+						0x7D, 0x0E,
+						0x8B, 0x85, 0x6C, 0xEE, 0xFF, 0xFF,
+						0x89, 0x85, 0x2C, 0xEE, 0xFF, 0xFF,
+						0xEB, 0x1A,
+						0x8B, 0x8D, 0x4C, 0xEE, 0xFF, 0xFF,
+						0x2B, 0x8D, 0x48, 0xEE, 0xFF, 0xFF,
+						0x6B, 0xC9, 0x14,
+						0x89, 0x8D, 0x2C, 0xEE, 0xFF, 0xFF,
+						0xE9, 0x9F, 0x00, 0x00, 0x00,
+						0x8B, 0x4D, 0x08,
+						0xE8, 0x3F, 0x7E, 0x3A, 0x00,
+						0x25, 0x00, 0x00, 0x04, 0x00,
+						0x85, 0xC0,
+						0x74, 0x48};
+		vDataList.push_back( Data(0x5387D4, 97, bytes5) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bEngineExperienceFix) {
 		char bytes[] = {0x64};
 		vDataList.push_back( Data(0x6A97D5, 1, bytes) );
@@ -342,9 +476,155 @@ void InitPatches() {
 		vDataList.clear();
 	}*/
 
+	if (pGameOptionsEx->bEngineDisableInvPauseSP) {
+		char bytes[] = {0xEB};
+		//void CInventory::Init()
+		vDataList.push_back( Data(0x7402A8, 1, bytes) );
+
+		//void CInventory::DeInit()
+		vDataList.push_back( Data(0x7403D0, 1, bytes) );
+
+		char bytes2[] = {0x90, 0x90};
+		vDataList.push_back( Data(0x74912B, 2, bytes2) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bEngineCharmSilenceRemoval) {
 		char bytes[] = {0xEB};
 		vDataList.push_back( Data(0x8A11D4, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bEngineExternEncumbrance) {
+		//1. some animation thing depending on encumbrance
+
+		//mov ecx,dword ptr ss:[ebp-44]
+		//push ecx
+		//call
+		char bytes[] = {0x8B, 0x4D, 0xBC,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x8ECAED, 5, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CRuleTables_IsHighEncumbrance;
+		DWORD address = (DWORD)ptr - 5  - 0x8ECAF1;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x8ECAF2, 4, bytes2) );
+
+		//test eax,eax
+		//nop
+		//je short 8ECB6B
+		char bytes3[] = {0x85, 0xC0,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+						0x74, 0x6A};
+		vDataList.push_back( Data(0x8ECAF6, 11, bytes3) );
+
+		//push ecx
+		//call
+		char bytes4[] = {0x51,
+						0xE8};
+		vDataList.push_back( Data(0x8ECB6E, 2, bytes4) );
+
+		//CALL address
+		ptr = (void*)CRuleTables_IsLowEncumbrance;
+		address = (DWORD)ptr - 5  - 0x8ECB6F;
+		char* bytes5 = (char*)&address;
+		vDataList.push_back( Data(0x8ECB70, 4, bytes5) );
+
+		//test eax,eax
+		//nop
+		//je 8ECC41
+		//mov edx,dword ptr ss:[ebp-880]
+		//add edx,2C4A
+		//mov dword ptr ss:[ebp-3CC],edx
+		//mov eax,dword ptr ss:[ebp-3CC]
+		//cmp dword ptr ds:[eax],0
+		//jnz short BGMain.008ECBB5
+		//push 0
+		//push B04B38
+		//push B04B10
+		//push 830
+		//call AssertionFailedQuit
+		//add esp,10
+		//mov ecx,dword ptr ss:[ebp-3CC]
+		//mov ecx,dword ptr ds:[ecx]
+		//mov edx,dword ptr ds:[ecx]
+		char bytes6[] = {0x85, 0xC0,
+						0x90, 0x90, 0x90,
+						0x0F, 0x84, 0xC2, 0x00, 0x00, 0x00,
+						0x8B, 0x95, 0x80, 0xF7, 0xFF, 0xFF,
+						0x81, 0xC2, 0x4A, 0x2C, 0x00, 0x00,
+						0x89, 0x95, 0x34, 0xFC, 0xFF, 0xFF,
+						0x8B, 0x85, 0x34, 0xFC, 0xFF, 0xFF,
+						0x83, 0x38, 0x00,
+						0x75, 0x19,
+						0x6A, 0x00,
+						0x68, 0x38, 0x4B, 0xB0, 0x00,
+						0x68, 0x10, 0x4B, 0xB0, 0x00,
+						0x68, 0x30, 0x08, 0x00, 0x00,
+						0xE8, 0xBA, 0x24, 0x0B, 0x00,
+						0x83, 0xC4, 0x10,
+						0x8B, 0x8D, 0x34, 0xFC, 0xFF, 0xFF,
+						0x8B, 0x09,
+						0x8B, 0x11};
+		vDataList.push_back( Data(0x8ECB74, 75, bytes6) );
+
+		//2. settings of encumbrance in CDerivedStats
+
+		//mov ecx,dword ptr ss:[ebp-11c]
+		//push ecx
+		//call
+		char bytes7[] = {0x8B, 0x8D, 0xE4, 0xFE, 0xFF, 0xFF,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x8EFDCF, 8, bytes7) );
+
+		//CALL address
+		ptr = (void*)CRuleTables_IsHighEncumbrance;
+		address = (DWORD)ptr - 5  - 0x8EFDD6;
+		char* bytes8 = (char*)&address;
+		vDataList.push_back( Data(0x8EFDD7, 4, bytes8) );
+
+		//test eax,eax
+		//nop
+		//je 8EFE7D
+		char bytes9[] = {0x85, 0xC0,
+						0x90, 0x90, 0x90, 0x90,	0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+						0x0F, 0x84, 0x90, 0x00, 0x00, 0x00};
+		vDataList.push_back( Data(0x8EFDDB, 18, bytes9) );
+
+		//push edx
+		//call
+		char bytes10[] = {0x52,
+						0xE8};
+		vDataList.push_back( Data(0x8EFE83, 2, bytes10) );
+
+		//CALL address
+		ptr = (void*)CRuleTables_IsLowEncumbrance;
+		address = (DWORD)ptr - 5  - 0x8EFE84;
+		char* bytes11 = (char*)&address;
+		vDataList.push_back( Data(0x8EFE85, 4, bytes11) );
+
+		//test eax,eax
+		//nop
+		//je 8EFF7D
+		//nop
+		//mov eax,dword ptr ds:[B773CC]
+		//mov ecx,dword ptr ss:[eax+42BA]
+		//mov eax,dword ptr ds:[ecx+4302]
+		char bytes12[] = {0x85, 0xC0,
+						0x90, 0x90, 0x90, 0x90,	0x90, 0x90,
+						0x0F, 0x84, 0xE6, 0x00, 0x00, 0x00,
+						0x90, 0x90, 0x90,
+						0xA1, 0xCC, 0x73, 0xB7, 0x00,
+						0x36, 0x8B, 0x88, 0xBA, 0x42, 0x00, 0x00,
+						0x8B, 0x81, 0x02, 0x43, 0x00, 0x00};
+		vDataList.push_back( Data(0x8EFE89, 35, bytes12) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
@@ -390,6 +670,44 @@ void InitPatches() {
 		//moved instructions to free up space for above JMP
 		char bytes6[8] = {0x8B, 0x8D, 0x44, 0xFD, 0xFF, 0xFF, 0x8B, 0x11};
 		vDataList.push_back( Data(0x9438CE, 8, bytes6) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bEngineRestSpawnsAdvanceTime) {
+		//mov ecx,dword ptr ds:[<TICKS_EIGHT_HOURS>]
+		//imul ecx,dword ptr ss:[ebp-CC]
+		//add ecx,dword ptr ss:[ebp-E0]
+		//push ecx
+		//mov ecx,dword ptr ss:[ebp-3F8]
+		//add ecx,1DD0
+		//call CWorldTimer::AdvanceByTime
+		//mov edx,dword ptr ds:[<TICKS_EIGHT_HOURS>]
+		//imul edx,dword ptr ss:[ebp-CC]
+		//add edx,dword ptr ss:[ebp-E0]
+		//push edx
+		//push 7
+		//mov ecx,dword ptr ss:[ebp-3F8]
+		//call CInfGame::PrintEvaluatedMessage
+		//cmp dword ptr ss:[ebp-CC],0
+		//jle BGMain.006ABC61
+		char bytes[] = {0x8B, 0x0D, 0xCC, 0x0F, 0xB8, 0x00,
+						0x0F, 0xAF, 0x8D, 0x34, 0xFF, 0xFF, 0xFF,
+						0x03, 0x8D, 0x20, 0xFF, 0xFF, 0xFF,
+						0x51,
+						0x8B, 0x8D, 0x08, 0xFC, 0xFF, 0xFF,
+						0x81, 0xC1, 0xD0, 0x1D, 0x00, 0x00,
+						0xE8, 0x28, 0xDE, 0xF9, 0xFF,
+						0x8B, 0x15, 0xCC, 0x0F, 0xB8, 0x00,
+						0x0F, 0xAF, 0x95, 0x34, 0xFF, 0xFF, 0xFF,
+						0x03, 0x95, 0x20, 0xFF, 0xFF, 0xFF,
+						0x52,
+						0x6A, 0x07,
+						0x8B, 0x8D, 0x08, 0xFC, 0xFF, 0xFF,
+						0xE8, 0x3F, 0x32, 0x00, 0x00,
+						0x83, 0xBD, 0x34, 0xFF, 0xFF, 0xFF, 0x00,
+						0x0F, 0x8E, 0xBA, 0x09, 0x00, 0x00};
+		vDataList.push_back( Data(0x6AB254, 83, bytes) );
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
@@ -527,6 +845,159 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bItemsExternCreExcl) {
+		//modify je address
+		char bytes[] = {0xE3, 0x02};
+	    vDataList.push_back( Data(0x69CB6E, 2, bytes) );
+
+		//mov eax,dword ptr ss:[ebp+14]
+		//push eax
+		//mov ecx,dword ptr ss:[ebp+10]
+		//mov edx,dword ptr ds:[ecx]
+		//push edx
+		//movsx eax,word ptr ss:[ebp+C]
+		//push eax
+		//mov ecx,dword ptr ss:[ebp-48]
+		//push ecx
+		//call ...
+		char bytes3[] = {0x8B, 0x45, 0x14,
+						0x50,
+						0x8B, 0x4D, 0x10,
+						0x8B, 0x11,
+						0x52,
+						0x0F, 0xBF, 0x45, 0x0C,
+						0x50,
+						0x8B, 0x4D, 0xB8,
+						0x51,
+						0xE8};
+	    vDataList.push_back( Data(0x69CB72, 20, bytes3) );
+
+		//CALL address
+		void* ptr4 = (void*)CRuleTables_DoesEquipSlotPassCreExclude;
+		DWORD address4 = (DWORD)ptr4 - 5  - 0x69CB85;
+		char* bytes4 = (char*)&address4;
+		vDataList.push_back( Data(0x69CB86, 4, bytes4) );
+
+		//test eax,eax
+		//jnz BGMain.0069CE55
+		//mov dword ptr ss:[ebp-54],0
+		//jmp BGMain.0069CE55
+		char bytes5[] = {0x85, 0xC0,
+						0x0F, 0x85, 0xC3, 0x02, 0x00, 0x00,
+						0xC7, 0x45, 0xAC, 0x00, 0x00, 0x00, 0x00,
+						0xE9, 0xB7, 0x02, 0x00, 0x00,
+						0x90, 0x90, 0x90, 0x90};
+	    vDataList.push_back( Data(0x69CB8A, 24, bytes5) );
+
+		//mov ecx,dword ptr ss:[ebp+14]
+		//push ecx
+		//mov eax,dword ptr ss:[ebp+c]
+		//mov ecx,dword ptr ds:[eax]
+		//push ecx
+		//movsx ecx,word ptr ss:[ebp+10]
+		//push ecx
+		//mov edx,dword ptr ss:[ebp-1C]
+		//push edx
+		//call ...
+		char bytes6[] = {0x8B, 0x4D, 0x14,
+						0x51,
+						0x8B, 0x45, 0x0C,
+						0x8B, 0x08,
+						0x51,
+						0x0F, 0xBF, 0x4D, 0x10,
+						0x51,
+						0x8B, 0x55, 0xE4,
+						0x52,
+						0xE8};
+	    vDataList.push_back( Data(0x69FF65, 20, bytes6) );
+
+		//CALL address
+		void* ptr7 = (void*)CRuleTables_DoesInvSlotPassCreExclude;
+		DWORD address7 = (DWORD)ptr7 - 5  - 0x69FF78;
+		char* bytes7 = (char*)&address7;
+		vDataList.push_back( Data(0x69FF79, 4, bytes7) );
+
+		//test eax,eax
+		//jnz BGMain.006A006D
+		//mov dword ptr ss:[ebp-20],0
+		//jmp BGMain.006A006D
+		char bytes8[] = {0x85, 0xC0,
+						0x0F, 0x85, 0xE8, 0x00, 0x00, 0x00,
+						0xC7, 0x45, 0xE0, 0x00, 0x00, 0x00, 0x00,
+						0xE9, 0xDC, 0x00, 0x00, 0x00};
+	    vDataList.push_back( Data(0x69FF7D, 20, bytes8) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bItemsUseAnimPercentThrowingWeapons) {
+		//these changes significantly reduce the amount of CMessageSetAnimationSequence objects sent during a round because throwing weapons are not matching SEQ_SHOOT
+
+		//push ecx
+		//call
+		char bytes[] = {0x51,
+						0xE8};
+		vDataList.push_back( Data(0x90636E, 2, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly;
+		DWORD address = (DWORD)ptr - 5  - 0x90636F;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x906370, 4, bytes2) );
+
+		//test eax, eax
+		//jnz 90648F
+		//mov edx, dword ptr ss:[ebp-B8]
+		//mov al, byte ptr ds:[edx]
+		//cmp al, 2
+		char bytes3[] = {0x85, 0xC0,
+						0x0F, 0x85, 0x13, 0x01, 0x00, 0x00,
+						0x8B, 0x95, 0x48, 0xFF, 0xFF, 0xFF,
+						0x8A, 0x02,
+						0x3C, 0x02};
+		vDataList.push_back( Data(0x906374, 18, bytes3) );
+
+		//mov eax,dword ptr ss:[ebp-614]
+		//push eax
+		//call
+		char bytes4[] = {0x8B, 0x85, 0xEC, 0xF9, 0xFF, 0xFF,
+						0x50,
+						0xE8};
+		vDataList.push_back( Data(0x90979C, 8, bytes4) );
+
+		//CALL address
+		ptr = (void*)CCreatureObject_HasThrowingWeaponEquippedHumanoidOnly;
+		address = (DWORD)ptr - 5  - 0x9097A3;
+		char* bytes5 = (char*)&address;
+		vDataList.push_back( Data(0x9097A4, 4, bytes5) );
+
+		//test eax,eax
+		//jnz 9098C0
+		//mov ecx,dword ptr ss:[ebp-B8]
+		//mov dl,byte ptr ds:[ecx]
+		//cmp dl,2
+		//jnz 9098C0
+		//mov al,byte ptr ss:[ebp-AC]
+		//mov cl,8
+		//cmp al,cl
+		//nop
+		char bytes6[] = {0x85, 0xC0,
+						0x0F, 0x85, 0x10, 0x01, 0x00, 0x00,
+						0x8B, 0x8D, 0x48, 0xFF, 0xFF, 0xFF,
+						0x8A, 0x11,
+						0x80, 0xFA, 0x02,
+						0x0F, 0x85, 0xFF, 0x00, 0x00, 0x00,
+						0x8A, 0x85, 0x54, 0xFF, 0xFF, 0xFF,
+						0xB1, 0x08,
+						0x3A, 0xC1,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x9097A8, 37, bytes6) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bMusicSonglistExtend) {
 		//treat song entries as int instead of signed byte
 		//section that stops the music
@@ -583,6 +1054,36 @@ void InitPatches() {
 		bytes[0] = 0xAA;
 		vDataList.push_back( Data(0x8A3BB6, 1, bytes) );
 	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bTriggerKitFix) {
+		//push eax
+		//lea ecx, dword ptr ss:[ebp-5c]
+		//call Trigger::GetI()
+		//push eax
+		//call ...
+		char bytes[] = {0x50,
+						0x8D, 0x4D, 0xA4,
+						0xE8, 0xB6, 0xC0, 0x00, 0x00,
+						0x50,
+						0xE8};
+		vDataList.push_back( Data(0x488331, 11, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_EvaluateTrigger_Kit;
+		DWORD address = (DWORD)ptr - 5  - 0x48833B;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x48833C, 4, bytes2) );
+		
+		//mov ecx, eax
+		char bytes3[] = {0x8B, 0xC8,
+						0x90, 0x90, 0x90, 0x90, 0x90,
+						0x90, 0x90,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x488340, 11, bytes3) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

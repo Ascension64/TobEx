@@ -23,13 +23,11 @@ BOOL (CEffectList::*Tramp_CEffectList_ApplyEffects)(CCreatureObject&) =
 CEffect& DETOUR_CEffect::DETOUR_CreateEffect(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2) {
 	CEffect* pEffect = NULL;
 	switch (eff.opcode) {
-		case 0x13E:
-			if (pGameOptionsEx->bEffOpcode13E) {
-				pEffect = new CEffect13E(eff, ptSource, eSource, ptDest.x, ptDest.y, FALSE, e2);
-			}
-			break;
-		default:
-			break;
+	case CEFFECT_OPCODE_SET_STAT: //0x13E
+		if (pGameOptionsEx->bEngineExpandedStats) pEffect = new CEffectSetStat(eff, ptSource, eSource, ptDest.x, ptDest.y, FALSE, e2);
+		break;
+	default:
+		break;
 	}
 
 	if (pEffect == NULL) {

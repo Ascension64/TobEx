@@ -92,6 +92,12 @@ BOOL (CEffectMagicResistMod::*CEffectMagicResistMod_ApplyEffect)(CCreatureObject
 
 BOOL CEffectMagicResistMod::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectMagicResistMod_ApplyEffect)(cre); }
 
+//CEffectDisintegrate
+BOOL (CEffectDisintegrate::*CEffectDisintegrate_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectDisintegrate::*)(CCreatureObject&)>			(&CEffectDisintegrate::ApplyEffect),		0x53F01D);
+
+BOOL CEffectDisintegrate::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectDisintegrate_ApplyEffect)(cre); }
+
 //CEffectRepeatingEff
 CEffectRepeatingEff& (CEffectRepeatingEff::*CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int) =
 	SetFP(static_cast<CEffectRepeatingEff& (CEffectRepeatingEff::*)(ITEM_EFFECT&, POINT&, Enum, int, int)>
@@ -114,12 +120,6 @@ CEffectWingBuffet::CEffectWingBuffet(ITEM_EFFECT& eff, POINT& ptSource, Enum eSo
 	(this->*CEffectWingBuffet_Construct_5)(eff, ptSource, eSource, ptDestX, ptDestY); }
 BOOL CEffectWingBuffet::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectWingBuffet_ApplyEffect)(cre); }
 
-//CEffectDisintegrate
-BOOL (CEffectDisintegrate::*CEffectDisintegrate_ApplyEffect)(CCreatureObject&) =
-	SetFP(static_cast<BOOL (CEffectDisintegrate::*)(CCreatureObject&)>			(&CEffectDisintegrate::ApplyEffect),		0x53F01D);
-
-BOOL CEffectDisintegrate::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectDisintegrate_ApplyEffect)(cre); }
-
 //CEffectRemoveProjectile
 BOOL (CEffectRemoveProjectile::*CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectRemoveProjectile::*)(CCreatureObject&)>		(&CEffectRemoveProjectile::ApplyEffect),	0x53F5D8);
@@ -129,3 +129,9 @@ BOOL (CEffectCutScene2::*CEffectCutScene2_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectCutScene2::*)(CCreatureObject&)>				(&CEffectCutScene2::ApplyEffect),			0x542815);
 
 BOOL CEffectCutScene2::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectCutScene2_ApplyEffect)(cre); }
+
+//CEffectAnimationRemoval
+BOOL (CEffectAnimationRemoval::*CEffectAnimationRemoval_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectAnimationRemoval::*)(CCreatureObject&)>		(&CEffectAnimationRemoval::ApplyEffect),	0x549C0C);
+
+BOOL CEffectAnimationRemoval::ApplyEffect(CCreatureObject& cre) { return (this->*CEffectAnimationRemoval_ApplyEffect)(cre); }

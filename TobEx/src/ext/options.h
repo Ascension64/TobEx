@@ -6,6 +6,8 @@
 struct CGameOptionsEx {
 	CGameOptionsEx();
 
+	BOOL bActionEquipRangedFix;
+	
 	BOOL bDebugCriticalMsgBoxFix;
 	BOOL bDebugExternalLogging;
 	BOOL bDebugLogDialogueBar;
@@ -37,7 +39,6 @@ struct CGameOptionsEx {
 	BOOL bEffIWDPriestMemSpellMod;
 	BOOL bEffIWDStrengthMod;
 	BOOL bEffMagicResistFix;
-	BOOL bEffOpcode13E;
 	BOOL bEffPoisonFix;
 	BOOL bEffRegenerationFix;
 	BOOL bEffRemoveProjectileMod;
@@ -46,18 +47,26 @@ struct CGameOptionsEx {
 
 	BOOL bEnginePriestKnownSpellsExtend;
 	BOOL bEngineAllowDualClassAll;
+	BOOL bEngineAllowEquipArmorCombat;
 	BOOL bEngineCastingLevelBonus;
+	BOOL bEngineAssBHPenaltyKit;
 	BOOL bEngineExperienceFix;
 	int nEngineContingencyTriggerDelay;
 	BOOL bEngineModifyEffectStacking;
+	BOOL bEngineDisableInvPauseSP;
 	BOOL bEngineCharmSilenceRemoval;
+	BOOL bEngineExpandedStats;
 	BOOL bEngineExternClassRaceRestrictions;
+	BOOL bEngineExternEncumbrance;
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEnginePickpocketRemainHidden;
+	BOOL bEngineRestSpawnsAdvanceTime;
 
 	BOOL bItemsBackstabRestrictionsConfig;
 	BOOL bItemsCriticalHitAversionConfig;
 	BOOL bItemsRandomTreasureExtend;
+	BOOL bItemsExternCreExcl;
+	BOOL bItemsUseAnimPercentThrowingWeapons;
 
 	BOOL bMusicSonglistExtend;
 
@@ -69,6 +78,7 @@ struct CGameOptionsEx {
 	BOOL bSoundSoundsetSubtitles;
 
 	BOOL bTriggerPickpocketFailed;
+	BOOL bTriggerKitFix;
 
 	BOOL bUserKitsExtend;
 	int nUserCustomDlgBarSize;

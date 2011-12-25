@@ -19,6 +19,19 @@ struct Res2daContainer { //Size 10h
 	ResRef name; //8h
 };
 
+struct CWorldTimer { //Size 6h
+//Constructor: 0x648F4D
+	void UnpauseGame();
+	void PauseGame();
+
+	unsigned int nGameTime; //0h (1dd0h), current game time (in ticks)
+	char bRun; //4h (1dd4h), 0 = paused, 1 = unpaused
+	unsigned char nPartsOfHour; //5h, during dawn/dusk hour, is the part of the hour out of 255 (1dd5h)
+};
+
+extern void (CWorldTimer::*CWorldTimer_UnpauseGame)();
+extern void (CWorldTimer::*CWorldTimer_PauseGame)();
+
 struct CRuleTable { //Size 24h
 	CRuleTable(); //63E230
 	CRuleTable& Construct() { return *this; } //dummy
@@ -29,6 +42,11 @@ struct CRuleTable { //Size 24h
 	IECString& GetValue(IECString& sColName, IECString& sRowName);
 	bool FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders);
 	void UnloadRes();
+	IECString& GetValue(POINT& ptColRow);
+
+	//custom
+	IECString& GetRowName(int nRow);
+	IECString& GetColName(int nCol);
 
 	Res2daContainer m_2da; //0h
 	IECString* pColHeaderArray; //10h
@@ -41,9 +59,10 @@ struct CRuleTable { //Size 24h
 
 extern CRuleTable& (CRuleTable::*CRuleTable_Construct)(void);
 extern void (CRuleTable::*CRuleTable_LoadRes)(ResRef&);
-extern IECString& (CRuleTable::*CRuleTable_GetValue)(IECString&, IECString&);
+extern IECString& (CRuleTable::*CRuleTable_GetValue_2)(IECString&, IECString&);
 extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL);
 extern void (CRuleTable::*CRuleTable_UnloadRes)();
+extern IECString& (CRuleTable::*CRuleTable_GetValue_1)(POINT&);
 
 struct IdsEntry { //Size Ch
 	int nOpcode;
@@ -263,13 +282,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 #else
 	CCriticalSection u1db0; //for CSearchRequests
 #endif
-	struct CWorldTimer { //Size 6h
-	//Constructor: 0x648F4D
-		unsigned int nGameTime; //1dd0h, current game time (in ticks)
-		char bRun; //0 = paused, 1 = unpaused
-		char u1dd5;
-	} m_WorldTimer; //1dd0h
 
+	CWorldTimer m_WorldTimer; //1dd0h
 	BOOL bGameRunning; //1dd6h
 	char u1dda;
 	char u1ddb;
@@ -294,7 +308,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	struct CGamePermission { //Size 8h
 	//Constructor: 0x573EB0
 		bool bPermitBuySell; //0h
-		bool bPermitAreaTransition; //0h
+		bool bPermitAreaTransition; //1h
 		bool bPermitDialog; //2h
 		bool bPermitViewCharacter; //3h
 		bool bPermitPausing; //4h
@@ -326,7 +340,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		IECString u9a;
 		int u9e;
 		int ua2;
-		char ua6;
+		bool bDialogueAboutToStart; //a6h
 		char ua7;
 		int ua8;
 		char uac;
@@ -405,8 +419,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		CEnumList celSelected; //6h, party members first in number order, then non-members
 	} m_PartySelection; //3958h
 
-	CEnumList u397a; //non-party idx
-	CEnumList u3996; //non-party idx, familiars? enums in Areas?
+	CEnumList celControlledObjects; //397ah
+	CEnumList celFamiliars; //3996h, treated as if party-like
 	ResRef u39b2[9]; //array of familiar names
 	char u39fa[81][0x1c]; //39fah, 0x51 (81) * 0x1c size objects
 	int u42d6;
@@ -422,6 +436,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char* arenasPath; //42feh
 
 	struct CGameSave {
+		//bit1: pass key presses onto active ui control
 		/*
 		-1 None
 		0x182 DialogMode
@@ -433,7 +448,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		0x1016e CutSceneMode
 		0x3016e CutSceneLite
 		*/
-		int mode; //0h
+		int mode; //0h, essentially a huge bunch of flags
 
 		ResRef u4;
 		int uc;
@@ -443,7 +458,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	short u4316;
 	int u4318[5];
 	char u432c[390];
-	int u44b2;
+	int u44b2; //FX affecting entire area always affect entire party too (even if excluded)
 	int u44b6;
 	short u44ba;
 	int u44bc; //bInCutscene?
@@ -488,7 +503,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		BOOL m_bRestHealParty; //4550h, Heal Party on Rest
 		BOOL m_bTerrainHugging; //4554h, Terrain Hugging
 		BOOL m_bHPOverHead; //4558h, HP Over Head
-		BOOL m_bDebugMode; //455ch - Debug Mode
+		BOOL m_bDebugMode; //455ch, Debug Mode
 		BOOL m_bForceDialogPause; //4560h, Force Dialog Pause
 		BOOL m_bUse3dAnimations; //4564h, Use 3d Animations
 		BOOL m_bCriticalHitScreenShake; //4568h, Critical Hit Screen Shake
@@ -621,7 +636,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	VidPal u4c36;
 	VidPal u4c5a;
 	int u4c7e;
-	int u4c82;
+	int u4c82; //to do with dreams
 	char u4c86;
 	char u4c87;
 

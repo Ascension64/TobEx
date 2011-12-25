@@ -135,10 +135,18 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
-//CEffect13E
-class CEffect13E : public CEffect {
+//CEffectAnimationRemoval
+extern BOOL (CEffectAnimationRemoval::*Tramp_CEffectAnimationRemoval_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectAnimationRemoval : public CEffectAnimationRemoval {
 public:
-	CEffect13E(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum);
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectSetStat
+class CEffectSetStat : public CEffect {
+public:
+	CEffectSetStat(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum);
 
 	virtual CEffect& Duplicate(); //v4
 	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8

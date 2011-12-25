@@ -28,5 +28,9 @@ BOOL __stdcall CRuleTables_HasKnownMageSpells(CCreatureObject& cre);
 ResRef CRuleTables_TryHideSpell(ResRef& rSpell);
 IECString& __stdcall CRuleTables_GetMaxProfs(CCreatureObject& cre, IECString& sRowName);
 STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace);
+BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef);
+BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef);
+BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight);
+BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight);
 
 #endif //INFGAMECORE_H

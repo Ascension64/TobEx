@@ -8,21 +8,21 @@
 #include "objstats.h"
 
 //CGameObject types
-#define CGAMEOBJECT_TYPE_OBJECT		0x00
-#define CGAMEOBJECT_TYPE_SPRITE		0x01
-#define CGAMEOBJECT_TYPE_SOUND		0x10
-#define CGAMEOBJECT_TYPE_CONTAINER	0x11
-#define CGAMEOBJECT_TYPE_SPAWNING	0x20
-#define CGAMEOBJECT_TYPE_DOOR		0x21
-#define CGAMEOBJECT_TYPE_STATIC		0x30
-#define CGAMEOBJECT_TYPE_CREATURE	0x31
-#define CGAMEOBJECT_TYPE_5E			0x40
-#define CGAMEOBJECT_TYPE_TRIGGER	0x41
-#define CGAMEOBJECT_TYPE_PROJECTILE	0x50
-#define CGAMEOBJECT_TYPE_TILE		0x51
-#define CGAMEOBJECT_TYPE_SMOKE		0x60
-#define CGAMEOBJECT_TYPE_AREA		0x61
-#define CGAMEOBJECT_TYPE_BALDUR		0x71
+#define CGAMEOBJECT_TYPE_OBJECT			0x00
+#define CGAMEOBJECT_TYPE_SPRITE			0x01
+#define CGAMEOBJECT_TYPE_SOUND			0x10
+#define CGAMEOBJECT_TYPE_CONTAINER		0x11
+#define CGAMEOBJECT_TYPE_SPAWNING		0x20
+#define CGAMEOBJECT_TYPE_DOOR			0x21
+#define CGAMEOBJECT_TYPE_STATIC			0x30
+#define CGAMEOBJECT_TYPE_CREATURE		0x31
+#define CGAMEOBJECT_TYPE_OBJECTMARKER	0x40
+#define CGAMEOBJECT_TYPE_TRIGGER		0x41
+#define CGAMEOBJECT_TYPE_PROJECTILE		0x50
+#define CGAMEOBJECT_TYPE_TILE			0x51
+#define CGAMEOBJECT_TYPE_SMOKE			0x60
+#define CGAMEOBJECT_TYPE_AREA			0x61
+#define CGAMEOBJECT_TYPE_BALDUR			0x71
 
 //CGameObjectArrayHandler thread indices
 const char THREAD_ASYNCH	= 0;
@@ -95,14 +95,14 @@ public:
 	virtual void v24() {} //v24 bool IsAllowSaving(STRREF), 1 = allow save
 	virtual void v28() {} //v28 bool CompressTime(int)
 	virtual void v2c() {} //v2c void DebugDump()
-	virtual void v30() {} //v30 ? involves rectangles
+	virtual BOOL IsPointWithinMe(POINT pt) { return FALSE; } //v30
 	virtual void v34() {} //v34 ? involves rectangles
 	virtual void v38() {} //v38 BOOL InAnArea()
-	virtual void v3c() {} //v3c ? to do with areas
-	virtual void v40() {} //v40 PlaySound? to do with areas
+	virtual void v3c() {} //v3c ? to do with modal states
+	virtual void v40() {} //v40 PlaySound? to do with modal states
 	virtual void RemoveFromArea() {} //v44
 	virtual void v48() {} //v48 void DrawAnimation(pArea, pCVideoMode, int)
-	virtual void v4c() {} //v4c bool NeedsAIUpdate(CWorldTimer->bRun, CBaldurChitin->nChitinUpdates)
+	virtual void v4c() {} //v4c bool NeedsAIUpdate/Refresh(CWorldTimer->bRun, CBaldurChitin->nChitinUpdates)
 	virtual void v50() {} //v50 void SetObject(Object*)
 	virtual void v54() {} //v54 ?
 	virtual void v58() {} //v58 DoNothing
@@ -128,7 +128,7 @@ public:
 	//CBaldurObject (71h) - size: 0x3D8, AA6C28
 
 	char u5; //pad
-	POINT m_currentLoc;
+	POINT m_currentLoc; //6h
 	int zPos; //eh
 	CArea* pArea; //12h
 	POSITION* posVertList; //16h, ref to pos of vertical list with this enum
@@ -141,13 +141,14 @@ public:
 	Enum u3a; //another enum
 	char u3e;
 	bool bIgnoreMessagesToSelf; //3fh, network
-	char u40;
+	char u40; // gets +1 then %3, set to 1 when there are no triggers
 	char u41; //padding?
 };
 
 class CGameSprite : public CGameObject { //Size 3D4h
 //Constructor: 0x476DED
 public:
+	//AA6778
 	virtual ~CGameSprite() {} //v0
 	virtual BOOL EvaluateTrigger(Trigger& t) { return TRUE; } //v60
 	virtual void v64() {} //v64, void ClearAllActions(BOOL bExceptFlagged)
@@ -160,12 +161,12 @@ public:
 	//v80, void AddActionTail(Action*)
 	//v84, void AIUpdateActions(), called from AIUpdate
 	//v88, void SetCurrentAction(pAction), calls vb0
-	//v8c
+	//v8c, void SetScript(nScriptIndex, pNewScript)
 	//v90, int GetSightRadius(), returned in pixels
-	//v94, TerrainTable& GetTerrainTable()
-	//v98 ?
-	//v9c ?
-	//va0 ?
+	//v94, TerrainTable& GetTerrainTable2()
+	//v98, TerrainTable& GetTerrainTable()
+	//v9c, CCreatureObject& GetTargetOfTrigger(Trigger& t, CCreatureObject* pTarget)
+	//va0, int GetVisualRange(), m_SightRadius x 48
 	//va4, void ExecuteTriggers()
 		
 	//va8, void SetAutoPauseInfo(int type)
@@ -185,7 +186,8 @@ public:
 
 	//vac, BOOL GetSeeInvisible(), returns TRUE if cdsCurrent->seeInivisible is set, or game is in CutSceneMode
 	//vb0
-	//vc0 void RefreshObjects()
+	//vb8, void SetObjects(o, dwUnused1, dwUnused2), sets 1Ch and 3698h
+	//vc0, void RefreshObjects()
 	//...
 	//etc. to v114
 
@@ -219,13 +221,13 @@ public:
 	Object u1fe;
 	Object u212;
 	Object u226;
-	CScript* pOverride; //23ah
-	CScript* u23e;
-	CScript* pAreaSpecific; //242h
-	CScript* pClass; //246h
-	CScript* pRace; //24ah
-	CScript* pGeneral; //24eh
-	CScript* pDefault; //252h
+	CScript* pScriptOverride; //23ah
+	CScript* pScript1; //23eh
+	CScript* pScriptAreaSpecific; //242h
+	CScript* pScriptClass; //246h
+	CScript* pScriptRace; //24ah
+	CScript* pScriptGeneral; //24eh
+	CScript* pScriptDefault; //252h
 	CActionList actions; //256h, checked in ActionListEmpty()
 	CTriggerList triggers; //272h
 	//Triggers 0x0*** are checked here with == only
@@ -238,7 +240,7 @@ public:
 	short nCurrScriptBlockIdx; //2b4h, gets Response.u4
 	short nCurrScriptIdx; //2b6h, gets Response.u6
 	BOOL bUseCurrIdx; //2b8h, use above three values?
-	short wActionTicksElapsed; //2ch, how many updates has the current action been running for
+	short wActionTicksElapsed; //2bch, how many updates has the current action been running for
 	Action aCurrent; //2beh
 	int u31c; //used with Delay() trigger
 	short u320; //random number, 0-15, used with Delay() trigger
@@ -248,12 +250,12 @@ public:
 	int u348;
 	int u34c;
 	int u350; //random number 0-37627
-	char u354; //value of 0xa
+	char nReactionBase; //354h
 	char u355; //pad?
 	short u356; //the return value of ExecuteAction()
 	char u358;
 	char u359; //pad?
-	Enum u35a; //contains enum
+	Enum eGameTextOverHead; //35ah
 	BOOL u35e; //exeucting an action?
 	BOOL u362; //has stored triggers?
 	BOOL u366;

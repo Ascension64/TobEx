@@ -308,6 +308,74 @@ class CAnimationE000 : public CAnimation { //Size 3278h
 //Constructor: 0x81C723
 public:
 	//AB6870
+	IECString sAniSnd; //6d8h
+	CVidCell* m_pCurrentVidCell; //6dch
+	CVidCell* m_pCurrentVidCellBase; //6e0h
+	CVidCell* m_pCurrentVidCellExtend; //6e4h
+
+	CVidCell u6e8; //A1
+	CVidCell u7be; //A1E
+	CVidCell u894; //A2
+	CVidCell u96a; //A2E
+	CVidCell ua40; //A3
+	CVidCell ub16; //A2E (bugged, should be A3E)
+	CVidCell ubec; //A4
+	CVidCell ucc2; //A4E
+	CVidCell ud98; //Gu
+	CVidCell ue6e; //GuE
+	CVidCell uf44; //Sl
+	CVidCell u101a; //SlE
+	CVidCell u10f0; //De
+	CVidCell u11c6; //DeE
+	CVidCell u129c; //GH
+	CVidCell u1372; //GHE
+	CVidCell u1448; //Sd
+	CVidCell u151e; //SdE
+	CVidCell u15f4; //Sc
+	CVidCell u16ca; //ScE
+	CVidCell u17a0; //Sp
+	CVidCell u1876; //SpE
+	CVidCell u194c; //Ca
+	CVidCell u1a22; //CaE
+	CVidCell u1af8; //Tw
+	CVidCell u1bce; //TwE
+	CVidCell u1ca4; //Wk
+	CVidCell u1d7a; //WkE
+
+	CVidCell* m_pCurrentVidCell2; //1e50h
+	CVidCell* m_pCurrentVidCellBase2; //1e54h
+	CVidCell* m_pCurrentVidCellExtend2; //1e58h
+
+	CVidCell u1e5c;
+	CVidCell u1f32;
+	CVidCell u2008;
+	CVidCell u20de;
+	CVidCell u21b4;
+	CVidCell u228a;
+	CVidCell u2360;
+	CVidCell u2436;
+	CVidCell u250c;
+	CVidCell u25e2;
+	CVidCell u26b8;
+	CVidCell u278e;
+	CVidCell u2864;
+	CVidCell u293a;
+	CVidCell u2a10;
+	CVidCell u2ae6;
+	CVidCell u2bbc;
+	CVidCell u2c92;
+	CVidCell u2d68;
+	CVidCell u2e3e;
+	CVidCell u2f14;
+	CVidCell u2fea;
+	CVidCell u30c0;
+	CVidCell u3196;
+
+	short wCurrentOrientation; //326ch
+	int u326e;
+	int u3272;
+	char u3276;
+	char nOrientations; //3277h
 };
 
 

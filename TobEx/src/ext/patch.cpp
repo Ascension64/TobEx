@@ -267,13 +267,29 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	//Limit SAVE_NONE to char in itm/spl/eff feature blocks
+	if (true) {
+		char bytes[] = {0x80};
+		vDataList.push_back( Data(0x501EED, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bEnginePriestKnownSpellsExtend) {
-		char bytes[1] = {0x62};
+		char bytes[] = {0x62};
 		vDataList.push_back( Data(0x63358D, 1, bytes) );
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bEngineAllowDualClassAll) {
+		//nop a jnz
+		char bytes[] = {0x90, 0x90};
+		vDataList.push_back( Data(0x6ED934, 2, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bEngineCastingLevelBonus) {
 		//spelltype PRIEST
 		char bytes[26] = {0x8B, 0x4D, 0xE8, 0x0F, 0xBE, 0x91, 0xD0, 0x00, 0x00, 0x00, 0x03, 0xC2, 0x83, 0xF8, 0x01, 0x7E, 0x37, 0x89, 0x45, 0xB8, 0xEB, 0x39, 0x90, 0x90, 0x90, 0x90};
@@ -295,12 +311,36 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	if (pGameOptionsEx->nEngineContingencyTriggerDelay) {
-		char* bytes = (char*)(&pGameOptionsEx->nEngineContingencyTriggerDelay);
-		vDataList.push_back( Data(0x46BED8, 4, bytes) );
+	/*if (pGameOptionsEx->nEngineContingencyTriggerDelay > 0) {
+		//Frees up the high word of nParam2
+		//mov ecx,dword ptr ds:[edx+1C]
+		//and ecx,0FFFF
+		//cmp ecx,0B
+		//nop
+		char bytes1[] = {0x8B, 0x4A, 0x1C,
+						 0x81, 0xE1, 0xFF, 0xFF, 0x00, 0x00,
+						 0x83, 0xF9, 0x0B,
+						 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x53B207, 16, bytes1) );
+		
+		char bytes2[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x53B21D, 6, bytes2) );
+		vDataList.push_back( Data(0x53B46A, 6, bytes2) );
+
+		//Frees up the high word of nParam1
+		//mov edx,dword ptr ds:[eax+18]
+		//and edx,0FFFF
+		//cmp edx,3
+		//nop
+		char bytes3[] = {0x8B, 0x50, 0x18,
+						 0x81, 0xE2, 0xFF, 0xFF, 0x00, 0x00,
+						 0x83, 0xFA, 0x03,
+						 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x53B458, 16, bytes3) );
+		
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
-	}
+	}*/
 
 	if (pGameOptionsEx->bEngineCharmSilenceRemoval) {
 		char bytes[] = {0xEB};
@@ -515,6 +555,19 @@ void InitPatches() {
 		//decrements the rand number so intervening sounds can be played correctly
 		char bytes[7] = {0xF8, 0x49, 0x90, 0x90, 0x89, 0x4D, 0xF8};
 		vDataList.push_back( Data(0x642E0D, 7, bytes) );
+	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bSoundDlgGreetingSubtitles) {
+		//bPrintToConsole in CCreatureObject::PlaySound()
+		char bytes[] = {0x1};
+		vDataList.push_back( Data(0x8D1EF0, 1, bytes) );
+		vDataList.push_back( Data(0x8D1F02, 1, bytes) );
+		//bPrintToConsole in CMessagePlaySoundset
+		vDataList.push_back( Data(0x8D1F7E, 1, bytes) );
+		vDataList.push_back( Data(0x8D2019, 1, bytes) );
 	
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
@@ -767,8 +820,17 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bVideoIWDAnimAttack3Fix) {
+		//ASCII "2" -> "3" in "A2E"
+		char bytes[] = {0x33};
+		vDataList.push_back( Data(0xB4F875, 1, bytes) );
+	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	//Remove crash on alpha rendering of RLE-encoded BAMs
-	if (pGameOptionsEx->bUserVvcAlphaCrashFix) {
+	if (pGameOptionsEx->bVideoVvcAlphaCrashFix) {
 		//PUSH 0 to skip AssertionFailedQuit()
 		char bytes[1] = {0x00};
 		vDataList.push_back( Data(0xA0F1EF, 1, bytes) );

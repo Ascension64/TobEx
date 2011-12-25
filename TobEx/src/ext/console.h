@@ -1,7 +1,7 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include "stdafx.h"
+#include "win32def.h"
 #include "resref.h"
 
 class Console {

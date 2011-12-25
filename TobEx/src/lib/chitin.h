@@ -316,14 +316,7 @@ public:
 	void* u42ea; //size 0xe8c, GUISAVE
 	CStart* pStart; //42eeh, START
 	CMageBook* pWizSpell; //42f2h, size 0x14da, GUIMG
-			
-	CWorld* pWorld; //42f6h, size 0x124c, GUIW
-	//int m_nCheatKeys; //14eh
-	//Enum eAutoPauseObject; //1108h
-	//STRREF strrefAutoPause; //110ch
-	//int nAutoPauseOwnerColor; //1110h, color skin off Cre
-	//STRREF strrefAutoPauseOwnerName ; //1114h, long name
-
+	CWorld* pWorld; //42f6h, GUIW
 	CStore* pStore; //42fah, size 0x148a, GUISTORE
 	void* u42fe; //size 0x1384, pMultiplayer, GUIMP
 	void* u4302; //size 0xeb0, GUICONN

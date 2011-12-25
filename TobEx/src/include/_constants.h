@@ -89,6 +89,8 @@
 
 //0xB75AE8 - g_Object
 
+//0xB83D0C - g_pCQuickObjectList (for the quickbar for listing spells, innates, quick items, etc.)
+
 //0xB84810 - g_windowRect5
 //0xB84828 - g_windowRect (full resolution)
 //0xB84C58 - g_windowRect4
@@ -245,14 +247,14 @@
 //0xAA6AE8, 16h, ResRef
 //0xAA6B04, 10h, DW
 //0xAA6B58, 20h, Object oAttacker (CMessageSetLastAttacker)
-//0xAA6CE0, 1ah, CString (scope), CString (variable), DW, unsigned char, CMessageSetVariable
+//0xAA6CE0, 1ah, CString (scope), CString (variable), DW nValue, unsigned char, CMessageSetVariable
 //0xAA6CFC, 22h, CString areaName, DW (Windowwidth / 2 + ScreenOffsetX), DW (Windowheight / 2 + ScreenOffsetY), DW x, DW y, unsigned char int, pad
 //0xAA6D18, 2ah, ResRef (visualeffectname), CString (areaname), POINT, Point2, W zPos (CMessageCreateVisualEffect)
 //0xAA6D6C, eh unsigned char (SEQ.IDS ref), pad (CMessagePlayAnimationSound)
 //0xAA6D88, ch
 //0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
 //0xAA6DC0 38h, Response, DW, DW, DW (CMessageInsertResponse)
-//0xAA6DDC, ch
+//0xAA6DDC, ch (CMessageClearAllActions)
 //0xAA6E14, eh, W
 //0xAA6E4C, 12h, DW, unsigned char, unsigned char
 //0xAA6E68, 1ah, ResRef sound, unsigned char channel, unsigned char, int (CMessagePlaySound) //Constructor: 0x5684E0
@@ -263,11 +265,13 @@
 //0xAA6F10, 10h, unsigned char FadeDirection (0 = ToColor, 1 = FromColor), unsigned char (FadeAmountBlue - all negative, so FF is -1 each time), unsigned char (Green), unsigned char (Red) (CMessageScreenFade) - B61512 = targetBrightness
 
 //0xAA7134, ch
+//0xAA727C, 14h, ResRef rAreaName (CMessageRemoveAreaAirEffects)
 //0xAA72D0, 10ah, CItem, W, unsigned char, pad
-//0xAA7334, 10h, CString (CMessageLoadDialog)
+//0xAA7334, 18h, CString sDialog, eTarget, int (CMessageLoadDialog)
 //0xAA7350, 10h, unsigned char, pad, W
-//0xAA736C, 14h, DW, DW
+//0xAA736C, 14h, DW x, DW y (CMessageForceJump)
 //0xAA73DC, 16h, DW (bPrintToConsole), DW (bSaveTo62AE), unsigned char (sndtype+1), pad (CMessagePlaySoundset)
+//0xAA73F8, 1Ah, DW nStatedIdx, BYTE, pad, DW (CGameDialog 5ch), DW (CGameDialog 60h) (CMessageShowDialogueState)
 
 //0xAA99F4, 10h, dwDuration, CMessageTimeStop
 /*
@@ -323,14 +327,14 @@ f area_forest
 //0xAA743C, 14h, int nTime, Enum eTarget
 //0xAA7458, eh, W
 
-//0xAA9758, eh, unsigned char, pad (CMessageEnemy)
+//0xAA9758, eh, unsigned char, pad (CMessageInterruptDialogue)
 //0xAA9774, 24h, CMessageStatic
 //! 0xAA9790, eh, CMessageCreatureOverlay
 //0xAA97C4, eh, unsigned char, pad
 
 //0xAA9970, 14h, CString, Enum source (CMessageFireSpell)
 
-//0xAAB528, 10h, DW
+//0xAAB528, 10h, DW mode (CMessageSetRemoteGameMode)
 //0xAAB544, 28h, ResRef storename, ResRef itemname, W arg6, W usage1, W usage2, W usage3, B bIdentified (CMessageAddStoreItem)
 //0xAAB598, 1ah, c, 10, 14, DW, unsigned char, pad (CMessageSetTarget)
 //0xAAB5EC, eh, W (action opcode)
@@ -339,7 +343,7 @@ f area_forest
 //0xAAB694, 16h, ResRef (filename), unsigned char (filetype, 1 = vvc, 2 = bam of nameanim1), pad (CMessageRemoveVisualEffectVidCell)
 //0xAAB6E8, eh, unsigned char, pad
 //0xAAB704, ch
-//0xAAB720, ch
+//0xAAB720, ch (CMessagePrepareDialogue)
 //0xAAB758, ch
 //0xAAB7C8, ch
 //0xAAB81C, 10h, DW
@@ -352,5 +356,5 @@ f area_forest
 //! 0xAAB914 CMessageSpriteUpdate
 //0xAAB930, 28h, IECPtrList, constructor: 0x5E998E
 //0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
-//0xAAB9B8, eh, unsigned char, pad
+//0xAAB9B8, eh, bool bNonPausingDialogue, pad (CMessageSetNonPausingDialogue)
 //0xAAB9D4, 14h, ResRef

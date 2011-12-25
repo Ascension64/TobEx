@@ -1,17 +1,18 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include "stdafx.h"
+#include "win32def.h"
 #include "resref.h"
 
 class Log;
 extern Log L;
+extern Log LD;
 
 class Log {
 public:
-	Log();
+	Log(LPCTSTR lpsz);
 	~Log();
-	BOOL Init();
+	BOOL Init(int mode);
 
 	Log& append(ResRef& rText);
 	Log& append(LPCTSTR lpsz);

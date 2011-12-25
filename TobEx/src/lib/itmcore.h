@@ -79,6 +79,8 @@
 
 typedef IECPtrList CItemList;
 
+class CCreatureObject;
+
 struct ResItmContainer { //Size 10h
 	BOOL bLoaded; //0x0
 	ResItm* pRes; //0x4
@@ -91,6 +93,7 @@ public:
 	BOOL Demand();
 	BOOL Release();
 	void LoadResource(ResRef& res, BOOL bAddToHandler);
+	void Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotApplyEffects);
 	short GetType();
 	unsigned int GetFlags();
 	unsigned int GetUnusableFlags();
@@ -113,6 +116,7 @@ public:
 extern BOOL (CItem::*CItem_Demand)();
 extern BOOL (CItem::*CItem_Release)();
 extern void (CItem::*CItem_LoadResource)(ResRef&, BOOL);
+extern void (CItem::*CItem_Equip)(CCreatureObject&, int, BOOL);
 extern short (CItem::*CItem_GetType)();
 extern unsigned int (CItem::*CItem_GetFlags)();
 extern unsigned int (CItem::*CItem_GetUnusableFlags)();

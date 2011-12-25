@@ -308,21 +308,21 @@ public:
 	int u8ca; //50h
 			
 	//0: front, 1: middle?, 2: back?
-	CEnumList u8ce; //8ceh, m_lVertSort, assoc 922h, CVisualEffectVidCells
-	CEnumList u8ea; //8eah, assoc 93eh
-	CEnumList u906; //906h, assoc 95ah
+	CEnumList m_lVertSortFront; //8ceh, m_lVertSort, assoc 922h, CVisualEffectVidCells
+	CEnumList m_lVertSortMid; //8eah, assoc 93eh
+	CEnumList m_lVertSortBack; //906h, assoc 95ah
 			
 	//on AddToArea(), gets Enum
-	//adds to active area lists after remove
+	//adds to active area lists after removing from here
 	CEnumList m_lFrontAdd; //922h
-	CEnumList objects1; //93eh
-	CEnumList objects2; //95ah
+	CEnumList m_lMidAdd; //93eh
+	CEnumList m_lBackAdd; //95ah
 			
 	//on RemoveFromArea(), gets POSITION from above lists
-	//removes from active area lists before add
-	CPositionList u976;
-	CPositionList u992;
-	CPositionList u9ae;
+	//removes from active area lists before adding heere
+	CPositionList m_lFrontRemove; //976h
+	CPositionList m_lMidRemove; //992h
+	CPositionList m_lBackRemove; //9aeh
 
 	IECPtrList u9ca; //AA7014 - gets CDoorObject 438h objects
 	CDwordList u9e6;

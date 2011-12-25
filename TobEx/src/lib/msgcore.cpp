@@ -39,7 +39,7 @@ CMessageDisplayDialogue::CMessageDisplayDialogue() {
 	srOwner = -1;
 	srText = -1;
 	rgbOwner = 0x000000;
-	rgbText = 0xBED7D7;
+	rgbText = g_ColorDefaultText;
 	u1c = -1;
 	u20 = FALSE;
 	bFloatText = FALSE;
@@ -50,12 +50,37 @@ CMessageDisplayDialogue::CMessageDisplayDialogue() {
 CMessageDisplayText::CMessageDisplayText() {
 	SetVT(this, 0xAA9774);
 	rgbLeft = 0x000000;
-	rgbRight = 0xBED7D7;
+	rgbRight = g_ColorDefaultText;
 	u1c = -1;
 	bFloatText = FALSE;
 	u22 = FALSE;
 	u23 = TRUE;
 }
+
+//CMessageRemoveAreaAirEffects
+void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Deconstruct)() =
+	SetFP(static_cast<void (CMessageRemoveAreaAirEffects::*)()>				(&CMessageRemoveAreaAirEffects::Deconstruct),		0x4E2930);
+short (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetMsgType)() =
+	SetFP(static_cast<short (CMessageRemoveAreaAirEffects::*)()>			(&CMessageRemoveAreaAirEffects::GetMsgType),		0x4E28C0);
+char (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessageRemoveAreaAirEffects::*)()>				(&CMessageRemoveAreaAirEffects::GetNetworkType1),	0x4E28E0);
+char (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessageRemoveAreaAirEffects::*)()>				(&CMessageRemoveAreaAirEffects::GetNetworkType2),	0x4E28F0);
+void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessageRemoveAreaAirEffects::*)(void*, int*)>	(&CMessageRemoveAreaAirEffects::Marshal),			0x5BD036);
+BOOL (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessageRemoveAreaAirEffects::*)(void*, int*)>	(&CMessageRemoveAreaAirEffects::Unmarshal),			0x5BD111);
+void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_DoMessage)() =
+	SetFP(static_cast<void (CMessageRemoveAreaAirEffects::*)()>				(&CMessageRemoveAreaAirEffects::DoMessage),			0x5BD193);
+
+CMessageRemoveAreaAirEffects::CMessageRemoveAreaAirEffects()			{ SetVT(this, 0xAA727C); }
+CMessageRemoveAreaAirEffects::~CMessageRemoveAreaAirEffects()			{ (this->*CMessageRemoveAreaAirEffects_Deconstruct)(); }
+short CMessageRemoveAreaAirEffects::GetMsgType()						{ return (this->*CMessageRemoveAreaAirEffects_GetMsgType)(); }
+char CMessageRemoveAreaAirEffects::GetNetworkType1()					{ return (this->*CMessageRemoveAreaAirEffects_GetNetworkType1)(); }
+char CMessageRemoveAreaAirEffects::GetNetworkType2()					{ return (this->*CMessageRemoveAreaAirEffects_GetNetworkType2)(); }
+void CMessageRemoveAreaAirEffects::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageRemoveAreaAirEffects_Marshal)(pData, dwSize); }
+BOOL CMessageRemoveAreaAirEffects::Unmarshal(void* pData, int* dwSize)	{ return (this->*CMessageRemoveAreaAirEffects_Unmarshal)(pData, dwSize); }
+void CMessageRemoveAreaAirEffects::DoMessage()							{ return (this->*CMessageRemoveAreaAirEffects_DoMessage)(); }
 
 CMessageSetTrigger::CMessageSetTrigger() { SetVT(this, 0xAA5C84); }
 

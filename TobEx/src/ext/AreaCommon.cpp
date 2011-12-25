@@ -1,0 +1,82 @@
+#include "AreaCommon.h"
+
+#include <cassert>
+
+#include "chitin.h"
+#include "infgame.h"
+
+void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
+	bool bUseResource = true;
+	CRuleTable crtResource;
+	crtResource.LoadTable(rResource);
+	if (crtResource.m_2da.bLoaded == FALSE) {
+		LPCTSTR lpsz = "CArea_RemoveAreaAirEffectSpecific(): %s.2da not found, using ClearAir.2da...\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, rResource.GetBuffer());
+		console.write(lpsz, 1, rResource.GetBuffer());
+		bUseResource = false;
+	}
+
+	POSITION pos = area.m_lVertSortFront.GetHeadPosition();
+	while (pos != NULL) {
+		Enum e = (Enum)area.m_lVertSortFront.GetNext(pos);
+		CGameObject* pObj;
+		if (g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pObj, -1) == OBJECT_SUCCESS) {
+			if (pObj->GetType() == CGAMEOBJECT_TYPE_PROJECTILE) {
+				//FIX_ME - do not use itoa
+				char szMissileId[6] = {0};
+				itoa(((CProjectile*)pObj)->nMissileId, szMissileId, 10);
+				IECString sMissileId(szMissileId);
+
+				POSITION posString;
+				bool bFound = bUseResource
+					? crtResource.FindString(sMissileId, &posString, FALSE) 
+					: g_pChitin->pGame->CLEARAIR.FindString(sMissileId, &posString, FALSE);
+				if (bFound) {
+					char nResult;
+					do {
+						nResult = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(e, THREAD_ASYNCH, &pObj, INFINITE);
+					} while (nResult == OBJECT_SHARING);
+
+					if (nResult == OBJECT_SUCCESS) {
+						pObj->RemoveFromArea();
+						g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(e, THREAD_ASYNCH, INFINITE);
+					}
+				}
+			} 
+			else if (pObj->GetType() == CGAMEOBJECT_TYPE_SMOKE) {
+				bool bRemoveSmoke = false;
+				AnimData& animData = ((CSmokeObject*)pObj)->m_animation;
+				assert(animData.pAnimation != NULL);
+				
+				short wAnimId = animData.pAnimation->wAnimId;
+				
+				if (bUseResource) {
+					char szSmokeId[7] = {0};
+					sprintf_s(szSmokeId, "0x%.4X", wAnimId & 0xFF0F);
+					IECString sSmokeId(szSmokeId);
+					console.write("%s\r\n", 1, (LPCTSTR)sSmokeId);
+					POSITION posString;
+					bRemoveSmoke = crtResource.FindString(sSmokeId, &posString, FALSE);
+				}
+				else if ((wAnimId & 0xFF0F) == 0x500) { //STINKCLOUD_*
+					bRemoveSmoke = true;
+				}
+
+				if (bRemoveSmoke) {
+					char nResult;
+					do {
+						nResult = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(e, THREAD_ASYNCH, &pObj, INFINITE);
+					} while (nResult == OBJECT_SHARING);
+
+					if (nResult == OBJECT_SUCCESS) {
+						pObj->RemoveFromArea();
+						g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(e, THREAD_ASYNCH, INFINITE);
+					}
+				}
+			}
+			g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+		}
+	}
+	return;
+}

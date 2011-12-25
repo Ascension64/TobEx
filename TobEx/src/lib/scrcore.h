@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include "rescore.h"
 
+class CGameObject;
+class CGameSprite;
+
+typedef short ACTIONRESULT;
 typedef IECPtrList CActionList; //AA5C5C
 typedef IECPtrList CTriggerList; //AA5E28
 typedef IECPtrList CScriptBlockList; //AA5E50
@@ -33,7 +37,7 @@ struct CVariable { //Size 54h
 	int u24;
 	int value; //28h
 	long u2c[2];
-	char u34[32];
+	char u34[32]; //for Store Local Variable, = res1 + res2 + res3 (associated with deathmatch?)
 };
 
 struct CVariableArray { //Size 8h
@@ -41,12 +45,36 @@ struct CVariableArray { //Size 8h
 	int nArraySize;
 };
 
-struct Object { //Size 14h
-//Constructor: 0x410CEE
-	//BCS correlation: OB ea, general, race, class, specific, gender, alignment, id1, id2, id3, id4, id5, name OB
+struct ObjectIds { //Size 5h
+	//OBJECT.IDS indices
+	char id1;
+	char id2;
+	char id3;
+	char id4;
+	char id5;
+};
 
+class Object { //Size 14h
+//Constructor: 0x410CEE
+public:
+	//BCS correlation: OB ea, general, race, class, specific, gender, alignment, id1, id2, id3, id4, id5, name OB
+	bool IsInvalid();
+
+	Object();
+
+	Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget, ObjectIds* poids, IECString& sName);
+	Object* Construct(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&) {return this;} //dummy
+
+	Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget);
+	Object* Construct(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum) {return this;} //dummy
+
+	void operator=(Object& o);
+	void OpEq(Object&) {} //dummy
+
+	void DecodeIdentifiers(CGameSprite& spriteSource);
 	unsigned char GetClass();
 	void GetClasses(unsigned char* pClass1, unsigned char* pClass2);
+	BOOL HasSubclass(unsigned char Class, BOOL bThreadAsync);
 
 	IECString Name; //0h
 	unsigned char EnemyAlly; //4h
@@ -54,21 +82,19 @@ struct Object { //Size 14h
 	unsigned char Race; //6h
 	unsigned char Class; //7h
 	Enum eTarget; //8h, set and used after evaluation of Ids
-		
-	//OBJECT.IDS indices
-	char Id1; //ch
-	char Id2; //dh
-	char Id3; //eh
-	char Id4; //fh
-	char Id5; //10h
-
+	ObjectIds oids; //ch
 	char Specific; //11h, for GroupOfType
 	char Gender; //12h
 	char Alignment; //13h
 };
 
+extern Object* (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&);
+extern Object* (Object::*Object_Construct_8)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum);
+extern void (Object::*Object_OpEq)(Object&);
+extern void (Object::*Object_DecodeIdentifiers)(CGameSprite&);
 extern unsigned char (Object::*Object_GetClass)();
 extern void (Object::*Object_GetClasses)(unsigned char*, unsigned char*);
+extern BOOL (Object::*Object_HasSubclass)(unsigned char, BOOL);
 
 struct Trigger { //Size 2Eh
 //Constructor: 430720h (3 args), 430180h (2 args)

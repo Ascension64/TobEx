@@ -7,7 +7,9 @@
 #include "objcre.h"
 #include "chitin.h"
 #include "rescore.h"
+#include "options.h"
 #include "console.h"
+#include "log.h"
 
 static int currKitNum = 0;
 
@@ -35,6 +37,13 @@ void CUIScrollBarChargenKit::UpdatePanel() {
 CUIScrollBarChargenKit::~CUIScrollBarChargenKit() {}
 
 void CUIScrollBarChargenKit::OnMouseDragKnob() {
+	if (pGameOptionsEx->bDebugVerbose) {
+		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnMouseDragKnob()\r\n";
+		console.write(lpsz);
+		L.timestamp();
+		L.append(lpsz);
+	}
+
 	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
@@ -46,6 +55,13 @@ void CUIScrollBarChargenKit::OnMouseDragKnob() {
 }
 
 void CUIScrollBarChargenKit::OnLMouseBtnDnArrowUp() {
+	if (pGameOptionsEx->bDebugVerbose) {
+		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLMouseBtnDnArrowUp()\r\n";
+		console.write(lpsz);
+		L.timestamp();
+		L.append(lpsz);
+	}
+
 	short nOld = nCurrentValue;
 	nCurrentValue = max(nCurrentValue - 1, 0);
 	if (nOld != nCurrentValue) {
@@ -56,6 +72,13 @@ void CUIScrollBarChargenKit::OnLMouseBtnDnArrowUp() {
 }
 
 void CUIScrollBarChargenKit::OnLMouseBtnDnArrowDn() {
+	if (pGameOptionsEx->bDebugVerbose) {
+		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLMouseBtnDnArrowDn()\r\n";
+		console.write(lpsz);
+		L.timestamp();
+		L.append(lpsz);
+	}
+
 	short nOld = nCurrentValue;
 	if (nValues < nRows) {
 		nCurrentValue = 0;
@@ -70,6 +93,13 @@ void CUIScrollBarChargenKit::OnLMouseBtnDnArrowDn() {
 }
 
 void CUIScrollBarChargenKit::OnLClickedAboveKnob(short interval) {
+	if (pGameOptionsEx->bDebugVerbose) {
+		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLClickedAboveKnob()\r\n";
+		console.write(lpsz);
+		L.timestamp();
+		L.append(lpsz);
+	}
+
 	if (interval > 10 || interval < 0) interval = 10;
 	short nOld = nCurrentValue;
 	nCurrentValue = max(nCurrentValue - interval, 0);
@@ -81,6 +111,13 @@ void CUIScrollBarChargenKit::OnLClickedAboveKnob(short interval) {
 }
 
 void CUIScrollBarChargenKit::OnLClickedBelowKnob(short interval) {
+	if (pGameOptionsEx->bDebugVerbose) {
+		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLClickedBelowKnob()\r\n";
+		console.write(lpsz);
+		L.timestamp();
+		L.append(lpsz);
+	}
+
 	if (interval > 10 || interval < 0) interval = 10;
 	short nOld = nCurrentValue;
 	if (nValues < nRows) {

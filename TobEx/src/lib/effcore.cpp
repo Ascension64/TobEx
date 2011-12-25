@@ -6,7 +6,7 @@
 CEffect& (CEffect::*CEffect_Construct_0)() =
 	SetFP(static_cast<CEffect& (CEffect::*)()>														(&CEffect::Construct),			0x465440);
 CEffect& (CEffect::*CEffect_Construct_7)(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum) =
-	SetFP(static_cast<CEffect& (CEffect::*)(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum)>	(&CEffect::Construct),			0x4F34C8);
+	SetFP(static_cast<CEffect& (CEffect::*)(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum)>		(&CEffect::Construct),			0x4F34C8);
 void (CEffect::*CEffect_Unmarshal)(EffFileData&) =
 	SetFP(static_cast<void (CEffect::*)(EffFileData&)>												(&CEffect::Unmarshal),			0x4F3BEC);
 CEffect& (CEffect::*CEffect_Construct_1)(EffFileData&) =
@@ -14,7 +14,9 @@ CEffect& (CEffect::*CEffect_Construct_1)(EffFileData&) =
 CEffect& (*CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum) =
 	SetFP(static_cast<CEffect& (*)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum)>						(&CEffect::CreateEffect),		0x4F3EC2);
 void (*CEffect_CreateItemEffect)(ITEM_EFFECT&, int) =
-	SetFP(static_cast<void (*)(ITEM_EFFECT&, int)>												(&CEffect::CreateItemEffect),	0x4FFC3E);
+	SetFP(static_cast<void (*)(ITEM_EFFECT&, int)>													(&CEffect::CreateItemEffect),	0x4FFC3E);
+BOOL (CEffect::*CEffect_IsExpired)() =
+	SetFP(static_cast<BOOL (CEffect::*)()>															(&CEffect::IsExpired),			0x500517);
 ITEM_EFFECT& (CEffect::*CEffect_ToItemEffect)() =
 	SetFP(static_cast<ITEM_EFFECT& (CEffect::*)()>													(&CEffect::ToItemEffect),		0x50270A);
 void (CEffect::*CEffect_Deconstruct)() =
@@ -27,8 +29,8 @@ BOOL (CEffect::*CEffect_ApplyTiming)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffect::*)(CCreatureObject&)>											(&CEffect::ApplyTiming),		0x4FFFA0);
 void (CEffect::*CEffect_OnDelayFinished)(CCreatureObject&) =
 	SetFP(static_cast<void (CEffect::*)(CCreatureObject&)>											(&CEffect::OnDelayFinished),	0x4657A0);
-void (CEffect::*CEffect_v14)() =
-	SetFP(static_cast<void (CEffect::*)()>															(&CEffect::v14),				0x4657B0);
+void (CEffect::*CEffect_OnAdd)(CCreatureObject&) =
+	SetFP(static_cast<void (CEffect::*)(CCreatureObject&)>											(&CEffect::OnAdd),				0x4657B0);
 BOOL (CEffect::*CEffect_CheckNotSaved)(CCreatureObject&, char&, char&, char&, char&, char&, char&) =
 	SetFP(static_cast<BOOL (CEffect::*)(CCreatureObject&, char&, char&, char&, char&, char&, char&)>(&CEffect::CheckNotSaved),		0x501B29);
 BOOL (CEffect::*CEffect_IgnoreLevelCheck)() =
@@ -48,13 +50,14 @@ CEffect& CEffect::CreateEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource,
 	return (*CEffect_CreateEffect)(data, ptSource, eSource, ptDest, e2);
 }
 void CEffect::CreateItemEffect(ITEM_EFFECT& ptr, int nOpcode) { return (*CEffect_CreateItemEffect)(ptr, nOpcode); }
+BOOL CEffect::IsExpired() { return (this->*CEffect_IsExpired)(); }
 ITEM_EFFECT& CEffect::ToItemEffect() {return (this->*CEffect_ToItemEffect)(); }
 CEffect::~CEffect() { (this->*CEffect_Deconstruct)(); }
 CEffect& CEffect::Duplicate() { return (this->*CEffect_Duplicate)(); }
 BOOL CEffect::ApplyEffect(CCreatureObject& creTarget) { return (this->*CEffect_ApplyEffect)(creTarget); }
 BOOL CEffect::ApplyTiming(CCreatureObject& creTarget) { return (this->*CEffect_ApplyTiming)(creTarget); }
 void CEffect::OnDelayFinished(CCreatureObject& creTarget) { return (this->*CEffect_OnDelayFinished)(creTarget); }
-void CEffect::v14() { return (this->*CEffect_v14)(); }
+void CEffect::OnAdd(CCreatureObject& creTarget) { return (this->*CEffect_OnAdd)(creTarget); }
 BOOL CEffect::CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist) {
 	return (this->*CEffect_CheckNotSaved)(creTarget, rollSaveDeath, rollSaveWands, rollSavePoly, rollSaveBreath, rollSaveSpells, rollMagicResist);
 }
@@ -63,14 +66,26 @@ void CEffect::PrintEffectText(CCreatureObject& creTarget) { return (this->*CEffe
 void CEffect::OnRemove(CCreatureObject& creTarget) { return (this->*CEffect_OnRemove)(creTarget); }
 
 //CEffectList
+BOOL (CEffectList::*CEffectList_RemoveOneEffect)(CEffect&, CCreatureObject&, BOOL) =
+	SetFP(static_cast<BOOL (CEffectList::*)(CEffect&, CCreatureObject&, BOOL)>						(&CEffectList::RemoveOneEffect),	0x542F03);
 void (CEffectList::*CEffectList_RemoveEffect)(CCreatureObject&, int, POSITION, int, ResRef, BOOL) =
-	SetFP(static_cast<void (CEffectList::*)(CCreatureObject&, int, POSITION, int, ResRef, BOOL)>	(&CEffectList::RemoveEffect),	0x54306D);
+	SetFP(static_cast<void (CEffectList::*)(CCreatureObject&, int, POSITION, int, ResRef, BOOL)>	(&CEffectList::RemoveEffect),		0x54306D);
 void (CEffectList::*CEffectList_TryDispel)(CCreatureObject&, POSITION, BOOL, BOOL, char, char) =
-	SetFP(static_cast<void (CEffectList::*)(CCreatureObject&, POSITION, BOOL, BOOL, char, char)>		(&CEffectList::TryDispel),		0x543EC8);
+	SetFP(static_cast<void (CEffectList::*)(CCreatureObject&, POSITION, BOOL, BOOL, char, char)>	(&CEffectList::TryDispel),			0x543EC8);
+BOOL (CEffectList::*CEffectList_ApplyEffects)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectList::*)(CCreatureObject&)>										(&CEffectList::ApplyEffects),		0x544C0B);
+POSITION (CEffectList::*CEffectList_GetCurrentPosition)() =
+	SetFP(static_cast<POSITION (CEffectList::*)()>													(&CEffectList::GetCurrentPosition),	0x5661A0);
 
+BOOL CEffectList::RemoveOneEffect(CEffect& eff, CCreatureObject& cre, BOOL bMatchSourceAndParent) {
+	return (this->*CEffectList_RemoveOneEffect)(eff, cre, bMatchSourceAndParent);
+}
 void CEffectList::RemoveEffect(CCreatureObject& creTarget, int nOpcode, POSITION posSkip, int nParam2, ResRef rResource, BOOL bCheckPermTiming) {
 	return (this->*CEffectList_RemoveEffect)(creTarget, nOpcode, posSkip, nParam2, rResource, bCheckPermTiming);
 }
 void CEffectList::TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char nRand, char nMaxLevel) {
 	return (this->*CEffectList_TryDispel)(creTarget, posSkip, bCheckDispellableFlag, bCheckProbability, nRand, nMaxLevel);
 }
+BOOL CEffectList::ApplyEffects(CCreatureObject& cre) { return (this->*CEffectList_ApplyEffects)(cre); }
+POSITION CEffectList::GetCurrentPosition() { return (this->*CEffectList_GetCurrentPosition)(); }
+

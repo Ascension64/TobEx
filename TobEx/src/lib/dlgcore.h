@@ -27,10 +27,9 @@ struct CDlgState { //Size 42h
 	STRREF strref; //14h
 	CTriggerList conditions; //18h, Starting Conditions
 
-	//FIX_ME
-	int u34;
+	Enum u34;
 	int nTriggerIdx; //38h
-	int u3c; //inherits from m_nSize from CPtrArray of CGameDialog
+	int nStateIdx; //3ch
 	short u40;
 };
 
@@ -62,20 +61,20 @@ struct CDlgResponse { //Size 76h
 
 struct CGameDialog { //Size 64h
 //Constructor: 0x4E554E
-	ResRef u0;
-	CPtrArrayCDlgState u8;
-	CPtrArrayCDlgState u1c;
-	Enum enum1; //30h
-	Enum enum2; //34h
-	int u38;
+	ResRef rName; //0h
+	CPtrArrayCDlgState cprStatesStateOrder; //8h
+	CPtrArrayCDlgState cprStatesTriggerOder; //1ch
+	Enum eGabber; //30h
+	Enum eTarget; //34h
+	int nActiveDlgStateIdx; //38h
 	int u3c;
 	int u40;
-	int color; //colorMajor of CRE
-	IECString name; //longName of CRE
+	ARGB col; //44h, colorMajor of CRE
+	IECString name; //48h, longName of CRE
 	int u4c; //6
 	int u50;
-	int m_nStateTriggers; //54h
-	int u58;
+	int dwFlags; //54h, bits 0, 1, 2: non-pausing dialogue
+	BOOL bDoNotPlaySound; //58h, skips playing soundset greeting if a valid initial state has STRREF
 	int u5c; //from Arg4
 	int u60;
 };

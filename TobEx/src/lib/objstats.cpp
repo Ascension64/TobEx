@@ -1,5 +1,14 @@
 #include "objstats.h"
 
+//CConditionalSpell
+void CConditionalSpell::operator delete(void* mem)	{ return ::operator delete(mem, 0); } 
+
+//CConditionalSpellList
+void (CConditionalSpellList::*CConditionalSpellList_EvaluateTriggers)(CCreatureObject&) =
+	SetFP(static_cast<void (CConditionalSpellList::*)(CCreatureObject&)>	(&CConditionalSpellList::EvaluateTriggers),	0x46BE04);
+
+void CConditionalSpellList::EvaluateTriggers(CCreatureObject& cre)	{ return (this->*CConditionalSpellList_EvaluateTriggers)(cre); }
+
 //CRepeatingEffBase
 extern CRepeatingEffBase& (CRepeatingEffBase::*CRepeatingEffBase_Construct)() =
 	SetFP(static_cast<CRepeatingEffBase& (CRepeatingEffBase::*)()>	(&CRepeatingEffBase::Construct),	0x5662C0);

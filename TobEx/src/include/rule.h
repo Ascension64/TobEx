@@ -1,6 +1,24 @@
 #ifndef RULE_H
 #define RULE_H
 
+//ALIGN.IDS
+const char ALIGN_NONE				= 0x00;
+const char ALIGN_LAWFUL_GOOD		= 0x11;
+const char ALIGN_LAWFUL_NEUTRAL		= 0x12;
+const char ALIGN_LAWFUL_EVIL		= 0x13;
+const char ALIGN_NEUTRAL_GOOD		= 0x21;
+const char ALIGN_NEUTRAL			= 0x22;
+const char ALIGN_NEUTRAL_EVIL		= 0x23;
+const char ALIGN_CHAOTIC_GOOD		= 0x31;
+const char ALIGN_CHAOTIC_NEUTRAL	= 0x32;
+const char ALIGN_CHAOTIC_EVIL		= 0x33;
+const char ALIGN_MASK_GOOD			= 0x01;
+const char ALIGN_MASK_NEUTRAL		= 0x02;
+const char ALIGN_MASK_EVIL			= 0x03;
+const char ALIGN_LAWFUL_MASK		= 0x10;
+const char ALIGN_NEUTRAL_MASK		= 0x20;
+const char ALIGN_CHAOTIC_MASK		= 0x30;
+
 //CLASS.IDS
 const unsigned char CLASS_MAGE		= 1;
 const unsigned char CLASS_FIGHTER	= 2;
@@ -139,9 +157,9 @@ const char SLOT_AMMO0			= 11;
 const char SLOT_AMMO1			= 12;
 const char SLOT_AMMO2			= 13;
 const char SLOT_AMMO3			= 14;
-const char SLOT_MISC0			= 15;
-const char SLOT_MISC1			= 16;
-const char SLOT_MISC2			= 17;
+const char SLOT_MISC0			= 15; //QUICK1
+const char SLOT_MISC1			= 16; //QUICK2
+const char SLOT_MISC2			= 17; //QUICK3
 const char SLOT_MISC3			= 18;
 const char SLOT_MISC4			= 19;
 const char SLOT_MISC5			= 20;

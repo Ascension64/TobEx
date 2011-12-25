@@ -42,9 +42,11 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 
 	(this->*Tramp_CRecord_MageBookPanelOnLoad)(cre);
 
-	scroll.nValues = MageBookSpells.GetCount() / 5;
-	if (scroll.nValues % 5) scroll.nValues++;
-	scroll.nRows = 5;
+	if (this->bHighLevelAbility == FALSE) {
+		scroll.nValues = MageBookSpells.GetCount() / 5;
+		if (scroll.nValues % 5) scroll.nValues++;
+		scroll.nRows = 5;
+	}
 
 	scroll.UpdateKnobPosition(scroll.nCurrentValue, scroll.nValues, scroll.nRows);
 
@@ -62,6 +64,14 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		L.timestamp();
 		L.append(lpsz);
 		return (this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
+	}
+
+	//do not apply to selecting high level abilities
+	if (this->bHighLevelAbility == TRUE) {
+		(this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
+		scroll.SetEnabled(FALSE);
+		scroll.SetVisible(FALSE);
+		return;
 	}
 
 	//Depending on offset in MageBookSpells, transfer spells to/from temporary spell pile

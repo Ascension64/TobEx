@@ -9,14 +9,23 @@
 //effect opcodes
 #define CEFFECT_OPCODE_ATTACKS_PER_ROUND	0x001
 #define CEFFECT_OPCODE_AWAKEN				0x002
+#define CEFFECT_OPCODE_DAMAGE				0x00C
+#define CEFFECT_OPCODE_INSTANT_DEATH		0x00D
+#define CEFFECT_OPCODE_DEXTERITY_MOD		0x00F
 #define CEFFECT_OPCODE_CURRENTHP_MOD		0x011
 #define CEFFECT_OPCODE_POISON				0x019
+#define CEFFECT_OPCODE_MAGE_MEM_SPELL_MOD	0x02A
+#define CEFFECT_OPCODE_STRENGTH_MOD			0x02C
 #define CEFFECT_OPCODE_SLEEP				0x027
 #define CEFFECT_OPCODE_DISPEL				0x03A
+#define CEFFECT_OPCODE_PRIEST_MEM_SPELL_MOD	0x03E
 #define CEFFECT_OPCODE_DISEASE				0x04E
 #define CEFFECT_OPCODE_REGENERATION			0x062
 #define CEFFECT_OPCODE_WING_BUFFET			0x0EB
+#define CEFFECT_OPCODE_DISINTEGRATE			0x0EE
+#define CEFFECT_OPCODE_FREEDOM				0x0D4
 #define CEFFECT_OPCODE_REPEATING_EFFECT		0x110
+#define CEFFECT_OPCODE_REMOVE_PROJECTILE	0x111
 #define CEFFECT_OPCODE_CUTSCENE_2			0x12A
 
 //CEffectAttacksPerRoundMod
@@ -56,6 +65,44 @@ public:
 
 extern BOOL (CEffectDamage::*CEffectDamage_ApplyEffect)(CCreatureObject&);
 
+//CEffectInstantDeath
+#define EFFECTINSTANTDEATH_TYPE_ACID			0x000
+#define EFFECTINSTANTDEATH_TYPE_BURNING			0x001
+#define EFFECTINSTANTDEATH_TYPE_CRUSHED			0x002
+#define EFFECTINSTANTDEATH_TYPE_NORMAL			0x004
+#define EFFECTINSTANTDEATH_TYPE_CHUNKED			0x008
+#define EFFECTINSTANTDEATH_TYPE_STONE			0x010
+#define EFFECTINSTANTDEATH_TYPE_FROZEN			0x020
+#define EFFECTINSTANTDEATH_TYPE_STONE_EXPLODE	0x040
+#define EFFECTINSTANTDEATH_TYPE_FROZEN_EXPLODE	0x080
+#define EFFECTINSTANTDEATH_TYPE_ELECTRIC		0x100
+#define EFFECTINSTANTDEATH_TYPE_DISINTEGRATE	0x200
+
+class CEffectInstantDeath : public CEffect { //opcode Dh
+public:
+	CEffectInstantDeath();
+
+	//AA6A5C
+	virtual ~CEffectInstantDeath() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget) { return FALSE; } //v8
+	virtual void OnDelayFinished(CCreatureObject& creTarget) {} //v10
+	virtual void PrintEffectText(CCreatureObject& creTarget) {} //v20
+};
+
+extern BOOL (CEffectInstantDeath::*CEffectInstantDeath_ApplyEffect)(CCreatureObject&);
+
+//CEffectDexterityMod
+class CEffectDexterityMod : public CEffect { //opcode Fh
+public:
+	//AA9528
+	virtual ~CEffectDexterityMod() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectDexterityMod::*CEffectDexterityMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectCurrentHPMod
 class CEffectCurrentHPMod : public CEffect { //opcode 11h
 public:
@@ -83,6 +130,28 @@ public:
 
 extern BOOL (CEffectPoison::*CEffectPoison_ApplyEffect)(CCreatureObject&);
 
+//CEffectMageMemSpellMod
+class CEffectMageMemSpellMod : public CEffect { //opcode 3Ah
+public:
+	//AA90C8
+	virtual ~CEffectMageMemSpellMod() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectMageMemSpellMod::*CEffectMageMemSpellMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectStrengthMod
+class CEffectStrengthMod : public CEffect { //opcode 2Ch
+public:
+	//AA9078
+	virtual ~CEffectStrengthMod() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectStrengthMod::*CEffectStrengthMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectDispel
 class CEffectDispel : public CEffect { //opcode 3Ah
 public:
@@ -93,6 +162,17 @@ public:
 };
 
 extern BOOL (CEffectDispel::*CEffectDispel_ApplyEffect)(CCreatureObject&);
+
+//CEffectPriestMemSpellMod
+class CEffectPriestMemSpellMod : public CEffect { //opcode 3Ah
+public:
+	//AA8DD0
+	virtual ~CEffectPriestMemSpellMod() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectPriestMemSpellMod::*CEffectPriestMemSpellMod_ApplyEffect)(CCreatureObject&);
 
 //CEffectBlindness
 class CEffectBlindness : public CEffect { //opcode 4Ah
@@ -140,6 +220,33 @@ public:
 
 extern BOOL (CEffectMagicResistMod::*CEffectMagicResistMod_ApplyEffect)(CCreatureObject&);
 
+//CEffectWingBuffet
+class CEffectWingBuffet : public CEffect { //opcode EBh
+public:
+	CEffectWingBuffet(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY);
+	CEffectWingBuffet& Construct(ITEM_EFFECT&, POINT&, Enum, int, int) { return *this; } //dummy
+
+	//AA9C80
+	virtual ~CEffectWingBuffet() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+	virtual BOOL CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist) { return FALSE; } //v18
+};
+
+extern CEffectWingBuffet& (CEffectWingBuffet::*CEffectWingBuffet_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int);
+extern BOOL (CEffectWingBuffet::*CEffectWingBuffet_ApplyEffect)(CCreatureObject&);
+
+//CEffectDisintegrate
+class CEffectDisintegrate : public CEffect { //opcode EEh
+public:
+	//AA9D40
+	virtual ~CEffectDisintegrate() {} //v0
+	virtual CEffect& Duplicate() {return *this;} //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern BOOL (CEffectDisintegrate::*CEffectDisintegrate_ApplyEffect)(CCreatureObject&);
+
 //CEffectRepeatingEff
 class CEffectRepeatingEff : public CEffect { //opcode 110h
 public:
@@ -155,21 +262,16 @@ public:
 extern CEffectRepeatingEff& (CEffectRepeatingEff::*CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int);
 extern BOOL (CEffectRepeatingEff::*CEffectRepeatingEff_ApplyEffect)(CCreatureObject&);
 
-//CEffectWingBuffet
-class CEffectWingBuffet : public CEffect { //opcode EBh
+//CEffectRemoveProjectile
+class CEffectRemoveProjectile : public CEffect { //opcode 111h
 public:
-	CEffectWingBuffet(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY);
-	CEffectWingBuffet& Construct(ITEM_EFFECT&, POINT&, Enum, int, int) { return *this; } //dummy
-
-	//AA9C80
-	virtual ~CEffectWingBuffet() {} //v0
+	//AA9D90
+	virtual ~CEffectRemoveProjectile() {} //v0
 	virtual CEffect& Duplicate() {return *this;} //v4
 	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
-	virtual BOOL CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist) { return FALSE; } //v18
 };
 
-extern CEffectRepeatingEff& (CEffectRepeatingEff::*CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int);
-extern BOOL (CEffectRepeatingEff::*CEffectRepeatingEff_ApplyEffect)(CCreatureObject&);
+extern BOOL (CEffectRemoveProjectile::*CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&);
 
 //CEffectCutScene2
 class CEffectCutScene2 : public CEffect { //opcode 12Ah

@@ -3,20 +3,23 @@
 #include "stdafx.h"
 #include "resref.h"
 
-Log L;
+Log L("TobEx.log");
+Log LD("TobEx_dlg.log");
 
-Log::Log() {
+Log::Log(LPCTSTR lpsz) {
 	hFile = NULL;
 	bFileOpen = FALSE;
-	szFile = "TobEx.log";
+	szFile = lpsz;
 }
 
 Log::~Log() {
 	if (hFile) CloseHandle(hFile);
 }
 
-BOOL Log::Init() {
-	hFile = CreateFile(szFile, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+BOOL Log::Init(int mode) {
+	if (mode == 1) mode = OPEN_ALWAYS;
+		else mode = CREATE_ALWAYS;
+	hFile = CreateFile(szFile, GENERIC_WRITE, FILE_SHARE_READ, NULL, mode, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile) SetFilePointer(hFile, 0, 0, FILE_END);
 	bFileOpen = hFile ? TRUE : FALSE;
 	return bFileOpen;

@@ -1,10 +1,19 @@
 #include "objcre.h"
 
 //CCreatureObject
+CGameObject& (CCreatureObject::*CCreatureObject_SetTarget)(Object&, char) =
+	SetFP(static_cast<CGameObject& (CCreatureObject::*)(Object&, char)>		(&CCreatureObject::SetTarget),				0x48D519);
 CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)() =
 	SetFP(static_cast<CDerivedStats& (CCreatureObject::*)()>				(&CCreatureObject::GetDerivedStats),		0x495630);
+ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL) =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL)>
+																			(&CCreatureObject::CastSpell),				0x4AD88A);
 void (*CCreatureObject_RemoveItem)(CCreatureObject&, int) =
 	reinterpret_cast<void (*)(CCreatureObject&, int)>						(0x52033C);
+CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)() =
+	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetEquippedEffectsList),	0x567540);
+CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)() =
+	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetMainEffectsList),		0x567560);
 void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL) =
 	SetFP(static_cast<void (CCreatureObject::*)(BOOL)>						(&CCreatureObject::UnequipAll),				0x8CA628);
 void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL) =
@@ -29,14 +38,21 @@ BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(int, int, int*)>			(&CCreatureObject::AddMemSpellInnate),		0x8CBC70);
 IECString& (CCreatureObject::*CCreatureObject_GetLongName)() =
 	SetFP(static_cast<IECString& (CCreatureObject::*)()>					(&CCreatureObject::GetLongName),			0x8D49D9);
+STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)() =
+	SetFP(static_cast<STRREF (CCreatureObject::*)()>						(&CCreatureObject::GetLongNameStrRef),		0x8D4AAC);
 unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 	SetFP(static_cast<unsigned int (CCreatureObject::*)()>					(&CCreatureObject::GetKitUnusableFlag),		0x8E066B);
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
 	SetFP(static_cast<void (CCreatureObject::*)(short, int, int, int, STRREF, BOOL, IECString&)>
 																			(&CCreatureObject::PrintEventMessage),		0x8FAE5A);
 
+CGameObject& CCreatureObject::SetTarget(Object& o, char type)					{ return (this->*CCreatureObject_SetTarget)(o, type); }
 CDerivedStats& CCreatureObject::GetDerivedStats()								{ return (this->*CCreatureObject_GetDerivedStats)(); }
+ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil)
+	{ return (this->*CCreatureObject_CastSpell)(rResource, cgoTarget, bPrintStrref, strref, pMod, bPrintEventMsg, bDoNotApplySplAbil); }
 void CCreatureObject::RemoveItem(CCreatureObject& cre, int nSlot)				{ return (*CCreatureObject_RemoveItem)(cre, nSlot); }
+CEffectList& CCreatureObject::GetEquippedEffectsList()							{ return (this->*CCreatureObject_GetEquippedEffectsList)(); }
+CEffectList& CCreatureObject::GetMainEffectsList()								{ return (this->*CCreatureObject_GetMainEffectsList)(); }
 void CCreatureObject::UnequipAll(BOOL bKeepEffects)								{ return (this->*CCreatureObject_UnequipAll)(bKeepEffects); }
 void CCreatureObject::EquipAll(BOOL bDoNotApplyEffects)							{ return (this->*CCreatureObject_EquipAll)(bDoNotApplyEffects); }
 CreFileKnownSpell& CCreatureObject::GetKnownSpellPriest(int nLevel, int nIndex)	{ return (this->*CCreatureObject_GetKnownSpellPriest)(nLevel, nIndex); }
@@ -49,6 +65,7 @@ BOOL CCreatureObject::AddMemSpellPriest(int nLevel, int nIndex, int* pIndex)	{ r
 BOOL CCreatureObject::AddMemSpellMage(int nLevel, int nIndex, int* pIndex)		{ return (this->*CCreatureObject_AddMemSpellMage)(nLevel, nIndex, pIndex); }
 BOOL CCreatureObject::AddMemSpellInnate(int nLevel, int nIndex, int* pIndex)	{ return (this->*CCreatureObject_AddMemSpellInnate)(nLevel, nIndex, pIndex); }
 IECString& CCreatureObject::GetLongName()										{ return (this->*CCreatureObject_GetLongName)(); }
+STRREF CCreatureObject::GetLongNameStrRef()										{ return (this->*CCreatureObject_GetLongNameStrRef)(); }
 unsigned int CCreatureObject::GetKitUnusableFlag()								{ return (this->*CCreatureObject_GetKitUnusableFlag)(); }
 void CCreatureObject::PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6) {
 	return (this->*CCreatureObject_PrintEventMessage)(wEventId, nParam1, nParam2, nParam3, strrefParam4, bParam5, sParam6);

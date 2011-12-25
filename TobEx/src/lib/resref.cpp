@@ -11,14 +11,14 @@ ResRef* (ResRef::*ResRef_Construct_1LPTSTR)(LPTSTR) =
 	SetFP(static_cast<ResRef* (ResRef::*)(LPTSTR)>			(&ResRef::Construct),		0x999EFB);
 ResRef* (ResRef::*ResRef_Construct_1LPCTSTR)(LPCSTR) =
 	SetFP(static_cast<ResRef* (ResRef::*)(LPCSTR)>			(&ResRef::Construct),		0x999F1D);
-IECString& (ResRef::*ResRef_ToString)(IECString&) =
-	SetFP(static_cast<IECString& (ResRef::*)(IECString&)>	(&ResRef::ToString),		0x999F3F);
+IECString (ResRef::*ResRef_ToString)() =
+	SetFP(static_cast<IECString (ResRef::*)()>				(&ResRef::ToString),		0x999F3F);
 void (ResRef::*ResRef_NullSpaces)() =
 	SetFP(static_cast<void (ResRef::*)()>					(&ResRef::NullSpaces),		0x999F6C);	
 LPTSTR (ResRef::*ResRef_GetBuffer)() const =
 	SetFP(static_cast<LPTSTR (ResRef::*)() const>			(&ResRef::GetBuffer),		0x999FB3);
-IECString& (ResRef::*ResRef_SafeToString)(IECString&) =
-	SetFP(static_cast<IECString& (ResRef::*)(IECString&)>	(&ResRef::SafeToString),	0x999FC1);
+IECString (ResRef::*ResRef_SafeToString)() =
+	SetFP(static_cast<IECString (ResRef::*)()>				(&ResRef::SafeToString),	0x999FC1);
 BOOL (ResRef::*ResRef_IsNotEmpty)() =
 	SetFP(static_cast<BOOL (ResRef::*)()>					(&ResRef::IsNotEmpty),		0x99A040);
 void (ResRef::*ResRef_ToChar)(LPCTSTR) =
@@ -58,10 +58,10 @@ ResRef::ResRef(IECString& s)					{ (this->*ResRef_Construct_1CString)(s); }
 ResRef::ResRef(LPTSTR sz)						{ (this->*ResRef_Construct_1LPTSTR)(sz); }
 ResRef::ResRef(LPCTSTR sz)						{ (this->*ResRef_Construct_1LPCTSTR)(sz); }
 ResRef::~ResRef()								{}
-IECString& ResRef::ToString(IECString& s)		{ return (this->*ResRef_ToString)(s); }
+IECString ResRef::ToString()					{ return (this->*ResRef_ToString)(); }
 void ResRef::NullSpaces()						{ return (this->*ResRef_NullSpaces)(); }
 LPTSTR ResRef::GetBuffer() const				{ return (this->*ResRef_GetBuffer)(); }
-IECString& ResRef::SafeToString(IECString& s)	{ return (this->*ResRef_SafeToString)(s); }
+IECString ResRef::SafeToString()				{ return (this->*ResRef_SafeToString)(); }
 BOOL ResRef::IsNotEmpty()						{ return (this->*ResRef_IsNotEmpty)(); }
 void ResRef::ToChar(LPCTSTR sz)					{ return (this->*ResRef_ToChar)(sz); }
 BOOL ResRef::operator!=(ResRef& r)				{ return (this->*ResRef_OpNeq_ResRef)(r); }
@@ -80,3 +80,4 @@ ResRef ResRef::CopyToUpper(IECString& s)		{ return (this->*ResRef_CopyToUpper)(s
 void ResRef::Copy(ResRef& r)					{ return (this->*ResRef_Copy)(r); }
 
 ResRef::operator LPTSTR() const					{ return GetBuffer(); }
+BOOL ResRef::operator==(ResRef& r)				{ return !(this->*ResRef_OpNeq_ResRef)(r); }

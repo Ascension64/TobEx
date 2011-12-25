@@ -18,6 +18,7 @@
 #define CGAMEOBJECT_TYPE_CREATURE	0x31
 #define CGAMEOBJECT_TYPE_5E			0x40
 #define CGAMEOBJECT_TYPE_TRIGGER	0x41
+#define CGAMEOBJECT_TYPE_PROJECTILE	0x50
 #define CGAMEOBJECT_TYPE_TILE		0x51
 #define CGAMEOBJECT_TYPE_SMOKE		0x60
 #define CGAMEOBJECT_TYPE_AREA		0x61
@@ -83,29 +84,29 @@ class CGameObject { //Size 42h
 public:
 	//AA6844
 	virtual ~CGameObject() {} //v0
-	virtual void v4() {} //GetType() - return byte 0x4h
+	virtual char GetType() { return 0; } //v4
 	virtual void v8() {} //AddToArea(pArea, POINT, zPos, type)
 	virtual void vc() {} //AIUpdate()
-	virtual Object& GetObject() { return o; } //return a value
-	//v14 (dw 3738h) - get some enum?
-	//v18 void GetCurrentPoint(POINT* ptr)
-	//v1c POSITION& GetVerticalListPosition(), gets 16h
-	//v20 char GetVertListType(), returns 1ah
-	//v24 bool IsAllowSaving(STRREF), 1 = allow save
-	//v28 bool CompressTime(int)
-	//v2c void DebugDump()
-	//v30 ? involves rectangles
-	//v34 ? involves rectangles
-	//v38 BOOL InAnArea()
-	//v3c ? to do with areas
-	//v40 PlaySound? to do with areas
-	//v44 void RemoveFromArea()
-	//v48 void DrawAnimation(pArea, pCVideoMode, int)
-	//v4c bool NeedsAIUpdate(CWorldTimer->bRun, CBaldurChitin->nChitinUpdates)
-	//v50 void SetObject(Object*)
-	//v54 ?
-	//v58 DoNothing
-	//v5c void SetVerticalListPosition(POSITION*), sets 16h
+	virtual Object& GetCurrentObject() { return o; } //return a value
+	virtual void v14() {} //v14 (dw 3738h) - get some enum?
+	virtual void v18() {} //v18 void GetCurrentPoint(POINT* ptr)
+	virtual void v1c() {} //v1c POSITION& GetVerticalListPosition(), gets 16h
+	virtual void v20() {} //v20 char GetVertListType(), returns 1ah
+	virtual void v24() {} //v24 bool IsAllowSaving(STRREF), 1 = allow save
+	virtual void v28() {} //v28 bool CompressTime(int)
+	virtual void v2c() {} //v2c void DebugDump()
+	virtual void v30() {} //v30 ? involves rectangles
+	virtual void v34() {} //v34 ? involves rectangles
+	virtual void v38() {} //v38 BOOL InAnArea()
+	virtual void v3c() {} //v3c ? to do with areas
+	virtual void v40() {} //v40 PlaySound? to do with areas
+	virtual void RemoveFromArea() {} //v44
+	virtual void v48() {} //v48 void DrawAnimation(pArea, pCVideoMode, int)
+	virtual void v4c() {} //v4c bool NeedsAIUpdate(CWorldTimer->bRun, CBaldurChitin->nChitinUpdates)
+	virtual void v50() {} //v50 void SetObject(Object*)
+	virtual void v54() {} //v54 ?
+	virtual void v58() {} //v58 DoNothing
+	virtual void v5c() {} //v5c void SetVerticalListPosition(POSITION*), sets 16h
 
 	char nObjType; //4h, CGameObject type
 	//objectType, e.g. see constants from AAA9E1-AAA9ED
@@ -136,7 +137,7 @@ public:
 	Object o;  //1ch, this o (main Object used in script triggers)
 	Enum e; //30h, this e
 	short u34;
-	int nPlayerID; //36h, network
+	int nPlayerNetworkId; //36h, remotePlayerID
 	Enum u3a; //another enum
 	char u3e;
 	bool bIgnoreMessagesToSelf; //3fh, network
@@ -148,11 +149,11 @@ class CGameSprite : public CGameObject { //Size 3D4h
 //Constructor: 0x476DED
 public:
 	virtual ~CGameSprite() {} //v0
-	//v60, BOOL EvaluateTrigger(Trigger*)
-	//v64, void ClearAllActions(BOOL bExceptFlagged)
-	//v68, void SetTarget(creTarget)
-	//v6c, void AddActionHead(pAction)
-	//v70, void ApplyEffect(CEffect&, char nEffectListType, BOOL bOnDelayFinished, BOOL bUpdateCare)
+	virtual BOOL EvaluateTrigger(Trigger& t) { return TRUE; } //v60
+	virtual void v64() {} //v64, void ClearAllActions(BOOL bExceptFlagged)
+	virtual void v68() {} //v68, void SetTarget(creTarget)
+	virtual void v6c() {} //v6c, void AddActionHead(pAction)
+	virtual void ApplyEffect(CEffect& eff, bool bCheckEffectListType, BOOL bDelayFinished, BOOL bUpdateCre) {} //v70
 	//v74, update for new round? (BOOL) calls v64, v88
 	//v78, void ExecuteOneAction(), calls v7c
 	//v7c, short ExecuteAction()
@@ -269,9 +270,9 @@ public:
 
 struct CGameObjectArrayHandler { //Size 2Eh
 //Constructor: 0x675FB0
-	char GetGameObjectShare(Enum e, char threadNum, void* ptr, int dwTimeout);
-	char GetGameObject(Enum e, char threadNum, void* ptr, int dwTimeout);
-	char GetGameObjectDeny(Enum e, char threadNum, void* ptr, int dwTimeout);
+	char GetGameObjectShare(Enum e, char threadNum, void* pptr, int dwTimeout);
+	char GetGameObject(Enum e, char threadNum, void* pptr, int dwTimeout);
+	char GetGameObjectDeny(Enum e, char threadNum, void* pptr, int dwTimeout);
 	char FreeGameObjectShare(Enum e, char threadNum, int dwTimeout);
 	char FreeGameObjectDeny(Enum e, char threadNum, int dwTimeout);
 

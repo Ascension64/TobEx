@@ -13,14 +13,14 @@ char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enu
 char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectDeny)(Enum, char, int) =
 	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, int)>			(&CGameObjectArrayHandler::FreeGameObjectDeny),		0x676A16);
 
-char CGameObjectArrayHandler::GetGameObjectShare(Enum e, char threadNum, void* ptr, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_GetGameObjectShare)(e, threadNum, ptr, dwTimeout);
+char CGameObjectArrayHandler::GetGameObjectShare(Enum e, char threadNum, void* pptr, int dwTimeout) {
+	return (this->*CGameObjectArrayHandler_GetGameObjectShare)(e, threadNum, pptr, dwTimeout);
 }
-char CGameObjectArrayHandler::GetGameObject(Enum e, char threadNum, void* ptr, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_GetGameObject)(e, threadNum, ptr, dwTimeout);
+char CGameObjectArrayHandler::GetGameObject(Enum e, char threadNum, void* pptr, int dwTimeout) {
+	return (this->*CGameObjectArrayHandler_GetGameObject)(e, threadNum, pptr, dwTimeout);
 }
-char CGameObjectArrayHandler::GetGameObjectDeny(Enum e, char threadNum, void* ptr, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_GetGameObjectDeny)(e, threadNum, ptr, dwTimeout);
+char CGameObjectArrayHandler::GetGameObjectDeny(Enum e, char threadNum, void* pptr, int dwTimeout) {
+	return (this->*CGameObjectArrayHandler_GetGameObjectDeny)(e, threadNum, pptr, dwTimeout);
 }
 char CGameObjectArrayHandler::FreeGameObjectShare(Enum e, char threadNum, int dwTimeout) {
 	return (this->*CGameObjectArrayHandler_FreeGameObjectShare)(e, threadNum, dwTimeout);

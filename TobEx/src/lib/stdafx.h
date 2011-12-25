@@ -3,6 +3,8 @@
 
 #include "win32def.h"
 
+#include <cassert>
+
 #include "utils.h"
 
 #include "cstringex.h"
@@ -10,6 +12,11 @@
 #include "resref.h"
 
 #include "globals.h"
+
+#include "console.h"
+#include "log.h"
+
+#include "options.h"
 
 typedef int STRREF;
 typedef unsigned int Enum; //index to CGameObjectArrayHandler element

@@ -21,6 +21,14 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectDexterityMod
+extern BOOL (CEffectDexterityMod::*Tramp_CEffectDexterityMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectDexterityMod : public CEffectDexterityMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectPoison
 extern BOOL (CEffectPoison::*Tramp_CEffectPoison_ApplyEffect)(CCreatureObject&);
 
@@ -29,10 +37,34 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectMageMemSpellMod
+extern BOOL (CEffectMageMemSpellMod::*Tramp_CEffectMageMemSpellMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectMageMemSpellMod : public CEffectMageMemSpellMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectStrengthMod
+extern BOOL (CEffectStrengthMod::*Tramp_CEffectStrengthMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectStrengthMod : public CEffectStrengthMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectDispel
 extern BOOL (CEffectDispel::*Tramp_CEffectDispel_ApplyEffect)(CCreatureObject&);
 
 class DETOUR_CEffectDispel : public CEffectDispel {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectPriestMemSpellMod
+extern BOOL (CEffectPriestMemSpellMod::*Tramp_CEffectPriestMemSpellMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectPriestMemSpellMod : public CEffectPriestMemSpellMod {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
@@ -76,6 +108,22 @@ extern BOOL (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_ApplyEffect)(CCreat
 class DETOUR_CEffectRepeatingEff : public CEffectRepeatingEff {
 public:
 	CEffectRepeatingEff& DETOUR_Construct(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY);
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectDisintegrate
+extern BOOL (CEffectDisintegrate::*Tramp_CEffectDisintegrate_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectDisintegrate : public CEffectDisintegrate {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectRemoveProjectile
+extern BOOL (CEffectRemoveProjectile::*Tramp_CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectRemoveProjectile : public CEffectRemoveProjectile {
+public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 

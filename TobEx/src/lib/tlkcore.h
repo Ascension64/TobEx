@@ -16,9 +16,8 @@ public:
 };
 
 struct CStrRef { //Size 6Eh
-	//AAF70C
-	IECString text;
-	CSound sound;
+	IECString text; //0h
+	CSound sound; //4h
 };
 
 class CTlkTbl { //Size A6h
@@ -34,7 +33,7 @@ public:
 	CCriticalSection ccs; //38h
 #endif
 
-	char u58;
+	char nKeyLow; //58h, the low byte of the key to use for dialog (dialog.tlk vs dialogF.tlk)
 	char u59; //pad
 	
 	//handles sounds?

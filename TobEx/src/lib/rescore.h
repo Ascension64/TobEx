@@ -127,11 +127,17 @@ public:
 class ResItm : public Res { //Size 60h
 //Constructor: 0x434D1C (find all Res constructors here)
 public:
+	void* Demand();
+	int Release();
+
 	int* pAbilities; //0x50
 	int* pEffects; //0x54
 	int* pFile; //0x58
 	BOOL bPointersLoaded; //0x5c
 };
+
+extern void* (ResItm::*ResItm_Demand)();
+extern int (ResItm::*ResItm_Release)();
 
 class ResSpl : public Res { //Size 60h
 //Constructor: 0x434D1C (find all Res constructors here)

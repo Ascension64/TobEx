@@ -7,6 +7,7 @@ class CRuleTablesEx {
 public:
 	CRuleTablesEx();
 
+	CRuleTable m_ClassSpellAbility;
 	CRuleTable m_ClassRaceReq;
 	CRuleTable m_MageSchoolRaceReq;
 	CRuleTable m_HideSpell;

@@ -2,11 +2,8 @@
 
 #include "stdafx.h"
 #include "debug.h"
-#include "console.h"
-#include "log.h"
 #include "patch.h"
 #include "hook.h"
-#include "options.h"
 
 void Init() {
 
@@ -14,13 +11,15 @@ void Init() {
 	tm tmLocal;
 	localtime_s(&tmLocal, &tmTime);
 	const char* buffer = "%sTobEx: Throne of Bhaal Extender (%s %.2d %s %.4d %.2d:%.2d:%.2d)\r\n";
+	const char* bufferD = "%sTobEx Dialogue Log (%s %.2d %s %.4d %.2d:%.2d:%.2d)\r\n";
 
 	//init console
 	if (console.Init())
 		console.write(buffer, 8, "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
 	//init log
-	if (L.Init())
+	int nDebugLogFileMode = GetIniValue("Debug", "Log File Mode");
+	if (L.Init(nDebugLogFileMode))
 		L.append(buffer, 8, "-----", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
 	char lpFile[MAX_PATH];
@@ -28,6 +27,12 @@ void Init() {
 		const int nPEAddress = (int)GetModuleHandle(lpFile);
 		if (nPEAddress == g_nPEAddressDefault) {
 			InitOptions();
+
+			if (pGameOptionsEx->bDebugLogDialogueBar) {
+				if (LD.Init(nDebugLogFileMode))
+					LD.append(bufferD, 8, "-----", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+			}
+
 			InitPatches();
 			InitHooks();
 

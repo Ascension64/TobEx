@@ -41,8 +41,8 @@ BOOL (CUIControl::*CUIControl_OnRMouseBtDn)(POINT) =
 	SetFP(static_cast<BOOL (CUIControl::*)(POINT)>						(&CUIControl::OnRMouseBtDn),	0x586420);
 void (CUIControl::*CUIControl_OnRMouseBtUp)(POINT) =
 	SetFP(static_cast<void (CUIControl::*)(POINT)>						(&CUIControl::OnRMouseBtUp),	0x586430);
-void (CUIControl::*CUIControl_v2c)(int) =
-	SetFP(static_cast<void (CUIControl::*)(int)>						(&CUIControl::v2c),				0x586440);
+void (CUIControl::*CUIControl_OnKeyPress)(short) =
+	SetFP(static_cast<void (CUIControl::*)(short)>						(&CUIControl::OnKeyPress),		0x586440);
 void (CUIControl::*CUIControl_ShowTooltip)(bool) =
 	SetFP(static_cast<void (CUIControl::*)(bool)>						(&CUIControl::ShowTooltip),		0x5860A0);
 STRREF (CUIControl::*CUIControl_GetTooltip)() =
@@ -79,7 +79,7 @@ void CUIControl::OnLMouseBtUp(POINT pt)												{ return (this->*CUIControl_O
 BOOL CUIControl::OnLMouseDblClk(POINT pt)											{ return (this->*CUIControl_OnLMouseDblClk)(pt); }
 BOOL CUIControl::OnRMouseBtDn(POINT pt)												{ return (this->*CUIControl_OnRMouseBtDn)(pt); }
 void CUIControl::OnRMouseBtUp(POINT pt)												{ return (this->*CUIControl_OnRMouseBtUp)(pt); }
-void CUIControl::v2c(int i)															{ return (this->*CUIControl_v2c)(i); }
+void CUIControl::OnKeyPress(short wChar)											{ return (this->*CUIControl_OnKeyPress)(wChar); }
 void CUIControl::ShowTooltip(bool b)												{ return (this->*CUIControl_ShowTooltip)(b); }
 STRREF CUIControl::GetTooltip()														{ return (this->*CUIControl_GetTooltip)(); }
 void CUIControl::HideTooltip()														{ return (this->*CUIControl_HideTooltip)(); }

@@ -25,7 +25,9 @@
 #include "EngineRecord.h"
 #include "EngineMageBook.h"
 #include "EnginePriestBook.h"
+#include "EngineWorld.h"
 #include "InfGameCore.h"
+#include "ItemCore.h"
 #include "LogCore.h"
 #include "ObjectCreature.h"
 #include "ObjectStats.h"
@@ -44,37 +46,61 @@ void InitHooks() {
 
 	if (pGameOptionsEx->bDebugExternalLogging)
 		DetourFunction(Tramp_WriteToFile, DETOUR_WriteToFile);
+	if (pGameOptionsEx->bDebugLogDialogueBar) {
+		DetourMemberFunction(Tramp_CWorld_PrintToConsole_6, DETOUR_CWorld::DETOUR_PrintToConsoleColor)
+		DetourMemberFunction(Tramp_CWorld_PrintToConsole_4, DETOUR_CWorld::DETOUR_PrintToConsole)
+	}
 	if (pGameOptionsEx->bDebugLogFailures)
 		DetourFunction(Tramp_AssertFailedQuit, DETOUR_AssertFailedQuit);
 	if (pGameOptionsEx->bDebugLogWarnings)
 		DetourFunction(Tramp_AssertFailedContinue, DETOUR_AssertFailedContinue);
 
 	DetourMemberFunction(Tramp_CEffect_CreateEffect, DETOUR_CEffect::DETOUR_CreateEffect);
+	DetourMemberFunction(Tramp_CDerivedStats_OpAdd, DETOUR_CDerivedStats::DETOUR_OpAdd);
+	if (pGameOptionsEx->bEffApplyEffItemtypeFix ||
+		pGameOptionsEx->bEffApplyEffItemFix) {
+		DetourMemberFunction(Tramp_CItem_Equip, DETOUR_CItem::DETOUR_Equip);
+	}
 	if (pGameOptionsEx->bEffAttacksPerRoundFix) {
-		DetourMemberFunction(Tramp_CDerivedStats_OpAdd, DETOUR_CDerivedStats::DETOUR_OpAdd);
 		DetourMemberFunction(Tramp_CEffectAttacksPerRoundMod_ApplyEffect, DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect);
 	}
 	if (pGameOptionsEx->bEffDamageAwaken)
 		DetourMemberFunction(Tramp_CEffectDamage_ApplyEffect, DETOUR_CEffectDamage::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->nEffBlindnessFix)
 		DetourMemberFunction(Tramp_CEffectBlindness_ApplyEffect, DETOUR_CEffectBlindness::DETOUR_ApplyEffect);
-	if (pGameOptionsEx->bEffDispelMagicalItemConfig)
-		DetourMemberFunction(Tramp_CEffectDispel_ApplyEffect, DETOUR_CEffectDispel::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffDiseaseFix)
 		DetourMemberFunction(Tramp_CEffectDisease_ApplyEffect, DETOUR_CEffectDisease::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffDisintegrateFix)
+		DetourMemberFunction(Tramp_CEffectDisintegrate_ApplyEffect, DETOUR_CEffectDisintegrate::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffDispelMagicalItemConfig)
+		DetourMemberFunction(Tramp_CEffectDispel_ApplyEffect, DETOUR_CEffectDispel::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffCutScene2Extend)
 		DetourMemberFunction(Tramp_CEffectCutScene2_ApplyEffect, DETOUR_CEffectCutScene2::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffIWDDexterityMod)
+		DetourMemberFunction(Tramp_CEffectDexterityMod_ApplyEffect, DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffIWDDexterityMod)
+		DetourMemberFunction(Tramp_CEffectDexterityMod_ApplyEffect, DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffIWDMageMemSpellMod)
+		DetourMemberFunction(Tramp_CEffectMageMemSpellMod_ApplyEffect, DETOUR_CEffectMageMemSpellMod::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffIWDPriestMemSpellMod)
+		DetourMemberFunction(Tramp_CEffectPriestMemSpellMod_ApplyEffect, DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffMagicResistFix)
 		DetourMemberFunction(Tramp_CEffectMagicResistMod_ApplyEffect, DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffPoisonFix)
 		DetourMemberFunction(Tramp_CEffectPoison_ApplyEffect, DETOUR_CEffectPoison::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffRegenerationFix)
 		DetourMemberFunction(Tramp_CEffectRegeneration_ApplyEffect, DETOUR_CEffectRegeneration::DETOUR_ApplyEffect);
+	if (pGameOptionsEx->bEffRemoveProjectileMod)
+		DetourMemberFunction(Tramp_CEffectRemoveProjectile_ApplyEffect, DETOUR_CEffectRemoveProjectile::DETOUR_ApplyEffect);
 	if (pGameOptionsEx->bEffRepeatingEffFix) {
 		DetourMemberFunction(Tramp_CEffectRepeatingEff_Construct_5, DETOUR_CEffectRepeatingEff::DETOUR_Construct);
 		DetourMemberFunction(Tramp_CEffectRepeatingEff_ApplyEffect, DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect);
 	}
 
+	if (pGameOptionsEx->nEngineContingencyTriggerDelay)
+		DetourMemberFunction(Tramp_CConditionalSpellList_EvaluateTriggers, DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers);
+	if (pGameOptionsEx->bEngineModifyEffectStacking)
+		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 	if (pGameOptionsEx->bEngineExternClassRaceRestrictions) {
 		DetourFunction(Tramp_CAnimation_IsPlayableAnimation, DETOUR_CAnimation::DETOUR_IsPlayableAnimation);
 		DetourMemberFunction(Tramp_CAnimation5000_Construct, DETOUR_CAnimation5000::DETOUR_Construct);

@@ -10,12 +10,15 @@ void (CRuleTable::*CRuleTable_LoadRes)(ResRef&) =
 	SetFP(static_cast<void (CRuleTable::*)(ResRef&)>						(&CRuleTable::LoadTable),	0x402D85);
 IECString& (CRuleTable::*CRuleTable_GetValue)(IECString&, IECString&) =
 	SetFP(static_cast<IECString& (CRuleTable::*)(IECString&, IECString&)>	(&CRuleTable::GetValue),	0x4047EF);
+extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL) =
+	SetFP(static_cast<bool (CRuleTable::*)(IECString&, POSITION*, BOOL)>	(&CRuleTable::FindString),	0x404D61);
 void (CRuleTable::*CRuleTable_UnloadRes)() =
 	SetFP(static_cast<void (CRuleTable::*)()>								(&CRuleTable::UnloadRes),	0x43C010);
 
 CRuleTable::CRuleTable() { (this->*CRuleTable_Construct)(); nRows = 0; nCols = 0; }
 void CRuleTable::LoadTable(ResRef& r) { return (this->*CRuleTable_LoadRes)(r); }
 IECString& CRuleTable::GetValue(IECString& sColName, IECString& sRowName) { return (this->*CRuleTable_GetValue)(sColName, sRowName); }
+bool CRuleTable::FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders) { return (this->*CRuleTable_FindString)(s, ppos, bCheckHeaders); }
 void CRuleTable::UnloadRes() { return (this->*CRuleTable_UnloadRes)(); }
 CRuleTable::~CRuleTable() { //as 0x43C420 except for ~CString()
 	if (pColHeaderArray) delete[] pColHeaderArray;
@@ -65,7 +68,10 @@ BOOL CRuleTables::IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace) {
 ResRef CRuleTables::GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) { return (this->*CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex); }
 
 //CInfGame
+CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString) =
+	SetFP(static_cast<CArea& (CInfGame::*)(IECString)>		(&CInfGame::GetLoadedArea),			0x69A7D4);
 void (CInfGame::*CInfGame_StorePartyLocations)(BOOL) =
 	SetFP(static_cast<void (CInfGame::*)(BOOL)>				(&CInfGame::StorePartyLocations),	0x6B7D93);
 
-void CInfGame::StorePartyLocations(BOOL bUseSecondList) { return (this->*CInfGame_StorePartyLocations)(bUseSecondList); }
+CArea& CInfGame::GetLoadedArea(IECString sAreaName)		{ return (this->*CInfGame_GetLoadedArea)(sAreaName); }
+void CInfGame::StorePartyLocations(BOOL bUseSecondList)	{ return (this->*CInfGame_StorePartyLocations)(bUseSecondList); }

@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "datatypes.h"
+#include "effcore.h"
 #include "splcore.h"
 #include "objcore.h"
 #include "scrcore.h"
@@ -22,6 +23,33 @@
 #define EVENTMESSAGE_BACKSTAB_WEAPON_UNSUITABLE	0x1C
 #define EVENTMESSAGE_BACKSTAB_FAIL				0x40
 
+struct CQuickObject { //Size 30h
+//Constructor: see 0x532F23
+	ResRef rUsageIcon; //0h
+	STRREF strrefName; //8h
+	ResRef uc;
+	STRREF strrefLauncherName; //14h
+	short wAmount; //18h
+	struct ObjectInfo { //Size 14h
+		short wType; //0h, 1 = SPL, 2 = ITM
+		short wItemSlotIdx; //2h
+		short wItemAbilityIdx; //4h
+		ResRef rSpellName; //6h
+		char nTargetType; //eh
+		char nTargets; //fh
+		STRREF strrefAbilityTooltip; //10h
+	} m_ObjectInfo; //1ah
+	bool bDisableButton; //2eh
+	bool bConstructed; //2fh
+};
+
+class CQuickObjectList : public IECPtrList { //Size 20h
+//Constructor: 0x55ECC0
+public:
+	//AA99DC
+	int nIndexMageStart; //1ch, index at which wizard spells start (since order is priest, mage, innate)
+};
+
 struct CFavorite { //Size Eh
 //Constructor: 0x579E70
 	unsigned int* vtable; //0h
@@ -32,8 +60,12 @@ struct CFavorite { //Size Eh
 class CCreatureObject : public CGameSprite { //Size 6774h
 //Constructor: 0x87FB08
 public:
+	CGameObject& SetTarget(Object& o, char type);
 	CDerivedStats& GetDerivedStats();
+	ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil);
 	static void RemoveItem(CCreatureObject& cre, int nSlot);
+	CEffectList& GetEquippedEffectsList();
+	CEffectList& GetMainEffectsList();
 	void UnequipAll(BOOL bKeepEffects);
 	void EquipAll(BOOL bDoNotApplyEffects);
 	CreFileKnownSpell& GetKnownSpellPriest(int nLevel, int nIndex);
@@ -46,6 +78,7 @@ public:
 	BOOL AddMemSpellMage(int nLevel, int nIndex, int* pIndex);
 	BOOL AddMemSpellInnate(int nLevel, int nIndex, int* pIndex);
 	IECString& GetLongName();
+	STRREF GetLongNameStrRef();
 	unsigned int GetKitUnusableFlag();
 	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
 
@@ -123,17 +156,17 @@ public:
 	CDerivedStats cdsPrevious; //0x13c2, previous state to restore after effect finishes
 	CDerivedStats cdsDiff; //0x1c7a, difference to add to currentState
 	int u2532;
-	CIcon weapon0; //0x2536
-	CIcon weapon1;
-	CIcon weapon2;
-	CIcon weapon3;
-	CIcon spell0; //0x25f6
-	CIcon spell1;
-	CIcon spell2;
-	CIcon item0; //0x2686
-	CIcon item1;
-	CIcon item2;
-	IECString sLongName; //0x2716
+	CIcon weapon0; //2536h
+	CIcon weapon1; //2566h
+	CIcon weapon2; //2596h
+	CIcon weapon3; //25c6h
+	CIcon spell0; //25f6h
+	CIcon spell1; //2626h
+	CIcon spell2; //2656h
+	CIcon item0; //2686h
+	CIcon item1; //26b6h
+	CIcon item2; //26e6h
+	IECString sLongName; //2716h
 	char u271a;
 	char u271b; //padding?
 	struct CStatistics {
@@ -151,7 +184,7 @@ public:
 	} statistics; //271ch
 	ResRef currentArea;
 	char m_bGlobal; //27b8h, is this Cre Global
-	char u27b9;
+	char m_nModalState; //27b9h, 0: None, 1: Battle Song, 2: Detecting Traps, 3: Hide in Shadows, 4: Turn Undead
 	CSound WalkingSounds[2]; //27bah
 	int u288e;
 	CSound u2892[2];
@@ -243,7 +276,7 @@ public:
 	short u33e4; //assoc with orientations
 	short wOrientGoal; //33e6h, orientation to get to
 	short wOrientInstant; //33e8h, instantaneous orientation
-	int u33ea;
+	int* u33ea;
 	short u33ee;
 	CDwordList u33f0;
 	CDwordList u340c;
@@ -335,7 +368,7 @@ public:
 	short u3744;
 	char nnSlotSelected; //3746h, copied from af6h
 	char nnAbilitySelected; //3747h, copied from af8h
-	struct unk3748 {
+	struct _u3748 {
 		ResRef u3748;
 		int u3750;
 		ResRef u3754;
@@ -349,21 +382,21 @@ public:
 		short u3774;
 		char u3776;
 		char u3777;
-	} unk37481;
-	ResRef dialogueFilename; //0x3778
-	ResRef u3780;
+	} m_u3748;
+	ResRef rDialog; //3778h
+	ResRef rDialog2; //3780h
 	char u3788;
 	char u3789; //padding?
-	CStrRef soundset[100]; //0x378a
-	char rndEffSaveDeath; //0x6282, 1D20
-	char rndEffSaveWand; //0x6283, 1D20
-	char rndEffSavePolymorph; //0x6284, 1D20
-	char rndEffSaveBreath; //0x6285, 1D20
-	char rndEffSaveSpell; //0x6286, 1D20
-	char rndEffResistMagic; //0x6287, 1D100
-	char rndDoEff; //0x6288, 1D100, test against effect prob1 and prob2
-	char rndWildMagicLevel; //0x6289, 1D20, column of LVLMODWM.2DA
-	char rndDoWildMagic; //0x628A, 1D20, if 0, do wild magic
+	CStrRef soundset[100]; //378ah
+	char rndEffSaveDeath; //6282h, 1D20
+	char rndEffSaveWand; //6283h, 1D20
+	char rndEffSavePolymorph; //6284h, 1D20
+	char rndEffSaveBreath; //6285h, 1D20
+	char rndEffSaveSpell; //6286h, 1D20
+	char rndEffResistMagic; //6287h, 1D100
+	char rndDoEff; //6288h, 1D100, test against effect prob1 and prob2
+	char rndWildMagicLevel; //6289h, 1D20, column of LVLMODWM.2DA
+	char rndDoWildMagic; //628Ah, 1D20, if 0, do wild magic
 	char u628b; //padding?
 	long u628c[2];
 	int u6294; //7fff
@@ -386,7 +419,7 @@ public:
 	int u63ba[6];
 	char u63d2[2];
 	int nUnselectableVariable; //63d4h
-	ResRef voiceset; //from CRE entry in GAM file
+	ResRef voiceset; //63d8h, from CRE entry in GAM file
 	int u63e0; //m_bStoneSkin?
 	int u63e4;
 	int u63e8;
@@ -413,10 +446,10 @@ public:
 	int u644c;
 	Enum u6450; //contains enum of CVisualEffect
 	int u6454;
-	int u6458;
+	CQuickObjectList* pSelectSpellSpells; //6458h
 	CScript* pDream; //645ch
-	CGameDialog u6460; //loaded when player having a dialogue with me
-	CGameDialog u64c4;
+	CGameDialog dlgCurrent; //6460h
+	CGameDialog dlgCurrent2; //64c4h
 	short u6528;
 	int u652a;
 	int m_nContingencyDelay; //652eh, a countdown timer set to 100, delay processing contingency triggers until 0
@@ -457,19 +490,23 @@ public:
 	char u673c[9];
 	char u6745; //padding?
 	int u6746; //assoc actions
-	int u674a; //to do with items
-	int u674e; //to do with items
+	BOOL m_bReequipItem; //674ah
+	BOOL m_bEquippingItem; //674eh
 	char u6752; //default = 2a; if CRE name does not start with *, will put first character in here; inherits value from GAM (unknown above killXP(chapter), inherits from Actor2E (char)
 	char u6753;
 	int u6754[7];
 	int u6770;
 };
 
-extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
+extern CGameObject& (CCreatureObject::*CCreatureObject_SetTarget)(Object&, char);
+extern CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)();
+extern ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL);
 extern void (*CCreatureObject_RemoveItem)(CCreatureObject&, int);
+extern CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)();
+extern CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)();
+extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
 extern void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL);
 extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
-extern CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)();
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellPriest)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellMage)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellInnate)(int, int);
@@ -480,6 +517,7 @@ extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellPriest)(int, int, int*
 extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellMage)(int, int, int*);
 extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*);
 extern IECString& (CCreatureObject::*CCreatureObject_GetLongName)();
+extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
 extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
 
 #endif //OBJCRE_H

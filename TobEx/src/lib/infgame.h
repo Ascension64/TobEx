@@ -27,6 +27,7 @@ struct CRuleTable { //Size 24h
 
 	void LoadTable(ResRef& r);
 	IECString& GetValue(IECString& sColName, IECString& sRowName);
+	bool FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders);
 	void UnloadRes();
 
 	Res2daContainer m_2da; //0h
@@ -41,6 +42,7 @@ struct CRuleTable { //Size 24h
 extern CRuleTable& (CRuleTable::*CRuleTable_Construct)(void);
 extern void (CRuleTable::*CRuleTable_LoadRes)(ResRef&);
 extern IECString& (CRuleTable::*CRuleTable_GetValue)(IECString&, IECString&);
+extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL);
 extern void (CRuleTable::*CRuleTable_UnloadRes)();
 
 struct IdsEntry { //Size Ch
@@ -80,8 +82,8 @@ struct CRuleTables { //Size 1DB0h
 	CRuleTable ABRACEAD; //1a8h
 	CRuleTable ABCLASRQ; //1cch
 	CRuleTable ABCLSMOD; //1f0h
-	CRuleTable ABDCSCRQ; //214h
-	CRuleTable ABCDCSRQ; //238h
+	CRuleTable AbDCScRq; //214h
+	CRuleTable AbDCDsRq; //238h
 	CRuleTable SAVEPRS; //25ch
 	CRuleTable SAVEWAR; //280h
 	CRuleTable SAVEWIZ; //2a4h
@@ -209,7 +211,7 @@ struct CRuleTables { //Size 1DB0h
 	CRuleTable CLABMO01; //1578h
 	CRuleTable CLABFI05; //159ch
 	CRuleTable SPLAUTOP; //15c0h
-	CRuleTable DUALCLAS4; //15e4h
+	CRuleTable DUALCLAS; //15e4h
 	CRuleTable RANDCOLR; //1608h
 	CRuleTable SPAWNGRP; //162ch
 	CRuleTable ITEMANIM; //1650h
@@ -253,6 +255,7 @@ extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
+	CArea& GetLoadedArea(IECString sAreaName);
 	void StorePartyLocations(BOOL);
 	
 #ifdef _DEBUG
@@ -262,12 +265,12 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 #endif
 	struct CWorldTimer { //Size 6h
 	//Constructor: 0x648F4D
-		int nGameTime; //1dd0h, current game time (in ticks)
+		unsigned int nGameTime; //1dd0h, current game time (in ticks)
 		char bRun; //0 = paused, 1 = unpaused
 		char u1dd5;
 	} m_WorldTimer; //1dd0h
 
-	int u1dd6;
+	BOOL bGameRunning; //1dd6h
 	char u1dda;
 	char u1ddb;
 	int u1ddc[2];
@@ -276,13 +279,13 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char u1de6;
 	char u1de7;
 	int u1de8;
-	IECPtrList u1dec; //AA5C58
+	CEnumList u1dec; //AA5C50
 	IECPtrList u1e08; //AA9CD0
-	short u1e24;
+	short u1e24; //2: thieving mode
 	char u1e26;
-	char u1e27;
+	char u1e27; //36: thief thieving, 40: bard thieving
 	ResRef u1e28;
-	char u1e30; //0x65 = tooltip on
+	char u1e30; //0x65 = tooltip on, 0x04 = tooltip off?
 	char u1e31;
 	int u1e32;
 	Enum u1e36; //used in ObjectActionListEmpty()
@@ -330,28 +333,43 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		char uad; //padding?
 	} m_CMultiplayerSettings; //1e46h
 
-	struct _5B0C30 { //Size 1Ch
+	struct CRemoteGameMode { //Size 1Ch
 	//Constructor: 0x5B0C30
-		int u0[6]; //init to -1, set to 0x502 or 0x182
-	} m_5B0C30; //1ef4h
+		int mode[6]; //0h, init to -1, set to 0x502 or 0x182
+	} m_CRemoteGameMode; //1ef4h
 
 	struct CButtonArray { //Size 1820h
 	//Constructor: 0x6607EF
-	//To do with the 12 GUI action buttons?
-		char u0[0x1d4][12];
+	//To do with the 12 quick bar buttons in GUI
+		struct CButtonArrayButton { //Size 1D4h
+			int u0;
+			int u4;
+			int u8;
+			int uc;
+			int u10;
+			CVidCell u14;
+			CVidCell uea;
+			int u1c0;
+			BOOL bActive; //1c4h
+			int u1c8;
+			int u1cc;
+			BOOL bDisabled; //1d0h
+		};
+
+		CButtonArrayButton buttons[12]; //0h
 		int u15f0[12]; //unused?
-		int u1620[12];
+		int nButtonIdx[12]; //1620h
 		int u1650;
-		int u1654;
-		int u1658;
+		int nButtonArrayTypeCurrentIdx; //1654h
+		int nButtonArrayTypePreviousIdx; //1658h
 		int u165c;
-		CVidCell u1660; //GUIWDBUT
-		CVidCell u1736; //GUIBTACT
-		int u180c;
+		CVidCell cvcBackgrounds; //1660h, GUIWDBUT
+		CVidCell cvcActions; //1736h, GUIBTACT
+		int nItemSlotIdx; //180ch
 		int u1810;
-		int u1814;
-		int u1818;
-		int u181c;
+		int nActiveButtonIdx; //1814h
+		int nIndexMageSpellStart; //1818h, of CQuickObjectList
+		int u181c; //0 = showing priest spells, 1 = showing mage spells
 	} m_CButtonArray; //1f0ch
 
 	struct _6C2B7B { //Size Ch
@@ -384,7 +402,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	struct CPartySelection {
 		short u0; //ffff
 		int u2; //always set to 1 on remove
-		CEnumList u6; //party members first in number order, then non-members
+		CEnumList celSelected; //6h, party members first in number order, then non-members
 	} m_PartySelection; //3958h
 
 	CEnumList u397a; //non-party idx
@@ -406,8 +424,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	struct CGameSave {
 		/*
 		-1 None
-		0x182
-		0x502
+		0x182 DialogMode
+		0x502 MultiDialogMode
 		0x802
 		0x1000
 		0x4000
@@ -597,7 +615,9 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4c1c; //KERNEL32.GetTickCount()
 	int u4c20;
 	int m_nRealTimer; //4c24h
-	char u4c28[14];
+	POINT u4c28;
+	Enum u4c30;
+	short u4c34;
 	VidPal u4c36;
 	VidPal u4c5a;
 	int u4c7e;
@@ -651,6 +671,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4dc4; //? compared with CVisualEffectVidCell.u39c*/
 };
 
+extern CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString);
 extern void (CInfGame::*CInfGame_StorePartyLocations)(BOOL);
 
 #endif //INFGAME_H

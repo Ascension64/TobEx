@@ -8,6 +8,8 @@
 #include "scrcore.h"
 
 struct CConditionalSpell { //Size 204h
+	void operator delete(void* mem);
+
 	Trigger t; //0h
 	ResRef rResource1; //2eh, spell 1
 	ResRef rResource2; //36h, spell 2
@@ -17,7 +19,7 @@ struct CConditionalSpell { //Size 204h
 	//bit0: add portrait icon 0x4B, display text on contingency fire
 	unsigned int dwFlags; //5ah
 	CEffect eff; //5eh, copy of the source effect
-	STRREF strrefTarget; //1f8, name of contingency target
+	STRREF strrefTarget; //1f8h, name of contingency target
 	STRREF strrefName; //1fch, name of contingency condition
 	int nTicksLastCheck; //200h
 };
@@ -25,28 +27,31 @@ struct CConditionalSpell { //Size 204h
 class CConditionalSpellList : public IECPtrList {
 public:
 	//AA65AC
+	void EvaluateTriggers(CCreatureObject& cre);
 };
 
-struct CForbidItem { //Size 10h
+extern void (CConditionalSpellList::*CConditionalSpellList_EvaluateTriggers)(CCreatureObject&);
+
+struct COnEquipItem { //Size 10h
 	ResRef rItem; //0h
 	STRREF strrefMsg; //8h
-	CEffect* uc; //ch
+	CEffect* pEffect; //ch
 };
 
-class CForbidItemList : public IECPtrList { //Size 1Ch
+class COnEquipItemList : public IECPtrList { //Size 1Ch
 //Constructor: 0x475CE0
 	//AA65E8
 };
 
-struct CForbidItemType { //Size Ch
+struct COnEquipItemType { //Size Ch
 //Constructor: 0x475D10
 	//AA65DC
 	int nItemType; //0h
 	STRREF strrefMsg; //4h
-	CEffect* u8;
+	CEffect* pEffect; //8h
 };
 
-class CForbidItemTypeList : public IECPtrList { //Size 1Ch
+class COnEquipItemtypeList : public IECPtrList { //Size 1Ch
 };
 
 struct CItemProperties { //Size Eh
@@ -277,7 +282,7 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	short levelTertiary;
 	short sex;
 	short strength; //4eh
-	short strengthPercent; //50h
+	short strengthEx; //50h
 	short intelligence; //52h
 	short wisdom; //54h
 	short dexterity; //56h
@@ -428,10 +433,10 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	CItemPropertiesList m_WeaponProtections; //32ch
 	CStatModVsObjectList m_ToHitBonusVsObject; //348h
 	CStatModVsObjectList m_DamageBonusVsObject; //364h
-	CForbidItemList m_ForbidItems; //380h
-	CForbidItemTypeList m_ForbidItemTypes; //39ch
-	CForbidItemList ApplyEffOnEquipItem; //3b8h, unused
-	CForbidItemTypeList ApplyEffOnEquipItemType; //3d4h, unused
+	COnEquipItemList m_ForbidItems; //380h
+	COnEquipItemtypeList m_ForbidItemTypes; //39ch
+	COnEquipItemList ApplyEffOnEquipItem; //3b8h, added by effect 182 but not used
+	COnEquipItemtypeList ApplyEffOnEquipItemType; //3d4h, added by effect 183 but not used
 	IECPtrList BounceProjId; //3f0h, AA6624
 	IECPtrList BounceEff; //40ch, AA6618, CEffect
 	BOOL BounceSplLvl[10]; //428h, if 1 for a level, is affected by that power level
@@ -443,8 +448,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	IECPtrList ProtTypeSecondary; //50ch, AA65D0
 	IECPtrList BounceTypePrimary; //528h, AA65D0
 	IECPtrList BounceTypeSecondary; //544h, AA65D0
-	CForbidItemList ForbidItem2; //560h, objects in this list never used
-	CForbidItemTypeList ForbidItemType2; //57ch, objects in this list never used
+	COnEquipItemList ForbidItem2; //560h, objects in this list never used
+	COnEquipItemtypeList ForbidItemType2; //57ch, objects in this list never used
 	CSpellProtectionList m_SpellProtections; //598h
 	IECPtrList BounceSpl; //5b4h, AA65C4
 	IECPtrList ImmuneTypePrimaryDec; //5d0h, AA65B8
@@ -458,12 +463,29 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	IECPtrList SplSequencer; //6cch, AA65AC
 	IECPtrList ColorListPal; //6e8h, AA6594, item color objects of 0x2?
 	IECPtrList ColorListRgb; //704h, AA6588
-	CreFileMemSpellLevel memInfoWizard[9]; //720h
-	CreFileMemSpellLevel memInfoPriest[7]; //7b0h
+	CreFileMemSpellLevel MemInfoMage[9]; //720h
+	CreFileMemSpellLevel MemInfoPriest[7]; //7b0h
+
+	/*
+	0 - stealth
+	1 - thieving
+	2 - cast spell
+	3 - quick spell 1
+	4 - quick spell 2
+	5 - quick spell 3
+	6 - turn undead
+	7 - talk
+	8 - use item
+	9 - quick item 1
+	A - nil
+	B - quick item 2
+	C - quick item 3
+	D - special ability
+	*/
 	int ButtonDisable[14]; //820h
 	int ButtonDisableSplPriest; //858h
 	int ButtonDisableSplWizard; //85ch
-	int ButtonDisableSplInnate; //858h
+	int ButtonDisableSplInnate; //860h
 	IECPtrList MeleeEffects; //864h, AA657C
 	IECPtrList RangedEffects; //880h, AA657C
 	CStatModVsObjectList m_SaveBonusVsObject; //89ch

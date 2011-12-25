@@ -37,7 +37,7 @@ struct CManager { //CAh
 	RECT u7a; //7ah
 	RECT u8a; //8ah
 	RECT u9a; //9ah
-	int uaa; //aah
+	BOOL bDoubleSizeOfControls; //aah
 	IECPtrList panels; //aeh
 };
 
@@ -69,7 +69,7 @@ struct CPanel { //Size 122h, in IESDP this is Window
 
 extern CUIControl& (CPanel::*CPanel_GetUIControl)(int);
 
-class CUIControl { //4Ah
+class CUIControl { //Size 4Ah
 public:
 	CUIControl();
 	CUIControl(CPanel& panel, ChuFileControlInfoBase& controlInfo, BOOL b); //0x582650
@@ -89,7 +89,7 @@ public:
 	virtual BOOL OnLMouseDblClk(POINT pt); //v20
 	virtual BOOL OnRMouseBtDn(POINT pt); //v24
 	virtual void OnRMouseBtUp(POINT pt); //v28
-	virtual void v2c(int i); //v2c
+	virtual void OnKeyPress(short wChar); //v2c
 	virtual void ShowTooltip(bool b); //v30
 	virtual STRREF GetTooltip(); //v34
 	virtual void HideTooltip(); //v38
@@ -136,7 +136,7 @@ extern void (CUIControl::*CUIControl_OnLMouseBtUp)(POINT);
 extern BOOL (CUIControl::*CUIControl_OnLMouseDblClk)(POINT);
 extern BOOL (CUIControl::*CUIControl_OnRMouseBtDn)(POINT);
 extern void (CUIControl::*CUIControl_OnRMouseBtUp)(POINT);
-extern void (CUIControl::*CUIControl_v2c)(int);
+extern void (CUIControl::*CUIControl_OnKeyPress)(short);
 extern void (CUIControl::*CUIControl_ShowTooltip)(bool);
 extern STRREF (CUIControl::*CUIControl_GetTooltip)();
 extern void (CUIControl::*CUIControl_HideTooltip)();
@@ -153,7 +153,7 @@ class CUILabel : public CUIControl { //Size 554h
 //Constructor: 0x5A0BD7
 public:
 
-	int* pText; //0x4A
+	int* pText; //4ah
 	short u4e;
 	CVidFont u50;
 	short u54c;
@@ -161,18 +161,6 @@ public:
 	short u550;
 	char u552; //to do with colors
 	char u553; //padding?
-};
-
-class CUITextArea : public CUIControl { //Size AA8h
-//Constructor: 0x59C60C
-//FIX_ME
-public:
-};
-
-class CUITextField : public CUIControl { //Size 87Eh
-//Constructor: 0x59C00A
-//FIX_ME
-public:
 };
 
 extern CUIControl* (__cdecl *CreateUIControl)(CPanel&, ChuFileControlInfoBase&);

@@ -13,6 +13,7 @@
 #include "vidcore.h"
 #include "console.h"
 #include "objvef.h"
+#include "uitext.h"
 
 #define SIZE_CBALDURCHITIN			0x720C
 #define SIZE_CBUTTONARRAY			0x1820
@@ -32,9 +33,11 @@
 #define SIZE_CSERVERSTORE			0x00DC
 #define SIZE_CSTORE					0x148A
 #define SIZE_CTLKTBL				0x00A6
+#define SIZE_CUITEXTAREA			0x0AA8
 #define SIZE_CVIDEO					0x0168
 #define SIZE_CVIDEOMODE				0x0732
 #define SIZE_CVISUALEFFECTVIDCELL	0x03A0
+#define SIZE_CWORLD					0x124C
 
 void CheckSize(LPCTSTR lpszName, size_t nExpectedSize, size_t nActualSize) {
 	if (nActualSize != nExpectedSize) console.write("Debug(): %s has incorrect size 0x%X (expected 0x%X)\r\n", 3, lpszName, nActualSize, nExpectedSize);
@@ -59,9 +62,11 @@ void Debug() {
 	_CheckSize(SIZE_CSERVERSTORE, CServerStore);
 	_CheckSize(SIZE_CSTORE, CStore);
 	_CheckSize(SIZE_CTLKTBL, CTlkTbl);
+	_CheckSize(SIZE_CUITEXTAREA, CUITextArea);
 	_CheckSize(SIZE_CVIDEO, CVideo);
 	_CheckSize(SIZE_CVIDEOMODE, CVideoMode);
 	_CheckSize(SIZE_CVISUALEFFECTVIDCELL, CVisualEffectVidCell);
+	_CheckSize(SIZE_CWORLD, CWorld);
 
 	//to check location of members, just replace the temp object type, member name and expected location
 	//CCreatureObject temp;

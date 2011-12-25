@@ -47,7 +47,7 @@ struct CreFileData { //Size 268h
 	short maxHP; //1eh
 	unsigned short animId; //20h
 	short u22;
-	ColorRangeValues colors; //23h
+	ColorRangeValues colors; //24h
 	char effType; //2ah, 0 = ITEM_EFFECT (Effect), 1 = CEffect
 	ResRef smallPortrait; //2ch
 	ResRef largePortrait; //34h
@@ -116,7 +116,7 @@ struct CreFileData { //Size 268h
 	char levelTertiary;
 	char sex;
 	char strength;
-	char strengthPercent;
+	char strengthEx;
 	char intelligene;
 	char wisdom;
 	char dexterity;
@@ -136,12 +136,12 @@ struct CreFileData { //Size 268h
 };
 
 struct CreFileMemSpellLevel { //Size 10h
-	short level;
-	short numSpellsMemMax;
-	short numSpellsMemCurrent;
-	short type; //0 = priest, 1 = wizard, 2 = innate
-	int index; //of spell table
-	int num; //count of spells
+	short wLevel; //0h
+	short wMaxMemSpells; //2h
+	short wCurrMemSpells; //4h
+	short type; //6h, 0 = priest, 1 = wizard, 2 = innate
+	int index; //8h, of spell table
+	int num; //ch, count of spells
 };
 
 struct CreFileKnownSpell { //Size Ch
@@ -183,7 +183,7 @@ struct EffFileData { //size 108h
 	ResRef rHeader; //0h
 	int nOpcode; //8h
 	int nTarget; //ch
-	int nSplLvl; //10h
+	unsigned int nSplLvl; //10h
 	int nParam1; //14h
 	int nParam2; //18h
 
@@ -202,7 +202,7 @@ struct EffFileData { //size 108h
 	//1000: if gameTime < duration (ticks), Apply; else purge
 	int nTiming; //1ch, in seconds (converted to ticks)
 
-	int nDuration; //20h
+	unsigned int nDuration; //20h
 	short wProbHigh; //24h
 	short wProbLow; //26h
 	ResRef rResource; //28h
@@ -210,7 +210,7 @@ struct EffFileData { //size 108h
 	int nDieSides; //34h
 	unsigned int nSaveType; //38h
 	int nSaveBonus; //3ch
-	int u44; //40h
+	BOOL bStoreLocalVariableParam; //40h
 	int nType1; //44h
 	int u4c; //48h
 	int nLevelMin; //4ch
@@ -232,7 +232,7 @@ struct EffFileData { //size 108h
 	int nDestY; //84h
 	int nParentResourceType; //88h, 0 = none, 1 = SPL, 2 = ITM
 	ResRef rParentResource; //8ch
-	unsigned int nParentAbilityFlags; //94h
+	unsigned int dwParentFlags; //94h, dwFlags of SplFileData or dwFlags of ItmFileAbility
 	int nParentProjectile; //98h, PROJECTL.IDS
 	int nParentItemSlot; //9ch
 	char variable[32]; //a0h
@@ -255,8 +255,10 @@ struct ItmFileAbility { //Size 38h
 	short projType; //10h
 	short speed; //12h
 	short toHitBonus; //14h
-	short sizeDice; //16h
-	short nDice; //18h
+	char sizeDice; //16h
+	char nType1; //17h
+	char nDice; //18h
+	char nType2; //19h
 	short damBonus; //1ah
 	short damType; //1ch
 	short nEffects; //1eh

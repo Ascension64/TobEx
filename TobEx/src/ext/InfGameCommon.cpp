@@ -1,9 +1,6 @@
 #include "InfGameCommon.h"
 
 #include "stdafx.h"
-#include "options.h"
-#include "console.h"
-#include "log.h"
 
 CRuleTablesEx* pRuleEx = NULL;
 
@@ -12,6 +9,16 @@ CRuleTablesEx::CRuleTablesEx() {
 }
 
 void CRuleTablesEx::Init() {
+
+	if (pGameOptionsEx->bEffIWDStrengthMod || pGameOptionsEx->bEffIWDDexterityMod) {
+		m_ClassSpellAbility.LoadTable(ResRef("CLSSPLAB"));
+		if (!m_ClassSpellAbility.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): CLSSPLAB.2DA not found. Did you install the required WeiDU component?\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		}
+	}
 
 	if (pGameOptionsEx->bEngineExternClassRaceRestrictions) {
 		m_ClassRaceReq.LoadTable(ResRef("CLSRCREQ"));

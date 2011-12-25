@@ -136,28 +136,28 @@ STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
 		STRREF strref;
 		switch (nRace) {
 		case 0:
-			strref = 0x1C19;
+			strref = 0x1C19; //human
 			break;
 		case 1:
-			strref = 0x1C1A;
+			strref = 0x1C1A; //elf
 			break;
 		case 2:
-			strref = 0x1C1D;
+			strref = 0x1C1D; //half-elf
 			break;
 		case 3:
-			strref = 0x1C0E;
+			strref = 0x1C0E; //dwarf
 			break;
 		case 4:
-			strref = 0x1C1B;
+			strref = 0x1C1B; //halfling
 			break;
 		case 5:
-			strref = 0x1C1C;
+			strref = 0x1C1C; //gnome
 			break;
 		case 6:
-			strref = 0xCFC2;
+			strref = 0xCFC2; //half-orc
 			break;
 		case 152:
-			strref = 0x208C;
+			strref = 0x208C; //tiefling
 			break;
 		default:
 			strref = -1;

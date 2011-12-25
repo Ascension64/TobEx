@@ -8,6 +8,15 @@
 
 typedef void* CEffectVirtualTable[10];
 
+#define EFFECT_DURATION_MAX	0x8888888
+
+//Effect save types
+#define EFFECT_SAVETYPE_SPELLS		0x00000001
+#define EFFECT_SAVETYPE_BREATH		0x00000002
+#define EFFECT_SAVETYPE_DEATH		0x00000004
+#define EFFECT_SAVETYPE_WANDS		0x00000008
+#define EFFECT_SAVETYPE_POLYMORPH	0x00000010
+
 class CCreatureObject;
 
 struct ResEffContainer { //Size 10h
@@ -32,6 +41,8 @@ public:
 
 	static CEffect& CreateEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2);
 	static void CEffect::CreateItemEffect(ITEM_EFFECT& ptr, int nOpcode);
+
+	BOOL IsExpired();
 	ITEM_EFFECT& CEffect::ToItemEffect();
 
 	//AA6378
@@ -42,7 +53,7 @@ public:
 	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
 	virtual BOOL ApplyTiming(CCreatureObject& creTarget); //vc, calls ApplyEffect
 	virtual void OnDelayFinished(CCreatureObject& creTarget); //v10
-	virtual void v14(); //v14
+	virtual void OnAdd(CCreatureObject& creTarget); //v14, on addition to CEffectList
 	virtual BOOL CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist); //v18
 	virtual BOOL IgnoreLevelCheck(); //v1c
 	virtual void PrintEffectText(CCreatureObject& creTarget); //v20
@@ -52,7 +63,7 @@ public:
 	Enum eSource; //10ch
 	BOOL bPurge; //110h - deconstruct and remove effect from CEffectList after application
 	BOOL bRefreshStats; //114h - use if you change a m_BaseStats member, sets bApplyEffectsAgain in CEffectList, repeating effect application
-	int nDuration2; //118h, used for duration after delayed timing
+	int nDurationAfterDelay; //118h
 	int u11c;
 	int u120;
 	int u124;
@@ -67,13 +78,14 @@ extern void (CEffect::*CEffect_Unmarshal)(EffFileData&);
 extern CEffect& (CEffect::*CEffect_Construct_1)(EffFileData&);
 extern CEffect& (*CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum);
 extern void (*CEffect_CreateItemEffect)(ITEM_EFFECT&, int);
+extern BOOL (CEffect::*CEffect_IsExpired)();
 extern ITEM_EFFECT& (CEffect::*CEffect_ToItemEffect)();
 extern void (CEffect::*CEffect_Deconstruct)();
 extern CEffect& (CEffect::*CEffect_Duplicate)();
 extern BOOL (CEffect::*CEffect_ApplyEffect)(CCreatureObject&);
 extern BOOL (CEffect::*CEffect_ApplyTiming)(CCreatureObject&);
 extern void (CEffect::*CEffect_OnDelayFinished)(CCreatureObject&);
-extern void (CEffect::*CEffect_v14)();
+extern void (CEffect::*CEffect_OnAdd)(CCreatureObject&);
 extern BOOL (CEffect::*CEffect_CheckNotSaved)(CCreatureObject&, char&, char&, char&, char&, char&, char&);
 extern BOOL (CEffect::*CEffect_IgnoreLevelCheck)();
 extern void (CEffect::*CEffect_PrintEffectText)(CCreatureObject&);
@@ -82,16 +94,22 @@ extern void (CEffect::*CEffect_OnRemove)(CCreatureObject&);
 class CEffectList : public IECPtrList { //Size 2Ch
 public:
 	//AAA8A8
+	BOOL RemoveOneEffect(CEffect& eff, CCreatureObject& cre, BOOL bMatchSourceAndParent);
 	void RemoveEffect(CCreatureObject& creTarget, int nOpcode, POSITION posSkip, int nParam2, ResRef rResource, BOOL bCheckPermTiming);
 	void TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char nRand, char nMaxLevel);
+	BOOL ApplyEffects(CCreatureObject& cre);
+	POSITION GetCurrentPosition();
 
-	POSITION posItrNext; //1ch
+	POSITION posCurrent; //1ch
 	POSITION posItrPrev; //20h
 	int u24; //24h
 	BOOL bRefreshStats; //28h
 };
 
+extern BOOL (CEffectList::*CEffectList_RemoveOneEffect)(CEffect&, CCreatureObject&, BOOL);
 extern void (CEffectList::*CEffectList_RemoveEffect)(CCreatureObject&, int, POSITION, int, ResRef, BOOL);
 extern void (CEffectList::*CEffectList_TryDispel)(CCreatureObject&, POSITION, BOOL, BOOL, char, char);
+extern BOOL (CEffectList::*CEffectList_ApplyEffects)(CCreatureObject&);
+extern POSITION (CEffectList::*CEffectList_GetCurrentPosition)();
 
 #endif //EFFCORE_H

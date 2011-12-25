@@ -185,8 +185,8 @@ public:
 	short u4e2;
 	short wAscent; //4e4h
 	short wHeight; //4e6h
-	int u4e8;
-	int u4ec;
+	ARGB colGreyText; //4e8h
+	ARGB colText; //4ech
 	int u4f0;
 	int u4f4;
 	int u4f8;
@@ -375,7 +375,7 @@ struct CSelectionCircle { //Size 24h
 //Constructor: 0x95BFAF, also 0x95D095
 	bool bCircle; //0: targetted pizza look, 1: unbroken circle
 	char u1; //pad
-	short u2;
+	short wHighlights; //2h, number of times pizza look is requested
 	char u4;
 	char u5;
 	ARGB rgbCircle; //6h, for unbroken circle

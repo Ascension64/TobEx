@@ -1,18 +1,22 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H
 
-#include "stdafx.h"
+#include "win32def.h"
 
 struct CGameOptionsEx {
 	CGameOptionsEx();
 
 	BOOL bDebugCriticalMsgBoxFix;
 	BOOL bDebugExternalLogging;
+	BOOL bDebugLogDialogueBar;
 	BOOL bDebugLogFailures;
 	BOOL bDebugLogWarnings;
 	BOOL bDebugLogMore;
 	BOOL bDebugRestoreCombatInfoText;
+	BOOL bDebugVerbose;
 
+	BOOL bEffApplyEffItemFix;
+	BOOL bEffApplyEffItemtypeFix;
 	BOOL bEffAttacksPerRoundFix;
 	BOOL bEffAwakenFix;
 	BOOL bEffDamageAwaken;
@@ -23,21 +27,29 @@ struct CGameOptionsEx {
 	BOOL bEffCureDrunkFix;
 	BOOL bEffStoneskinDisableColour;
 	BOOL bEffDiseaseFix;
+	BOOL bEffDisintegrateFix;
 	BOOL bEffDispelFix;
 	BOOL bEffCutScene2Extend;
 	BOOL bEffForbidItemTypeFix;
 	BOOL bEffInvisibleFix;
+	BOOL bEffIWDDexterityMod;
+	BOOL bEffIWDMageMemSpellMod;
+	BOOL bEffIWDPriestMemSpellMod;
+	BOOL bEffIWDStrengthMod;
 	BOOL bEffMagicResistFix;
 	BOOL bEffOpcode13E;
 	BOOL bEffPoisonFix;
 	BOOL bEffRegenerationFix;
+	BOOL bEffRemoveProjectileMod;
 	BOOL bEffRepeatingEffFix;
 	BOOL bEffMirrorImageUseCastLevel;
 
 	BOOL bEnginePriestKnownSpellsExtend;
+	BOOL bEngineAllowDualClassAll;
 	BOOL bEngineCastingLevelBonus;
 	BOOL bEngineExperienceFix;
 	int nEngineContingencyTriggerDelay;
+	BOOL bEngineModifyEffectStacking;
 	BOOL bEngineCharmSilenceRemoval;
 	BOOL bEngineExternClassRaceRestrictions;
 	BOOL bEngineProficiencyRestrictions;
@@ -51,6 +63,7 @@ struct CGameOptionsEx {
 
 	BOOL bSoundAnimSoundFix;
 	BOOL bSoundAnimAttackSounds;
+	BOOL bSoundDlgGreetingSubtitles;
 	BOOL bSoundExistenceFix;
 	BOOL bSoundExternWalkSounds;
 	BOOL bSoundSoundsetSubtitles;
@@ -58,6 +71,7 @@ struct CGameOptionsEx {
 	BOOL bTriggerPickpocketFailed;
 
 	BOOL bUserKitsExtend;
+	int nUserCustomDlgBarSize;
 	BOOL bUserLargerTooltipScroll;
 	BOOL bUserExternMageSpellHiding;
 	BOOL bUserExternRaceSelectionText;
@@ -69,7 +83,8 @@ struct CGameOptionsEx {
 	BOOL bUserFourInventorySlots;
 
 	BOOL bVideoDisableBrightestFix;
-	BOOL bUserVvcAlphaCrashFix;
+	BOOL bVideoIWDAnimAttack3Fix;
+	BOOL bVideoVvcAlphaCrashFix;
 
 protected:
 	void Init();

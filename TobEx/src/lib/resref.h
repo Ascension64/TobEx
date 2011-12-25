@@ -21,10 +21,10 @@ public:
 
 	~ResRef();
 
-	IECString& ToString(IECString& s);
+	IECString ToString();
 	void NullSpaces();
 	LPTSTR GetBuffer() const;
-	IECString& SafeToString(IECString& s);
+	IECString SafeToString();
 	BOOL IsNotEmpty();
 	void ToChar(LPCTSTR sz);
 
@@ -58,6 +58,7 @@ public:
 
 	//additional implementations
 	operator LPTSTR() const;
+	BOOL operator==(ResRef& r);
 
 protected:
 	char buf[8];
@@ -68,10 +69,10 @@ extern ResRef* (ResRef::*ResRef_Construct_0)();
 extern ResRef* (ResRef::*ResRef_Construct_1CString)(IECString&);
 extern ResRef* (ResRef::*ResRef_Construct_1LPTSTR)(LPTSTR);
 extern ResRef* (ResRef::*ResRef_Construct_1LPCTSTR)(LPCSTR);
-extern IECString& (ResRef::*ResRef_ToString)(IECString&);
+extern IECString (ResRef::*ResRef_ToString)();
 extern void (ResRef::*ResRef_NullSpaces)();
 extern LPTSTR (ResRef::*ResRef_GetBuffer)() const;
-extern IECString& (ResRef::*ResRef_SafeToString)(IECString&);
+extern IECString (ResRef::*ResRef_SafeToString)();
 extern BOOL (ResRef::*ResRef_IsNotEmpty)();
 extern void (ResRef::*ResRef_ToChar)(LPCTSTR);
 extern BOOL (ResRef::*ResRef_OpNeq_ResRef)(ResRef&);

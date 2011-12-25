@@ -164,6 +164,32 @@ public:
 	bool u23; //pad
 };
 
+class CMessageRemoveAreaAirEffects : public CMessage { //Size 14h
+public:
+	//AA727C
+	CMessageRemoveAreaAirEffects();
+
+	virtual ~CMessageRemoveAreaAirEffects(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	ResRef rAreaName; //ch
+};
+
+extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Deconstruct)();
+extern short (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetMsgType)(void);
+extern char (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetNetworkType1)(void);
+extern char (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetNetworkType2)(void);
+extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Marshal)(void*, int*);
+extern BOOL (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Unmarshal)(void*, int*);
+extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_DoMessage)(void);
+
 class CMessageSetTrigger : public CMessage { //Size 3Ah
 public:
 	//AA5C84

@@ -46,7 +46,7 @@
 
 void InitHooks() {
 
-    DetourMemberFunction(Tramp_CBaldurChitin_Construct, DETOUR_CBaldurChitin::DETOUR_Construct);
+	DetourMemberFunction(Tramp_CBaldurChitin_Construct, DETOUR_CBaldurChitin::DETOUR_Construct);
 	DetourMemberFunction(Tramp_CRuleTables_Construct, DETOUR_CRuleTables::DETOUR_Construct);
 	DetourMemberFunction(Tramp_CRuleTables_Deconstruct, DETOUR_CRuleTables::DETOUR_Deconstruct);
 
@@ -259,6 +259,10 @@ void InitHooks() {
 	}
 
 	DetourFunction(Tramp_CreateUIControl, DETOUR_CreateUIControl);
+	
+	//used by bUserExternMageSpellHiding, bEngineExternMageSpellsCap
+	DetourMemberFunction(Tramp_CRuleTables_GetMageSpellRef, DETOUR_CRuleTables::DETOUR_GetMageSpellRef);
+
 	if (pGameOptionsEx->bUserContingencySelectSpell) {
 		DetourMemberFunction(Tramp_CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase, DETOUR_CUICheckButtonMageBookContChoice::DETOUR_Construct);
 		DetourMemberFunction(Tramp_CUICheckButtonMageBookContChoice_OnLClicked, DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked);
@@ -270,10 +274,8 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CMageBook_CreateContingencySpellList, DETOUR_CMageBook::DETOUR_CreateContingencySpellList);
 	}
 
-	if (pGameOptionsEx->bUserExternMageSpellHiding) {
+	if (pGameOptionsEx->bUserExternMageSpellHiding)
 		DetourMemberFunction(Tramp_CRuleTables_GetMageSpellRefAutoPick, DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick);
-		DetourMemberFunction(Tramp_CRuleTables_GetMageSpellRef, DETOUR_CRuleTables::DETOUR_GetMageSpellRef);
-	}
 
 	if (pGameOptionsEx->bUserChargenMageSpellScroll) {
 		DetourMemberFunction(Tramp_CCharGen_MageBookPanelOnUpdate, DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate);

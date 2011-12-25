@@ -82,6 +82,8 @@ int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, i
 int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int) =
 	SetFP(static_cast<int (CRuleTables::*)(char, char, CDerivedStats&, CDerivedStats&, int, int)>
 																							(&CRuleTables::CalculateNewHPSubclass),			0x631055);
+int (CRuleTables::*CRuleTables_GetMaxMageSpells)(int) =
+	SetFP(static_cast<int (CRuleTables::*)(int)>											(&CRuleTables::GetMaxMageSpells),				0x6335D3);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>									(&CRuleTables::GetMageSpellRef),				0x633691);
 STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char) =
@@ -113,6 +115,7 @@ int CRuleTables::CalculateNewHPRule(CRuleTable& rule, int nLevelOld, int nLevelN
 	{ return (this->*CRuleTables_CalculateNewHPRule)(rule, nLevelOld, nLevelNew, nMinRoll, nDivisor, bOverrideSides, nOverrideSides, bOverrideModifier, nOverrideModifier); }
 int CRuleTables::CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor)
 	{ return (this->*CRuleTables_CalculateNewHPSubclass)(nClass, nSubclass, cdsOld, cdsNew, nMinRoll, nDivisor); }
+int CRuleTables::GetMaxMageSpells(int nSpellLevel) { return (this->*CRuleTables_GetMaxMageSpells)(nSpellLevel); }
 ResRef CRuleTables::GetMageSpellRef(int nSpellLevel, int nIndex) { return (this->*CRuleTables_GetMageSpellRef)(nSpellLevel, nIndex); }
 STRREF CRuleTables::GetCharSndStrRef(int dwCustom, int dwRow, char sex) { return (this->*CRuleTables_GetCharSndStrRef)(dwCustom, dwRow, sex); }
 void CRuleTables::GetDetailedClassString(char Class, unsigned int dwKit, unsigned int dwFlags, IECString& ptr, CCreatureObject& cre)

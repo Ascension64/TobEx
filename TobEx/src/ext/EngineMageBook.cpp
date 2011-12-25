@@ -147,7 +147,7 @@ void DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 			assert(&button != NULL);
 			if (pos != NULL) {
 				MemSpellContingency* pMemSpell = (MemSpellContingency*)m_ContSpells.GetNext(pos);
-				button.SetSpell(pMemSpell->rName, pMemSpell->wMemorizedCount);
+				button.SetSpell(ResRef((LPCTSTR)pMemSpell->rName), pMemSpell->wMemorizedCount);
 				button.rParentSpell = pMemSpell->rParentSpell;
 				button.SetActive(TRUE);
 			} else {

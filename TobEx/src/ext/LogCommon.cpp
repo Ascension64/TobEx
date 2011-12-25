@@ -8,6 +8,9 @@ LPCTSTR Assertion_GetReason(int Eip) {
 	case 0x636D63:
 		return "CRuleTables::GetWeapProfMax: proficiency ID not found in WEAPPROF.2DA";
 		break;
+	case 0x6FA674:
+		return "CUICheckButtonRecMageSpell::SetSpell: spell has no icon";
+		break;
 	case 0x796F6E:
 		return "CStart::UpdatePanel: nPanelIdx == 6, 7, or out of bounds";
 		break;

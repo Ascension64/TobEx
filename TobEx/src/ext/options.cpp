@@ -92,6 +92,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExternHPTables = FALSE;
 	bEngineExternClassRaceRestrictions = FALSE;
 	bEngineExternEncumbrance = FALSE;
+	bEngineExternMageSpellsCap = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
 	bEnginePickpocketRemainHidden = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
@@ -169,7 +170,7 @@ void CGameOptionsEx::Init() {
 	bEffAttacksPerRoundFix = GetCoreIniValue("Effect Opcodes", "Attacks Per Round Mod Fix");
 	bEffAwakenFix = GetCoreIniValue("Effect Opcodes", "Awaken Fix");
 	bEffDamageAwaken = GetTweakIniValue("Tweak", "Effect Opcodes:Awaken On Damage");
-	bEffBlindnessAsSpellDesc = GetTweakIniValue("Tweak", "Blindness As Spell Description");
+	bEffBlindnessAsSpellDesc = GetTweakIniValue("Tweak", "Effect Opcodes:Blindness As Spell Description");
 	bEffBlindnessFix = GetCoreIniValue("Effect Opcodes", "Blindness Fix");
 	bEffButtonFXMod = GetCoreIniValue("Effect Opcodes", "Button Effects Mod");
 	bEffCastSpellConditionMod = GetCoreIniValue("Effect Opcodes", "Cast Spell On Condition Mod");
@@ -227,6 +228,7 @@ void CGameOptionsEx::Init() {
 	bEngineExternHPTables = GetCoreIniValue("Engine", "Externalise HP Tables");
 	bEngineExternClassRaceRestrictions = GetCoreIniValue("Engine", "Externalise Class-Race Restrictions");
 	bEngineExternEncumbrance = GetCoreIniValue("Engine", "Externalise Encumbrance Restrictions");
+	bEngineExternMageSpellsCap = GetCoreIniValue("Engine", "Externalise Mage Spells Cap");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
 	bEnginePickpocketRemainHidden = GetTweakIniValue("Tweak", "Engine:Remain Hidden On Pickpocket Success");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");

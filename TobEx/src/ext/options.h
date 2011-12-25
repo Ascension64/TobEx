@@ -88,6 +88,7 @@ struct CGameOptionsEx {
 	BOOL bEngineExternHPTables;
 	BOOL bEngineExternClassRaceRestrictions;
 	BOOL bEngineExternEncumbrance;
+	BOOL bEngineExternMageSpellsCap;
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;

@@ -210,7 +210,7 @@ public:
 	CRITICAL_SECTION u348;
 	int u360[6]; //unused
 	CRITICAL_SECTION csFileWrite; //378h, used when writing to files
-	CRITICAL_SECTION u390;
+	CRITICAL_SECTION u390; //used for CResHandler::m_cache
 	BOOL m_bTerminateResHandlerThread; //3a8h
 	HANDLE m_hThreadResHandler; //3ach
 	BOOL m_bTerminateNetworkThread; //3b0h

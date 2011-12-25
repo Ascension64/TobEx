@@ -90,8 +90,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>detours.lib;detoured.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\detours\lib;.\MFC42\LIB</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
     </Link>

@@ -1,5 +1,5 @@
 Requires:
--Microsoft Detours 2.1 Express Library
+-Microsoft Detours 3.0 Express Library
 -MFC 4.2 libraries (from Visual Studio 6.0 or another source)
 -Microsoft Visual C++ 2010 Express
 

@@ -13,6 +13,32 @@ struct BamFileFrameEntry { //Size Ch
 	unsigned int dwFlags;
 };
 
+//Bif
+struct BifFileHeader { //Size 14h
+	int dwFileType; //0h, of mmioFOURCC type
+	int dwVersion; //4h
+	int dwFiles; //8h
+	int dwTiles; //ch
+	int* pFiles; //10h
+};
+
+struct BifFileEntry { //Size 10h
+	int dwResourceLocator; //0h
+	int* pData; //4h
+	int dwSize; //8h
+	short dwFileType; //ch
+	short eh; //eh
+};
+
+struct BifTileEntry { //Size 14h
+	int dwResourceLocator; //0h
+	int* pData; //4h
+	int dwTiles; //8h
+	int dwSize; //ch
+	short dwFileType; //10h
+	short u12; //12h
+};
+
 //Chu
 struct ChuFileControlInfoBase { //Size Eh
 	int id; //0h
@@ -61,7 +87,7 @@ struct CreFileData { //Size 268h
 	short ACSlashingMod;
 	char THAC0;
 	char numAttacks;
-	char saveDeath;
+	char saveDeath; //4ch
 	char saveWands;
 	char savePoly;
 	char saveBreath;
@@ -120,14 +146,14 @@ struct CreFileData { //Size 268h
 	char intelligence;
 	char wisdom;
 	char dexterity;
-	char constitution;
+	char constitution; //235h
 	char charisma;
 	char morale; //237h, range: 0-20, add -1 when PC dies
 	char moraleBreak;
 	char racialEnemy; //239h
 	char moraleRecoveryTime;
 	char u23b;
-	unsigned short kit[2]; //23ch
+	unsigned short kit[2]; //23ch, [high WORD.low WORD]
 	ResRef scriptOverride; //240h
 	ResRef scriptClass;
 	ResRef scriptRace; //250h

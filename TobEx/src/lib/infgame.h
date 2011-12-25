@@ -94,6 +94,7 @@ struct CRuleTables { //Size 1DB0h
 	IECString GetClassString(unsigned char nClass, unsigned int dwKit);
 	int CalculateNewHPRule(CRuleTable& rule, int nLevelOld, int nLevelNew, int nMinRoll, int nDivisor, BOOL bOverrideSides, int nOverrideSides, BOOL bOverrideModifier, int nOverrideModifier);
 	int CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor);
+	int GetMaxMageSpells(int nSpellLevel);
 	ResRef GetMageSpellRef(int nSpellLevel, int nIndex);
 	STRREF GetCharSndStrRef(int dwCustom, int dwRow, char sex);
 	void GetDetailedClassString(char Class, unsigned int dwKit, unsigned int dwFlags, IECString& ptr, CCreatureObject& cre);
@@ -125,7 +126,7 @@ struct CRuleTables { //Size 1DB0h
 	CRuleTable SAVEWAR; //280h
 	CRuleTable SAVEWIZ; //2a4h
 	CRuleTable SAVEROG; //2c8h
-	CRuleTable SAVECNDHD; //2ech
+	CRuleTable SAVECNDH; //2ech
 	CRuleTable SAVECNG; //310h
 	CRuleTable SAVEMONK; //334h
 	CRuleTable HPWAR; //358h
@@ -293,6 +294,7 @@ extern IECString (CRuleTables::*CRuleTables_GetAlignmentString)(char);
 extern IECString (CRuleTables::*CRuleTables_GetClassString)(unsigned char, unsigned int);
 extern int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int);
 extern int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int);
+extern int (CRuleTables::*CRuleTables_GetMaxMageSpells)(int);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int);
 extern STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char);
 extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned int, unsigned int, IECString&, CCreatureObject&);

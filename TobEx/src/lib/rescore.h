@@ -44,16 +44,17 @@ public:
 	virtual void v0() {}
 
 	unsigned int dwFlags; //0x4
-	//bit 0
-	//bit 1
+	//not bit 0 or 1 - add to CResHandler::ua (only if bit 2 set), else add to CResHandler::u5e
+	//bit 0 - add to CResHandler::u26 (only if bit 2 set), else add to CResHandler::u7a
+	//bit 1 - add to CResHandler::u42 (only if bit 2 set), else add to CResHandler::u96
 	//bit 2 - size loaded into CResHandler::ud2
-	//bit 3
+	//bit 3 - on a CObList (ptr at ch, node at 48h)
 	//bit 4 - not on a CObList
 	//bit 5
 	//bit 6
 	//bit 7
 	void* pData; //8h
-	CObList* pOwner; //ch, CObList containing this object
+	CObList* pOwner; //ch, CObList (in CResHandler) containing this object
 	KeyTableEntry* pKey; //10h, from CResHandler array
 	int nFileSize; //14h
 	int u18; //18h
@@ -64,9 +65,9 @@ public:
 	CCriticalSection ccs; //20h, for pData access
 #endif
 	int m_nDemands; //40h, number of times demanded
-	int nRefs; //44h, number of CPtr objects in master IECPtrList containing this object
+	int nRefs; //44h, number of references from CResHandler ObLists
 	POSITION pNode; //48h, CNode containing this object
-	unsigned int dwFlags2; //4ch, identical to uc of KeyTableEntry
+	unsigned int u4c; //4ch, identical to uc of KeyTableEntry (12 bits ?, 8 bits ?, 12 bits biffIndex [-1 for not in biff?])
 };
 
 class ResBah : public Res { //Size 7Ah
@@ -212,6 +213,26 @@ struct KeyTableEntry { //Size 18h
 	int u14; //14h
 };
 
+class CBiff : public CObject { //Size 3Ah
+//Constructor: 0x99814F
+public:
+	//AB8E88
+	virtual ~CBiff() {} //v4
+
+	int u4;
+	int m_nDemands; //8h
+	int uc;
+	int m_nBiffIndex; //10h
+	BifFileHeader* m_pBiffHeader; //14h
+	BifFileEntry* m_pFilesArray; //18h
+	BifTileEntry* m_pTilesArray; //1ch
+	int u20;
+	BOOL m_bBiffLoaded; //24h
+	CFile m_file; //28h
+	bool m_bFromCD; //38h
+	char u39; //pad
+};
+
 struct CResHandler { //Size 2A8h
 //Constructor: 0x98CB00
 	int u0;
@@ -219,12 +240,12 @@ struct CResHandler { //Size 2A8h
 	short nRequests; //8h
 		
 	//CRITICAL_SECTION required to access (see CBaldurChitin)
-	CObList ua; //contains Res with flags bit 0 and 1 both not set, for 2DA Res only?
-	CObList u26; //contains Res with flags bit 0 set
-	CObList u42; //contains Res with flags bit 1 set
-	CObList u5e; //0
-	CObList u7a; //1
-	CObList u96; //2
+	CObList ua; //contains Res with flags bit 0 and 1 both not set (only if bit 2 set), for 2DA Res only?
+	CObList u26; //contains Res with flags bit 0 set (only if bit 2 set)
+	CObList u42; //contains Res with flags bit 1 set (only if bit 2 set)
+	CObList u5e; //contains Res with flags bit 0 and 1 both not set (only if bit 2 not set)
+	CObList u7a; //contains Res with flags bit 1 set (only if bit 2 not set)
+	CObList u96; //contains Res with flags bit 2 set (only if bit 2 not set)
 	CObList ub2; //for graphic Res only?
 
 	Res* uce; //if this matches currentRes being demanded, will close the Res when demanded
@@ -232,13 +253,13 @@ struct CResHandler { //Size 2A8h
 	int ud6; //assoc with uda
 	int uda; //sum of all file sizes that are loaded, if this > ud6, then clear all above CObLists
 	SIZE_T dwTotalPhys; //deh, from GlobalMemoryStatus
-	int ue2; //flags2, compare to Res
+	int ue2; //current biffIndex? compared to Res u4c
 	int ue6;
 	short uea;
-	int* uec; //pointer to array of CBiff* pointers
-	struct CCache { //Size 15Ch
+	int* pBiffPtrArray; //ech, pointer to array of CBiff* pointers
+	struct CResCache { //Size 15Ch
 	//Constructor: 0x99C3BC
-		int u0; //bEnabled?
+		BOOL m_bCacheInitialized;; //0h
 		char cwd[260]; //4h, getcwd() - current working directory (game path)
 		IECString cacheDirectory; //108h, "hd0:\\cache\\"
 		IECString u10c;
@@ -255,12 +276,12 @@ struct CResHandler { //Size 2A8h
 	struct KeyTable { //Size 24h
 		int u0; //isLoaded or bEnabled?
 
-		int* pBiffs; //4h (0xc size objects) - help to find name of biff
-		//CBiff
-		//size+ 0xc
+		int* pBiffKeyArray; //4h - help to find name of biff
+		//CBiffKey
+		//Size: Ch
 		//int m_filesize; //0h
-		//int offset; //pBiffs + offset = char* biffshortpath
-		//short u8;
+		//int offset; //4h, pBiffs + offset = char* biffshortpath
+		//short u8; //flags
 		//short ua;
 
 		int nBiffs; //8h

@@ -44,6 +44,8 @@ void DETOUR_CRuleTables::DETOUR_Deconstruct() {
 }
 
 int DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(char nClass, char nSubclass, CDerivedStats& cdsOld, CDerivedStats& cdsNew, int nMinRoll, int nDivisor) {
+	if (0) IECString("DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass");
+
 	if (!pRuleEx->m_HPClass.m_2da.bLoaded ||
 		!pRuleEx->m_HPBarbarian.m_2da.bLoaded) {
 		return (this->*Tramp_CRuleTables_CalculateNewHPSubclass)(nClass, nSubclass, cdsOld, cdsNew, nMinRoll, nDivisor);
@@ -108,13 +110,65 @@ int DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(char nClass, char nSubclas
 }
 
 ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
-	ResRef rSpell = (this->*Tramp_CRuleTables_GetMageSpellRef)(nSpellLevel, nIndex);
-	return CRuleTables_TryHideSpell(rSpell);
+	if (0) IECString("DETOUR_CRuleTables::DETOUR_GetMageSpellRef");
+
+	ResRef rSpell;
+	int nMaxSpells = 50;
+	
+	if (nSpellLevel <= 0 || nSpellLevel > 9) {
+		LPCTSTR lpsz = "DETOUR_CRuleTables::DETOUR_GetMageSpellRef(): Invalid spell level %d\r\n";
+		L.timestamp();
+		L.append(lpsz, 1, nSpellLevel);
+		console.write(lpsz, 1, nSpellLevel);
+
+		return rSpell;
+	}
+
+	if (pGameOptionsEx->bEngineExternMageSpellsCap) {
+		//FIX_ME - do not use itoa
+		char szCol[2] = {0};
+		itoa(nSpellLevel, szCol, 10);
+		IECString sCol(szCol);
+		IECString sRow("MAGE");
+		IECString sMax(g_pChitin->pGame->SPELLS.GetValue(sCol, sRow));
+
+		if (nSpellLevel == 9 && nIndex >= 99) {
+			nMaxSpells = min(99, atoi((LPCTSTR)sMax) - 100);
+
+			nSpellLevel = 0;
+			nIndex -= 100;
+
+			//a bit of hackery for index 99
+			if (nIndex == -1 && nIndex < nMaxSpells) {
+				char szSpell[8] = {0};
+				sprintf_s(szSpell, 8, "SPWI%d%02d", nSpellLevel, nIndex + 1);
+				rSpell = szSpell;
+			}
+
+			//safety for index 199+
+			if (nIndex >= 99) {
+				return pGameOptionsEx->bUserExternMageSpellHiding ? CRuleTables_TryHideSpell(rSpell): rSpell;
+			}
+		} else {
+			//spell levels 1-8, and level 9 with normal nMaxSpells
+			nMaxSpells = min(99, atoi((LPCTSTR)sMax));
+		}
+	}
+
+	if (nIndex >= 0 && nIndex < nMaxSpells) {
+		char szSpell[8] = {0};
+		sprintf_s(szSpell, 8, "SPWI%d%02d", nSpellLevel, nIndex + 1);
+		rSpell = szSpell;
+	}
+
+	return pGameOptionsEx->bUserExternMageSpellHiding ? CRuleTables_TryHideSpell(rSpell): rSpell;
 }
 
 int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char nClassId, char nClassPrimary, char nClassSecondary, BOOL bTwoClasses, int nWeapProfId, unsigned int dwKit) {
 	DWORD Eip;
 	GetEip(Eip);
+
+	if (0) IECString("DETOUR_CRuleTables::DETOUR_GetWeapProfMax");
 
 	int dwWeapProfMax = (this->*Tramp_CRuleTables_GetWeapProfMax)(nClassId, nClassPrimary, nClassSecondary, bTwoClasses, nWeapProfId, dwKit);
 	int dwClassProfsMax = 0;
@@ -145,6 +199,8 @@ int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char nClassId, char nClassPrimary,
 }
 
 BOOL DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed(unsigned int dwKit, unsigned char nRace) {
+	if (0) IECString("DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed");
+
 	if (!pRuleEx->m_MageSchoolRaceReq.m_2da.bLoaded) return (this->*Tramp_CRuleTables_IsMageSchoolAllowed)(dwKit, nRace);
 
 	CInfGame* pGame = g_pChitin->pGame;
@@ -158,11 +214,15 @@ BOOL DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed(unsigned int dwKit, unsigned
 }
 
 ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) {
+	if (0) IECString("DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick");
+
 	ResRef rSpell = (this->*Tramp_CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex);
 	return CRuleTables_TryHideSpell(rSpell);
 }
 
 int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly) {
+	if (0) IECString("DETOUR_CInfGame::DETOUR_GetNumOfItemInBag");
+
 	if (g_pChitin->cNetwork.bSessionOpen) {
 		BOOL bRequested = FALSE;
 		CServerStore store;
@@ -176,7 +236,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 					g_pChitin->cNetwork.CloseSession(true);
 					return 0;
 				} else {
-					store.Unmarshal(rItem);
+					store.Unmarshal(rBag);
 					bRequested = TRUE;
 				}
 			}
@@ -245,6 +305,8 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 void DETOUR_CInfGame::DETOUR_SetLoseCutscene() {
 	DWORD Eip;
 	GetEip(Eip);
+
+	if (0) IECString("DETOUR_CInfGame::DETOUR_SetLoseCutscene");
 
 	if (Eip == 0x5092EB || //CEffectInstantDeath::ApplyEffect()
 		Eip == 0x50935F || //CEffectInstantDeath::ApplyEffect()

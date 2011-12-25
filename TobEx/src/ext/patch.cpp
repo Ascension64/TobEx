@@ -214,10 +214,20 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bDebugLogFailures) {
+		//in CUICheckButtonRecMageSpell::SetSpell()
+		char bytes[] = {0x8B};
+		vDataList.push_back( Data(0x6FA657, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bDebugLogMissingRes) {
 		//in KeyTable::FindKey()
 		char bytes[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x99B12D, 6, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
 	}
 	
 	//Enable logging of system, AREA-TRANSITION and AREA-INVENTORY messages
@@ -1053,6 +1063,51 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bEngineExternMageSpellsCap) {
+		//1. CRecord::MageBookPanelOnLoad() - terminate loop at 200 instead of when invalid spell
+		//mov eax,dword ptr ss:[ebp-9C]
+		//cmp eax,0C7
+		//jl short 6E14BC
+		//nop
+		char bytes1[] = {0x8B, 0x85, 0x64, 0xFF, 0xFF, 0xFF,
+						0x3D, 0xC8, 0x00, 0x00, 0x00,
+						0x7C, 0x0C,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x6E14A3, 20, bytes1) );
+
+		//2. CCharGen::MageBookPanelOnLoad() - terminate loop at 200 instead of when invalid spell
+		//mov eax,dword ptr ss:[ebp-98]
+		//cmp eax,0C8
+		//jl short 71B74B
+		//nop
+		char bytes2[] = {0x8B, 0x85, 0x68, 0xFF, 0xFF, 0xFF,
+						0x3D, 0xC8, 0x00, 0x00, 0x00,
+						0x7C, 0x0C,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x71B732, 20, bytes2) );
+
+		//3. CCharGen::AutoPickSpells() - loop end point
+		//movzx eax,byte ptr ss:[ebp-2C]
+		//cmp eax,0C7
+		//nop
+		char bytes3[] = {0x0F, 0xB6, 0x45, 0xD4,
+						0x3D, 0xC7, 0x00, 0x00, 0x00,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x72F369, 11, bytes3) );
+
+		//4. CCharGen::HasSpecialistSpells() - loop end point
+		//movzx ecx,byte ptr ss:[ebp-1C]
+		//cmp eax,0C7
+		//nop
+		char bytes4[] = {0x0F, 0xB6, 0x4D, 0xE4,
+						0x81, 0xF9, 0xC7, 0x00, 0x00, 0x00,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x72FB61, 12, bytes4) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+		
 	if (pGameOptionsEx->bEngineProficiencyRestrictions) {
 	    //changing PUSH arguments
 		char bytes[] = {0x8B, 0x45, 0x08, 0x50, 0x90};

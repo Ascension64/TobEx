@@ -812,7 +812,7 @@ BOOL DETOUR_CEffectPoison::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 	short wParam2Low = effect.nParam2 & 0xFFFF;
 	short wParam2High = effect.nParam2 >> 16;
-	creTarget.cdsCurrent.stateFlags &= STATE_POISONED;
+	creTarget.cdsCurrent.stateFlags |= STATE_POISONED;
 
 	int nTicksBegan = effect.nParam4;
 
@@ -1486,26 +1486,7 @@ BOOL DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect(CCreatureObject& creTar
 BOOL DETOUR_CEffectBlindness::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CEffectBlindness::DETOUR_ApplyEffect");
 
-	//Remove cumulative penalty
-	if (pGameOptionsEx->bEffBlindnessFix) {
-		if (effect.nTiming == 1) {
-			//permanent
-			if (!(creTarget.m_BaseStats.stateFlags & STATE_BLIND)) creTarget.m_BaseStats.THAC0 -= (-10);
-			creTarget.m_BaseStats.stateFlags |= STATE_BLIND;
-			if (!(creTarget.cdsCurrent.stateFlags & STATE_BLIND)) creTarget.cdsCurrent.THAC0 -= (-10);
-			creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
-		
-			bPurge = TRUE;
-		} else {
-			//limited
-			if (!(creTarget.cdsCurrent.stateFlags & STATE_BLIND)) creTarget.cdsCurrent.THAC0 -= (-10);
-			creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
-		}
-
-		return TRUE;
-	}
-
-	//Change to spell description
+	//Change to spell description - overwrites Blindness Fix
 	if (pGameOptionsEx->bEffBlindnessAsSpellDesc) {
 		if (effect.nTiming == 1) {
 			//permanent
@@ -1530,6 +1511,25 @@ BOOL DETOUR_CEffectBlindness::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
 
 			bPurge = FALSE;
+		}
+
+		return TRUE;
+	}
+
+	//Remove cumulative penalty
+	if (pGameOptionsEx->bEffBlindnessFix) {
+		if (effect.nTiming == 1) {
+			//permanent
+			if (!(creTarget.m_BaseStats.stateFlags & STATE_BLIND)) creTarget.m_BaseStats.THAC0 -= (-10);
+			creTarget.m_BaseStats.stateFlags |= STATE_BLIND;
+			if (!(creTarget.cdsCurrent.stateFlags & STATE_BLIND)) creTarget.cdsCurrent.THAC0 -= (-10);
+			creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
+		
+			bPurge = TRUE;
+		} else {
+			//limited
+			if (!(creTarget.cdsCurrent.stateFlags & STATE_BLIND)) creTarget.cdsCurrent.THAC0 -= (-10);
+			creTarget.cdsCurrent.stateFlags |= STATE_BLIND;
 		}
 
 		return TRUE;
@@ -1612,7 +1612,7 @@ BOOL DETOUR_CEffectDisease::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.cdsDiff.charisma -= effect.nParam1;
 		break;
 	case 10:
-		creTarget.cdsCurrent.stateFlags &= STATE_SLOWED;
+		creTarget.cdsCurrent.stateFlags |= STATE_SLOWED;
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectDisease::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";

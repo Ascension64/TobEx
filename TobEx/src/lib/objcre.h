@@ -135,7 +135,7 @@ public:
 
 	short u3d4;
 	short u3d6;
-	ResRef saveName; //3d8h, CRE name with * prefix
+	ResRef rSaveName; //3d8h, CRE name with * prefix
 	short bHasSpawned; //3e0h
 	int nTicksTillRemove; //3e2h, Arg4
 	short nMaxMvtDistance; //3e6h, Arg5, Actor3C
@@ -506,7 +506,7 @@ public:
 	CreFileMemSpellLevel memInfoWizardCopy[9]; //0x6548, copied from currentState after effect applied
 	CreFileMemSpellLevel memInfoPriestCopy[7]; //0x65d8, copied from currentState after effect applied
 	int u6648;
-	char u664c;
+	bool m_bLevellingUp; //664ch, true when loading LevelUpPanel
 	char u664d; //padding?
 	int u664e;
 	CEnumList u6652;

@@ -2,6 +2,7 @@
 #define VIDCORE_H
 
 #include "utils.h"
+#include "datatypes.h"
 #include "resref.h"
 #include "rescore.h"
 #include "cstringex.h"
@@ -63,17 +64,8 @@ struct VidPal {
 	BYTE u16;
 	BYTE u17; //pad
 	BOOL u18;
-
-	//struct ColorRangeValues {
-	BYTE colorMetal; //1ch
-	BYTE colorMinor; //1dh
-	BYTE colorMajor; //1eh
-	BYTE colorSkin; //1fh
-	BYTE colorLeather; //20h
-	BYTE colorArmor; //21h
-	BYTE colorHair; //22h
+	ColorRangeValues colors; //1ch
 	BYTE u23; //pad
-	//};
 };
 
 extern void (VidPal::*VidPal_SetFxPaletteNo3d)(ARGB*, DWORD, DWORD, DWORD, BOOL);

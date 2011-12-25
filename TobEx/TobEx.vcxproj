@@ -97,14 +97,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ext\Animation1000.cpp" />
+    <ClCompile Include="src\ext\Animation1200.cpp" />
+    <ClCompile Include="src\ext\Animation1300.cpp" />
+    <ClCompile Include="src\ext\Animation2000.cpp" />
+    <ClCompile Include="src\ext\Animation5000.cpp" />
+    <ClCompile Include="src\ext\Animation6400.cpp" />
+    <ClCompile Include="src\ext\Animation7300.cpp" />
+    <ClCompile Include="src\ext\Animation8000.cpp" />
+    <ClCompile Include="src\ext\Animation9000.cpp" />
+    <ClCompile Include="src\ext\AnimationA000.cpp" />
+    <ClCompile Include="src\ext\AnimationC000.cpp" />
+    <ClCompile Include="src\ext\AnimationCore.cpp" />
+    <ClCompile Include="src\ext\Animation7000.cpp" />
     <ClCompile Include="src\ext\ChitinCore.cpp" />
     <ClCompile Include="src\ext\EffectOpcode.cpp" />
     <ClCompile Include="src\ext\EngineChargen.cpp" />
     <ClCompile Include="src\ext\EngineCommon.cpp" />
     <ClCompile Include="src\ext\EngineMageBook.cpp" />
     <ClCompile Include="src\ext\EnginePriestBook.cpp" />
+    <ClCompile Include="src\ext\InfGameCommon.cpp" />
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
     <ClCompile Include="src\ext\UserButton.cpp" />
+    <ClCompile Include="src\lib\animext.cpp" />
     <ClCompile Include="src\lib\chitin.cpp" />
     <ClCompile Include="src\lib\cstringex.cpp" />
     <ClCompile Include="src\lib\effcore.cpp" />
@@ -124,7 +139,7 @@
     <ClCompile Include="src\lib\uiscroll.cpp" />
     <ClCompile Include="src\TobEx.cpp" />
     <ClCompile Include="src\lib\animcore.cpp" />
-    <ClCompile Include="src\lib\areacore.cpp" />
+    <ClCompile Include="src\lib\arecore.cpp" />
     <ClCompile Include="src\lib\dbgcore.cpp" />
     <ClCompile Include="src\lib\msgcore.cpp" />
     <ClCompile Include="src\lib\resref.cpp" />
@@ -133,8 +148,7 @@
     <ClCompile Include="src\lib\vidcore.cpp" />
     <ClCompile Include="src\include\detoursext.cpp" />
     <ClCompile Include="src\include\utils.cpp" />
-    <ClCompile Include="src\ext\AnimationSound.cpp" />
-    <ClCompile Include="src\ext\AreaCommon.cpp" />
+    <ClCompile Include="src\ext\AreaCore.cpp" />
     <ClCompile Include="src\ext\console.cpp" />
     <ClCompile Include="src\ext\debug.cpp" />
     <ClCompile Include="src\ext\EffectCore.cpp" />
@@ -144,7 +158,7 @@
     <ClCompile Include="src\ext\main.cpp" />
     <ClCompile Include="src\ext\patch.cpp" />
     <ClCompile Include="src\ext\ScriptAction.cpp" />
-    <ClCompile Include="src\ext\SoundMusic.cpp" />
+    <ClCompile Include="src\ext\SoundCore.cpp" />
     <ClCompile Include="src\ext\UserChargenKit.cpp" />
     <ClCompile Include="src\ext\UserChargenMageSpell.cpp" />
     <ClCompile Include="src\ext\InfGameCore.cpp" />
@@ -158,6 +172,19 @@
     <ClCompile Include="src\ext\VideoCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ext\Animation1000.h" />
+    <ClInclude Include="src\ext\Animation1200.h" />
+    <ClInclude Include="src\ext\Animation1300.h" />
+    <ClInclude Include="src\ext\Animation2000.h" />
+    <ClInclude Include="src\ext\Animation5000.h" />
+    <ClInclude Include="src\ext\Animation6400.h" />
+    <ClInclude Include="src\ext\Animation7000.h" />
+    <ClInclude Include="src\ext\Animation7300.h" />
+    <ClInclude Include="src\ext\Animation8000.h" />
+    <ClInclude Include="src\ext\Animation9000.h" />
+    <ClInclude Include="src\ext\AnimationA000.h" />
+    <ClInclude Include="src\ext\AnimationC000.h" />
+    <ClInclude Include="src\ext\AnimationCore.h" />
     <ClInclude Include="src\ext\ChitinCore.h" />
     <ClInclude Include="src\ext\EffectCore.h" />
     <ClInclude Include="src\ext\EffectOpcode.h" />
@@ -165,6 +192,7 @@
     <ClInclude Include="src\ext\EngineCommon.h" />
     <ClInclude Include="src\ext\EngineMageBook.h" />
     <ClInclude Include="src\ext\EnginePriestBook.h" />
+    <ClInclude Include="src\ext\InfGameCommon.h" />
     <ClInclude Include="src\ext\InfGameCore.h" />
     <ClInclude Include="src\ext\ObjectCreature.h" />
     <ClInclude Include="src\ext\UserButton.h" />
@@ -182,7 +210,7 @@
     <ClInclude Include="src\TobEx.h" />
     <ClInclude Include="src\lib\animcore.h" />
     <ClInclude Include="src\lib\animext.h" />
-    <ClInclude Include="src\lib\areacore.h" />
+    <ClInclude Include="src\lib\arecore.h" />
     <ClInclude Include="src\lib\chitin.h" />
     <ClInclude Include="src\lib\dbgcore.h" />
     <ClInclude Include="src\lib\dlgcore.h" />
@@ -222,8 +250,7 @@
     <ClInclude Include="src\include\globals.h" />
     <ClInclude Include="src\include\rule.h" />
     <ClInclude Include="src\include\utils.h" />
-    <ClInclude Include="src\ext\AnimationSound.h" />
-    <ClInclude Include="src\ext\AreaCommon.h" />
+    <ClInclude Include="src\ext\AreaCore.h" />
     <ClInclude Include="src\ext\console.h" />
     <ClInclude Include="src\ext\debug.h" />
     <ClInclude Include="src\ext\hook.h" />
@@ -232,7 +259,7 @@
     <ClInclude Include="src\ext\main.h" />
     <ClInclude Include="src\ext\patch.h" />
     <ClInclude Include="src\ext\ScriptAction.h" />
-    <ClInclude Include="src\ext\SoundMusic.h" />
+    <ClInclude Include="src\ext\SoundCore.h" />
     <ClInclude Include="src\ext\UserChargenKit.h" />
     <ClInclude Include="src\ext\UserChargenMageSpell.h" />
     <ClInclude Include="src\ext\UserCommon.h" />

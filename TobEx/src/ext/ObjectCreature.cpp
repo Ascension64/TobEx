@@ -3,6 +3,15 @@
 #include "UserMageBook.h"
 #include "UserPriestBook.h"
 
+CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellPriest)(DWORD, DWORD) =
+	SetFP(static_cast<CreFileKnownSpell& (CCreatureObject::*)(DWORD, DWORD)>	(&CCreatureObject::GetKnownSpellPriest),	0x8CB91F);
+CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellMage)(DWORD, DWORD) =
+	SetFP(static_cast<CreFileKnownSpell& (CCreatureObject::*)(DWORD, DWORD)>	(&CCreatureObject::GetKnownSpellMage),		0x8CB949);
+BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellPriest)(DWORD, DWORD, DWORD*) =
+	SetFP(static_cast<BOOL (CCreatureObject::*)(DWORD, DWORD, DWORD*)>			(&CCreatureObject::AddMemSpellPriest),		0x8CBB64);
+BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellMage)(DWORD, DWORD, DWORD*) =
+	SetFP(static_cast<BOOL (CCreatureObject::*)(DWORD, DWORD, DWORD*)>			(&CCreatureObject::AddMemSpellMage),		0x8CBBEA);
+
 CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest(DWORD nLevel, DWORD nIndex) {
 	DWORD Eip;
 	GetEip(Eip);
@@ -11,7 +20,7 @@ CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest(DWORD nLev
 		nIndex += CUIButtonPriestBook_KnownSpellOffset;
 	}
 
-	return GetKnownSpellPriest(nLevel, nIndex);
+	return (this->*Tramp_CCreatureObject_GetKnownSpellPriest)(nLevel, nIndex);
 }
 
 CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellMage(DWORD nLevel, DWORD nIndex) {
@@ -22,7 +31,7 @@ CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellMage(DWORD nLevel
 		nIndex += CUIButtonMageBook_KnownSpellOffset;
 	}
 
-	return GetKnownSpellMage(nLevel, nIndex);
+	return (this->*Tramp_CCreatureObject_GetKnownSpellMage)(nLevel, nIndex);
 }
 
 BOOL DETOUR_CCreatureObject::DETOUR_AddMemSpellPriest(DWORD nLevel , DWORD nIndex, DWORD* pIndex) {
@@ -33,7 +42,7 @@ BOOL DETOUR_CCreatureObject::DETOUR_AddMemSpellPriest(DWORD nLevel , DWORD nInde
 		nIndex += CUIButtonPriestBook_KnownSpellOffset;
 	}
 
-	return AddMemSpellPriest(nLevel, nIndex, pIndex);
+	return (this->*Tramp_CCreatureObject_AddMemSpellPriest)(nLevel, nIndex, pIndex);
 }
 
 BOOL DETOUR_CCreatureObject::DETOUR_AddMemSpellMage(DWORD nLevel , DWORD nIndex, DWORD* pIndex) {
@@ -44,6 +53,6 @@ BOOL DETOUR_CCreatureObject::DETOUR_AddMemSpellMage(DWORD nLevel , DWORD nIndex,
 		nIndex += CUIButtonMageBook_KnownSpellOffset;
 	}
 
-	return AddMemSpellMage(nLevel, nIndex, pIndex);
+	return (this->*Tramp_CCreatureObject_AddMemSpellMage)(nLevel, nIndex, pIndex);
 }
 

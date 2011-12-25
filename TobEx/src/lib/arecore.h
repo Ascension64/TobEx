@@ -1,5 +1,5 @@
-#ifndef AREACORE_H
-#define AREACORE_H
+#ifndef ARECORE_H
+#define ARECORE_H
 
 #include "utils.h"
 #include "resref.h"
@@ -364,4 +364,4 @@ public:
 
 extern BYTE (CArea::*CArea_GetSong)(WORD);
 
-#endif //AREACORE_H
+#endif //ARECORE_H

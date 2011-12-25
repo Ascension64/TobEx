@@ -3,6 +3,8 @@
 
 #include "engmagebk.h"
 
+extern void (CMageBook::*Tramp_CMageBook_SetLevel)(DWORD);
+
 class DETOUR_CMageBook : public CMageBook {
 public:
 	void DETOUR_SetLevel(DWORD);

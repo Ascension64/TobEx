@@ -9,7 +9,7 @@ public:
 	CUIButton();
 	CUIButton(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL); //586570
 	CUIButton& Construct(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL) { return *this; } //dummy
-	void SetActive(bool);
+	void SetActive(BOOL);
 
 	//AAAE44
 	virtual ~CUIButton(); //v0
@@ -58,7 +58,7 @@ public:
 };
 
 extern CUIButton& (CUIButton::*CUIButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, BYTE, BOOL);
-extern void (CUIButton::*CUIButton_SetActive)(bool);
+extern void (CUIButton::*CUIButton_SetActive)(BOOL);
 extern void (CUIButton::*CUIButton_Deconstruct)();
 extern void (CUIButton::*CUIButton_OnLoseFocus)(void);
 extern void (CUIButton::*CUIButton_OnLMouseDrag)(POINT);
@@ -172,10 +172,27 @@ extern void (CUICheckButton::*CUICheckButton_SetToggleState)(BOOL);
 extern BOOL (CUICheckButton::*CUICheckButton_Redraw)(BOOL);
 extern void (CUICheckButton::*CUICheckButton_OnLClicked)(POINT);
 
-class CUICheckButtonChargenKit : public CUICheckButton { //Size 658h
-//Constructor: 73A6B7
+class CUICheckButtonChargenClass : public CUICheckButton { //Size 658h
 public:
-	CUICheckButtonChargenKit(CPanel&, ChuFileControlInfoBase&); //587FB2
+	CUICheckButtonChargenClass(CPanel&, ChuFileControlInfoBase&); //733AB4
+	CUICheckButtonChargenClass& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
+	BYTE GetClass();
+
+	//AAFDD8
+	virtual ~CUICheckButtonChargenClass(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual void OnLClicked(POINT); //v5c
+};
+
+extern CUICheckButtonChargenClass& (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
+extern BYTE (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_GetClass)();
+extern void (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_Deconstruct)();
+extern void (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_OnLClicked)(POINT);
+
+class CUICheckButtonChargenKit : public CUICheckButton { //Size 658h
+public:
+	CUICheckButtonChargenKit(CPanel&, ChuFileControlInfoBase&); //73A6B7
 	CUICheckButtonChargenKit& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
 	DWORD GetKitId(Object&);
 	STRREF GetKitHelpText(Object&);
@@ -192,6 +209,42 @@ extern DWORD (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitId)(Obje
 extern STRREF (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitHelpText)(Object&);
 extern void (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_Deconstruct)();
 extern void (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_OnLClicked)(POINT);
+
+class CUICheckButtonChargenMageSchool : public CUICheckButton { //Size 658h
+public:
+	CUICheckButtonChargenMageSchool(CPanel&, ChuFileControlInfoBase&); //734E97
+	CUICheckButtonChargenMageSchool& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
+	DWORD GetKit();
+
+	//AAFF84
+	virtual ~CUICheckButtonChargenMageSchool(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual void OnLClicked(POINT); //v5c
+};
+
+extern CUICheckButtonChargenMageSchool& (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
+extern DWORD (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_GetKit)();
+extern void (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_Deconstruct)();
+extern void (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_OnLClicked)(POINT);
+
+class CUICheckButtonChargenMulticlass : public CUICheckButton { //Size 658h
+public:
+	CUICheckButtonChargenMulticlass(CPanel&, ChuFileControlInfoBase&); //7336BA
+	CUICheckButtonChargenMulticlass& Construct(CPanel&, ChuFileControlInfoBase&) { return *this; } //dummy
+	BYTE GetClass();
+
+	//AAFD6C
+	virtual ~CUICheckButtonChargenMulticlass(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual void OnLClicked(POINT); //v5c
+};
+
+extern CUICheckButtonChargenMulticlass& (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
+extern BYTE (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_GetClass)();
+extern void (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_Deconstruct)();
+extern void (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_OnLClicked)(POINT);
 
 class CUICheckButtonChargenMageSpell : public CUICheckButton { //Size 66Eh
 //Constructor: 0x7328A0

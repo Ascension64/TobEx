@@ -8,30 +8,22 @@ static const DWORD nBufSize = 2;
 static char szBuf[2] = { 0 };
 static LPCTSTR szFile = "./TobEx.ini";
 
-static void* (*_New)(size_t) =
-	reinterpret_cast<void* (*)(size_t)>		(0xA50608);
-static void (*_Delete)(void*) =
-	reinterpret_cast<void (*)(void*)>		(0xA50631);
+static void* (__cdecl *_New)(size_t) =
+	reinterpret_cast<void* (__cdecl  *)(size_t)>	(0xA50608);
+static void (__cdecl *_Delete)(void*) =
+	reinterpret_cast<void (__cdecl  *)(void*)>		(0xA50631);
+static int (__cdecl *_Rand)(void) =
+	reinterpret_cast<int (__cdecl *)(void)>			(0xA39100);
+
+void* __cdecl operator new (size_t size, int i) { return (*_New)(size); }
+void* __cdecl operator new[] (size_t size, int i) { return (*_New)(size); }
+void __cdecl operator delete (void* mem, int i) { return (*_Delete)(mem); }
+void __cdecl operator delete[] (void* mem, int i) { return (*_Delete)(mem); }
+int __cdecl IERand() { return (*_Rand)(); }
 
 int GetIniValue(LPCTSTR szSection, LPCTSTR szKey) {
 	GetPrivateProfileString(szSection, szKey, szDefault, szBuf, nBufSize, szFile);
 	return atoi(szBuf);
-}
-
-void* operator new (size_t size, int i) {
-	return (*_New)(size);
-}
-
-void* operator new[] (size_t size, int i) {
-	return (*_New)(size);
-}
-
-void operator delete (void* mem, int i) {
-	return (*_Delete)(mem);
-}
-
-void operator delete[] (void* mem, int i) {
-	return (*_Delete)(mem);
 }
 
 void* ThisCall(void* func, void* pThis) {

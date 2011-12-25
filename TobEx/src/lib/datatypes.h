@@ -25,6 +25,16 @@ struct ChuFileControlInfoBase { //Size Eh
 };
 
 //Cre
+struct ColorRangeValues { //Size 7h
+	BYTE colorMetal; //0h
+	BYTE colorMinor; //1h
+	BYTE colorMajor; //2h
+	BYTE colorSkin; //3h
+	BYTE colorLeather; //4h
+	BYTE colorArmor; //5h
+	BYTE colorHair; //6h
+};
+
 struct CreFileData { //Size 268h
 	STRREF longNameStrRef; //0h, dialogue
 	STRREF shortNameStrRef; //4h, strref tooltip
@@ -37,16 +47,7 @@ struct CreFileData { //Size 268h
 	WORD maxHP;
 	WORD animID; //20h
 	WORD u22;
-
-	//known as colorRangeValues
-	BYTE colorMetal; //23h
-	BYTE colorMinor; //24h
-	BYTE colorMajor; //25h
-	BYTE colorSkin; //26h
-	BYTE colorLeather; //27h
-	BYTE colorArmor; //28h
-	BYTE colorHair; //29h
-
+	ColorRangeValues colors; //23h
 	BYTE effType; //2ah, 0 = ITEM_EFFECT (Effect), 1 = CEffect
 	ResRef smallPortrait; //2ch
 	ResRef largePortrait; //34h

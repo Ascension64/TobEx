@@ -7,32 +7,32 @@
 #include "objcre.h"
 #include "resref.h"
 #include "vidcore.h"
-#include "areacore.h"
+#include "arecore.h"
 #include "sndcore.h"
 #include "stocore.h"
 #include "cstringex.h"
 
 typedef CPtrList CPartyLocationList; //AAB968
 
-struct Res2daContainer { //Size 10h
-	//functions
-	void LoadRes(ResRef&);
-	IECString& GetValue(IECString&, IECString&);
+//CRuleTableString __EHVectorDtor flags
+#define CRULETABLESTRING_DELETE		0x1
+#define CRULETABLESTRING_MULTIPLE	0x2
 
-	//members
+struct Res2daContainer { //Size 10h
 	BOOL bLoaded; //0h
 	ResTxt* pRes; //4h
 	ResRef name; //8h
 };
 
-extern void (Res2daContainer::*Res2daContainer_LoadRes)(ResRef&);
-extern IECString& (Res2daContainer::*Res2daContainer_GetValue)(IECString&, IECString&);
-
 struct CRuleTable { //Size 24h
-//Constructor: 0x402D85
 	//functions
-	CRuleTable();
+	CRuleTable(); //63E230
 	CRuleTable& Construct(void) { return *this; } //dummy
+	~CRuleTable();
+	void LoadTable(ResRef&);
+	IECString& GetValue(IECString&, IECString&);
+	void UnloadRes();
+
 
 	//members
 	Res2daContainer m_2da; //0h
@@ -45,6 +45,9 @@ struct CRuleTable { //Size 24h
 };
 
 extern CRuleTable& (CRuleTable::*CRuleTable_Construct)(void);
+extern void (CRuleTable::*CRuleTable_LoadRes)(ResRef&);
+extern IECString& (CRuleTable::*CRuleTable_GetValue)(IECString&, IECString&);
+extern void (CRuleTable::*CRuleTable_UnloadRes)();
 
 struct IdsEntry { //Size Ch
 	DWORD opcode;
@@ -54,6 +57,12 @@ struct IdsEntry { //Size Ch
 
 struct CRuleTables { //Size 1DB0h
 	//functions
+	CRuleTables(); //6213DC
+	CRuleTables& Construct() { return *this; } //dummy
+
+	~CRuleTables();
+	void Deconstruct() {} //dummy
+
 	IECString GetRaceString(BYTE);
 	IECString GetAlignmentString(BYTE);
 	IECString GetClassString(BYTE, DWORD);
@@ -61,6 +70,7 @@ struct CRuleTables { //Size 1DB0h
 	STRREF GetCharSndStrRef(DWORD, DWORD, BYTE);
 	void GetDetailedClassString(BYTE, DWORD, DWORD, IECString&, CCreatureObject&);
 	DWORD GetWeapProfMax(BYTE, BYTE, BYTE, BOOL, DWORD, DWORD);
+	BOOL IsMageSchoolAllowed(DWORD, BYTE);
 	ResRef GetMageSpellRefAutoPick(BYTE, BYTE);
 
 	//members
@@ -237,6 +247,8 @@ struct CRuleTables { //Size 1DB0h
 	CRuleTable LOADH25; //0x1d8c
 };
 
+extern CRuleTables& (CRuleTables::*CRuleTables_Construct)();
+extern void (CRuleTables::*CRuleTables_Deconstruct)();
 extern IECString (CRuleTables::*CRuleTables_GetRaceString)(BYTE);
 extern IECString (CRuleTables::*CRuleTables_GetAlignmentString)(BYTE);
 extern IECString (CRuleTables::*CRuleTables_GetClassString)(BYTE, DWORD);
@@ -244,6 +256,7 @@ extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(DWORD, DWORD);
 extern STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(DWORD, DWORD, BYTE);
 extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(BYTE, DWORD, DWORD, IECString&, CCreatureObject&);
 extern DWORD (CRuleTables::*CRuleTables_GetWeapProfMax)(BYTE, BYTE, BYTE, BOOL, DWORD, DWORD);
+extern BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(DWORD, BYTE);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(BYTE, BYTE);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h

@@ -81,7 +81,7 @@ public:
 	virtual void UpdateEngineObjects() {} //vc8
 
 	CVideoMode* pVideoMode; //4h
-	CEngine* pEnginePrevious; //8h
+	CEngineBase* pEnginePrevious; //8h
 	CObList m_EngineObjects; //ch, appears unused
 };
 

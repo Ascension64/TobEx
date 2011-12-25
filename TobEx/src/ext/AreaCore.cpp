@@ -1,7 +1,10 @@
-#include "AreaCommon.h"
+#include "AreaCore.h"
 
 #include "utils.h"
 #include "chitin.h"
+
+BYTE (CArea::*Tramp_CArea_GetSong)(WORD) =
+	SetFP(static_cast<BYTE (CArea::*)(WORD)>	(&CArea::GetSong),		0x4D40D6);
 
 DWORD DETOUR_CArea::DETOUR_GetSong(WORD wType) {
 	DWORD dwSong;

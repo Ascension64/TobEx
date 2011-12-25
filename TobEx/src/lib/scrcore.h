@@ -51,6 +51,7 @@ struct Object { //Size 14h
 
 	//functions
 	BYTE GetClass();
+	void GetClasses(BYTE*, BYTE*);
 
 	//members
 	IECString Name; //0h
@@ -73,6 +74,7 @@ struct Object { //Size 14h
 };
 
 extern BYTE (Object::*Object_GetClass)();
+extern void (Object::*Object_GetClasses)(BYTE*, BYTE*);
 
 struct Trigger {
 	//Size: 0x2E

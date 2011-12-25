@@ -3,6 +3,10 @@
 
 #include "engrecord.h"
 
+extern void (CRecord::*Tramp_CRecord_MageBookPanelOnLoad)(CCreatureObject&);
+extern void (CRecord::*Tramp_CRecord_MageBookPanelOnUpdate)(CCreatureObject&);
+extern void (CRecord::*Tramp_CRecord_UpdateCharacter)(void);
+
 class DETOUR_CRecord : public CRecord {
 public:
 	void DETOUR_MageBookPanelOnLoad(CCreatureObject&);

@@ -20,7 +20,7 @@
 
 #define SetVT(obj, vt) (*(DWORD*)obj = vt)
 #define IENew new(0)
-#define IEDelete(obj) operator delete(obj, 0)
+#define IENewA new[](0)
 
 #ifdef _DEBUG 
 //In _DEBUG, CSyncObject contains an extra CString, screwing up the sizes of game objects
@@ -47,8 +47,6 @@ extern const char* days[];
 
 const DWORD g_nPEAddressDefault = 0x400000;
 
-int GetIniValue(LPCTSTR, LPCTSTR);
-
 template <typename T> T SetFP(T pFunction, DWORD dwAddress) {
 	if (sizeof(T) == 4) {
 		*(DWORD*)&pFunction = dwAddress;
@@ -56,10 +54,13 @@ template <typename T> T SetFP(T pFunction, DWORD dwAddress) {
 	return pFunction;
 }
 
-void* operator new (size_t, int);
-void* operator new[] (size_t, int);
-void operator delete (void*, int);
-void operator delete[] (void*, int);
+void* __cdecl operator new (size_t, int);
+void* __cdecl operator new[] (size_t, int);
+void __cdecl operator delete (void*, int);
+void __cdecl operator delete[] (void*, int);
+int __cdecl IERand(void);
+
+int GetIniValue(LPCTSTR, LPCTSTR);
 
 void* ThisCall(void*, void*);
 void* ThisCall(void*, void*, void*);

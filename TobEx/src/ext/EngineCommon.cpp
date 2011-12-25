@@ -26,7 +26,7 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 			//check if soundset present in CSOUND.2DA
 			IECString& colHeader = *(csound.pColHeaderArray + i);
 
-			if (voiceset.Compare((LPCTSTR)colHeader) == 0) { //if present, add StrRefs to pSprite
+			if (voiceset.Compare((LPCTSTR)colHeader) == 0) { //if present, add StrRefs to cre
 
 				for (int j = 0; j < 100; j++) {
 					if (j == 74) continue; //skip biography
@@ -35,7 +35,7 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 						IECString& rowHeader = *(csound.pRowHeaderArray + k);
 
 						if ( atoi((LPCTSTR)rowHeader) == j ) {
-							IECString value = csound.m_2da.GetValue(colHeader, rowHeader);
+							IECString value = csound.GetValue(colHeader, rowHeader);
 							STRREF ref = atoi((LPCTSTR)value);
 
 							if (ref) {

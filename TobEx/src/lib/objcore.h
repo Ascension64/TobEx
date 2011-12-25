@@ -3,7 +3,7 @@
 
 #include "utils.h"
 #include "scrcore.h"
-#include "areacore.h"
+#include "arecore.h"
 #include "sndcore.h"
 #include "cstringex.h"
 

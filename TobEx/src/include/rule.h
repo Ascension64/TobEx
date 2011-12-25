@@ -1,6 +1,18 @@
 #ifndef RULE_H
 #define RULE_H
 
+//CLASS.IDS
+const unsigned char MAGE		= 1;
+const unsigned char FIGHTER		= 2;
+const unsigned char CLERIC		= 3;
+const unsigned char THIEF		= 4;
+const unsigned char BARD		= 5;
+const unsigned char PALADIN		= 6;
+const unsigned char DRUID		= 11;
+const unsigned char RANGER		= 12;
+const unsigned char SORCERER	= 19;
+const unsigned char MONK		= 20;
+
 //Game time (in script rounds, i.e. 15 * GTIMES.IDS)
 const unsigned long ONE_DAY			= 0x1A5E0; //108000.
 const unsigned long ONE_HOUR		= 0x1194; //4500.
@@ -45,6 +57,34 @@ const unsigned long SHAPESHIFTER			= 0x10000000;
 const unsigned long BEASTFRIEND				= 0x20000000;
 const unsigned long BARBARIAN				= 0x40000000;
 
+//RACE.IDS
+const unsigned char HUMAN		= 1;
+const unsigned char ELF			= 2;
+const unsigned char HALF_ELF	= 3;
+const unsigned char DWARF		= 4;
+const unsigned char HALFLING	= 5;
+const unsigned char GNOME		= 6;
+const unsigned char HALFORC		= 7;
+
+//SEQ.IDS
+const unsigned short SEQ_ATTACK				= 0;
+const unsigned short SEQ_AWAKE				= 1;
+const unsigned short SEQ_CAST				= 2;
+const unsigned short SEQ_CONJURE			= 3;
+const unsigned short SEQ_DAMAGE				= 4;
+const unsigned short SEQ_DIE				= 5;
+const unsigned short SEQ_HEAD_TURN			= 6;
+const unsigned short SEQ_READY				= 7;
+const unsigned short SEQ_SHOOT				= 8;
+const unsigned short SEQ_TWITCH				= 9;
+const unsigned short SEQ_WALK				= 10; //A
+const unsigned short SEQ_ATTACK_SLASH		= 11; //B
+const unsigned short SEQ_ATTACK_BACKSLASH	= 12; //C
+const unsigned short SEQ_ATTACK_JAB			= 13; //D
+const unsigned short SEQ_EMERGE				= 14; //E
+const unsigned short SEQ_HIDE				= 15; //F
+const unsigned short SEQ_SLEEP				= 16; //10
+
 //STATE.IDS
 const unsigned long STATE_SLEEPING				= 0x00000001;
 const unsigned long STATE_BERSERK				= 0x00000002;
@@ -78,24 +118,5 @@ const unsigned long STATE_CHANTBAD				= 0x10000000;
 const unsigned long STATE_BLUR					= 0x20000000;
 const unsigned long STATE_MIRRORIMAGE			= 0x40000000;
 const unsigned long STATE_CONFUSED				= 0x80000000;
-
-//SEQ.IDS
-const unsigned short SEQ_ATTACK				= 0;
-const unsigned short SEQ_AWAKE				= 1;
-const unsigned short SEQ_CAST				= 2;
-const unsigned short SEQ_CONJURE			= 3;
-const unsigned short SEQ_DAMAGE				= 4;
-const unsigned short SEQ_DIE				= 5;
-const unsigned short SEQ_HEAD_TURN			= 6;
-const unsigned short SEQ_READY				= 7;
-const unsigned short SEQ_SHOOT				= 8;
-const unsigned short SEQ_TWITCH				= 9;
-const unsigned short SEQ_WALK				= 10; //A
-const unsigned short SEQ_ATTACK_SLASH		= 11; //B
-const unsigned short SEQ_ATTACK_BACKSLASH	= 12; //C
-const unsigned short SEQ_ATTACK_JAB			= 13; //D
-const unsigned short SEQ_EMERGE				= 14; //E
-const unsigned short SEQ_HIDE				= 15; //F
-const unsigned short SEQ_SLEEP				= 16; //10
 
 #endif //RULE_H

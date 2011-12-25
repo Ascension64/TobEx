@@ -14,6 +14,13 @@
 #include "UserRecMageSpell.h"
 #include "UserCommon.h"
 
+void (CRecord::*Tramp_CRecord_MageBookPanelOnLoad)(CCreatureObject&) =
+	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>			(&CRecord::MageBookPanelOnLoad),	0x6E0FE6);
+void (CRecord::*Tramp_CRecord_MageBookPanelOnUpdate)(CCreatureObject&) =
+	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>			(&CRecord::MageBookPanelOnUpdate),	0x6E563F);
+void (CRecord::*Tramp_CRecord_UpdateCharacter)(void) =
+	SetFP(static_cast<void (CRecord::*)(void)>						(&CRecord::UpdateCharacter),		0x6E9F57);
+
 void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	CPanel& panel = manager.GetPanel(8);
 	assert(&panel != NULL);
@@ -24,7 +31,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return MageBookPanelOnLoad(cre);
+		return (this->*Tramp_CRecord_MageBookPanelOnLoad)(cre);
 	}
 
 	//clear values
@@ -33,7 +40,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	scroll.nRows = 0;
 	scroll.cplTempSpells.RemoveAll();
 
-	MageBookPanelOnLoad(cre);
+	(this->*Tramp_CRecord_MageBookPanelOnLoad)(cre);
 
 	scroll.nValues = MageBookSpells.GetCount() / 5;
 	if (scroll.nValues % 5) scroll.nValues++;
@@ -54,7 +61,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return MageBookPanelOnUpdate(cre);
+		return (this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
 	}
 
 	//Depending on offset in MageBookSpells, transfer spells to/from temporary spell pile
@@ -91,7 +98,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		}
 	}
 
-	MageBookPanelOnUpdate(cre);
+	(this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
 
 	//Update on/off status of spell buttons
 	for (int i = 0; i <= 24; i++ ) {
@@ -131,7 +138,7 @@ void DETOUR_CRecord::DETOUR_UpdateCharacter() {
 	CPanel& cp = GetTopPanel();
 	assert(&cp != NULL);
 
-	UpdateCharacter();
+	(this->*Tramp_CRecord_UpdateCharacter)();
 
 	if (cp.index - 3 == 17) {
 

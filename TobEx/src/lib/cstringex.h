@@ -113,6 +113,7 @@ public:
 	//integration with IECString
 	void* operator new(size_t);
 	void operator delete(void*);
+	void operator delete[](void*);
 	operator CString() const;
 	operator LPCTSTR() const;
 

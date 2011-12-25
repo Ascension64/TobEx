@@ -2,6 +2,7 @@
 #define ANIMEXT_H
 
 #include "animcore.h"
+#include "datatypes.h"
 #include "cstringex.h"
 
 class CAnimation0000 : public CAnimation { //Size 976h
@@ -26,10 +27,12 @@ public:
 };
 
 class CAnimation1000 : public CAnimation { //Size 73Ah
-//includes 0x1100 set
+//0x10**, 0x11**
 //Constructor: 0x8356F3
-//vtable: 0xAB6C00
 public:
+	//AB6C00
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
+
 	IECString sAniSnd; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
 
@@ -56,10 +59,15 @@ public:
 	DWORD u736;
 };
 
+extern LPCTSTR (CAnimation1000::*CAnimation1000_GetWalkingSound)(WORD);
+
 class CAnimation1200 : public CAnimation { //Size AC6h
+//0x12**, 0x1X**
 //Constructor: 0x82C8AE
-//vtable: 0xAB6B1C
 public:
+	//AB6B1C
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
+
 	IECString sAniSnd; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
 
@@ -89,10 +97,15 @@ public:
 	char cSuffix2; //ac5h
 };
 
+extern LPCTSTR (CAnimation1200::*CAnimation1200_GetWalkingSound)(WORD);
+
 class CAnimation1300 : public CAnimation { //Size 7F4h
+//0x13**
 //Constructor: 0x8746B1
-//vtable: 0xAB7158
 public:
+	//AB7158
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
+
 	IECString sAniSnd; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
 
@@ -119,10 +132,14 @@ public:
 	BYTE u7f2;
 };
 
+extern LPCTSTR (CAnimation1300::*CAnimation1300_GetWalkingSound)(WORD);
+
 class CAnimation2000 : public CAnimation { //Size E0Ch
 //Constructor: 0x83D12A
-//vtable: 0xAB6DC8
 public:
+	//AB6DC8
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
+
 	IECString AniSnd; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
 
@@ -139,8 +156,8 @@ public:
 	CVidCell* m_pCurrentVidCellShadowBase; //a68h
 	CVidCell* m_pCurrentVidCellShadowExtend; //a6ch
 	CVidCell m_G1VidCellShadowBase; //a70h
-	CVidCell m_G2VidCellShadowExtend; //b46h
-	CVidCell m_G1VidCellShadowBase; //c1ch
+	CVidCell m_G1VidCellShadowExtend; //b46h
+	CVidCell m_G2VidCellShadowBase; //c1ch
 	CVidCell m_G2VidCellShadowExtend; //cf2h
 	VidPal vpColorRangeExtend; //dc8h
 
@@ -158,32 +175,52 @@ public:
 	BYTE ue0a; //pad
 };
 
+extern LPCTSTR (CAnimation2000::*CAnimation2000_GetWalkingSound)(WORD);
+
 class CAnimation3000 : public CAnimation { //Size 1106h
 //Constructor: 0x841063
 public:
+	//AB6EAC
 };
 
 class CAnimation4000 : public CAnimation { //Size 7E4h
-//Constructor: 0x7FA344
+//Constructor: 0x801EDE
 public:
+	//AB63F4
 };
 
 class CAnimation5000 : public CAnimation { //Size 16E0h
-//includes 0x6000 set (except 0x6400)
-//Constructor: 0x8436378
+//Playable humanoids
+//0x5***, 0x6***, except 0x6400-0x6405
+//Constructor: 0x843678
 public:
+	CAnimation5000(WORD, ColorRangeValues&, DWORD);
+	CAnimation5000& Construct(WORD, ColorRangeValues&, DWORD) { return *this; }
+
+	//AB6F90
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
+
+extern CAnimation5000& (CAnimation5000::*CAnimation5000_Construct)(WORD, ColorRangeValues&, DWORD);
+extern LPCTSTR (CAnimation5000::*CAnimation5000_GetWalkingSound)(WORD);
 
 class CAnimation6400 : public CAnimation { //Size 36B0h
+//0x6400-0x6405
 //Constructor: 0x8586AC
 public:
+	//AB7074
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
 
+extern LPCTSTR (CAnimation6400::*CAnimation6400_GetWalkingSound)(WORD);
 
 class CAnimation7000 : public CAnimation { //Size B2Ch
+//0x7[015CE]*[01], 0x72*[0-3], 0x7[47]*[0-2], 0x7[68D]*0, 0x7[9A]*[0-4], 0x7B*[0-6]
 //Constructor: 0x8176A5
-//vtable: 0xAB678C
 public:
+	//AB678C
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
+
 	IECString sAniSnd; //6d8h
 	CVidCell* m_pCurrentVidCell; //6dch
 
@@ -205,52 +242,72 @@ public:
 	BYTE nOrientations; //b2bh
 };
 
-class CAnimation7000Special : public CAnimation { //Size D3Ch
-//unused
+extern LPCTSTR (CAnimation7000::*CAnimation7000_GetWalkingSound)(WORD);
+
+class CAnimation7300 : public CAnimation { //Size D3Ch
+//0x7300, 0x7703, 0x7F00, all outliers of above
 //Constructor: 0x807184
 public:
+	//AB66A0
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
 
+extern LPCTSTR (CAnimation7300::*CAnimation7300_GetWalkingSound)(WORD);
 
 class CAnimation8000 : public CAnimation { //Size E02h
 //Constructor: 0x839BE6
 public:
+	//AB6CE4
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
 
+extern LPCTSTR (CAnimation8000::*CAnimation8000_GetWalkingSound)(WORD);
 
 class CAnimation9000 : public CAnimation { //Size C1Ah
 //Constructor: 0x828165
 public:
+	//AB6954
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
 
+extern LPCTSTR (CAnimation9000::*CAnimation9000_GetWalkingSound)(WORD);
 
 class CAnimationA000 : public CAnimation { //Size C1Ah
-//Constructor: 0x7FA67A
+//Constructor: 0x82A22F
 public:
+	//AB6A38
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
 
+extern LPCTSTR (CAnimationA000::*CAnimationA000_GetWalkingSound)(WORD);
 
 class CAnimationB000 : public CAnimation { //Size 8C2h
 //Constructor: 0x803352
 public:
+	//AB64D8
 };
 
 
 class CAnimationC000 : public CAnimation { //Size 8CAh
 //Constructor: 0x804D2B
 public:
+	//AB65BC
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 };
 
+extern LPCTSTR (CAnimationC000::*CAnimationC000_GetWalkingSound)(WORD);
 
 class CAnimationD000 : public CAnimation { //Size 7E4h
 //Constructor: 0x800D4F
 public:
+	//AB6310
 };
 
 
 class CAnimationE000 : public CAnimation { //Size 3278h
 //Constructor: 0x81C723
 public:
+	//AB6870
 };
 
 

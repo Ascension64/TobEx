@@ -11,6 +11,24 @@
 #include "uibutton.h"
 #include "console.h"
 #include "log.h"
+#include "InfGameCommon.h"
+
+void (CCharGen::*Tramp_CCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::KitPanelOnLoad),			0x71A081);
+void (CCharGen::*Tramp_CCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MageBookPanelOnLoad),		0x71B220);
+void (CCharGen::*Tramp_CCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::KitPanelOnUpdate),			0x71E3A5);
+void (CCharGen::*Tramp_CCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MageBookPanelOnUpdate),		0x720425);
+void (CCharGen::*Tramp_CCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::ClassPanelOnUpdate),		0x720B4B);
+void (CCharGen::*Tramp_CCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MulticlassPanelOnUpdate),	0x721518);
+void (CCharGen::*Tramp_CCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MageSchoolPanelOnUpdate),	0x721BA6);
+void (CCharGen::*Tramp_CCharGen_InitSoundset)(CCreatureObject&) =
+	SetFP(static_cast<void (CCharGen::*)(CCreatureObject&)>				(&CCharGen::InitSoundset),				0x724E37);
 
 void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenKit& scroll = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
@@ -19,7 +37,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre)
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return KitPanelOnLoad(panel, cre);
+		return (this->*Tramp_CCharGen_KitPanelOnLoad)(panel, cre);
 	}
 
 	//clear values
@@ -27,7 +45,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre)
 	scroll.nValues = 0;
 	scroll.nRows = 0;
 
-	KitPanelOnLoad(panel, cre);
+	(this->*Tramp_CCharGen_KitPanelOnLoad)(panel, cre);
 
 	scroll.UpdateKnobPosition(scroll.nCurrentValue, scroll.nValues, scroll.nRows);
 
@@ -41,7 +59,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return MageBookPanelOnLoad(panel, cre);
+		return (this->*Tramp_CCharGen_MageBookPanelOnLoad)(panel, cre);
 	}
 
 	//clear values
@@ -50,7 +68,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 	scroll.nRows = 0;
 	scroll.cplTempSpells.RemoveAll();
 
-	MageBookPanelOnLoad(panel, cre);
+	(this->*Tramp_CCharGen_MageBookPanelOnLoad)(panel, cre);
 
 	scroll.nValues = MageBookSpells.GetCount() / 6;
 	if (scroll.nValues % 6) scroll.nValues++;
@@ -102,7 +120,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return KitPanelOnUpdate(panel, cre);
+		return (this->*Tramp_CCharGen_KitPanelOnUpdate)(panel, cre);
 	}
 
 	IECString sClass, sRace, sKitName, sAlignment, sRowName, sKitFile;
@@ -114,10 +132,10 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 	}
 
 	sRace = pGame->GetRaceString(o.Race);
-	sKitFile = pGame->KITTABLE.m_2da.GetValue(sRace, sClass);
+	sKitFile = pGame->KITTABLE.GetValue(sRace, sClass);
 
 	if (Kit_Class_Race.m_2da.name != sKitFile) {
-		Kit_Class_Race.m_2da.LoadRes(ResRef(sKitFile));
+		Kit_Class_Race.LoadTable(ResRef(sKitFile));
 	}
 
 	for (int row = 0; row < Kit_Class_Race.nRows; row++) {
@@ -267,7 +285,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 				sRowName = g_pChitin->pGame->KITLIST.defaultVal;
 			}
 
-			IECString sKitAllowedByAlignment = pGame->ALIGNMNT.m_2da.GetValue(sAlignment, sRowName);
+			IECString sKitAllowedByAlignment = pGame->ALIGNMNT.GetValue(sAlignment, sRowName);
 			sscanf_s((LPCTSTR)sKitAllowedByAlignment, "%d", &bKitAllowedByAlignment);
 			bAlignmentChecked = TRUE;
 		}
@@ -276,17 +294,17 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 			pButton->SetEnabled(TRUE);
 			if (bAlignmentChecked && nKitId) { //not true class
 				if (bAlignmentChecked && bKitAllowedByAlignment) {
-					pButton->SetActive(true);
+					pButton->SetActive(TRUE);
 				} else {
-					pButton->SetActive(false);
+					pButton->SetActive(FALSE);
 				}
 			} else {
-				pButton->SetActive(true);
+				pButton->SetActive(TRUE);
 			}
 
 		} else {
 			pButton->SetEnabled(FALSE);
-			pButton->SetActive(false);
+			pButton->SetActive(FALSE);
 			pButton->SetVisible(FALSE);
 		}
 
@@ -459,7 +477,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return MageBookPanelOnUpdate(panel, cre);
+		return (this->*Tramp_CCharGen_MageBookPanelOnUpdate)(panel, cre);
 	}
 
 	//Depending on offset in MageBookSpells, transfer spells to/from temporary spell pile
@@ -496,7 +514,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		}
 	}
 
-	MageBookPanelOnUpdate(panel, cre);
+	(this->*Tramp_CCharGen_MageBookPanelOnUpdate)(panel, cre);
 
 	//Update on/off status of spell buttons
 	for (int i = 2; i <= 25; i++ ) {
@@ -522,8 +540,157 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 	return;
 }
 
+void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+	if (!pRuleEx->m_ClassRaceReq.m_2da.bLoaded) return (this->*Tramp_CCharGen_ClassPanelOnUpdate)(panel, cre);
+
+	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(12);
+	pScrollActive = &scroll;
+	CInfGame* pGame = g_pChitin->pGame;
+	CreFileData& stats = cre.m_BaseStats;
+	Object& o = cre.IdsCopy1;
+	DWORD dwKit = stats.kit[1] | stats.kit[0] << 16;
+
+	for (int i = 2; i <= 9; i++) {
+		CUICheckButtonChargenClass& button = (CUICheckButtonChargenClass&)panel.GetUIControl(i);
+		if (button.GetClass() == o.Class) {
+			if (o.Class == FIGHTER && dwKit == BARBARIAN) {
+				button.SetToggleState(FALSE);
+			} else {
+				button.SetToggleState(TRUE);
+			}
+		} else {
+			button.SetToggleState(FALSE);
+		}
+
+		IECString sRace = pGame->GetRaceString(o.Race);
+		IECString sClass = pGame->GetClassString(button.GetClass(), TRUECLASS);
+		IECString sAllowed = pRuleEx->m_ClassRaceReq.GetValue(sRace, sClass);
+		BOOL bAllowed;
+		sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
+		button.SetActive(bAllowed);
+	}
+
+	for (int i = 15; i <= 17; i++) {
+		CUICheckButtonChargenClass& button = (CUICheckButtonChargenClass&)panel.GetUIControl(i);
+		if (button.GetClass() == o.Class) {
+			if (o.Class == FIGHTER && dwKit != BARBARIAN) {
+				button.SetToggleState(FALSE);
+			} else {
+				button.SetToggleState(TRUE);
+			}
+		} else {
+			button.SetToggleState(FALSE);
+		}
+
+		IECString sRace = pGame->GetRaceString(o.Race);
+		IECString sClass = pGame->GetClassString(button.GetClass(), TRUECLASS);
+		IECString sAllowed = pRuleEx->m_ClassRaceReq.GetValue(sRace, sClass);
+		BOOL bAllowed;
+		sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
+		button.SetActive(bAllowed);
+	}
+
+	//CUIButton& buttonMulticlass = (CUIButton&)panel.GetUIControl(10);
+	//buttonMulticlass.SetActive((bool)(o.Race - 1));
+	CUIButton& buttonDone = (CUIButton&)panel.GetUIControl(0);
+	buttonDone.SetActive(CanContinue(cre));
+
+	return;
+}
+
+void DETOUR_CCharGen::DETOUR_MulticlassPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+	if (!pRuleEx->m_ClassRaceReq.m_2da.bLoaded) return (this->*Tramp_CCharGen_MulticlassPanelOnUpdate)(panel, cre);
+
+	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(13);
+	pScrollActive = &scroll;
+	CInfGame* pGame = g_pChitin->pGame;
+	Object& o = cre.IdsCopy1;
+
+	for (int i = 2; i <= 11; i++) {
+		CUICheckButtonChargenMulticlass& button = (CUICheckButtonChargenMulticlass&)panel.GetUIControl(i);
+		button.SetToggleState(button.GetClass() == o.Class);
+
+		IECString sRace = pGame->GetRaceString(o.Race);
+		IECString sClass = pGame->GetClassString(button.GetClass(), TRUECLASS);
+		IECString sAllowed = pRuleEx->m_ClassRaceReq.GetValue(sRace, sClass);
+		BOOL bAllowed;
+		sscanf_s((LPCTSTR)sAllowed, "%d", &bAllowed);
+		button.SetActive(bAllowed);
+	}
+
+	CUIButton& buttonDone = (CUIButton&)panel.GetUIControl(0);
+	buttonDone.SetActive(CanContinue(cre));
+
+	return;
+}
+
+void DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+	if (!pRuleEx->m_MageSchoolRaceReq.m_2da.bLoaded) return (this->*Tramp_CCharGen_MageSchoolPanelOnUpdate)(panel, cre);
+
+	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(10);
+	pScrollActive = &scroll;
+	CInfGame* pGame = g_pChitin->pGame;
+	CreFileData& stats = cre.m_BaseStats;
+	Object& o = cre.IdsCopy1;
+	DWORD dwKit = stats.kit[1] | stats.kit[0] << 16;
+	BOOL bButtonToggled = FALSE;
+
+	BOOL bMageClass = o.GetClass() == MAGE || o.GetClass() == SORCERER;
+	if (!bMageClass) {
+		BYTE class1;
+		BYTE class2;
+		o.GetClasses(&class1, &class2);
+		bMageClass = class1 == MAGE || class2 == MAGE;
+	}
+
+	for (int i = 2; i <= 9; i++) {
+		CUICheckButtonChargenMageSchool& buttonSchool = (CUICheckButtonChargenMageSchool&)panel.GetUIControl(i);
+		if (bMageClass &&
+			dwKit == buttonSchool.GetKit()) {
+			buttonSchool.SetToggleState(TRUE);
+			bButtonToggled = TRUE;
+		} else {
+			buttonSchool.SetToggleState(FALSE);
+		}
+
+		buttonSchool.SetActive(pGame->IsMageSchoolAllowed(buttonSchool.GetKit(), o.Race));
+	}
+
+	CUICheckButtonChargenMageSchool& buttonWildMage = (CUICheckButtonChargenMageSchool&)panel.GetUIControl(14);
+	if (*g_pEnableWildMage) {
+		if (bMageClass &&
+			dwKit == buttonWildMage.GetKit()) {
+			buttonWildMage.SetToggleState(TRUE);
+			bButtonToggled = TRUE;
+		} else {
+			buttonWildMage.SetToggleState(FALSE);
+		}
+		buttonWildMage.SetActive(pGame->IsMageSchoolAllowed(buttonWildMage.GetKit(), o.Race));
+	} else {
+		buttonWildMage.SetToggleState(FALSE);
+		buttonWildMage.SetActive(FALSE);
+		buttonWildMage.SetEnabled(false);
+		buttonWildMage.SetVisible(FALSE);
+	}
+
+	CUICheckButtonChargenMageSchool& buttonMage = (CUICheckButtonChargenMageSchool&)panel.GetUIControl(13);
+	if (bMageClass &&
+		dwKit == buttonMage.GetKit()) {
+		buttonMage.SetToggleState(TRUE);
+		bButtonToggled = TRUE;
+	} else {
+		buttonMage.SetToggleState(FALSE);
+	}
+	buttonMage.SetActive(pGame->IsMageSchoolAllowed(buttonMage.GetKit(), o.Race));
+
+	CUIButton& buttonDone = (CUIButton&)panel.GetUIControl(0);
+	buttonDone.SetActive(CanContinue(cre) && pGame->IsMageSchoolAllowed(dwKit, o.Race));
+
+	return;
+}
+
 void DETOUR_CCharGen::DETOUR_InitSoundset(CCreatureObject& cre) {
-	InitSoundset(cre);
+	(this->*Tramp_CCharGen_InitSoundset)(cre);
 	EngineCommon_ApplySoundset(cre);
 	return;
 }

@@ -17,6 +17,9 @@ public:
 	void UpdatePanel(DWORD, CCreatureObject&);
 	void KitPanelOnUpdate(CPanel&, CCreatureObject&);
 	void MageBookPanelOnUpdate(CPanel&, CCreatureObject&);
+	void ClassPanelOnUpdate(CPanel&, CCreatureObject&);
+	void MulticlassPanelOnUpdate(CPanel&, CCreatureObject&);
+	void MageSchoolPanelOnUpdate(CPanel&, CCreatureObject&);
 	void InitSoundset(CCreatureObject&);
 	BOOL CanContinue(CCreatureObject&);
 
@@ -101,6 +104,9 @@ extern void (CCharGen::*CCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&)
 extern void (CCharGen::*CCharGen_UpdatePanel)(DWORD, CCreatureObject&);
 extern void (CCharGen::*CCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CCharGen::*CCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CCharGen::*CCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CCharGen::*CCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CCharGen::*CCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CCharGen::*CCharGen_InitSoundset)(CCreatureObject&);
 extern BOOL (CCharGen::*CCharGen_CanContinue)(CCreatureObject&);
 

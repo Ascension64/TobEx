@@ -11,8 +11,11 @@
 #include "uicore.h"
 #include "console.h"
 
+CUIControl* (__cdecl *Tramp_CreateUIControl)(CPanel&, ChuFileControlInfoBase&) =
+	reinterpret_cast<CUIControl* (__cdecl *)(CPanel&, ChuFileControlInfoBase&)>	(0x95D5E0);
+
 CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase& controlInfo) {
-	CUIControl* pControl = CreateUIControl(panel, controlInfo);
+	CUIControl* pControl = Tramp_CreateUIControl(panel, controlInfo);
 
 	if (pControl == NULL) {
 		assert(&controlInfo != NULL);

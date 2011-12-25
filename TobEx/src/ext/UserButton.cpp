@@ -7,6 +7,11 @@
 #include "console.h"
 #include "log.h"
 
+DWORD (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&) =
+	SetFP(static_cast<DWORD (CUICheckButtonChargenKit::*)(Object&)>	(&CUICheckButtonChargenKit::GetKitId),		0x73A6E8);
+STRREF (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitHelpText)(Object&) =
+	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
+
 DWORD DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 	CCharGen* pCreateChar = g_pChitin->pCreateChar;
 	assert(pCreateChar != NULL);
@@ -19,7 +24,7 @@ DWORD DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return GetKitId(o);
+		return (this->*Tramp_CUICheckButtonChargenKit_GetKitId)(o);
 	}
 
 	int row = 0;
@@ -93,7 +98,7 @@ STRREF DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitHelpText(Object& o) {
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return GetKitHelpText(o);
+		return (this->*Tramp_CUICheckButtonChargenKit_GetKitHelpText)(o);
 	}
 
 	int row = 0;

@@ -4,8 +4,11 @@
 #include "vidcore.h"
 #include "chitin.h"
 
+void (VidPal::*Tramp_VidPal_SetFxPaletteNo3d)(ARGB*, DWORD, DWORD, DWORD, BOOL) =
+	SetFP(static_cast<void (VidPal::*)(ARGB*, DWORD, DWORD, DWORD, BOOL)>		(&VidPal::SetFxPaletteNo3d),	0x9F5897);
+
 void DETOUR_VidPal::DETOUR_SetFxPaletteNo3d(ARGB* pPalette, DWORD nBitsPerPixel, DWORD dwFlags, DWORD dwAlpha, BOOL bIgnoreBrighten) {
-	SetFxPaletteNo3d(pPalette, nBitsPerPixel, dwFlags, dwAlpha, bIgnoreBrighten);
+	(this->*Tramp_VidPal_SetFxPaletteNo3d)(pPalette, nBitsPerPixel, dwFlags, dwAlpha, bIgnoreBrighten);
 	
 	if (!g_pChitin->m_bDisableBrightest && (dwFlags & CVIDCELL_BRIGHTEST) && !bIgnoreBrighten) {
 		switch (nBitsPerPixel) {

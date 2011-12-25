@@ -194,6 +194,7 @@ void IECString::OemToAnsi()														{ return (this->*IECString_OemToAnsi)()
 
 void* IECString::operator new(size_t size)						{ return ::operator new(size, 0); }
 void IECString::operator delete(void* mem)						{ return ::operator delete(mem, 0); }
+void IECString::operator delete[](void* mem)					{ return ::operator delete[](mem, 0); }
 IECString::operator CString() const								{ return reinterpret_cast<const CString&>(*this); }
 IECString::operator LPCTSTR() const								{ return (LPCTSTR)((CString)(*this)); }
 

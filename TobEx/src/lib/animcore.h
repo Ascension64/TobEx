@@ -22,12 +22,15 @@ public:
 
 extern BOOL (CAnimationSoundList::*CAnimationSoundList_PlayPrimedSound)(DWORD, CCreatureObject*);
 
-class CAnimation { //Size 6D8h
-//Constructor: 0x7F9211
-//vtable: 0xAB6148 (generic), 0xAB678C (humanoids?), 0xAB6148 (7000h?)
+class CAnimation { //Size 6D8h 
 public:
-	void PlayCurrentAnimationSequenceSound(CCreatureObject*);
+	CAnimation(); //7F9211
+	CAnimation& Construct() { return *this; } //dummy
+	void PlayCurrentSequenceSound(CCreatureObject*);
 
+	static BOOL IsPlayableAnimation(WORD);
+
+	//0xAB6148
 	virtual void v0() {}
 	virtual void v4() {}
 	virtual void v8() {}
@@ -55,7 +58,7 @@ public:
 	virtual void v60() {}
 	virtual void v64() {}
 	virtual void v68() {}
-	virtual void v6c() {} //v6c, const char* GetWalkingSound()
+	virtual LPCTSTR GetWalkingSound(WORD); //v6c
 	virtual void v70() {}
 	virtual void v74() {}
 	virtual void v78() {}
@@ -83,9 +86,9 @@ public:
 	virtual void vd0() {}
 	virtual void vd4() {}
 	virtual void vd8() {}
-	virtual bool GetCurrentAnimationCycleAndFrame(WORD* pwCycle, WORD* pwFrame); //vdc, dummy
+	virtual bool GetCurrentCycleAndFrame(WORD&, WORD&); //vdc
 
-	WORD animId; //4h
+	WORD wAnimId; //4h
 	BYTE u6; //related to animId
 	BYTE u7; //related to animId
 	RECT rFootcircle; //8h
@@ -106,7 +109,11 @@ public:
 	CAnimationSoundList soundset[19]; //3e0h, corresponds to rows of anim soundset 2DAs (19 in total)
 };
 
-extern void (CAnimation::*CAnimation_PlayCurrentAnimationSequenceSound)(CCreatureObject*);
+extern CAnimation& (CAnimation::*CAnimation_Construct)();
+extern void (CAnimation::*CAnimation_PlayCurrentSequenceSound)(CCreatureObject*);
+extern BOOL (*CAnimation_IsPlayableAnimation)(WORD);
+extern LPCTSTR (CAnimation::*CAnimation_GetWalkingSound)(WORD);
+extern bool (CAnimation::*CAnimation_GetCurrentCycleAndFrame)(WORD&, WORD&);
 
 struct AnimData {
 //Size: 0x8

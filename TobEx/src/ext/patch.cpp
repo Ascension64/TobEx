@@ -61,7 +61,6 @@ void InitPatches() {
 	std::vector<Patch>::iterator vPatchItr;
 	std::vector<Data> vDataList;
 
-	//Charm patch
 	if (GetIniValue("Engine", "Disable Silence On Charm")) {
 		char bytes[] = {0xEB};
 		vDataList.push_back( Data(0x8A11D4, 1, bytes) );
@@ -69,7 +68,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
   
-	//XP Patch
 	if (GetIniValue("Engine", "Correct Experience Gain")) {
 		char bytes[] = {0x64};
 		vDataList.push_back( Data(0x6A97D5, 1, bytes) );
@@ -78,8 +76,7 @@ void InitPatches() {
 		vDataList.clear();
 	}
   
-	//Awaken opcode fix
-	if (GetIniValue("Effect Opcodes", "Awaken Fix") || GetIniValue("Effect Opcodes", "Opcode Damage Mod")) {
+	if (GetIniValue("Effect Opcodes", "Awaken Fix")) {
 		char bytes[] = {0x27};
 		vDataList.push_back( Data(0x5035F4, 1, bytes) );
 		vDataList.push_back( Data(0x50362C, 1, bytes) );
@@ -87,7 +84,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Cure Drunkenness opcode fix
 	if (GetIniValue("Effect Opcodes", "Cure Drunk Fix")) {
 		char bytes[] = {0x5E};
 		vDataList.push_back( Data(0x52EB0E, 1, bytes) );
@@ -157,7 +153,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
-	//Failed pickpocket sends PickpocketFailed() trigger
 	if (GetIniValue("Trigger", "Enable PickpocketFailed Trigger")) {
 		char bytes[] = {0x22, 0x5F, 0xAA};
 		vDataList.push_back( Data(0x9437B2, 3, bytes) );
@@ -165,7 +160,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//No grey effect on stone skin
 	if (GetIniValue("Effect Opcodes", "Disable Stoneskin Grey Colour")) {
 		char bytes[] = {0x00};
 		vDataList.push_back( Data(0x5399D4, 1, bytes) );
@@ -173,7 +167,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Correct dispel formula
 	//Pseudocode
 	//rand(); <--0 to 99
 	//chance = 50
@@ -200,7 +193,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Mirror image keeps caster level
 	if (GetIniValue("Effect Opcodes", "Use Caster Level On Mirror Image")) {
 	    //fix brackets in formula when caster level > effect level
 		char bytes[] = {0x8B, 0x55, 0xD4, 0x8B, 0x4A, 0x48, 0x89, 0x48, 0x48, 0x83, 0xC0, 0x70, 0x83, 0xC2, 0x70, 0x8B, 0x4A, 0x54, 0x89, 0x48, 0x54, 0x8B, 0x4A, 0x5C, 0x89, 0x48, 0x5C, 0x90, 0x90, 0x90};
@@ -210,7 +202,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
-	//Enlarge tooltip scroll
 	if (GetIniValue("UI", "Enlarge Tooltip Scroll")) {
 	    //fix brackets in formula when caster level > effect level
 		char bytes[] = {0xE0};
@@ -267,7 +258,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Allow four weapon slots for all classes
 	if (GetIniValue("UI", "Universal Four Inventory Weapon Slots")) {
 		//2->4 (All playable classes except Fighter and those listed for 3 slots), 3->4 (Paladin, Ranger, Monk)
 		char bytes[1] = {0x04};
@@ -277,7 +267,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Allow up to 99 priest spells per level
 	if (GetIniValue("Engine", "Allow 99 Priest Known Spells Per Level")) {
 		char bytes[1] = {0x62};
 		vDataList.push_back( Data(0x63358D, 1, bytes) );
@@ -346,7 +335,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Fixes issue where the critical error message box doesn't display
 	if (GetIniValue("Debug", "Critical Error Message Box Fix")) {
 		//NOP, CALL
 		char bytes[] = {0x90, 0xE8};
@@ -372,7 +360,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Scrollable Level Up Mage Spell Selection
 	if (GetIniValue("UI", "Scrollable Level Up Mage Spell Selection")) {
 		//allow for loops for buttons to include new button
 		char bytes[] = {0x18};
@@ -394,7 +381,6 @@ void InitPatches() {
 		vDataList.clear();
 	}*/
 
-	//Remain invisible on successful pickpocket
 	if (GetIniValue("Engine", "Remain Hidden On Pickpocket Success")) {
 	    //always JMP the check for STATE_INVISIBLE
 		char bytes[] = {0x90, 0xE9};
@@ -425,7 +411,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
-	//Externalize hardcoded race StrRefs to RACETEXT.2DA
 	if (GetIniValue("UI", "Externalise Race Selection StrRef")) {
 	
 	    //1. during loading of a game
@@ -502,7 +487,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
-	//Remove limit on SONGLIST.2DA size
 	if (GetIniValue("Music", "Extended Songlist")) {
 		//treat song entries as DWORD instead of signed byte
 		//section that stops the music
@@ -526,7 +510,6 @@ void InitPatches() {
 	    vDataList.clear();
 	}
 	
-	//Use FIRST_LEVEL on PROFSMAX.2DA
 	if (GetIniValue("Engine", "Level One Proficiency Restrictions")) {
 	    //changing PUSH arguments
 		char bytes[] = {0x8B, 0x45, 0x08, 0x50, 0x90};
@@ -542,7 +525,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
-	//Video
 	if (GetIniValue("Video", "Brighten On Disable Brightest No3d Fix")) {
 		//JE -> JNZ
 		//this causes Disable Brighten to work properly with no 3d, but causes blended objects to become green

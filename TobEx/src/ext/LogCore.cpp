@@ -6,18 +6,27 @@
 #include "console.h"
 #include "log.h"
 
+void (__cdecl *Tramp_AssertFailedQuit)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR) =
+	reinterpret_cast<void (__cdecl *)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F06C);
+void (__cdecl *Tramp_AssertFailedContinue)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR) =
+	reinterpret_cast<void (__cdecl *)(DWORD, LPCTSTR, LPCTSTR, LPCTSTR)>	(0x99F193);
+void (__cdecl *Tramp_WriteToFile)(CFile&, CString&) =
+	reinterpret_cast<void (__cdecl *)(CFile&, CString&)>					(0x99F371);
+void (__stdcall *Tramp_CloseLogAndErr)() =
+	reinterpret_cast<void (__stdcall *)()>									(0x99F1BA);
+
 void __stdcall DETOUR_CloseLogAndErr() {
 	//delete ClassAbilityTable;	- main program does this
 	ClassAbilityTable = NULL;
 
-	CloseLogAndErr();
+	Tramp_CloseLogAndErr();
 
 	return;
 }
 
 void __cdecl DETOUR_WriteToFile(CFile& file, CString& str) {
 
-	WriteToFile(file, str);
+	Tramp_WriteToFile(file, str);
 
 	str.TrimRight('\n');
 	str.TrimLeft('\n');
@@ -50,8 +59,7 @@ void __cdecl DETOUR_AssertFailedQuit(DWORD dwLine, LPCTSTR szPath, LPCTSTR szExp
 	L.timestamp();
 	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szMessage);
 
-	AssertFailedQuit(dwLine, szPath, szExpression, szMessage);
-	return;
+	return Tramp_AssertFailedQuit(dwLine, szPath, szExpression, szMessage);
 }
 	
 void __cdecl DETOUR_AssertFailedContinue(DWORD dwLine, LPCTSTR szPath, LPCTSTR szExpression, LPCTSTR szMessage) {
@@ -70,6 +78,5 @@ void __cdecl DETOUR_AssertFailedContinue(DWORD dwLine, LPCTSTR szPath, LPCTSTR s
 	L.timestamp();
 	L.append(szFormat, 5, Eip, (LPCTSTR)sFile, dwLine, szExpression, szMessage);
 
-	AssertFailedContinue(dwLine, szPath, szExpression, szMessage);
-	return;
+	return Tramp_AssertFailedContinue(dwLine, szPath, szExpression, szMessage);
 }

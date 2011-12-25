@@ -3,6 +3,11 @@
 
 #include "objcre.h"
 
+extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellPriest)(DWORD, DWORD);
+extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellMage)(DWORD, DWORD);
+extern BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellPriest)(DWORD, DWORD, DWORD*);
+extern BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellMage)(DWORD, DWORD, DWORD*);
+
 class DETOUR_CCreatureObject : public CCreatureObject {
 public:
 	CreFileKnownSpell& DETOUR_GetKnownSpellPriest(DWORD, DWORD);

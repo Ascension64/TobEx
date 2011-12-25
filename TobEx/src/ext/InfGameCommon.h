@@ -5,9 +5,14 @@
 
 class CRuleTablesEx {
 public:
-	CRuleTablesEx();
+	CRuleTablesEx(CRuleTables& rule);
+	~CRuleTablesEx();
 
 	CRuleTable m_ClassSpellAbility;
+	char m_StrModExStepNum;
+	char* m_StrModExToStepTable;
+	char* m_StepToStrModExTable;
+
 	CRuleTable m_ClassRaceReq;
 	CRuleTable m_MageSchoolRaceReq;
 	CRuleTable m_HideSpell;
@@ -23,9 +28,10 @@ public:
 	CRuleTable m_HPBarbarian;
 
 protected:
-	void Init();
+	void Init(CRuleTables& rule);
 };
 
 extern CRuleTablesEx* pRuleEx;
+extern int g_nCDerivedStatsTemplateSize;
 
 #endif //INFGAMECOMMON_H

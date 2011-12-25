@@ -28,8 +28,6 @@ CGameOptionsEx::CGameOptionsEx() {
 	bDebugRestoreCombatInfoText = FALSE;
 	bDebugVerbose = FALSE;
 
-	bDlgInstantVars = FALSE;
-
 	bEffApplyConcCheckDamage = FALSE;
 	bEffApplyEffItemFix = FALSE;
 	bEffApplyEffItemtypeFix = FALSE;
@@ -83,7 +81,6 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineAllowZeroStartXP = FALSE;
 	bEngineAssBHPenaltyKit = FALSE;
 	bEngineClericRangerHLAFix = FALSE;
-	bEngineXPReportFix = FALSE;
 	nEngineCustomSoAStartXP = -1;
 	nEngineCustomToBStartXP = -1;
 	bEngineModifyEffectStacking = FALSE;
@@ -118,6 +115,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bSoundExternWalkSounds = FALSE;
 	bSoundSoundsetSubtitles = FALSE;
 
+	bSpellsCastingFix = FALSE;
 	bSpellsUnvoicedConfig = FALSE;
 	bSpellsTargetInvisConfig = FALSE;
 		
@@ -165,8 +163,6 @@ void CGameOptionsEx::Init() {
 	bDebugRestoreCombatInfoText = GetCoreIniValue("Debug", "Restore Extra Combat Info Text");
 	bDebugVerbose = GetCoreIniValue("Debug", "Verbose Logging");
 
-	bDlgInstantVars = GetCoreIniValue("Dialogue", "Instantly Set Dialogue Variables");
-
 	bEffApplyConcCheckDamage = GetTweakIniValue("Tweak", "Effect Opcodes:Apply Concentration Check On Damage");
 	bEffApplyEffItemFix = GetCoreIniValue("Effect Opcodes", "Apply Effect Item Fix");
 	bEffApplyEffItemtypeFix = GetCoreIniValue("Effect Opcodes", "Apply Effect Itemtype Fix");
@@ -212,7 +208,7 @@ void CGameOptionsEx::Init() {
 	bEffSaveVsSpellMod = GetCoreIniValue("Effect Opcodes", "Save Vs Spell Mod");
 	bEffSaveVsWandsMod = GetCoreIniValue("Effect Opcodes", "Save Vs Wands Mod");
 	bEffStrengthMod = GetCoreIniValue("Effect Opcodes", "Strength Mod");
-	bEffMirrorImageUseCastLevel = GetTweakIniValue("Tweak:", "Effect Opcodes:Use Caster Level On Mirror Image");
+	bEffMirrorImageUseCastLevel = GetTweakIniValue("Tweak", "Effect Opcodes:Use Caster Level On Mirror Image");
 
 	bEnginePriestKnownSpellsExtend = GetCoreIniValue("Engine", "Allow 99 Priest Known Spells Per Level");
 	bEngineAllowDualClassAll = GetTweakIniValue("Tweak", "Engine:Allow All Races to Dual Class");
@@ -220,7 +216,6 @@ void CGameOptionsEx::Init() {
 	bEngineAllowZeroStartXP = GetCoreIniValue("Engine", "Allow Zero Starting Experience");
 	bEngineAssBHPenaltyKit = GetCoreIniValue("Engine", "Assassin and Bounty Hunter Penalty to Similar Kits");
 	bEngineClericRangerHLAFix = GetCoreIniValue("Engine", "Cleric-Ranger HLA Fix");
-	bEngineXPReportFix = GetCoreIniValue("Engine", "Correct Experience Reporting");
 	nEngineCustomSoAStartXP = GetTweakIniValue("Tweak", "Engine:Custom Shadows of Amn Starting Experience", "-1");
 	nEngineCustomToBStartXP = GetTweakIniValue("Tweak", "Engine:Custom Throne of Bhaal Starting Experience", "-1");
 	bEngineModifyEffectStacking = GetCoreIniValue("Engine", "Disable Duplicate Effect Stacking");
@@ -256,6 +251,7 @@ void CGameOptionsEx::Init() {
 	bSoundExternWalkSounds = GetCoreIniValue("Sound", "Externalise Animation Walking Sounds");
 	bSoundSoundsetSubtitles = GetCoreIniValue("Sound", "Soundset Subtitles");
 
+	bSpellsCastingFix = GetCoreIniValue("Spells", "Casting Fixes");
 	bSpellsUnvoicedConfig = GetCoreIniValue("Spells", "Configurable Spells Can Be Unvoiced");
 	bSpellsTargetInvisConfig = GetCoreIniValue("Spells", "Configurable Spells Can Target Invisible");
 

@@ -128,8 +128,8 @@ BOOL Object::IsMyself()		{ return operator==(*poMyself); }
 //Trigger
 Trigger& (Trigger::*Trigger_Construct_2)(short, int) =
 	SetFP(static_cast<Trigger& (Trigger::*)(short, int)>	(&Trigger::Construct),			0x430810);
-Trigger& (Trigger::*Trigger_OpEq)(Trigger&) =
-	SetFP(static_cast<Trigger& (Trigger::*)(Trigger&)>		(&Trigger::OpEq),				0x496100);
+Trigger& (Trigger::*Trigger_OpAssign)(Trigger&) =
+	SetFP(static_cast<Trigger& (Trigger::*)(Trigger&)>		(&Trigger::OpAssign),			0x496100);
 short (Trigger::*Trigger_GetOpcode)() =
 	SetFP(static_cast<short (Trigger::*)()>					(&Trigger::GetOpcode),			0x4943B0);
 void (Trigger::*Trigger_DecodeIdentifiers)(CGameSprite&) =
@@ -145,7 +145,7 @@ IECString* (Trigger::*Trigger_GetSName2)() =
 
 Trigger::Trigger()									{ (this->*Trigger_Construct_2)(TRIGGER_NONE, 0); }
 Trigger::Trigger(short wOpcode, int n)				{ (this->*Trigger_Construct_2)(wOpcode, n); }
-Trigger& Trigger::operator=(Trigger& t)				{ return (this->*Trigger_OpEq)(t); }
+Trigger& Trigger::operator=(Trigger& t)				{ return (this->*Trigger_OpAssign)(t); }
 short Trigger::GetOpcode()							{ return (this->*Trigger_GetOpcode)(); }
 void Trigger::DecodeIdentifiers(CGameSprite& sprite){ return (this->*Trigger_DecodeIdentifiers)(sprite); }
 int Trigger::GetI()									{ return (this->*Trigger_GetI)(); }

@@ -42,19 +42,19 @@ void (CEffectDamage::*CEffectDamage_PrintEffectText)(CCreatureObject&) =
 	SetFP(static_cast<void (CEffectDamage::*)(CCreatureObject&)>		(&CEffectDamage::PrintEffectText),			0x5081B3);
 void (CEffectDamage::*CEffectDamage_PrintEffectTextOnApply)(CCreatureObject&) =
 	SetFP(static_cast<void (CEffectDamage::*)(CCreatureObject&)>		(&CEffectDamage::PrintEffectTextOnApply),	0x5083D0);
-void (CEffectDamage::*CEffectDamage_PlayHitSound)(int, CCreatureObject&) =
-	SetFP(static_cast<void (CEffectDamage::*)(int, CCreatureObject&)>	(&CEffectDamage::PlayHitSound),				0x507240);
+void (CEffectDamage::*CEffectDamage_PlayHitSound)(unsigned int, CCreatureObject&) =
+	SetFP(static_cast<void (CEffectDamage::*)(unsigned int, CCreatureObject&)>	(&CEffectDamage::PlayHitSound),		0x507240);
 
-CEffectDamage::~CEffectDamage()													{ (this->*CEffectDamage_Deconstruct)(); }
-CEffect& CEffectDamage::Duplicate()												{ return (this->*CEffectDamage_Duplicate)(); }
-BOOL CEffectDamage::ApplyEffect(CCreatureObject& creTarget)						{ return (this->*CEffectDamage_ApplyEffect)(creTarget); }
-void CEffectDamage::OnDelayFinished(CCreatureObject& creTarget)					{ return (this->*CEffectDamage_OnDelayFinished)(creTarget); }
+CEffectDamage::~CEffectDamage()															{ (this->*CEffectDamage_Deconstruct)(); }
+CEffect& CEffectDamage::Duplicate()														{ return (this->*CEffectDamage_Duplicate)(); }
+BOOL CEffectDamage::ApplyEffect(CCreatureObject& creTarget)								{ return (this->*CEffectDamage_ApplyEffect)(creTarget); }
+void CEffectDamage::OnDelayFinished(CCreatureObject& creTarget)							{ return (this->*CEffectDamage_OnDelayFinished)(creTarget); }
 BOOL CEffectDamage::CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist)
 	{ return (this->*CEffectDamage_CheckNotSaved)(creTarget, rollSaveDeath, rollSaveWands, rollSavePoly, rollSaveBreath, rollSaveSpells, rollMagicResist); }
-BOOL CEffectDamage::IgnoreLevelCheck()											{ return (this->*CEffectDamage_IgnoreLevelCheck)(); }
-void CEffectDamage::PrintEffectText(CCreatureObject& creTarget)					{ return (this->*CEffectDamage_PrintEffectText)(creTarget); }
-void CEffectDamage::PrintEffectTextOnApply(CCreatureObject& creTarget)			{ return (this->*CEffectDamage_PrintEffectTextOnApply)(creTarget); }
-void CEffectDamage::PlayHitSound(int nDamageType, CCreatureObject& creTarget)	{ return (this->*CEffectDamage_PlayHitSound)(nDamageType, creTarget); }
+BOOL CEffectDamage::IgnoreLevelCheck()													{ return (this->*CEffectDamage_IgnoreLevelCheck)(); }
+void CEffectDamage::PrintEffectText(CCreatureObject& creTarget)							{ return (this->*CEffectDamage_PrintEffectText)(creTarget); }
+void CEffectDamage::PrintEffectTextOnApply(CCreatureObject& creTarget)					{ return (this->*CEffectDamage_PrintEffectTextOnApply)(creTarget); }
+void CEffectDamage::PlayHitSound(unsigned int nDamageType, CCreatureObject& creTarget)	{ return (this->*CEffectDamage_PlayHitSound)(nDamageType, creTarget); }
 
 //CEffectInstantDeath
 CEffectInstantDeath::CEffectInstantDeath() {

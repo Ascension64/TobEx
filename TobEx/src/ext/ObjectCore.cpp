@@ -308,6 +308,18 @@ ACTIONRESULT DETOUR_CGameSprite::DETOUR_ExecuteAction() {
 		g_pChitin->pGame->SetLoseCutscene();
 		ar = ACTIONRESULT_NOACTIONTAKEN;
 		break;
+	case ACTION_DIALOG_SET_GLOBAL:
+		aCurrent.opcode = ACTION_SET_GLOBAL;
+		return (this->*Tramp_CGameSprite_ExecuteAction)();
+		break;
+	case ACTION_DIALOG_INCREMENT_GLOBAL:
+		aCurrent.opcode = ACTION_INCREMENT_GLOBAL;
+		return (this->*Tramp_CGameSprite_ExecuteAction)();
+		break;
+	case ACTION_DIALOG_SG:
+		aCurrent.opcode = ACTION_SG;
+		return (this->*Tramp_CGameSprite_ExecuteAction)();
+		break;
 	default:
 		return (this->*Tramp_CGameSprite_ExecuteAction)();
 		break;

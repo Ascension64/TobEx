@@ -72,7 +72,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 	(this->*Tramp_CCharGen_MageBookPanelOnLoad)(panel, cre);
 
 	scroll.nValues = MageBookSpells.GetCount() / 6;
-	if (scroll.nValues % 6) scroll.nValues++;
+	if (MageBookSpells.GetCount() % 6) scroll.nValues++;
 	scroll.nRows = 4;
 
 	if (pGameOptionsEx->bDebugVerbose) {

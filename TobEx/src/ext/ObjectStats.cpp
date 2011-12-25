@@ -24,8 +24,8 @@ void (CDerivedStats::*Tramp_CDerivedStats_LimitStats)() =
 	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::LimitStats),				0x471B36);
 int (CDerivedStats::*Tramp_CDerivedStats_GetStat)(short) =
 	SetFP(static_cast<int (CDerivedStats::*)(short)>						(&CDerivedStats::GetStat),					0x473162);
-void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*) =
-	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate*, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
+void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate**, int*) =
+	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate**, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
 void (CDerivedStats::*Tramp_CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int) =
 	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate&, int)>
 																			(&CDerivedStats::UnmarshalTemplate),		0x474AF2);
@@ -370,12 +370,6 @@ int DETOUR_CDerivedStats::DETOUR_GetStat(short nOpcode) {
 	if (nOpcode > 200 && nOpcode <= pRuleEx->m_nStats) {
 		if (animationRemoval) {
 			int* pStatsEx = (int*)animationRemoval;
-			if (pGameOptionsEx->bDebugVerbose && nOpcode > 201) {
-				LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_GetStat(): stat %d = %d\r\n";
-				L.timestamp();
-				L.append(lpsz, 2, nOpcode, pStatsEx[nOpcode - 200 - 1]);
-				console.write(lpsz, 2, nOpcode, pStatsEx[nOpcode - 200 - 1]);
-			}
 			return pStatsEx[nOpcode - 200 - 1];
 		} else {
 			LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_GetStat(): pStatsEx == NULL\r\n";
@@ -393,15 +387,15 @@ int DETOUR_CDerivedStats::DETOUR_GetStat(short nOpcode) {
 	}
 }
 
-void DETOUR_CDerivedStats::DETOUR_MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize) {
-	DWORD size = pRuleEx->m_nStats - 200;
-
-	(this->*Tramp_CDerivedStats_MarshalTemplate)(pcdst, pnSize);
+void DETOUR_CDerivedStats::DETOUR_MarshalTemplate(CDerivedStatsTemplate** ppcdst, int* pnSize) {
+	*pnSize = g_nCDerivedStatsTemplateSize;
+	*ppcdst = (CDerivedStatsTemplate*)IENew int[*pnSize];
+	memcpy_s(*ppcdst, sizeof(CDerivedStatsTemplate) - 4, this, sizeof(CDerivedStatsTemplate) - 4);
 
 	int* pStatsEx = NULL;
 	if (animationRemoval) {
 		pStatsEx = (int*)animationRemoval;
-		pcdst->animationRemoval = pStatsEx[0];
+		memcpy_s((char*)(*ppcdst) + sizeof(CDerivedStatsTemplate) - 4, g_nCDerivedStatsTemplateSize - sizeof(CDerivedStatsTemplate) + 4, pStatsEx, g_nCDerivedStatsTemplateSize - sizeof(CDerivedStatsTemplate) + 4);
 	} else {
 		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_MarshalTemplate(): pStatsEx == NULL\r\n";
 		L.timestamp();
@@ -413,12 +407,18 @@ void DETOUR_CDerivedStats::DETOUR_MarshalTemplate(CDerivedStatsTemplate* pcdst, 
 }
 
 void DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(CDerivedStatsTemplate& cdst, int nSize) {
-	DWORD size = pRuleEx->m_nStats - 200;
+	//calling functioning passes sizeof(CDerivedStatsTemplate), no room to change hex so left alone
+	/*if (nSize != g_nCDerivedStatsTemplateSize) {
+		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(): incorrect CDerivedStatsTemplate size 0x%X (expected 0x%X)\r\n";
+		L.timestamp();
+		L.append(lpsz, 2, nSize, g_nCDerivedStatsTemplateSize);
+		console.write(lpsz, 2, nSize, g_nCDerivedStatsTemplateSize);
+	}*/
 
 	int* pStatsEx = NULL;
 	if (animationRemoval) {
 		pStatsEx = (int*)animationRemoval;
-		pStatsEx[0] = cdst.animationRemoval;
+		memcpy_s(pStatsEx, g_nCDerivedStatsTemplateSize - sizeof(CDerivedStatsTemplate) + 4, (char*)&cdst + sizeof(CDerivedStatsTemplate) - 4, g_nCDerivedStatsTemplateSize - sizeof(CDerivedStatsTemplate) + 4);
 	} else {
 		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(): pStatsEx == NULL\r\n";
 		L.timestamp();
@@ -426,9 +426,7 @@ void DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(CDerivedStatsTemplate& cdst,
 		console.write(lpsz);
 	}
 
-	(this->*Tramp_CDerivedStats_UnmarshalTemplate)(cdst, nSize);
-
-	animationRemoval = (int)pStatsEx;
+	memcpy_s(this, sizeof(CDerivedStatsTemplate) - 4, &cdst, sizeof(CDerivedStatsTemplate) - 4);
 
 	return;
 }
@@ -508,59 +506,33 @@ short CDerivedStats_NumAttacksFloatToShort(float f) {
 }
 
 char CDerivedStats_GetEffectiveStrength(char strength, char strengthEx) {
-	//Map strength-strengthEx into a 0-30 combined strength
+	//convert Str/StrEx to step integer Str
 	if (strength > 18)
-		return strength + 5;
-	else if (strength == 18) {
-		if (strengthEx >= 100)
-			return 23;
-		else if (strengthEx >= 91)
-			return 22;
-		else if (strengthEx >= 76)
-			return 21;
-		else if (strengthEx >= 51)
-			return 20;
-		else if (strengthEx > 0)
-			return 19;
-		else return 18;
-	} else 
-	return strength;
+		return strength + pRuleEx->m_StrModExStepNum;
+	else if (strength == 18 && strengthEx > 0)
+		return pRuleEx->m_StrModExToStepTable[strengthEx];
+	else
+		return strength;
 }
 
 void CDerivedStats_GetRealStrength(char strengthEffective, char& strength, char& strengthEx) {
-	//Map 0-30 combined strength back to strength-strengthEx
-	strengthEx = 0;
-	if (strengthEffective >= 24) {
-		strength = strengthEffective - 5;
+	//convert step integer Str to Str/StrEx
+	if (strengthEffective > 18 + pRuleEx->m_StrModExStepNum) {
+		strength = strengthEffective - pRuleEx->m_StrModExStepNum;
 		strengthEx = 100;
-	} else if (strengthEffective >= 18) {
+	} else if (strengthEffective > 18) {
 		strength = 18;
-		switch (strengthEffective) {
-			case 23:
-				strengthEx = 100;
-				break;
-			case 22:
-				strengthEx = 91;
-				break;
-			case 21:
-				strengthEx = 76;
-				break;
-			case 20:
-				strengthEx = 51;
-				break;
-			case 19:
-				strengthEx = 1;
-				break;
-			case 18:
-				strengthEx = 0;
-		}
-	} else
+		strengthEx = pRuleEx->m_StepToStrModExTable[strengthEffective - 18 - 1];
+	} else {
 		strength = strengthEffective;
+		strengthEx = 0;
+	}
+
 	return;
 }
 
 char CDerivedStats_GetEffectiveStrengthSpell(char strength, char strengthEx) {
-	//Map strength-strengthEx into a 0-30 combined strength
+	//convert Str/StrEx to step integer Str
 	if (strength > 18)
 		return strength + 10;
 	else if (strength == 18)
@@ -569,7 +541,7 @@ char CDerivedStats_GetEffectiveStrengthSpell(char strength, char strengthEx) {
 }
 
 void CDerivedStats_GetRealStrengthSpell(char strengthEffective, char& strength, char& strengthEx) {
-	//Map 0-30 combined strength back to strength-strengthEx
+	//convert step integer Str to Str/StrEx
 	strengthEx = 0;
 	if (strengthEffective >= 29) {
 		strength = strengthEffective - 10;

@@ -476,19 +476,48 @@ BOOL __stdcall CCreatureObject_Spell_IsOverrideSilence(CCreatureObject& creSourc
 LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject& creSource, ResSplContainer& resSpell, SplFileAbility& ability) {
 	if (0) IECString("CCreatureObject_DoSpellCasting_GetGenderLetter");
 
-	if (creSource.GetDerivedStats().stateFlags & STATE_SILENCED &&
+	if (pGameOptionsEx->bSpellsUnvoicedConfig &&
+		creSource.GetDerivedStats().stateFlags & STATE_SILENCED &&
 		resSpell.GetSpellFlags() & SPELLFLAG_NO_VOICE)
 		return "S";
 
-	if (ability.castSpeed < 3) return "S";
+	if (pGameOptionsEx->bSpellsCastingFix) {
+		unsigned char gender = creSource.o.Gender;
+		unsigned char sex = creSource.m_BaseStats.sex;
 
-	unsigned char gender = creSource.o.Gender;
-	if (gender == GENDER_FEMALE) return "F";
-	if (gender == GENDER_OTHER ||
-		gender == GENDER_NIETHER)
-		return "S";
+		if (ability.castSpeed - creSource.GetDerivedStats().mentalSpeed < 3) return "S";
 
-	return "M";
+		switch (gender) {
+		case GENDER_MALE:
+			return "M";
+		case GENDER_FEMALE:
+			return "F";
+		case GENDER_OTHER:
+		case GENDER_NIETHER:
+			return "S";
+		default:
+			if (sex == 1) return "M";
+			if (sex == 2) return "F";
+			return "S";
+		}
+	} else {
+		//original code
+		if (ability.castSpeed < 3) return "S";
+
+		unsigned char gender = creSource.o.Gender;
+		if (gender == GENDER_FEMALE) return "F";
+		if (gender == GENDER_OTHER ||
+			gender == GENDER_NIETHER)
+			return "S";
+
+		return "M";
+	}
+}
+
+short __stdcall CCreatureObject_DoSpellCasting_GetCastingSpeed(CCreatureObject& creSource, SplFileAbility& ability) {
+	if (0) IECString("CCreatureObject_DoSpellCasting_GetCastingSpeed");
+
+	return max(0, ability.castSpeed - creSource.GetDerivedStats().mentalSpeed) * 100 / 10;
 }
 
 BOOL __stdcall CCreatureObject_UseItem_CannotTargetInvisible(CCreatureObject& creSource, CCreatureObject& creTarget) {

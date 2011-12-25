@@ -27,7 +27,7 @@ BOOL (CEffectDexterityMod::*Tramp_CEffectDexterityMod_ApplyEffect)(CCreatureObje
 BOOL (CEffectLuckMod::*Tramp_CEffectLuckMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectLuckMod::*)(CCreatureObject&)>			(&CEffectLuckMod::ApplyEffect),				0x5129F3);
 BOOL (CEffectPoison::*Tramp_CEffectPoison_ApplyEffect)(CCreatureObject&) =
-	SetFP(static_cast<BOOL (CEffectPoison::*)(CCreatureObject&)>			(&CEffectPoison::ApplyEffect),				0x516024);
+	SetFP(static_cast<BOOL (CEffectPoison::*)(CCreatureObject&)>			(&CEffectPoison::ApplyEffect),				0x513024);
 BOOL (CEffectSaveVsDeathMod::*Tramp_CEffectSaveVsDeathMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectSaveVsDeathMod::*)(CCreatureObject&)>	(&CEffectSaveVsDeathMod::ApplyEffect),		0x514B87);
 BOOL (CEffectSaveVsWandsMod::*Tramp_CEffectSaveVsWandsMod_ApplyEffect)(CCreatureObject&) =
@@ -269,12 +269,12 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	BOOL bBaseDamageDone = (BOOL)effect.nParam1;
 	short wAnimSeq = creTarget.wCurrentSequenceSimplified;
 
-	short wDamageType = effect.nParam2 >> 16;
+	unsigned int nDamageType = effect.nParam2 & 0xFFFF0000;
 	int nDamageBehavior = effect.nParam2 & 0xFFFF;
 
 	if (nDamageBehavior == EFFECTDAMAGE_BEHAVIOR_NORMAL) {
 		if (pGameOptionsEx->bEngineExpandedStats) {
-			switch (wDamageType) {
+			switch (nDamageType) {
 			case DAMAGETYPE_ACID:
 			case DAMAGETYPE_COLD:
 			case DAMAGETYPE_CRUSHING:
@@ -295,7 +295,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			}
 		}
 
-		switch (wDamageType) {
+		switch (nDamageType) {
 		case DAMAGETYPE_ACID:
 			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistAcid / 100;
 			break;
@@ -322,7 +322,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistPoison / 100;
 			break;
 		case DAMAGETYPE_MAGIC:
-			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMagic / 100;
+			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMagicDamage / 100;
 			break;
 		case DAMAGETYPE_MISSILE:
 			effect.nParam1 -= effect.nParam1 * creTarget.cdsPrevious.resistMissile / 100;
@@ -405,7 +405,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.u36d0 = TRUE;
 	}
 
-	if (wDamageType == DAMAGETYPE_POISON) {
+	if (nDamageType == DAMAGETYPE_POISON) {
 		if (creTarget.m_wPoisonTimer <= 0) {
 			creTarget.m_wPoisonTimer = 100;
 			CMessagePlaySoundset* pMsg = IENew CMessagePlaySoundset();
@@ -442,7 +442,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.m_BaseStats.currentHP -= effect.nParam1;
 		break;
 	case EFFECTDAMAGE_BEHAVIOR_SETVALUE:
-		creTarget.m_BaseStats.currentHP = creTarget.cdsPrevious.maxHP < effect.nParam1 ? effect.nParam1 : creTarget.cdsPrevious.maxHP;
+		creTarget.m_BaseStats.currentHP = effect.nParam1 < creTarget.cdsPrevious.maxHP ? effect.nParam1 : creTarget.cdsPrevious.maxHP;
 		break;
 	case EFFECTDAMAGE_BEHAVIOR_SETPERCENT:
 		creTarget.m_BaseStats.currentHP = creTarget.m_BaseStats.currentHP * effect.nParam1 / 100;
@@ -465,9 +465,9 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.UpdateHPStatusTooltip(*g_pChitin->pCursor->pCtrlTarget);
 	}
 
-	PlayHitSound(wDamageType, creTarget);
+	PlayHitSound(nDamageType, creTarget);
 
-	switch (wDamageType) {
+	switch (nDamageType) {
 	case DAMAGETYPE_PIERCING:
 	case DAMAGETYPE_CRUSHING:
 	case DAMAGETYPE_SLASHING:
@@ -531,7 +531,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		pEff->eSource = eSource;
 		pEff->enum2 = enum2;
 
-		switch (wDamageType) {
+		switch (nDamageType) {
 		case DAMAGETYPE_STUNNING:
 			{
 			delete pEff;
@@ -682,10 +682,10 @@ BOOL DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	case 3: //IWD1/P&P Cat's Grace spell
 		if (!pRuleEx->m_ClassSpellAbility.m_2da.bLoaded) {
-			LPCTSTR lpsz = "DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-			console.write(lpsz, 1, effect.nParam2);
+			LPCTSTR lpsz = "DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(): CLSSPLAB.2DA not found\r\n";
+			console.write(lpsz);
 			L.timestamp();
-			L.append(lpsz, 1, effect.nParam2);
+			L.append(lpsz);
 			bPurge = TRUE;
 			break;
 		}
@@ -1253,29 +1253,15 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 	switch (effect.nParam2) {
 	case 0: //sum
-		{
-			if (effect.nTiming == 1) {
-				char strengthEffective = CDerivedStats_GetEffectiveStrength(creTarget.m_BaseStats.strength, creTarget.m_BaseStats.strengthEx) + effect.nParam1;
-				char strength = 0;
-				char strengthEx = 0;
-				CDerivedStats_GetRealStrength(strengthEffective, strength, strengthEx);
-				creTarget.m_BaseStats.strength = strength;
-				creTarget.m_BaseStats.strength = min(creTarget.m_BaseStats.strength, 25);
-				creTarget.m_BaseStats.strength = max(creTarget.m_BaseStats.strength, 0);
-				creTarget.m_BaseStats.strengthEx = strengthEx;
-				creTarget.m_BaseStats.strengthEx = min(creTarget.m_BaseStats.strengthEx, 100);
-				creTarget.m_BaseStats.strengthEx = max(creTarget.m_BaseStats.strengthEx, 0);
-				bRefreshStats = TRUE;
-				bPurge = TRUE;
-			} else {
-				char strengthEffective = CDerivedStats_GetEffectiveStrength((char&)creTarget.cdsCurrent.strength, (char&)creTarget.cdsCurrent.strengthEx) + effect.nParam1;
-				char strength = 0;
-				char strengthEx = 0;
-				CDerivedStats_GetRealStrength(strengthEffective, strength, strengthEx);
-				creTarget.cdsCurrent.strength = strength;
-				creTarget.cdsCurrent.strengthEx = strengthEx;
-				bPurge = FALSE;
-			}
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.strength += effect.nParam1;
+			creTarget.m_BaseStats.strength = min(creTarget.m_BaseStats.strength, 25);
+			creTarget.m_BaseStats.strength = max(creTarget.m_BaseStats.strength, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.strength += effect.nParam1;
+			bPurge = FALSE;
 		}
 		break;
 	case 1: //set
@@ -1308,10 +1294,10 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	case 3: //IWD1/P&P Strength Spell
 		if (!pRuleEx->m_ClassSpellAbility.m_2da.bLoaded) {
-			LPCTSTR lpsz = "DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-			console.write(lpsz, 1, effect.nParam2);
+			LPCTSTR lpsz = "DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(): CLSSPLAB.2DA not found\r\n";
+			console.write(lpsz);
 			L.timestamp();
-			L.append(lpsz, 1, effect.nParam2);
+			L.append(lpsz);
 			bPurge = TRUE;
 			break;
 		}
@@ -1902,7 +1888,7 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 
 	switch (effect.nParam2) {
 		case 0:
-			//sum
+			//instantaneous sum
 			if (effect.nTiming == 1) {
 				creTarget.m_BaseStats.resistMagic += effect.nParam1;
 				creTarget.m_BaseStats.resistMagic = min(creTarget.m_BaseStats.resistMagic, 100);
@@ -1910,7 +1896,9 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 				bRefreshStats = TRUE;
 				bPurge = TRUE;
 			} else {
-				creTarget.cdsDiff.resistMagic += effect.nParam1;
+				creTarget.cdsCurrent.resistMagic += effect.nParam1;
+				creTarget.cdsCurrent.resistMagic = min(creTarget.cdsCurrent.resistMagic, 100);
+				creTarget.cdsCurrent.resistMagic = max(creTarget.cdsCurrent.resistMagic, 0);
 				bPurge = FALSE;
 			}
 			break;
@@ -1945,7 +1933,7 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 			}
 			break;
 		case 3:
-			//instantaneous sum
+			//sum
 			if (effect.nTiming == 1) {
 				creTarget.m_BaseStats.resistMagic += effect.nParam1;
 				creTarget.m_BaseStats.resistMagic = min(creTarget.m_BaseStats.resistMagic, 100);
@@ -1953,9 +1941,7 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 				bRefreshStats = TRUE;
 				bPurge = TRUE;
 			} else {
-				creTarget.cdsCurrent.resistMagic += effect.nParam1;
-				creTarget.cdsCurrent.resistMagic = min(creTarget.cdsCurrent.resistMagic, 100);
-				creTarget.cdsCurrent.resistMagic = max(creTarget.cdsCurrent.resistMagic, 0);
+				creTarget.cdsDiff.resistMagic += effect.nParam1;
 				bPurge = FALSE;
 			}
 			break;
@@ -2670,7 +2656,7 @@ BOOL DETOUR_CEffectDisintegrate::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 	if (0) IECString("DETOUR_CEffectDisintegrate::DETOUR_ApplyEffect");
 
 	Object& o = creTarget.GetCurrentObject();
-	BOOL bMatch;
+	BOOL bMatch = FALSE;
 	switch (effect.nParam2) {
 	case 2:
 		if (o.EnemyAlly == effect.nParam1 || effect.nParam1 == 0) bMatch = TRUE;

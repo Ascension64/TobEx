@@ -114,7 +114,7 @@ struct CreFileData { //Size 268h
 	char levelPrimary; //22ch
 	char levelSecondary; //22dh
 	char levelTertiary;
-	char sex;
+	unsigned char sex; //22fh
 	char strength;
 	char strengthEx;
 	char intelligence;

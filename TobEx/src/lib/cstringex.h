@@ -15,7 +15,7 @@ public:
 	IECString& Construct(LPCWSTR lpch, int nLength) {return *this;} //dummy
 
 	const IECString& operator=(TCHAR ch);
-	const IECString& OpEq(TCHAR ch) {return *this;} //dummy
+	const IECString& OpAssign(TCHAR ch) {return *this;} //dummy
 
 	friend IECString AFXAPI operator+(const IECString& string, TCHAR ch);
 	friend IECString AFXAPI IECString_OpAdd(const IECString& string, TCHAR ch) {return string;} //dummy
@@ -68,13 +68,13 @@ public:
 	IECString& Construct(LPCWSTR lpsz) {return *this;} //dummy
 
 	const IECString& operator=(const IECString& stringSrc);
-	const IECString& OpEq(const IECString& stringSrc) {return *this;} //dummy
+	const IECString& OpAssign(const IECString& stringSrc) {return *this;} //dummy
 
 	const IECString& operator=(LPCSTR lpsz);
-	const IECString& OpEq(LPCSTR lpsz) {return *this;} //dummy
+	const IECString& OpAssign(LPCSTR lpsz) {return *this;} //dummy
 
 	const IECString& operator=(LPCWSTR lpsz);
-	const IECString& OpEq(LPCWSTR lpsz) {return *this;} //dummy
+	const IECString& OpAssign(LPCWSTR lpsz) {return *this;} //dummy
 	
 	friend IECString AFXAPI operator+(const IECString& string1, const IECString& string2);
 	friend IECString AFXAPI IECString_OpAdd(const IECString& string1, const IECString& string2) {return string1;} //dummy
@@ -135,7 +135,7 @@ protected:
 extern IECString& (IECString::*IECString_Construct_2TCHAR_int)(TCHAR, int);
 extern IECString& (IECString::*IECString_Construct_2LPCSTR_int)(LPCSTR, int);
 extern IECString& (IECString::*IECString_Construct_2LPCWSTR_int)(LPCWSTR, int);
-extern const IECString& (IECString::*IECString_OpEq_TCHAR)(TCHAR);
+extern const IECString& (IECString::*IECString_OpAssign_TCHAR)(TCHAR);
 extern IECString (AFXAPI *IECString_OpAdd_IECString_TCHAR)(const IECString&, TCHAR);
 extern IECString (AFXAPI *IECString_OpAdd_TCHAR_IECString)(TCHAR, const IECString&);
 extern int (IECString::*IECString_Delete)(int, int);
@@ -171,9 +171,9 @@ extern void (IECString::*IECString_Empty)();
 extern void (IECString::*IECString_Deconstruct)();
 extern IECString& (IECString::*IECString_Construct_1LPCSTR)(LPCSTR);
 extern IECString& (IECString::*IECString_Construct_1LPCWSTR)(LPCWSTR);
-extern const IECString& (IECString::*IECString_OpEq_CString)(const IECString&);
-extern const IECString& (IECString::*IECString_OpEq_LPCSTR)(LPCSTR);
-extern const IECString& (IECString::*IECString_OpEq_LPCWSTR)(LPCWSTR);
+extern const IECString& (IECString::*IECString_OpAssign_CString)(const IECString&);
+extern const IECString& (IECString::*IECString_OpAssign_LPCSTR)(LPCSTR);
+extern const IECString& (IECString::*IECString_OpAssign_LPCWSTR)(LPCWSTR);
 extern IECString (AFXAPI *IECString_OpAdd_CString_CString)(const IECString&, const IECString&);
 extern IECString (AFXAPI *IECString_OpAdd_CString_LPCTSTR)(const IECString&, LPCTSTR);
 extern IECString (AFXAPI *IECString_OpAdd_LPCTSTR_CString)(LPCTSTR, const IECString&);

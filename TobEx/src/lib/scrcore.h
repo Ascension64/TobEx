@@ -176,7 +176,7 @@ struct Trigger { //Size 2Eh
 	Trigger& Construct(short wOpcode, int i) { return *this; } //dummy
 
 	Trigger& operator=(Trigger& t);
-	Trigger& OpEq(Trigger& t) { return *this; } //dummy
+	Trigger& OpAssign(Trigger& t) { return *this; } //dummy
 
 	short GetOpcode();
 	void DecodeIdentifiers(CGameSprite& sprite);
@@ -200,7 +200,7 @@ struct Trigger { //Size 2Eh
 };
 
 extern Trigger& (Trigger::*Trigger_Construct_2)(short, int);
-extern Trigger& (Trigger::*Trigger_OpEq)(Trigger&);
+extern Trigger& (Trigger::*Trigger_OpAssign)(Trigger&);
 extern short (Trigger::*Trigger_GetOpcode)();
 extern void (Trigger::*Trigger_DecodeIdentifiers)(CGameSprite&);
 extern int (Trigger::*Trigger_GetI)();

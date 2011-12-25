@@ -11,6 +11,7 @@
 #include "ChitinCore.h"
 #include "DialogCore.h"
 #include "EngineChargen.h"
+#include "InfGameCommon.h"
 #include "InfGameCore.h"
 #include "ItemCommon.h"
 #include "ScriptAction.h"
@@ -139,6 +140,46 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
+	if (pGameOptionsEx->bActionExpandedActions) {
+		//push eax
+		//mov edx,dword ptr ss:[ebp-1BC]
+		//push edx
+		//call ...
+		char bytes[] = {0x50,
+						0x8B, 0x95, 0x44, 0xFE, 0xFF, 0xFF,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x4E8BB2, 9, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CDlgResponse_ExecuteSetVariables;
+		DWORD address = (DWORD)ptr - 5  - 0x4E8BBA;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x4E8BBB, 4, bytes2) );
+
+		//nop
+		//mov edx,dword ptr ss:[ebp+8]
+		//mov eax,dword ptr ss:[edx+30]
+		//mov dword ptr ss:[ebp-194],eax
+		//mov edx,dword ptr ss:[ebp-144]
+		//mov dword ptr ds:[edx],offset BGMain.vtCMessage
+		//nop
+		char bytes3[] = {0x8B, 0x55, 0x08,
+						0x36, 0x8B, 0x42, 0x30,
+						0x89, 0x85, 0x6C, 0xFE, 0xFF, 0xFF,
+						0x8B, 0x95, 0xBC, 0xFE, 0xFF, 0xFF,
+						0xC7, 0x02, 0x10, 0x5C, 0xAA ,0x00,
+						0x90};
+		vDataList.push_back( Data(0x4E8BBF, 26, bytes3) );
+
+		//ebp-190 -> ebp-194
+		char bytes4[] = {0x6C};
+		vDataList.push_back( Data(0x4E8BEA, 1, bytes4) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bArenasEnable) {
 		char bytes[] = {0x75};
 		vDataList.push_back( Data(0x7958D7, 1, bytes) );
@@ -244,46 +285,6 @@ void InitPatches() {
 
 		char bytes8[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x90DE7A, 10, bytes8) );
-
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-
-	if (pGameOptionsEx->bDlgInstantVars) {
-		//push eax
-		//mov edx,dword ptr ss:[ebp-1BC]
-		//push edx
-		//call ...
-		char bytes[] = {0x50,
-						0x8B, 0x95, 0x44, 0xFE, 0xFF, 0xFF,
-						0x52,
-						0xE8};
-		vDataList.push_back( Data(0x4E8BB2, 9, bytes) );
-
-		//CALL address
-		void* ptr = (void*)CDlgResponse_ExecuteSetVariables;
-		DWORD address = (DWORD)ptr - 5  - 0x4E8BBA;
-		char* bytes2 = (char*)&address;
-		vDataList.push_back( Data(0x4E8BBB, 4, bytes2) );
-
-		//nop
-		//mov edx,dword ptr ss:[ebp+8]
-		//mov eax,dword ptr ss:[edx+30]
-		//mov dword ptr ss:[ebp-194],eax
-		//mov edx,dword ptr ss:[ebp-144]
-		//mov dword ptr ds:[edx],offset BGMain.vtCMessage
-		//nop
-		char bytes3[] = {0x8B, 0x55, 0x08,
-						0x36, 0x8B, 0x42, 0x30,
-						0x89, 0x85, 0x6C, 0xFE, 0xFF, 0xFF,
-						0x8B, 0x95, 0xBC, 0xFE, 0xFF, 0xFF,
-						0xC7, 0x02, 0x10, 0x5C, 0xAA ,0x00,
-						0x90};
-		vDataList.push_back( Data(0x4E8BBF, 26, bytes3) );
-
-		//ebp-190 -> ebp-194
-		char bytes4[] = {0x6C};
-		vDataList.push_back( Data(0x4E8BEA, 1, bytes4) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
@@ -621,16 +622,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 	
-	if (pGameOptionsEx->bEngineXPReportFix) {
-		char bytes[] = {0x90, 0x90, 0x90,
-						0x90, 0x90,
-						0x90, 0x90, 0x90, 0x90, 0x90,
-						0x90, 0x90};
-		vDataList.push_back( Data(0x6A995B, 12, bytes) );
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-
 	if (pGameOptionsEx->nEngineCustomSoAStartXP != -1) {
 		char* bytes = (char*)&pGameOptionsEx->nEngineCustomSoAStartXP;
 		vDataList.push_back( Data(0xAB7258, 4, bytes) );
@@ -661,11 +652,20 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bEngineDisableXPBoost) {
+		//disables experience boost
 		char bytes[] = {0x90, 0x90, 0x90,
 						0x90, 0x90,
 						0x90, 0x90, 0x90, 0x90, 0x90,
 						0x90, 0x90};
 		vDataList.push_back( Data(0x6A97D3, 12, bytes) );
+
+		//corrects XP reporting
+		char bytes2[] = {0x90, 0x90, 0x90,
+						0x90, 0x90,
+						0x90, 0x90, 0x90, 0x90, 0x90,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x6A995B, 12, bytes2) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
@@ -852,6 +852,31 @@ void InitPatches() {
 						0xE9, 0xD7, 0x01, 0x00, 0x00,
 						0x90};
 		vDataList.push_back( Data(0x8EFBE4, 14, bytes24) );
+
+
+		//CMessageOnUpdateCharacterSlotReply::DoMessage() correction of CDerivedStatsTemplate size
+		//mov edx,dword ptr ds:[]
+		char bytes25[] = {0x8B, 0x15};
+		vDataList.push_back( Data(0x44523A, 2, bytes25) );
+
+		//[g_nCDerivedStatsTemplateSize]
+		address = (DWORD)&g_nCDerivedStatsTemplateSize;
+		char* bytes26 = (char*)&address;
+		vDataList.push_back( Data(0x44523C, 4, bytes26) );
+
+		//add eax,edx
+		//nop
+		//mov ecx,dword ptr ss:[ebp+C]
+		//add ecx,eax
+		//mov dx,word ptr ds:[ecx]
+		//mov word ptr ss:[ebp-10C],dx
+		char bytes27[] = {0x03, 0xC2,
+						 0x90, 0x90, 0x90, 0x90,
+						 0x8B, 0x4D, 0x0C,
+						 0x03, 0xC8,
+						 0x66, 0x8B, 0x11,
+						 0x66, 0x89, 0x95, 0xF4, 0xFE, 0xFF, 0xFF};
+		vDataList.push_back( Data(0x445240, 21, bytes27) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
@@ -1666,6 +1691,118 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bSpellsCastingFix) {
+
+		//1. CUICheckButtonChargenGender::OnLClicked() - set the sex also on picking gender
+
+		//mov edx,dword ptr ss:[ebp-30]
+		//add edx,22F
+		//mov byte ptr ss:[edx],al
+		//nop
+		char bytes[] = {0x8B, 0x55, 0xD0,
+						0x81, 0xC2, 0x2F, 0x02, 0x00, 0x00,
+						0x36, 0x88, 0x02,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x733569, 18, bytes) );
+
+		//mov ecx,dword ptr ss:[ebp-40]
+		char bytes2[] = {0x8B, 0x4D, 0xC0};
+		vDataList.push_back( Data(0x73357F, 3, bytes2) );
+
+		//2. CCreatureObject::DoSpellCasting() - correct casting speed check for animation
+		
+		//push ecx
+		//nop
+		//mov eax,dword ptr ss:[ebp-1F4]
+		//push eax
+		//call
+		char bytes3[] = {0x52,
+						0x90, 0x90, 0x90, 0x90,
+						0x8B, 0x95, 0x0C, 0xFE, 0xFF, 0xFF,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x940281, 13, bytes3) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_DoSpellCasting_GetCastingSpeed;
+		DWORD address = (DWORD)ptr - 5  - 0x94028D;
+		char* bytes4 = (char*)&address;
+		vDataList.push_back( Data(0x94028E, 4, bytes4) );
+
+		//3. CCreatureObject::DoSpellCasting() - correct casting speed check for playing of a sound
+
+		//push ecx
+		//mov edx,dword ptr ss:[ebp-1F4]
+		//push edx
+		//call
+		char bytes5[] = {0x51,
+						0x8B, 0x95, 0x0C, 0xFE, 0xFF, 0xFF,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x93FFF5, 9, bytes5) );
+
+		//CALL address
+		ptr = (void*)CCreatureObject_DoSpellCasting_GetCastingSpeed;
+		address = (DWORD)ptr - 5  - 0x93FFFD;
+		char* bytes6 = (char*)&address;
+		vDataList.push_back( Data(0x93FFFE, 4, bytes6) );
+
+		//test eax,eax
+		//jg short 94000D
+		//mov dword ptr ss:[ebp-60],0
+		//cmp dword ptr ss:[ebp-60],0
+		//je 94027E
+		//mov ecx,dword ptr ss:[ebp-1F4]
+		//mov eax,dword ptr ds:[ecx+12]
+		//push eax
+		//push 4
+		char bytes7[] = {0x85, 0xC0,
+						0x7F, 0x07,
+						0xC7, 0x45, 0xA0, 0x00, 0x00, 0x00, 0x00,
+						0x83, 0x7D, 0xA0, 0x00,
+						0x0F, 0x84, 0x67, 0x02, 0x00, 0x00,
+						0x8B, 0x8D, 0x0C, 0xFE, 0xFF, 0xFF,
+						0x8B, 0x41, 0x12,
+						0x50,
+						0x6A, 0x04};
+		vDataList.push_back( Data(0x940002, 33, bytes7) );
+
+		if (!pGameOptionsEx->bSpellsUnvoicedConfig) {
+			//4. identical to #2 of bSpellsUnvoicedConfig
+
+			//push ecx
+			//mov edx,dword ptr ss:[ebp+8]
+			//push edx
+			//mov eax,dword ptr ss:[ebp-1F4]
+			//push eax
+			//call
+			char bytes8[] = {0x51,
+							0x8B, 0x55, 0x08,
+							0x52,
+							0x8B, 0x85, 0x0C, 0xFE, 0xFF, 0xFF,
+							0x50,
+							0xE8};
+			vDataList.push_back( Data(0x93FCC4, 13, bytes8) );
+
+			//CALL address
+			void* ptr = (void*)CCreatureObject_DoSpellCasting_GetGenderLetter;
+			DWORD address = (DWORD)ptr - 5  - 0x93FCD0;
+			char* bytes9 = (char*)&address;
+			vDataList.push_back( Data(0x93FCD1, 4, bytes9) );
+
+			//push eax
+			//jmp 93FD64
+			//nop
+			char bytes10[] = {0x50,
+							0xE9, 0x89, 0x00, 0x00, 0x00,
+							0x90};
+			vDataList.push_back( Data(0x93FCD5, 7, bytes10) );
+		}
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bSpellsUnvoicedConfig) {
 		//1. CCreatureObject::Spell() - check if casting allowed
 

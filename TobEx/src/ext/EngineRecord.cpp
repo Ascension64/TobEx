@@ -44,7 +44,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 
 	if (this->bHighLevelAbility == FALSE) {
 		scroll.nValues = MageBookSpells.GetCount() / 5;
-		if (scroll.nValues % 5) scroll.nValues++;
+		if (MageBookSpells.GetCount() % 5) scroll.nValues++;
 		scroll.nRows = 5;
 	}
 

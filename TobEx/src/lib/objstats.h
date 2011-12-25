@@ -348,7 +348,7 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	short translucent; //b8h, TRANSLUCENT (60)
 	short encumberance; //bah, ENCUMBERANCE (71)
 	short missileToHitBonus; //bch, MISSILETHAC0BONUS (72)
-	short magicResistance; //beh, MAGICDAMAGERESISTANCE (73)
+	short resistMagicDamage; //beh, MAGICDAMAGERESISTANCE (73)
 	short resistPoison; //c0h, RESISTPOISON (74)
 	int doNotJump; //c2h, DONOTJUMP, i.e. will not jump coordinates to search map allowable position
 	int auraCleansing; //c6h, AURACLEANSING
@@ -498,7 +498,7 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	int GetStat(short nOpcode);
 	char GetSubclassLevel(char nClass, char nSubclass);
 	short GetMeanLevel(char nClass);
-	void MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize);
+	void MarshalTemplate(CDerivedStatsTemplate** ppcdst, int* pnSize);
 	void UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize);
 	char GetEffectiveClericLevel(unsigned char nClass);
 	char GetEffectiveMageLevel(unsigned char nClass);
@@ -563,7 +563,7 @@ extern void (CDerivedStats::*CDerivedStats_LimitStats)();
 extern int (CDerivedStats::*CDerivedStats_GetStat)(short);
 extern char (CDerivedStats::*CDerivedStats_GetSubclassLevel)(char, char);
 extern short (CDerivedStats::*CDerivedStats_GetMeanLevel)(char nClass);
-extern void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*);
+extern void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate**, int*);
 extern void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int);
 extern char (CDerivedStats::*CDerivedStats_GetEffectiveClericLevel)(unsigned char);
 extern char (CDerivedStats::*CDerivedStats_GetEffectiveMageLevel)(unsigned char);

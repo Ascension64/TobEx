@@ -23,8 +23,6 @@ struct CGameOptionsEx {
 	BOOL bDebugRestoreCombatInfoText;
 	BOOL bDebugVerbose;
 
-	BOOL bDlgInstantVars;
-
 	BOOL bEffApplyConcCheckDamage;
 	BOOL bEffApplyEffItemFix;
 	BOOL bEffApplyEffItemtypeFix;
@@ -114,6 +112,7 @@ struct CGameOptionsEx {
 	BOOL bSoundExternWalkSounds;
 	BOOL bSoundSoundsetSubtitles;
 
+	BOOL bSpellsCastingFix;
 	BOOL bSpellsUnvoicedConfig;
 	BOOL bSpellsTargetInvisConfig;
 

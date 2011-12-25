@@ -56,7 +56,7 @@ public:
 	virtual void PrintEffectText(CCreatureObject& creTarget); //v20
 	virtual void PrintEffectTextOnApply(CCreatureObject& creTarget); //v28
 
-	void PlayHitSound(int nDamageType, CCreatureObject& creTarget);
+	void PlayHitSound(unsigned int nDamageType, CCreatureObject& creTarget);
 };
 
 extern void (CEffectDamage::*CEffectDamage_Deconstruct)();
@@ -67,7 +67,7 @@ extern BOOL (CEffectDamage::*CEffectDamage_CheckNotSaved)(CCreatureObject&, char
 extern BOOL (CEffectDamage::*CEffectDamage_IgnoreLevelCheck)();
 extern void (CEffectDamage::*CEffectDamage_PrintEffectText)(CCreatureObject&);
 extern void (CEffectDamage::*CEffectDamage_PrintEffectTextOnApply)(CCreatureObject&);
-extern void (CEffectDamage::*CEffectDamage_PlayHitSound)(int, CCreatureObject&);
+extern void (CEffectDamage::*CEffectDamage_PlayHitSound)(unsigned int, CCreatureObject&);
 
 //CEffectInstantDeath
 #define EFFECTINSTANTDEATH_TYPE_ACID			0x000

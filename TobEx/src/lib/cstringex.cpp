@@ -8,8 +8,8 @@ extern IECString& (IECString::*IECString_Construct_2LPCSTR_int)(LPCSTR, int) =
 	SetFP(static_cast<IECString& (IECString::*)(LPCSTR, int)>							(&IECString::Construct),				0xA4D0A9);
 extern IECString& (IECString::*IECString_Construct_2LPCWSTR_int)(LPCWSTR, int) =
 	SetFP(static_cast<IECString& (IECString::*)(LPCWSTR, int)>							(&IECString::Construct),				0xA4D0DB);
-extern const IECString& (IECString::*IECString_OpEq_TCHAR)(TCHAR) =
-	SetFP(static_cast<const IECString& (IECString::*)(TCHAR)>							(&IECString::OpEq),						0xA4D124);
+extern const IECString& (IECString::*IECString_OpAssign_TCHAR)(TCHAR) =
+	SetFP(static_cast<const IECString& (IECString::*)(TCHAR)>							(&IECString::OpAssign),					0xA4D124);
 extern IECString (AFXAPI *IECString_OpAdd_IECString_TCHAR)(const IECString&, TCHAR) =
 	SetFP(static_cast<IECString (AFXAPI *)(const IECString&, TCHAR)>					(&IECString_OpAdd),						0xA4D139);
 extern IECString (AFXAPI *IECString_OpAdd_TCHAR_IECString)(TCHAR, const IECString&) =
@@ -79,12 +79,12 @@ IECString& (IECString::*IECString_Construct_1LPCSTR)(LPCSTR) =
 	SetFP(static_cast<IECString& (IECString::*)(LPCSTR)>								(&IECString::Construct),				0xA5093B);
 IECString& (IECString::*IECString_Construct_1LPCWSTR)(LPCWSTR) =
 	SetFP(static_cast<IECString& (IECString::*)(LPCWSTR)>								(&IECString::Construct),				0xA5098D);
-const IECString& (IECString::*IECString_OpEq_CString)(const IECString&) =
-	SetFP(static_cast<const IECString& (IECString::*)(const IECString&)>				(&IECString::OpEq),						0xA50A06);
-const IECString& (IECString::*IECString_OpEq_LPCSTR)(LPCSTR) =
-	SetFP(static_cast<const IECString& (IECString::*)(LPCSTR)>							(&IECString::OpEq),						0xA50A56);
-const IECString& (IECString::*IECString_OpEq_LPCWSTR)(LPCWSTR) =
-	SetFP(static_cast<const IECString& (IECString::*)(LPCWSTR)>							(&IECString::OpEq),						0xA50A7D);
+const IECString& (IECString::*IECString_OpAssign_CString)(const IECString&) =
+	SetFP(static_cast<const IECString& (IECString::*)(const IECString&)>				(&IECString::OpAssign),					0xA50A06);
+const IECString& (IECString::*IECString_OpAssign_LPCSTR)(LPCSTR) =
+	SetFP(static_cast<const IECString& (IECString::*)(LPCSTR)>							(&IECString::OpAssign),					0xA50A56);
+const IECString& (IECString::*IECString_OpAssign_LPCWSTR)(LPCWSTR) =
+	SetFP(static_cast<const IECString& (IECString::*)(LPCWSTR)>							(&IECString::OpAssign),					0xA50A7D);
 IECString (AFXAPI *IECString_OpAdd_CString_CString)(const IECString&, const IECString&) =
 	SetFP(static_cast<IECString (AFXAPI *)(const IECString&, const IECString&)>			(&IECString_OpAdd),						0xA50AFC);
 IECString (AFXAPI *IECString_OpAdd_CString_LPCTSTR)(const IECString&, LPCTSTR) =
@@ -131,7 +131,7 @@ void (IECString::*IECString_OemToAnsi)() =
 IECString::IECString(TCHAR ch, int nRepeat)									{ (this->*IECString_Construct_2TCHAR_int)(ch, nRepeat); }
 IECString::IECString(LPCSTR lpch, int nLength)								{ (this->*IECString_Construct_2LPCSTR_int)(lpch, nLength); }
 IECString::IECString(LPCWSTR lpch, int nLength)								{ (this->*IECString_Construct_2LPCWSTR_int)(lpch, nLength); }
-const IECString& IECString::operator=(TCHAR ch)								{ return (this->*IECString_OpEq_TCHAR)(ch); }
+const IECString& IECString::operator=(TCHAR ch)								{ return (this->*IECString_OpAssign_TCHAR)(ch); }
 IECString AFXAPI operator+(const IECString& string, TCHAR ch)				{ return (*IECString_OpAdd_IECString_TCHAR)(string, ch); }
 IECString AFXAPI operator+(TCHAR ch, const IECString& string)				{ return (*IECString_OpAdd_TCHAR_IECString)(ch, string); }
 int IECString::Delete(int nIndex, int nCount)								{ return (this->*IECString_Delete)(nIndex, nCount); }
@@ -167,9 +167,9 @@ void IECString::Empty()															{ return (this->*IECString_Empty)(); }
 IECString::~IECString()															{ (this->*IECString_Deconstruct)(); }
 IECString::IECString(LPCSTR lpsz)												{ (this->*IECString_Construct_1LPCSTR)(lpsz); }
 IECString::IECString(LPCWSTR lpsz)												{ (this->*IECString_Construct_1LPCWSTR)(lpsz); }
-const IECString& IECString::operator=(const IECString& stringSrc)				{ return (this->*IECString_OpEq_CString)(stringSrc); }
-const IECString& IECString::operator=(LPCSTR lpsz)								{ return (this->*IECString_OpEq_LPCSTR)(lpsz); }
-const IECString& IECString::operator=(LPCWSTR lpsz)								{ return (this->*IECString_OpEq_LPCWSTR)(lpsz); }
+const IECString& IECString::operator=(const IECString& stringSrc)				{ return (this->*IECString_OpAssign_CString)(stringSrc); }
+const IECString& IECString::operator=(LPCSTR lpsz)								{ return (this->*IECString_OpAssign_LPCSTR)(lpsz); }
+const IECString& IECString::operator=(LPCWSTR lpsz)								{ return (this->*IECString_OpAssign_LPCWSTR)(lpsz); }
 IECString AFXAPI operator+(const IECString& string1, const IECString& string2)	{ return (*IECString_OpAdd_CString_CString)(string1, string2); }
 IECString AFXAPI operator+(const IECString& string, LPCTSTR lpsz)				{ return (*IECString_OpAdd_CString_LPCTSTR)(string, lpsz); }
 IECString AFXAPI operator+(LPCTSTR lpsz, const IECString& string)				{ return (*IECString_OpAdd_LPCTSTR_CString)(lpsz, string); }

@@ -20,15 +20,18 @@ const char ALIGN_NEUTRAL_MASK		= 0x20;
 const char ALIGN_CHAOTIC_MASK		= 0x30;
 
 //ACTION.IDS
-const short ACTION_SET_GLOBAL			= 30;
-const short ACTION_SPELL				= 31;
-const short ACTION_SPELL_POINT			= 95;
-const short ACTION_INCREMENT_GLOBAL		= 109;
-const short ACTION_BREAK_INSTANTS		= 178;
-const short ACTION_SPELL_NO_DEC			= 191;
-const short ACTOIN_SPELL_POINT_NO_DEC	= 192;
-const short ACTION_SG					= 307;
-const short ACTION_LOSE_GAME			= 352; //new in TobEx
+const short ACTION_SET_GLOBAL				= 30;
+const short ACTION_SPELL					= 31;
+const short ACTION_SPELL_POINT				= 95;
+const short ACTION_INCREMENT_GLOBAL			= 109;
+const short ACTION_BREAK_INSTANTS			= 178;
+const short ACTION_SPELL_NO_DEC				= 191;
+const short ACTOIN_SPELL_POINT_NO_DEC		= 192;
+const short ACTION_SG						= 307;
+const short ACTION_LOSE_GAME				= 352; //new in TobEx
+const short ACTION_DIALOG_SET_GLOBAL		= 353; //new in TobEx
+const short ACTION_DIALOG_INCREMENT_GLOBAL	= 354; //new in TobEx
+const short ACTION_DIALOG_SG				= 355; //new in TobEx
 
 //CLASS.IDS
 const unsigned char CLASS_ANY					= 0;
@@ -54,19 +57,19 @@ const unsigned char CLASS_SORCERER				= 19;
 const unsigned char CLASS_MONK					= 20;
 
 //DMGTYPE.IDS
-const unsigned int DAMAGETYPE_CRUSHING		= 0x0000;
-const unsigned int DAMAGETYPE_ACID			= 0x0001;
-const unsigned int DAMAGETYPE_COLD			= 0x0002;
-const unsigned int DAMAGETYPE_ELECTRICITY	= 0x0004;
-const unsigned int DAMAGETYPE_FIRE			= 0x0008;
-const unsigned int DAMAGETYPE_PIERCING		= 0x0010;
-const unsigned int DAMAGETYPE_POISON		= 0x0020;
-const unsigned int DAMAGETYPE_MAGIC			= 0x0040;
-const unsigned int DAMAGETYPE_MISSILE		= 0x0080;
-const unsigned int DAMAGETYPE_SLASHING		= 0x0100;
-const unsigned int DAMAGETYPE_MAGICFIRE		= 0x0200;
-const unsigned int DAMAGETYPE_MAGICCOLD		= 0x0400;
-const unsigned int DAMAGETYPE_STUNNING		= 0x0800;
+const unsigned int DAMAGETYPE_CRUSHING		= 0x00000000;
+const unsigned int DAMAGETYPE_ACID			= 0x00010000;
+const unsigned int DAMAGETYPE_COLD			= 0x00020000;
+const unsigned int DAMAGETYPE_ELECTRICITY	= 0x00040000;
+const unsigned int DAMAGETYPE_FIRE			= 0x00080000;
+const unsigned int DAMAGETYPE_PIERCING		= 0x00100000;
+const unsigned int DAMAGETYPE_POISON		= 0x00200000;
+const unsigned int DAMAGETYPE_MAGIC			= 0x00400000;
+const unsigned int DAMAGETYPE_MISSILE		= 0x00800000;
+const unsigned int DAMAGETYPE_SLASHING		= 0x01000000;
+const unsigned int DAMAGETYPE_MAGICFIRE		= 0x02000000;
+const unsigned int DAMAGETYPE_MAGICCOLD		= 0x04000000;
+const unsigned int DAMAGETYPE_STUNNING		= 0x08000000;
 
 //EA.IDS
 const unsigned char EA_INANIMATE		= 1;

@@ -31,6 +31,7 @@ BOOL __stdcall CCreatureObject_Spell_IsOverrideInvisible(CCreatureObject& creSou
 BOOL __stdcall CCreatureObject_IsDeadInFrontVerticalList(CCreatureObject& cre);
 BOOL __stdcall CCreatureObject_Spell_IsOverrideSilence(CCreatureObject& creSource);
 LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject& creSource, ResSplContainer& resSpell, SplFileAbility& ability);
+short __stdcall CCreatureObject_DoSpellCasting_GetCastingSpeed(CCreatureObject& creSource, SplFileAbility& ability);
 BOOL __stdcall CCreatureObject_UseItem_CannotTargetInvisible(CCreatureObject& creSource, CCreatureObject& creTarget);
 void __stdcall CCreatureObject_UseItem_OverrideAnimation(CCreatureObject& creSource);
 

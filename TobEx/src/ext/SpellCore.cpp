@@ -17,11 +17,11 @@ CEffect& DETOUR_ResSplContainer::DETOUR_GetAbilityEffect(int nAbilityIdx, int nE
 			&creSource != NULL &&
 			creSource.GetType() == CGAMEOBJECT_TYPE_CREATURE) {
 
-			short wDamageType = eff.effect.nParam2 >> 16;
+			unsigned int nDamageType = eff.effect.nParam2 & 0xFFFF0000;
 			int nDamageBehavior = eff.effect.nParam2 & 0xFFFF;
 
 			if (nDamageBehavior == EFFECTDAMAGE_BEHAVIOR_NORMAL) {
-				switch (wDamageType) {
+				switch (nDamageType) {
 				case DAMAGETYPE_ACID:
 					eff.effect.nParam3 = creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_ACIDDAMAGEBONUS);
 					break;

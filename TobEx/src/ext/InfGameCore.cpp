@@ -32,8 +32,9 @@ void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)() =
 	SetFP(static_cast<void (CInfGame::*)()>							(&CInfGame::SetLoseCutscene),		0x6AE3E0);
 
 CRuleTables& DETOUR_CRuleTables::DETOUR_Construct() {
-	pRuleEx = new CRuleTablesEx();
-	return (this->*Tramp_CRuleTables_Construct)();
+	CRuleTables& rule = (this->*Tramp_CRuleTables_Construct)();
+	pRuleEx = new CRuleTablesEx(rule);
+	return rule;	
 }
 
 void DETOUR_CRuleTables::DETOUR_Deconstruct() {
@@ -167,7 +168,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 		CServerStore store;
 
 		if (!g_pChitin->cNetwork.bSessionHosting) {
-			store.Unmarshal(rItem);
+			store.Unmarshal(rBag);
 			BOOL bStoreValid = store.bUnmarshaled && store.m_header == "STORV1.0" ? TRUE : FALSE;
 			if (bStoreValid == FALSE) {
 				bool bFailed = !g_pChitin->BaldurMessageHandler.RequestHostFile(rBag.FormatToString(), CRES_TYPE_STO, TRUE, TRUE, true);

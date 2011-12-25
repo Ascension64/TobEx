@@ -65,7 +65,7 @@ extern void (CDerivedStats::*Tramp_CDerivedStats_ClearStats)();
 extern CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_OpAdd)(CDerivedStats&);
 extern void (CDerivedStats::*Tramp_CDerivedStats_LimitStats)();
 extern int (CDerivedStats::*Tramp_CDerivedStats_GetStat)(short);
-extern void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate*, int*);
+extern void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate**, int*);
 extern void (CDerivedStats::*Tramp_CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int);
 extern void (CDerivedStats::*Tramp_CDerivedStats_Deconstruct)();
 
@@ -84,7 +84,7 @@ public:
 	CDerivedStats& DETOUR_OpAdd(CDerivedStats& cds);
 	void DETOUR_LimitStats();
 	int DETOUR_GetStat(short nOpcode);
-	void DETOUR_MarshalTemplate(CDerivedStatsTemplate* pcdst, int* pnSize);
+	void DETOUR_MarshalTemplate(CDerivedStatsTemplate** ppcdst, int* pnSize);
 	void DETOUR_UnmarshalTemplate(CDerivedStatsTemplate& cdst, int nSize);
 	void DETOUR_Deconstruct();
 };

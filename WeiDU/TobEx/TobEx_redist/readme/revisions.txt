@@ -1,3 +1,7 @@
+Beta 0023
+---------
+-Class/structure updates
+
 Beta 0022
 ---------
 -Assertion updates

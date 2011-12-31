@@ -402,7 +402,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			pCrePuppet->m_bRemoveFromArea = TRUE;
 			nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(ePuppet, THREAD_ASYNCH, INFINITE);
 		}
-		creTarget.u36d0 = TRUE;
+		creTarget.m_bForceRefresh = TRUE;
 	}
 
 	if (nDamageType == DAMAGETYPE_POISON) {

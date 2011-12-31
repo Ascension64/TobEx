@@ -67,6 +67,218 @@ void ApplyPatch(Data& d) {
 	return;
 }
 
+void InitCustomPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataList) {
+	const LPCSTR szFile = "TobEx_ini/custom.patch";
+	HANDLE hFile = (HANDLE)OpenFile(szFile, NULL, OF_READ);
+	if (hFile) {
+		DWORD dwFileSize = GetFileSize(hFile, NULL);
+		DWORD dwBytesRead;
+		if (dwFileSize > 0) {
+			LPCSTR szBuf = (LPCSTR)malloc(dwFileSize);
+			if (ReadFile(hFile, &szBuf, dwFileSize, &dwBytesRead, NULL)) {
+				CString sBuf(szBuf);
+
+				CString sName;
+				bool bInName = false;
+				bool bEnabled = false;
+				bool bHasAddress = false;
+				DWORD dwAddress = 0;
+				char* ptrSource = NULL;
+				char* ptrTarget = NULL;
+
+				int nIndex = 0;
+				while (!sBuf.IsEmpty()) {
+					CString sLine;
+					if (sBuf.Find('\n') == -1) {
+						//last line
+						sLine = sBuf;
+						sBuf.Empty();
+					} else {
+						sLine = sBuf.Left(sBuf.Find('\n'));
+						sBuf = sBuf.Right(sBuf.GetLength() - sBuf.Find('\n') - 1);
+					}
+
+					sLine.TrimLeft();
+					sLine.TrimRight();
+					console.write("parsing %s", 1, (LPCTSTR)sLine);
+
+					//remove comments
+					if (sLine.Find("//") != -1) sLine = sLine.Left(sLine.Find("//"));
+					if (sLine.IsEmpty()) continue;
+					
+					//name
+					if (sLine.GetAt(0) == '[') {
+						sLine.Right(sLine.GetLength() - 1);
+						if (sLine.Find(']') == -1) {
+							console.write("missing end brace ] in name. Compensating...\n");
+							sName = sLine;
+						} else {
+							sName = sLine.Left(sLine.Find(']'));
+						}
+						sName.TrimLeft();
+						sName.TrimRight();
+						if (!sName.IsEmpty()) {
+							console.write("name = %s", 1, (LPCTSTR)sName);
+							bInName = true;
+							bEnabled = false;
+							bHasAddress = false;
+		
+							if (!pvDataList->empty()) {
+								pvPatchList->push_back( Patch(*pvDataList) );
+								pvDataList->clear();
+							}
+						} else {
+							console.write("no name in braces\n");
+						}
+						continue;
+					}
+
+					//field
+					if (sLine.Find('=', 1) != -1) {
+						if (!bInName) {
+							console.write("field found before name\n");
+							continue;
+						}
+
+						int nIndexEquals = sLine.Find('=');
+						CString sLeft = sLine.Left(nIndexEquals);
+						sLeft.TrimRight();
+
+						CString sRight = sLine.Right(sLine.GetLength() - nIndexEquals - 1);
+						sRight.TrimLeft();
+
+						if (sLeft.CompareNoCase("Enabled")) {
+							bEnabled = (bool)atoi(sRight.GetBuffer(0));
+						}
+
+						if (sLeft.CompareNoCase("Address")) {
+							if (sRight.GetAt(0) == 'v' ||
+								sRight.GetAt(0) == 'V') {
+								//virtual address
+								dwAddress = 0;
+							}
+							else if (sRight.GetAt(0) == 'b' ||
+								sRight.GetAt(0) == 'B') {
+								//base address
+								dwAddress = 0x400000;
+							} else {
+								console.write("no address specifier\n");
+								continue;
+							}
+							sRight = sRight.Right(sRight.GetLength() - 1);
+
+							DWORD dwOffset;
+							sscanf_s(sRight.GetBuffer(0), "%x", &dwOffset);
+							dwAddress += dwOffset;
+
+							continue;
+						}
+
+						if (sLeft.CompareNoCase("Source")) {
+							if (!bHasAddress) {
+								console.write("source field found before memory address specified\n");
+								continue;
+							}
+							if (!bEnabled) continue;
+							if (ptrSource != NULL) {
+								console.write("source bytes already specified. Compensating...\n");
+								free(ptrSource);
+								ptrSource = NULL;
+							}
+
+							DWORD dwArraySize = sRight.GetLength() / 2;
+							if (dwArraySize > 0) {
+								char* bytes = (char*)malloc(dwArraySize);
+								int i = 0;
+								while (i < dwArraySize) {
+									sscanf_s(sRight.Left(2).GetBuffer(0), "%x", bytes + i);
+									sRight = sRight.Right(sRight.GetLength() - 2);
+									i++;
+								}
+								ptrSource = bytes;
+							} else {
+								console.write("source patch size is zero\n");
+							}
+							continue;
+						}
+
+						if (sLeft.CompareNoCase("Target")) {
+							if (!bHasAddress) {
+								console.write("target field found before memory address specified\n");
+								continue;
+							}
+							if (!bEnabled) continue;
+							//if (ptrSource == NULL) {
+							//	console.write("target field bound before source bytes specified\n");
+							//	continue;
+							//}
+							if (ptrTarget != NULL) {
+								console.write("target bytes already specified. Compensating...\n");
+								free(ptrTarget);
+								ptrSource = NULL;
+							}
+
+							DWORD dwArraySize = sRight.GetLength() / 2;
+							if (dwArraySize > 0) {
+								char* bytes = (char*)malloc(dwArraySize);
+								for (int i = 0; i < dwArraySize; i++) {
+									sscanf_s(sRight.Left(2).GetBuffer(0), "%x", bytes + i);
+									sRight = sRight.Right(sRight.GetLength() - 2);
+								}
+								ptrTarget = bytes;
+
+								pvDataList->push_back( Data(dwAddress, dwArraySize, ptrTarget) );
+
+								bHasAddress = false;
+								if (ptrSource != NULL) {
+									free(ptrSource);
+									ptrSource = NULL;
+								}
+								if (ptrTarget != NULL) {
+									free(ptrTarget);
+									ptrTarget = NULL;
+								}
+
+							} else {
+								console.write("target patch size is zero\n");
+							}
+							continue;
+						}
+						
+						console.write("unrecognised field\n");
+						continue;
+					}
+
+				}
+
+				//clean up
+				if (!pvDataList->empty()) {
+					pvPatchList->push_back( Patch(*pvDataList) );
+					pvDataList->clear();
+				}
+
+				if (bHasAddress) {
+					console.write("reached EOF before source/target bytes obtained\n");
+				}
+				if (ptrSource != NULL) {
+					console.write("reached EOF before target bytes obtained\n");
+					free(ptrSource);
+					ptrSource = NULL;
+				}
+				if (ptrTarget != NULL) {
+					console.write("reached EOF before target bytes cleared. This shouldn't happen!\n");
+					free(ptrTarget);
+					ptrTarget = NULL;
+				}
+
+			} else console.write("unable to read from %s\n", 1, szFile);
+		} else console.write("%s empty\n", 1, szFile);
+		CloseHandle(hFile);
+	} else console.write("%s not found\n", 1, szFile);
+
+	return;
+}
+
 void InitPatches() {
 	std::vector<Patch> vPatchList;
 	std::vector<Patch>::iterator vPatchItr;
@@ -2313,12 +2525,13 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	InitCustomPatches(&vPatchList, &vDataList);
+
 	for (vPatchItr = vPatchList.begin(); vPatchItr != vPatchList.end(); vPatchItr++) {
 		vDataList = vPatchItr->GetData();
 		for_each(vDataList.begin(), vDataList.end(), ApplyPatch);
 		vDataList.clear();
 	}
 	
-
 	return;
 }

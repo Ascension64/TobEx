@@ -253,7 +253,7 @@ public:
 	//Triggers 0x0*** are checked here with == only
 	//Triggers 0x4*** are checked more sophisticatedly
 
-	int u28e; //countup, time free (i.e. not mazed/imprisoned)
+	int m_nTimeFree; //28eh, countup, time free (i.e. not mazed/imprisoned)
 	int u292; //countup timer
 	CTimerList m_timers; //296h
 	short nCurrResponseIdx; //2b2h, gets Response.u2

@@ -354,21 +354,22 @@ f area_forest
 //0xAAB6E8, eh, unsigned char, pad
 //0xAAB704, ch
 //0xAAB720, ch (CMessagePrepareDialogue)
-//0xAAB758, ch (CMessageSetCreatureAnimationColors)
+//0xAAB758, ch (CMessageSetAnimColorRange)
 //0xAAB7C8, ch
 //0xAAB81C, 10h, DW
 //0xAAB838, 14h, ResRef 
-//0xAAB86C, 44h, IECPtrList, IECPtrList (constructor: 0x5BE891 (pSprite, enum, enum))
+//0xAAB86C, 44h, CColorPalList, CColorRgbList (constructor: 0x5BE891 (pSprite, enum, enum)) (CMessageSetAnimColorsFromList)
 //0xAAB888, 12h, short wNumItems, CItem* pItemArray (CMessageUpdateContainerItems)
 //0xAAB8A4, 16h, DW, W, W, pad?, unsigned char (constructor: 0x5C353B (pSprite, enum, enum))
 //0xAAB8C0, 1eh, W (projIdx), Enum, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
 //0xAAB8DC, 24h, W, DW* , W, DW, DW, DW, CString
 //0xAAB8F8, b4h, CCreInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
 //! 0xAAB914 CMessageSpriteUpdate
-//0xAAB930, 28h, IECPtrList, constructor: 0x5E998E
+//0xAAB930, 28h, CItemPropertiesList, constructor: 0x5E998E
 //0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
 //0xAAB9B8, eh, bool bNonPausingDialogue, pad (CMessageSetNonPausingDialogue)
 //0xAAB9D4, 14h, ResRef
+//0xAAB9F0, 28h, CObjectList (CMessageSetObjectProtections)
 
 
 

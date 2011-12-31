@@ -9,7 +9,7 @@
 #include "pathfind.h"
 #include "objcore.h"
 
-typedef IECPtrList CPtrListVefComponent; //AAD00C
+typedef IECPtrList CVefComponentList; //AAD00C
 
 struct ResVvcContainer { //Size 10h
 	BOOL bLoaded;
@@ -42,8 +42,8 @@ public:
 	long long ua0;*/
 
 	CEnumList m_VidCells; //202h, contains CVisualEffectVidCell enums
-	CPtrListVefComponent m_VefComponents; //21eh, VefFileComponent1 and VefFileComponent2
-	CPtrListVefComponent m_VefComponents2; //23ah, unused
+	CVefComponentList m_VefComponents; //21eh, VefFileComponent1 and VefFileComponent2
+	CVefComponentList m_VefComponents2; //23ah, unused
 	POINT ptSource; //256h, directly from constructor
 	Enum eOwner; //25eh
 	POINT u262; //x * 2^16 and (y*4/3) * 2^16
@@ -56,7 +56,7 @@ public:
 		
 	//this is used to DisplayAllBams()
 	//when one Vvc in VefVidCellList terminates due to end of duration, a new one is created based on this
-	CPtrListKeyTableEntry* u296;
+	CKeyTableEntryList* u296;
 	POSITION* u29a; //gets the m_pNodeHead of u296
 	BOOL u29e; //bHasPosition (1 if u29a has a position)
 

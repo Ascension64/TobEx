@@ -28,6 +28,8 @@
 #define CDERIVEDSTATS_BUTTONDISABLESPL_INNATE	2
 
 typedef IECPtrList COnAttackEffList; //AA657C
+typedef IECPtrList CColorPalList; //AA6594
+typedef IECPtrList CColorRgbList; //AA6588
 
 struct CConditionalSpell { //Size 204h
 	void* operator new (size_t size);
@@ -541,8 +543,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 
 	SpellLevelDec SplTrapLvl[10]; //67ch
 	IECPtrList SplSequencer; //6cch, AA65AC
-	IECPtrList ColorListPal; //6e8h, AA6594, item color objects of 0x2?
-	IECPtrList ColorListRgb; //704h, AA6588
+	CColorPalList ColorListPal; //6e8h, item color objects of 0x2?
+	CColorRgbList ColorListRgb; //704h, size 0x8 objects (byte nColorGroup, byte nGroupRangeId, ARGB rgbColor, byte n, byte pad)
 	CreFileMemSpellLevel MemInfoMage[9]; //720h
 	CreFileMemSpellLevel MemInfoPriest[7]; //7b0h
 

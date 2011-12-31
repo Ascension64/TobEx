@@ -272,7 +272,7 @@ public:
 	POINT ptGoreCentre; //2e6a
 	bool u2e72; //assoc gore particle
 	char u2e73;
-	BOOL m_bIsAnimationMovable; //2e74h, 0 = static animation (ANIMATE.IDS values < 0x1000), set to 1 on dying
+	BOOL m_bIsAnimationMovable; //2e74h, 0 = static (ANIMATE.IDS values < 0x1000) or HELD, set to 1 on dying
 	int u2e78;
 	char u2e7c; //3
 	unsigned char m_nMirrorImages; //2e7dh, immune to poison and display special effect icon?
@@ -308,8 +308,8 @@ public:
 	int u33a8;
 	short wCurrentSequenceSimplified; //33ach, used in animation sound selection (see animation sound 2DA files for values)
 	POINT u33ae; //linked to coordinates
-	POINT u33b6;
-	POINT u33be;
+	POINT ptDistanceToMove; //33b6h, towards target at 0x33beh, set on refresh
+	POINT ptTargetToMove; //33beh, next pathfinding node?
 	POINT ptBlur1; //33c6h, copied from 0x6 and 0xa
 	POINT ptBlur2; //33ceh, copied from above
 	int u33d6;
@@ -319,7 +319,7 @@ public:
 	short u33e4; //assoc with orientations
 	short wOrientGoal; //33e6h, orientation to get to
 	short wOrientInstant; //33e8h, instantaneous orientation
-	int* u33ea;
+	int* u33ea; //has to do with pathfinding and search requests
 	short u33ee;
 	CDwordList u33f0;
 	CDwordList u340c;
@@ -395,16 +395,16 @@ public:
 	short wRoundTimer; //36c6h, range 0-100, determines the x-coordinate of the pixel to select in RNDBASE*.BMP
 	int u36c8; //assoc actions (idle time?), ++ with NoAction()
 	int u36cc;
-	int u36d0; //1 = force refresh during Refresh()?
+	BOOL m_bForceRefresh; //36d0h, Refresh() despite nTimeFree % 15 == e % 15
 	char u36d4; //assoc actions
 	char u36d5;
 	BOOL m_bUsingLeftWeapon; //36d6h, assoc actions
 	short u36da;
 	BOOL m_bResetAnimationColors; //36dch
-	int u36e0; //set to 1 when Set Item Color effect used
-	int u36e4; //assoc with items
+	BOOL m_bForceSetAnimColors; //36e0h, set to 1 when Set Item Color effect used or when applying petrify colouring but only if animation uses color ranges
+	BOOL u36e4; //assoc with items
 	BOOL m_bRemoveFromArea; //36e8h
-	int u36ec;
+	BOOL m_bForceResetAnimation; //36ech
 	CSelectionCircle cscSelf; //36f0h
 	CSelectionCircle cscTarget; //3714h
 	Enum eTarget; //3738h, the target of actions?
@@ -443,7 +443,7 @@ public:
 	char rndDoWildMagic; //628Ah, 1D20, if 0, do wild magic
 	char u628b; //padding?
 	long u628c[2];
-	int u6294; //7fff
+	int m_nLargestCurrentHP; //6294h, set to largest current HP value obtained
 	BOOL m_bMoraleBroken; //6298h, contains char data
 	BOOL m_bInAttack; //629ch, in the middle of attack phase of a round
 	short u62a0; //assoc actions
@@ -459,8 +459,13 @@ public:
 	int nTicksLastRested; //63ach, base time to calculate fatigue = (nGameTime - 63ach) / (4 hours in ticks) - FATIGUE_BONUS
 	int m_bAllowBerserkStage2; //63b0h, updated every AIUpdateActions(), no actual berserk action unless STATE_BERSERK
 	short u63b4;
-	int u63b6; //related to constitution? used to subtract from current and max HP
-	int u63ba[6];
+	int m_nHPBonusPrev; //63b6h, on previous Refresh()
+	BOOL m_bConstructing; //63bah, TRUE only when object is still being constructed
+	int m_nWeight; //63beh, compared to total item weight
+	int u63c2;
+	int u63c6;
+	int m_nTicksLastRefresh; //63cah, gets nGameTime during refresh
+	BOOL m_bLevelUpAvailable; //63ceh
 	char u63d2[2];
 	int nUnselectableVariable; //63d4h
 	ResRef voiceset; //63d8h, from CRE entry in GAM file
@@ -470,14 +475,14 @@ public:
 	int u63ec;
 	int u63f0;
 	int u63f4;
-	int u63f8;
+	BOOL m_bSendOverlayMessages; //63f8h, associated with sending CMessageCreatureOverlay messages
 	short u63fc; //contains an actionOpcode (a dialog or escape area action?)
 	int u63fe; //assoc actions
 	int u6402; //assoc actions
 	int u6406; //timer
 	int u640a; //timer
 	short m_wPoisonTimer; //640eh, set to 100 on poison damage
-	short u6410;
+	short m_wDelayedRefreshCounter; //6410h, if using previous state, Refresh() will delay and increment this counter, next Refresh() will Refresh() the counter number of times (max 5)
 	BOOL bUseCurrentState; //6412h, 0 = uses prevState, 1 = uses currentState, set to 0 when refreshing repeating effects
 	short u6416;
 	int u6418;
@@ -488,7 +493,7 @@ public:
 	int u6444;
 	int u6448;
 	int u644c;
-	Enum u6450; //contains enum of CVisualEffect
+	Enum eVisualEffect; //6450h, contains enum of CVisualEffect
 	int u6454;
 	CQuickObjectList* pSelectSpellSpells; //6458h
 	CScript* pDreamScript; //645ch
@@ -497,15 +502,17 @@ public:
 	short u6528;
 	int u652a;
 	int m_nContingencyDelay; //652eh, a countdown timer set to 100, delay processing contingency triggers until 0
-	IECString sWeaponLeftToHitBonuses; //6532h
-	IECString sWeaponRightToHitBonuses; //6536h
-	IECString sWeaponLeftDamageBonuses; //653ah
-	IECString sWeaponRightDamageBonuses; //653eh
-	short u6542;
-	int u6544; //bitflag
-	CreFileMemSpellLevel memInfoWizardCopy[9]; //0x6548, copied from currentState after effect applied
-	CreFileMemSpellLevel memInfoPriestCopy[7]; //0x65d8, copied from currentState after effect applied
-	int u6648;
+	IECString m_sWeaponLeftToHitBonuses; //6532h
+	IECString m_sWeaponRightToHitBonuses; //6536h
+	IECString m_sWeaponLeftDamageBonuses; //653ah
+	IECString m_sWeaponRightDamageBonuses; //653eh
+
+	short m_wMvtRatePrev; //6542h, on last Refresh()
+	int m_nStateFlagsPrev; //6544h, on last Refresh()
+	CreFileMemSpellLevel m_MemInfoWizPrev[9]; //0x6548, on last Refresh()
+	CreFileMemSpellLevel m_MemInfoPrsPrev[7]; //0x65d8, on last Refresh()
+	BOOL m_bSavedStateOnce; //6648h, set to TRUE when the above is saved for the first time during Refresh()
+
 	bool m_bLevellingUp; //664ch, true when loading LevelUpPanel
 	char u664d; //padding?
 	int u664e;
@@ -517,7 +524,7 @@ public:
 	int u6696; //assoc actions
 	BOOL m_bLeavingArea; //669ah
 	Enum ePuppet; //669eh
-	int u66a2;
+	BOOL m_bAffectedByTimeStop; //66a2h, temporary use during Refresh() to set bForceRefresh
 	int u66a6;
 	int u66aa;
 	CEventMessageList m_EventMessages; //66aeh
@@ -539,9 +546,9 @@ public:
 	BOOL m_bEquippingItem; //674eh
 	char u6752; //default = 2a; if CRE name does not start with *, will put first character in here; inherits value from GAM (unknown above killXP(chapter), inherits from Actor2E (char)
 	char u6753;
-	int u6754;
-	int u6758;
-	int u675c;
+	int u6754; //m_nColorsPrev1, compared to cdsCurrent.ColorListRgb count
+	int u6758; //m_nColorsPrev2, compared to cdsCurrent.ColorListRgb count
+	int u675c; //m_nWeaponProtectionsPrev
 	int u6760;
 	int u6764;
 	int u6768;

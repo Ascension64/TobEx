@@ -34,7 +34,7 @@ const int CRES_TYPE_PRO = 0x3FD;
 const int CRES_TYPE_BIO = 0x3FE;
 const int CRES_TYPE_BAH = 0x44C; //compressed BAM?
 
-typedef IECPtrList CPtrListKeyTableEntry; //AB8E94
+typedef IECPtrList CKeyTableEntryList; //AB8E94
 
 struct KeyTableEntry;
 

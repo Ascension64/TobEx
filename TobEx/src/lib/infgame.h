@@ -387,7 +387,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		char uad; //padding?
 	} m_MultiplayerSettings; //1e46h
 
-	struct CRemoteGameMode { //Size 1Ch
+	struct CRemoteGameMode { //Size 18h
 	//Constructor: 0x5B0C30
 		int mode[6]; //0h, init to -1, set to 0x502 or 0x182
 	} m_CRemoteGameMode; //1ef4h
@@ -569,7 +569,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		int u4646; //Faster Blur
 	} m_GameOptions; //44c4h
 
-	struct CGameJournal { //Size 10h
+	struct CGameJournal { //Size 14h
 	//Constructor: 0x56FFD9
 		CPtrArray u0; //of IECPtrList AAA9A4s (11 of them)
 	} m_CGameJournal; //464ah

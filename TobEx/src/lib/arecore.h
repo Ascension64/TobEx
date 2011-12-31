@@ -192,7 +192,7 @@ struct CVisibilityMap { //Size 72h
 	CCriticalSection ua; //ah
 #endif
 	CSearchBitmap* pSearchMap; //2ah, associated search map
-	int u2e[15]; //array of enums
+	Enum u2e[15]; //array
 	int* u6a; //60h size object
 	int* u6e; //4h of 170h size object
 };

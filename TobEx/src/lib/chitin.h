@@ -266,8 +266,8 @@ public:
 		int uc;
 		int m_nActionTarget; //10h
 		char u14;
-		char u15;
-		int u16;
+		bool m_bCaptionOn; //15h
+		STRREF m_sCaption; //16h
 		char u1a;
 		char u1b;
 		char u1c;

@@ -1442,7 +1442,7 @@ BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	}
 
 	creTarget.m_bResetAnimationColors = TRUE;
-	creTarget.u36e0 = TRUE;
+	creTarget.m_bForceSetAnimColors = TRUE;
 	creTarget.u36e4 = TRUE;
 
 	bRefreshStats = TRUE;

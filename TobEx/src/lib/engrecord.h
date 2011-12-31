@@ -82,7 +82,7 @@ public:
 	int u1452; //character's previous level (on level-up)
 	int u1456;
 
-	struct NewSpell { //SIze 9h
+	struct NewSpell { //Size 9h
 		ResRef name; //0h
 		char level; //8h
 	} u145a[9];

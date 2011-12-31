@@ -72,26 +72,27 @@ const unsigned int DAMAGETYPE_MAGICCOLD		= 0x04000000;
 const unsigned int DAMAGETYPE_STUNNING		= 0x08000000;
 
 //EA.IDS
-const unsigned char EA_INANIMATE		= 1;
-const unsigned char EA_PC				= 2;
-const unsigned char EA_FAMILIAR			= 3;
-const unsigned char EA_ALLY				= 4;
-const unsigned char EA_CONTROLLED		= 5;
-const unsigned char EA_CHARMED			= 6;
-const unsigned char EA_CONTROLLEDCUTOFF = 15;
-const unsigned char EA_GOODBUTRED		= 28;
-const unsigned char EA_GOODBUTBLUE		= 29;
-const unsigned char EA_GOODCUTOFF		= 30;
-const unsigned char EA_NOTGOOD			= 31;
-const unsigned char EA_ANYTHING			= 126;
-const unsigned char EA_NEUTRAL			= 128;
-const unsigned char EA_GOODOREVIL		= 198;
-const unsigned char EA_NOTEVIL			= 199;
-const unsigned char EA_EVILCUTOFF		= 200;
-const unsigned char EA_EVILBUTGREEN		= 201;
-const unsigned char EA_EVILBUTBLUE		= 202;
-const unsigned char EA_SPECIFICGROUP	= 253;
-const unsigned char EA_ENEMY			= 255;
+const unsigned char EA_INANIMATE			= 1;
+const unsigned char EA_PC					= 2;
+const unsigned char EA_FAMILIAR				= 3;
+const unsigned char EA_ALLY					= 4;
+const unsigned char EA_CONTROLLED			= 5;
+const unsigned char EA_CHARMED				= 6;
+const unsigned char EA_CONTROLLEDFORCEADD	= 7; //force add to controlled objects list
+const unsigned char EA_CONTROLLEDCUTOFF		= 15;
+const unsigned char EA_GOODBUTRED			= 28;
+const unsigned char EA_GOODBUTBLUE			= 29;
+const unsigned char EA_GOODCUTOFF			= 30;
+const unsigned char EA_NOTGOOD				= 31;
+const unsigned char EA_ANYTHING				= 126;
+const unsigned char EA_NEUTRAL				= 128;
+const unsigned char EA_GOODOREVIL			= 198;
+const unsigned char EA_NOTEVIL				= 199;
+const unsigned char EA_EVILCUTOFF			= 200;
+const unsigned char EA_EVILBUTGREEN			= 201;
+const unsigned char EA_EVILBUTBLUE			= 202;
+const unsigned char EA_SPECIFICGROUP		= 253;
+const unsigned char EA_ENEMY				= 255;
 
 //Facing, Orientation
 const short OR_S		= 0;

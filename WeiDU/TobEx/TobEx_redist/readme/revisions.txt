@@ -1,6 +1,8 @@
 Beta 0023
 ---------
 -Class/structure updates
+-Added feature to apply custom user patches in the ./TobEx_ini/patch directory, see template.patch in that directory
+-Improved stability of hex patching code
 
 Beta 0022
 ---------

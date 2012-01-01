@@ -13,6 +13,9 @@ ACTION_IF NOT (FILE_EXISTS "TobEx_ini/TobExVer.txt") BEGIN
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/default_tweak.ini" "TobEx_ini/TobExTweak.ini"
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx_ini.txt" "TobEx_ini/TobEx_ini.txt"
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobExVer.txt" "TobEx_ini/TobExVer.txt"
+  
+  MKDIR "TobEx_ini/patch"
+  COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/patch" "TobEx_ini/patch"
 
   //ASCII 'TobEx.dll'
   OUTER_PATCH_SAVE orig_bytes_1 ~~ BEGIN
@@ -135,6 +138,9 @@ ELSE BEGIN
     COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/default_core.ini" "TobEx_ini/TobExCore.ini"
     COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx_ini.txt" "TobEx_ini/TobEx_ini.txt"
     COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobExVer.txt" "TobEx_ini/TobExVer.txt"
+
+    MKDIR "TobEx_ini/patch"
+    COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/patch" "TobEx_ini/patch"
 
   END
   ELSE BEGIN

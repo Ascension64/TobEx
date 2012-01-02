@@ -161,7 +161,7 @@ class CSound : CObject { //Size 6Ah
 public:
 	//AB9960
 
-	ResWavContainer u4;
+	ResWavContainer wav; //4h
 	BOOL bUsePosition; //14h, uses 24h
 	int nBufferSize; //18h
 	int nFrequency; //1ch (1/500 of Hz)

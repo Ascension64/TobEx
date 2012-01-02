@@ -418,7 +418,7 @@ struct VefFileComponent { //Size E0h
 
 	int type; //ch, 1 = load Vvc/Bam, 2 = CreateVisualEffect() from resref (Vef/Vvc/Bam), else = play sound in resref
 	ResRef resource; //10h, vvc/bam/wav
-	unsigned int dwFlags; //18h, bit0: sets uae of CVefVidCell (continuous cycles)
+	unsigned int dwFlags; //18h, bit0: multicycle, sets uae of CVefVidCell
 	int u1c[49]; //unmarshalled but unused?
 };
 

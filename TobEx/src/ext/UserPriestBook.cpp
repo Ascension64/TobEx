@@ -79,7 +79,7 @@ void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
 
 	if (threadVal == OBJECT_SUCCESS) {
 		int nValues = pCre->m_KnownSpellsPriest[pPriestSpell->currLevel].GetCount() / 4;
-		if (nValues % 4) nValues++;
+		if (pCre->m_KnownSpellsPriest[pPriestSpell->currLevel].GetCount() % 4) nValues++;
 		if (nValues < 6) {
 			CUIButtonPriestBook_KnownSpellOffset = 0;
 		} else {

@@ -75,7 +75,7 @@ Data::~Data() {
 	}
 }
 
-Data& Data::operator=(Data& d) {
+Data& Data::operator=(const Data& d) {
 	dwAddress = d.dwAddress;
 	nSize = d.nSize;
 
@@ -139,7 +139,7 @@ Patch::~Patch() {
 	}
 }
 
-Patch& Patch::operator=(Patch& p) {
+Patch& Patch::operator=(const Patch& p) {
 	vData.clear();
 	vData = p.vData;
 

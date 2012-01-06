@@ -19,7 +19,7 @@ public:
 	Data(DWORD address, SIZE_T size, char bytes[], char src[]);
 	~Data();
 
-	Data& operator=(Data& d);
+	Data& operator=(const Data& d);
 
 	DWORD GetAddress();
 	SIZE_T GetSize();
@@ -41,7 +41,7 @@ public:
 	Patch(std::vector<Data> vData, const char* sz);
 	~Patch();
 
-	Patch& operator=(Patch& p);
+	Patch& operator=(const Patch& p);
 
 	char* GetName();
 	std::vector<Data> GetData();

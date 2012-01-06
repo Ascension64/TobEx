@@ -3,6 +3,8 @@ Beta 0023
 -Class/structure updates
 -Added feature to apply custom user patches in the ./TobEx_ini/patch directory, see template.patch in that directory
 -Improved stability of hex patching code
+-Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
+-Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position
 
 Beta 0022
 ---------

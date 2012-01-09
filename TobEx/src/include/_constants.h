@@ -261,7 +261,7 @@
 //0xAA6E84, 14h, DW, W, W
 //0xAA6EBC, 10h, DW
 //0xAA6ED8, eh, unsigned char
-//0xAA6EF4, 18h, CString, POINT (CMessageMoveGlobal)
+//0xAA6EF4, 18h, CString sArea, POINT ptTarget (CMessageMoveGlobal)
 //0xAA6F10, 10h, unsigned char FadeDirection (0 = ToColor, 1 = FromColor), unsigned char (FadeAmountBlue - all negative, so FF is -1 each time), unsigned char (Green), unsigned char (Red) (CMessageScreenFade) - B61512 = targetBrightness
 //0xAA6F2C, eh, bool bOn, pad (CMessageSetSpawnPtState)
 //0xAA6F48, 14h, POINT pt (CMessageSpawnPtSpawn)

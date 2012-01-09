@@ -129,23 +129,31 @@ bool CRuleTables::GetContingencyConditionTexts(STRREF* pStrref, STRREF* pDescrip
 bool CRuleTables::GetContingencyTargetTexts(STRREF* pStrref, STRREF* pDescription, short wIndex) { return (this->*CRuleTables_GetContingencyTargetTexts)(pStrref, pDescription, wIndex); }
 ResRef CRuleTables::GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) { return (this->*CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex); }
 
+//CMoveAreasList
+void (CMoveAreasList::*CMoveAreasList_MoveAllTo)(CArea&) =
+	SetFP(static_cast<void (CMoveAreasList::*)(CArea&)>	(&CMoveAreasList::MoveAllTo),	0x5EFA6D);
+
+void CMoveAreasList::MoveAllTo(CArea& area) { return (this->*CMoveAreasList_MoveAllTo)(area); }
+
 //CInfGame
 int (CInfGame::*CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL) =
-	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),		0x68F35C);
+	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),			0x68F35C);
 void (CInfGame::*CInfGame_DemandServerStore)(ResRef&, BOOL) =
-	SetFP(static_cast<void (CInfGame::*)(ResRef&, BOOL)>			(&CInfGame::DemandServerStore),		0x69182E);
+	SetFP(static_cast<void (CInfGame::*)(ResRef&, BOOL)>			(&CInfGame::DemandServerStore),			0x69182E);
 void (CInfGame::*CInfGame_ReleaseServerStore)(ResRef&) =
-	SetFP(static_cast<void (CInfGame::*)(ResRef&)>					(&CInfGame::ReleaseServerStore),	0x691BC0);
+	SetFP(static_cast<void (CInfGame::*)(ResRef&)>					(&CInfGame::ReleaseServerStore),		0x691BC0);
 short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum) =
-	SetFP(static_cast<short (CInfGame::*)(Enum)>					(&CInfGame::GetPartyMemberSlot),	0x69410C);
+	SetFP(static_cast<short (CInfGame::*)(Enum)>					(&CInfGame::GetPartyMemberSlot),		0x69410C);
 CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString) =
-	SetFP(static_cast<CArea& (CInfGame::*)(IECString)>				(&CInfGame::GetLoadedArea),			0x69A7D4);
+	SetFP(static_cast<CArea& (CInfGame::*)(IECString)>				(&CInfGame::GetLoadedArea),				0x69A7D4);
 void (CInfGame::*CInfGame_AddExperienceParty)(int) =
-	SetFP(static_cast<void (CInfGame::*)(int)>						(&CInfGame::AddExperienceParty),	0x6A97C1);
+	SetFP(static_cast<void (CInfGame::*)(int)>						(&CInfGame::AddExperienceParty),		0x6A97C1);
 void (CInfGame::*CInfGame_SetLoseCutscene)() =
-	SetFP(static_cast<void (CInfGame::*)()>							(&CInfGame::SetLoseCutscene),		0x6AE3E0);
+	SetFP(static_cast<void (CInfGame::*)()>							(&CInfGame::SetLoseCutscene),			0x6AE3E0);
 void (CInfGame::*CInfGame_StorePartyLocations)(BOOL) =
-	SetFP(static_cast<void (CInfGame::*)(BOOL)>						(&CInfGame::StorePartyLocations),	0x6B7D93);
+	SetFP(static_cast<void (CInfGame::*)(BOOL)>						(&CInfGame::StorePartyLocations),		0x6B7D93);
+int (CInfGame::*CInfGame_GetNumControlledSummons)() =
+	SetFP(static_cast<int (CInfGame::*)()>							(&CInfGame::GetNumControlledSummons),	0x6B934A);
 
 int CInfGame::GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly)
 	{ return (this->*CInfGame_GetNumOfItemInBag)(rBag, rItem, bIdentifiedOnly); }
@@ -156,3 +164,4 @@ CArea& CInfGame::GetLoadedArea(IECString sAreaName)						{ return (this->*CInfGa
 void CInfGame::AddExperienceParty(int n)								{ return (this->*CInfGame_AddExperienceParty)(n); }
 void CInfGame::SetLoseCutscene()										{ return (this->*CInfGame_SetLoseCutscene)(); }
 void CInfGame::StorePartyLocations(BOOL bUseSecondList)					{ return (this->*CInfGame_StorePartyLocations)(bUseSecondList); }
+int CInfGame::GetNumControlledSummons()									{ return (this->*CInfGame_GetNumControlledSummons)(); }

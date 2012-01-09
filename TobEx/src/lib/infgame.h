@@ -306,6 +306,24 @@ extern bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, ST
 extern bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
+struct MoveAreasElement { //Size 1Ah
+//Constructor: 0x5EF9B0
+	Enum eCre; //cre
+	ResRef rArea;
+	POINT ptDest;
+	char cOrient;
+	char u15; //pad
+	int nDelay;
+};
+
+class CMoveAreasList : public IECPtrList { //Size 1Ch
+	//AAD240
+public:
+	void MoveAllTo(CArea& area);
+};
+
+extern void (CMoveAreasList::*CMoveAreasList_MoveAllTo)(CArea&);
+
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
 	int GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly);
@@ -316,6 +334,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	void AddExperienceParty(int n);
 	void SetLoseCutscene();
 	void StorePartyLocations(BOOL);
+	int GetNumControlledSummons();
 	
 #ifdef _DEBUG
 	_CCriticalSection u1db0;
@@ -643,14 +662,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char u4c86;
 	char u4c87;
 
-	IECPtrList u4c88; //AAD240 - CPtrListMoveBtwAreas, any MoveBetweenAreas() Cre has entry here
-	//contains objects related to areaNames
-	//int enum; //0h - CCreatureObject
-	//ResRef areaName; //4h
-	//POINT ptDest; //ch
-	//int orientation; //14h
-
-	IECPtrList u4ca4; //AAD240
+	CMoveAreasList m_MoveAreasDelay; //4c88h, any MoveBetweenAreas() Cre has entry here
+	CMoveAreasList m_MoveAreaNoDelay; //4ca4h
 	IECPtrList u4cc0; //AA70B0
 	IECString u4cdc;
 	int u4ce0;
@@ -697,5 +710,6 @@ extern CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString);
 extern void (CInfGame::*CInfGame_AddExperienceParty)(int);
 extern void (CInfGame::*CInfGame_SetLoseCutscene)();
 extern void (CInfGame::*CInfGame_StorePartyLocations)(BOOL);
+extern int (CInfGame::*CInfGame_GetNumControlledSummons)();
 
 #endif //INFGAME_H

@@ -337,7 +337,7 @@ public:
 	CPositionList m_lBackRemove; //9aeh
 
 	IECPtrList u9ca; //AA7014 - gets CDoorObject 438h objects
-	CDwordList u9e6;
+	CEnumList m_ObjectsToMarshal; //9e6h, list of enums to save into the area when Marshal()
 	POINT ua02;
 	CVariableArray m_AreaVariables; //a0ah
 	CVariableArray ObjectNames; //a12h, contains all CGameObjects from ARE file (value is enum)

@@ -1,30 +1,3 @@
-@0 = ~TobEx - Base~
-@1 = ~Ce composant requiert une installation prealable de TobEx.~
-
-@100 = ~Extras~
-@101 = ~Appliquer un jet de concentration en cas de degats [Travail en cours]~
-@102 = ~Reveiller en cas de degats~
-@103 = ~Cecite telle que dans la description du sort~
-@104 = ~Desactiver la couleur grise de Peau de pierre [C]~
-@105 = ~Pas d'interruption de sort pour zero degat~
-@106 = ~Utiliser le niveau du jeteur de sorts pour Image miroir [C]~
-@107 = ~Permettre le jumelage a toutes les races~
-@108 = ~Permettre de changer d'armure en cours de combat~
-@109 = ~Desactiver le surcroit d'experience~
-@110 = ~Desactiver la mise en pause automatique dans l'inventaire~
-@111 = ~Desactiver le silence en cas de Charme~
-@112 = ~Restrictions sur les competences au niveau un~
-@113 = ~Rester cache en cas de succes du vol a la tire [C]~
-@114 = ~Une attaque lors du repos fait avancer le temps~
-@115 = ~Sous-titres des dialogues de salutation~
-@116 = ~Activer les sons d'attaque des animations~
-@117 = ~Quatre emplacements d'arme dans l'inventaire pour tous~
-@118 = ~Sous-titres pour les ensembles de sons d'origine~
-@119 = ~Supprimer toutes les restrictions de classe pour les races~
-@120 = ~Faire tomber l'inventaire au sol en cas de desintegration~
-@121 = ~Faire tomber l'inventaire au sol en cas de mort due au froid~
-@122 = ~Faire tomber l'inventaire au sol en cas de petrification~
-
 // Sous-titres des ensembles de sons de BG II (textes issus de l'écoute des enregistrements)
 
 //FEMME1

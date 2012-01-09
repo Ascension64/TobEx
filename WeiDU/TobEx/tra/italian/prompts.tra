@@ -1,0 +1,91 @@
+@-1000= ~Il mod %TP2_FILE_NAME% contiene~
+@-1001= ~diversi componenti opzionali.
+Per risparmiare tempo, puoi scegliere cosa fare per l'insieme dei componenti
+piuttosto che decidere per ognuno singolarmente.
+~
+@-1002= ~Che cosa vuoi fare con i componenti NON ANCORA installati?
+[I] Installarli, [S] Saltarli, [A] Trattarli singolarmente? ~
+@-1003= ~Che cosa vuoi fare con i componenti GIA' installati?
+[R] Reinstallarli, [U] Rimuoverli, [S] Saltarli, [A] Trattarli singolarmente? ~
+
+@-1004= ~Si prega di caricare il file ~
+@-1005= ~sul forum:~
+
+@-1006= ~Vuoi installare il componente [~
+@-1007= ~]?
+[R] Reinstallare, [N] Nessun cambiamento, [U] Rimuovere o [Q] Uscire? ~
+@-1008= ~]?
+[I] Installare, [N] Non installare o [Q] Uscire? ~
+
+@-1009= ~Inserire il nome di una parte del modulo: ~
+
+@-1010= ~Sto reinstallando il componente [~
+@-1011= ~]~
+@-1012= ~Sto reinstallando in Lingua~
+
+@-1013= ~Elimino la precedente installazione di [~
+@-1014= ~] per prima cosa...~
+@-1015= ~INSTALLAZIONE PRECEDENTE ELIMINATA CON SUCCESSO~
+
+@-1016= ~Sto installando~
+@-1017= ~ERRORE nell'installazione di [~
+@-1018= ~], ritorno allo stato precedente~
+@-1019= ~INSTALLAZIONE RIUSCITA~
+@-1020= ~Salto~
+@-1021= ~Rimuovo [~
+@-1022= ~] (componente #~
+@-1023= ~)~
+@-1024= ~RIMOZIONE RIUSCITA [~
+
+@-1025= ~]?
+[R] Reinstallare, [N] Nessun cambiamento, [U] Rimuovere, [Q] Uscire o scegliere tra:~
+@-1026= ~]?
+[N] No, [Q] Uscire o scegliere tra:~
+@-1027= ~ (attualmente installato)~
+
+@-1028= ~Vuoi vedere i componenti di [~
+@-1029= ~]?
+[Y] Si, [N] No? ~
+
+@-1030= ~]?
+Scegli tra:~
+@-1031= ~]?
+[R] Reinstallare, [N] Nessun cambiamento, [Q] Uscire o scegliere tra:~
+@-1032= ~INSTALLAZIONE NON EFFETTUATA A CAUSA DI ERRORI~
+@-1033= ~INSTALLAZIONE COMPLETATA CON AVVERTIMENTI~
+@-1034= ~vuoi vedere il file leggimi? [Y] Si, [N] No~
+@-1035= ~in Lingua~
+  
+@-1036= ~Sto saltando il GRUPPO [~
+@-1037= ~] perche' non conforme ai requisiti.~
+  
+@-1038= ~[A] Trattare singolarmente i componenti, [S] Saltare tutto, o scegliere una alternativa predefinita:~
+@-1039= ~[A] Trattare singolarmente i componenti, [R] Reinstallare la configurazione corrente, [U] Rimuovere tutto, [S] Saltare tutto, o scegliere una alternativa predefinita:~
+
+
+@0 = ~TobEx – Componente Principale~
+@1 = ~Questi componenti richiedono un’installazione gia' esistente di TobEx.~
+
+@100 = ~Extra~
+@101 = ~Applica la verifica della concentrazione quando feriti [WIP]~
+@102 = ~Ci si sveglia quando feriti~
+@103 = ~Cecita conforme alla descrizione dell’incantesimo~
+@104 = ~Disabilita il colore grigio dell'incantesimo Pelle di Pietra [C]~
+@105 = ~L’incantesimo non si interrompe se il colpo subito non scalfisce~
+@106 = ~Usa il livello del mago per l'incantesimo Immagine Speculare [C]~
+@107 = ~Permetti a tutte le razze di avere la Doppia Classe~
+@108 = ~Permetti di equipaggiarsi con l’armatura durante il combattimento~
+@109 = ~Disabilita l'extra bonus all’esperienza~
+@110 = ~Disabilita la pausa forzata dell’inventario~
+@111 = ~Disabilita il Silenzio per le creature charmate~
+@112 = ~Restrizione della competenza con le armi al Livello Uno~
+@113 = ~Si rimane nascosti se il furto va a buon fine [C]~
+@114 = ~Quando i nemici interrompono il riposo il tempo in cui si e dormito viene comunque conteggiato~
+@115 = ~I dialoghi dei saluti sono sottotitolati~
+@116 = ~Abilita i suoni d’attacco nell'animazione~
+@117 = ~Quattro slot universali nell’inventario delle armi~
+@118 = ~I set dei suoni standard sono sottotitolati~
+@119 = ~Rimuovi tutte le restrizioni di classe~
+@120 = ~Gli oggetti dell’inventario non si distruggono dopo la Disintegrazione~
+@121 = ~Gli oggetti dell’inventario non si distruggono dopo la Morte Da Congelamento~
+@122 = ~Gli oggetti dell’inventario non si distruggono dopo la Morte Da Pietrificazione~

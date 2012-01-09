@@ -1,0 +1,91 @@
+@-1000= "Le mod %TP2_FILE_NAME% contient"
+@-1001= "composants optionnels distincts.
+Pour gagner du temps, vous pouvez choisir ce que vous souhaitez faire d'eux
+au niveau general plutot que de repondre aux questions pour chacun.
+"
+@-1002= "Que faut-il faire de tous les composants qui NE sont PAS ENCORE installes ?
+Les [I]nstaller, les [S]auter, dem[A]nder pour chacun ? "
+@-1003= "Que faut-il faire de tous les composants qui sont DEJA installes ?
+Les [R]einstaller, les s[U]pprimer, les [S]auter, dem[A]nder pour chacun ? "
+
+@-1004= "S'IL VOUS PLAIT, postez le fichier "
+@-1005= "sur"
+
+@-1006= "Installer le composant ["
+@-1007= "] ?
+[R]einstaller, co[N]server ou s[U]pprimer ou [Q]uitter ? "
+@-1008= "] ?
+[I]nstaller, ou [N]e pas installer ou [Q]uitter ? "
+
+@-1009= "Entrez une partie du nom du module : "
+
+@-1010= "Reinstallation du composant ["
+@-1011= "] "
+@-1012= "Reinstallation dans la langue"
+
+@-1013= "Suppression de l'ancienne installation de ["
+@-1014= "] au prealable..."
+@-1015= "SUPPRESSION REUSSIE DE L'ANCIEN"
+
+@-1016= "Installation en cours"
+@-1017= "ERREUR pendant l'installation de ["
+@-1018= "], retour a l'etat anterieur"
+@-1019= "INSTALLATION REUSSIE"
+@-1020= "Saute"
+@-1021= "Suppression de ["
+@-1022= "] (composant #"
+@-1023= ")"
+@-1024= "SUPPRESSION REUSSIE DE ["
+
+@-1025= "] ?
+[R]einstaller, co[N]server, s[U]pprimer, [Q]uitter ou choisir un parmi :"
+@-1026= "] ?
+[N]e pas installer, [Q]uitter ou choisir un parmi :"
+@-1027= " (installe actuellement)"
+
+@-1028= "Souhaitez-vous afficher les composants de ["
+@-1029= "] ?
+[Y]Oui, [N]on ? "
+
+@-1030= "] ?
+choisir un parmi :"
+@-1031= "] ?
+[R]einstaller, co[N]server, [Q]uitter ou choisir un parmi :"
+@-1032= "INSTALLATION ECHOUEE A CAUSE D'ERREURS"
+@-1033= "INSTALLATION AVEC DES ALERTES"
+@-1034= "Souhaitez-vous afficher les instructions (ReadMe) ? [Y]Oui [N]on"
+@-1035= "Dans la langue"
+
+@-1036= "Saute le GROUPE ["
+@-1037= "] pour cause d'absence des pre-requis."
+
+@-1038= "dem[A]nder pour chaque composant, tout [S]auter, ou choisir une selection pre-definie :"
+@-1039= "dem[A]nder pour chaque composant, [R]einstaller la configuration courante, tout s[U]pprimer, tout [S]auter, ou choisir une selection pre-definie :"
+
+
+@0 = ~TobEx - Base~
+@1 = ~Ce composant requiert une installation prealable de TobEx.~
+
+@100 = ~Extras~
+@101 = ~Appliquer un jet de concentration en cas de degats [Travail en cours]~
+@102 = ~Reveiller en cas de degats~
+@103 = ~Cecite telle que dans la description du sort~
+@104 = ~Desactiver la couleur grise de Peau de pierre [C]~
+@105 = ~Pas d'interruption de sort pour zero degat~
+@106 = ~Utiliser le niveau du jeteur de sorts pour Image miroir [C]~
+@107 = ~Permettre le jumelage a toutes les races~
+@108 = ~Permettre de changer d'armure en cours de combat~
+@109 = ~Desactiver le surcroit d'experience~
+@110 = ~Desactiver la mise en pause automatique dans l'inventaire~
+@111 = ~Desactiver le silence en cas de Charme~
+@112 = ~Restrictions sur les competences au niveau un~
+@113 = ~Rester cache en cas de succes du vol a la tire [C]~
+@114 = ~Une attaque lors du repos fait avancer le temps~
+@115 = ~Sous-titres des dialogues de salutation~
+@116 = ~Activer les sons d'attaque des animations~
+@117 = ~Quatre emplacements d'arme dans l'inventaire pour tous~
+@118 = ~Sous-titres pour les ensembles de sons d'origine~
+@119 = ~Supprimer toutes les restrictions de classe pour les races~
+@120 = ~Faire tomber l'inventaire au sol en cas de desintegration~
+@121 = ~Faire tomber l'inventaire au sol en cas de mort due au froid~
+@122 = ~Faire tomber l'inventaire au sol en cas de petrification~

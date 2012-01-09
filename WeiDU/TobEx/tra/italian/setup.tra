@@ -1,30 +1,3 @@
-@0 = ~TobEx – Componente Principale~
-@1 = ~Questi componenti richiedono un’installazione già esistente di TobEx.~
-
-@100 = ~Extra~
-@101 = ~Applica la verifica della concentrazione quando feriti [WIP]~
-@102 = ~Ci si sveglia quando feriti~
-@103 = ~Cecità conforme alla descrizione dell’incantesimo~
-@104 = ~Disabilita il colore grigio dell'incantesimo Pelle di Pietra [C]~
-@105 = ~L’incantesimo non si interrompe se il colpo subito non scalfisce~
-@106 = ~Usa il livello del mago per l'incantesimo Immagine Speculare [C]~
-@107 = ~Permetti a tutte le razze di avere la Doppia Classe~
-@108 = ~Permetti di equipaggiarsi con l’armatura durante il combattimento~
-@109 = ~Disabilita l'extra bonus all’esperienza~
-@110 = ~Disabilita la pausa forzata dell’inventario~
-@111 = ~Disabilita il Silenzio per le creature charmate~
-@112 = ~Restrizione della competenza con le armi al Livello Uno~
-@113 = ~Si rimane nascosti se il furto va a buon fine [C]~
-@114 = ~Quando i nemici interrompono il riposo il tempo in cui si è dormito viene comunque conteggiato~
-@115 = ~I dialoghi dei saluti sono sottotitolati~
-@116 = ~Abilita i suoni d’attacco nell'animazione~
-@117 = ~Quattro slot universali nell’inventario delle armi~
-@118 = ~I set dei suoni standard sono sottotitolati~
-@119 = ~Rimuovi tutte le restrizioni di classe~
-@120 = ~Gli oggetti dell’inventario non si distruggono dopo la Disintegrazione~
-@121 = ~Gli oggetti dell’inventario non si distruggono dopo la Morte Da Congelamento~
-@122 = ~Gli oggetti dell’inventario non si distruggono dopo la Morte Da Pietrificazione~
-
 //FEMALE1
 @4000 = ~~
 @4001 = ~~

@@ -1,0 +1,90 @@
+@-1000= "El mod %TP2_FILE_NAME% tiene"
+@-1001= "distintos componentes opcionales.
+Para ahorrar tiempo, puedes decidir que hacer con ellos desde un primer momento
+en vez de tener que elegirlos por separado.
+"
+@-1002= "Que deberia hacer con todos los componentes AUN NO instalados?
+[I]nstalarlos, [S]altarlos, [A] preguntar por cada uno? "
+@-1003= "Que se debe hacer con todos los componentes que YA ESTAN instalados.
+[R]einstalarlos, [U] Desinstalarlos, [S]altarlos, [A] Preguntar por cada uno? "
+
+@-1004= "POR FAVOR en escribe los contenidos del archivo "
+@-1005= "en"
+
+@-1006= "Instalar Componente ["
+@-1007= "]?
+[R]einstalar, [N]o cambiar o  [U] Desinstalar [Q] Salir? "
+@-1008= "]?
+[I]nstalar, o [N]o Instalar o [Q] Salir? "
+
+@-1009= "Insertar parte del nombre del modulo:: "
+
+@-1010= "Reinstalando ["
+@-1011= "] componente "
+@-1012= "Reinstalando usando idioma"
+
+@-1013= "Eliminando instalacion  anterior de  ["
+@-1014= "] primero ..."
+@-1015= "INSTALACIION ANTERIOR ELIMINADA CON EXITO"
+
+@-1016= "Instalando"
+@-1017= "ERROR al Instalar ["
+@-1018= "],  volviendo al estado anterior"
+@-1019= "INSTALADO SATISFACTORIAMENTE     "
+@-1020= "Saltando"
+@-1021= "Eliminando ["
+@-1022= "] (componente #"
+@-1023= ")"
+@-1024= "ELIMINADO CON EXITO["
+
+@-1025= "]?
+[R]einstalar, [N]o Cambiar, [U] Desinstalar, [Q] Salir o elija uno:"
+@-1026= "]?
+[N]o, [Q] Salir o elija uno:"
+@-1027= " (Ya instalado)"
+
+@-1028= "Quiere ver los componentes de ["
+@-1029= "]?
+[Y] Si, [N]o? "
+
+@-1030= "]?
+elija uno:"
+@-1031= "]?
+[R]einstalar, [N]o Cambiar, [Q] Salir o elija uno:"
+@-1032= "NO INSTALADO DEBIDO A ERRORES"
+@-1033= "INSTALADO CON ALGUNOS FALLOS    "
+@-1034= "Quiere leer el archivo leame? [Y] Si [N]o"
+@-1035= "Usando el idioma"
+  
+@-1036= "Saltando GRUPO ["
+@-1037= "] porque falla sus requerimientos."
+  
+@-1038= "[A] Preguntar por cada componente, [S]altarlos todos, o elegir una seleccion pre-definida:"
+@-1039= "[A] Preguntar por cada componente, [R]einstalar la configuracion actual, [U] Desinstalarlos todos, [S]altarlos todos, o elegir una seleccion pre-definida:"
+
+
+@0 = ~TobEx - Nucleo~
+@1 = ~Este componemte requiere una instalacion existente de TobEx.~
+@100 = ~Extras~
+@101 = ~Aplicar Chequeo de Concentracion en Danos [WIP]~
+@102 = ~Despetar con Daños~
+@103 = ~Como descripcion del hechizo Ceguera~
+@104 = ~Desactivar Color Gris en Piel Petrea [C]~
+@105 = ~No hay interrupcion de hechizos si no afecta el golpe~
+@106 = ~Usar Conjurar al Nivel de Imagen Espejada [C]~
+@107 = ~Permitir Todas las Razas a Clase Dual~
+@108 = ~Permitir Equiparse con Armadura en Combate~
+@109 = ~Desactivar aumento de experiencia~
+@110 = ~Desactivar Forzar Pausa en el Inventario~
+@111 = ~Desactivar Silencio al Hechizar~
+@112 = ~Restricciones de Nivel Uno de Pericias~
+@113 = ~Permanecer Oculto si el Hurto es Exitoso [C]~
+@114 = ~Al descansar los Engendros no detienen el Avancer del Tiempo~
+@115 = ~Subtitulos en Dialogos de Saludos~
+@116 = ~Activar Animacion de Sonidos de Ataque~
+@117 = ~Cuatro Ranuras en el Inventario de Armas~
+@118 = ~Subtitulos al Set de Sonidos~
+@119 = ~Remover Todas las Restricciones de Raza-Clase~
+@120 = ~Dejar caer el Inventario al Desintegrarse~
+@121 = ~Dejar caer el Inventario al Morir Congelado~
+@122 = ~Dejar caer el Inventario al Morir Petrificado~

@@ -1,0 +1,91 @@
+@-1000= "The %TP2_FILE_NAME% mod has"
+@-1001= "distinct optional components.
+To save time, you can choose what to do with them at a high level rather
+than being asked about each one.
+"
+@-1002= "What should be done with all components that are NOT YET installed?
+[I]nstall them, [S]kip them, [A]sk about each one? "
+@-1003= "What should be done with all components that are ALREADY installed?
+[R]e-install them, [U]ninstall them, [S]kip them, [A]sk about each one? "
+
+@-1004= "PLEASE post the file "
+@-1005= "to"
+
+@-1006= "Install Component ["
+@-1007= "]?
+[R]e-Install, [N]o Change or [U]ninstall or [Q]uit? "
+@-1008= "]?
+[I]nstall, or [N]ot Install or [Q]uit? "
+
+@-1009= "Enter part of a module name: "
+
+@-1010= "Re-Installing ["
+@-1011= "] component "
+@-1012= "Re-Installing Using Language"
+
+@-1013= "Removing old installation of ["
+@-1014= "] first ..."
+@-1015= "SUCCESSFULLY REMOVED OLD"
+
+@-1016= "Installing"
+@-1017= "ERROR Installing ["
+@-1018= "], rolling back to previous state"
+@-1019= "SUCCESSFULLY INSTALLED     "
+@-1020= "Skipping"
+@-1021= "Removing ["
+@-1022= "] (component #"
+@-1023= ")"
+@-1024= "SUCCESSFULLY REMOVED ["
+
+@-1025= "]?
+[R]e-install, [N]o Change, [U]ninstall, [Q]uit or choose one:"
+@-1026= "]?
+[N]o, [Q]uit or choose one:"
+@-1027= " (currently installed)"
+
+@-1028= "Would you like to display the components from ["
+@-1029= "]?
+[Y]es, [N]o? "
+
+@-1030= "]?
+choose one:"
+@-1031= "]?
+[R]e-install, [N]o Change, [Q]uit or choose one:"
+@-1032= "NOT INSTALLED DUE TO ERRORS"
+@-1033= "INSTALLED WITH WARNINGS    "
+@-1034= "Would you like to display the readme? [Y]es [N]o"
+@-1035= "Using Language"
+  
+@-1036= "Skipping GROUP ["
+@-1037= "] because it fails its requirements."
+  
+@-1038= "[A]sk about each component, [S]kip all, or choose a pre-defined selection:"
+@-1039= "[A]sk about each component, [R]einstall the current configuration, [U]ninstall all, [S]kip all, or choose a pre-defined selection:"
+
+
+@0 = ~TobEx - Core~
+@1 = ~This components requires an existing TobEx installation.~
+
+@100 = ~Extras~
+@101 = ~Apply Concentration Check On Damage [WIP]~
+@102 = ~Awaken On Damage~
+@103 = ~Blindness As Spell Description~
+@104 = ~Disable Stoneskin Grey Colour [C]~
+@105 = ~No Spell Interruption On Zero Damage~
+@106 = ~Use Caster Level On Mirror Image [C]~
+@107 = ~Allow All Races to Dual Class~
+@108 = ~Allow Equipping Armor in Combat~
+@109 = ~Disable Experience Boost~
+@110 = ~Disable Force Inventory Pause~
+@111 = ~Disable Silence On Charm~
+@112 = ~Level One Proficiency Restrictions~
+@113 = ~Remain Hidden On Pickpocket Success [C]~
+@114 = ~Rest Spawns Advance Time~
+@115 = ~Dialogue Greeting Subtitles~
+@116 = ~Enable Animation Attack Sounds~
+@117 = ~Universal Four Inventory Weapon Slots~
+@118 = ~Subtitles For Standard Soundsets~
+@119 = ~Remove all race-class restrictions~
+@120 = ~Drop Inventory on Disintegrate~
+@121 = ~Drop Inventory on Frozen Death~
+@122 = ~Drop Inventory on Stone Death~

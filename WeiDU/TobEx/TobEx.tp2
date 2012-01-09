@@ -1,6 +1,6 @@
 BACKUP "TobEx/backup"
 
-AUTHOR "Ascension64"
+AUTHOR "Ascension64 (http://www.shsforums.net/forum/606-tobex/)"
 
 VERSION "Beta 0023"
 
@@ -8,27 +8,38 @@ README "TobEx/tra/%LANGUAGE%/readme.htm" "TobEx/tra/english/readme.htm"
 
 LANGUAGE "English"
          "english"
+         "TobEx/tra/english/prompts.tra"
          "TobEx/tra/english/setup.tra"
+
+LANGUAGE "Castellano (Castilian/Spanish)"
+         "castilian"
+         "TobEx/tra/castilian/prompts.tra"
+         "TobEx/tra/castilian/setup.tra"
 
 LANGUAGE "Francais (French)"
          "french"
+         "TobEx/tra/french/prompts.tra"
          "TobEx/tra/french/setup.tra"
 
-LANGUAGE ~Italiano (Italian)~
-         ~italian~
+LANGUAGE "Italiano (Italian)"
+         "italian"
+         "TobEx/tra/italian/prompts.tra"
          "TobEx/tra/italian/setup.tra"
 
-LANGUAGE ~ê„··™®© (Russian)~
-         ~russian~
+LANGUAGE "ê„··™®© (Russian)"
+         "russian"
+         "TobEx/tra/russian/prompts-%WEIDU_OS%.tra"
          "TobEx/tra/russian/setup.tra"
 
-LANGUAGE ~ºÚÃÂ÷–Œƒ - ∫∫ªØ£∫H'sD (Simplified Chinese)~
-         ~chineses~
+LANGUAGE "ºÚÃÂ÷–Œƒ - ∫∫ªØ£∫H'sD (Simplified Chinese)"
+         "chineses"
+         "TobEx/tra/chineses/prompts-%WEIDU_OS%.tra"
          "TobEx/tra/chineses/setup.tra"
 
 LANGUAGE %¡c≈È§§§Â - ∫~§∆°GH'sD (Traditional Chinese)%
-         ~chineset~
-         ~TobEx/tra/chineset/setup.tra~
+         "chineset"
+         "TobEx/tra/chineset/prompts-%WEIDU_OS%.tra"
+         "TobEx/tra/chineset/setup.tra"
 
 //////////////////////////////// CORE
 
@@ -275,7 +286,7 @@ OUTER_FOR (i = 0; i < 9; i+=1) BEGIN
       SPRINT name @4799
       SET_2DA_ENTRY 0 nCurrCol nColumns "%name%"
   END
-  ACTION_IF (i = 8) BEGIN
+  ACTION_IF (i = 8) AND ("%LANGUAGE%" STRING_COMPARE_CASE "castilian") BEGIN //not present in Castilian BG2
     APPEND_COL "csound.2da" "$ $ MALE005 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *"
     COPY_EXISTING "csound.2da" "override/csound.2da"
       COUNT_2DA_COLS nColumns

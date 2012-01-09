@@ -92,6 +92,7 @@ struct CGameOptionsEx {
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;
+	BOOL bEngineSummonLimitFix;
 	BOOL bEngineTargetDeadFix;
 	BOOL bEngineWeapSpecNumAttacksMod;
 

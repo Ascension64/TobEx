@@ -1,4 +1,4 @@
-//1230 This file contains descriptions for all the hack options found in TobEx .ini files
+//1250 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1186,6 +1186,14 @@ Options:
 -----780 Rest Spawns Advance Time [T]
 If resting is interrupted by rest spawns, a random amount of time up to eight hours (minus one tick) will pass
 This feature already existed in the code, but was never utilised
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1240 Summon Limit Fix [F]
+This hack fixes a bug where the summon count can increment permanently, preventing any further summoning
+Courtesy of the Throne of Bhaal 26499 beta patch
 
 Options:
 -0: disabled

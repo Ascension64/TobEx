@@ -96,6 +96,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineProficiencyRestrictions = FALSE;
 	bEnginePickpocketRemainHidden = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
+	bEngineSummonLimitFix = FALSE;
 	bEngineTargetDeadFix = FALSE;
 	bEngineWeapSpecNumAttacksMod = FALSE;
 
@@ -232,6 +233,7 @@ void CGameOptionsEx::Init() {
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
 	bEnginePickpocketRemainHidden = GetTweakIniValue("Tweak", "Engine:Remain Hidden On Pickpocket Success");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");
+	bEngineSummonLimitFix = GetCoreIniValue("Engine", "Summon Limit Fix");
 	bEngineTargetDeadFix = GetCoreIniValue("Engine", "Targetting Dead Animations Fix");
 	bEngineWeapSpecNumAttacksMod = GetTweakIniValue("Tweak", "Engine:Weapon Specialisation Number of Attacks Mod");
 

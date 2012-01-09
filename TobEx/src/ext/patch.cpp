@@ -1725,6 +1725,21 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bEngineSummonLimitFix) {
+		char bytes[] = {0x74,0x05,
+						0x83,0xF8,0x09,
+						0x75,0x29,
+						0x8B,0x45,0xF0,
+						0x8B,0x48,0x12,
+						0x83,0xF9,0x00,
+						0x74,0x1E,
+						0xEB,0x13,
+						0x90,0x90};
+		vDataList.push_back( Data(0x6B93DB, 22, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bEngineTargetDeadFix) {
 		//NOTE: this is an incomplete fix since it only applies to objects existing in LIST_FRONT
 

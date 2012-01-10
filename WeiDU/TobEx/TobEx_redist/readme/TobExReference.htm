@@ -887,7 +887,6 @@
             <li>New stats 202-400 are reserved for hard-coded stats</li>
             <li>New stats can be checked correctly using CheckStat(), CheckStatLT(), and CheckStatGT() script triggers</li>
             <li>New stats are not permanent, they require an ongoing effect opcode 318 in order to keep their values</li>
-            <li>In order to make a new stat semi-permanent, you can set an extremely long duration for the effect, or use timing mode 10 and set duration to INT_MAX (2147483647)</li>
             <li>New stats will only be saved in saved games if stored as an effect opcode 318</li>
             <li>Actions cannot directly set the value of new stats (they will not keep); use an action to trigger effect opcode 318 if actions are required</li>
             <li>New stats have no effect on the game unless you specifically script in; for example, use scripts to CheckStat() and apply appropriate actions</li>

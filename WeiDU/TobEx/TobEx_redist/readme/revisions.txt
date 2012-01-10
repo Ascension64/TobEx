@@ -5,6 +5,7 @@ Beta 0023
 -Improved installation text compatibility with Linux systems
 -Improved stability of hex patching code
 -Added: Castilian translation (by Lisandro)
+-Added: Move Areas Fix
 -Added: Summon Limit Fix
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position

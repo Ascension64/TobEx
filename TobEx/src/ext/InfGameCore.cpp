@@ -26,11 +26,15 @@ BOOL (CRuleTables::*Tramp_CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigne
 ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(char, char) =
 	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>								(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
 
+void (CMoveAreasList::*Tramp_CMoveAreasList_MoveAllTo)(CArea&) =
+	SetFP(static_cast<void (CMoveAreasList::*)(CArea&)>	(&CMoveAreasList::MoveAllTo),	0x5EFA6D);
+
 int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL) =
 	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),		0x68F35C);
 void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)() =
 	SetFP(static_cast<void (CInfGame::*)()>							(&CInfGame::SetLoseCutscene),		0x6AE3E0);
 
+//CRuleTables
 CRuleTables& DETOUR_CRuleTables::DETOUR_Construct() {
 	CRuleTables& rule = (this->*Tramp_CRuleTables_Construct)();
 	pRuleEx = new CRuleTablesEx(rule);
@@ -220,6 +224,81 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char
 	return CRuleTables_TryHideSpell(rSpell);
 }
 
+//CMoveAreasList
+void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) { 
+	if (0) IECString("DETOUR_CMoveAreasList::DETOUR_MoveAllTo");
+
+	ITEM_EFFECT* pItmEff = new ITEM_EFFECT;
+	CEffect::CreateItemEffect(*pItmEff, CEFFECT_OPCODE_MOVE_TO_AREA);
+	IECPtrList cp;
+
+	POSITION pos_i = GetHeadPosition();
+	while (pos_i != NULL) {
+		MoveAreasElement* pElement = (MoveAreasElement*)GetNext(pos_i);
+		MoveAreasComparator* pComp = new MoveAreasComparator;
+
+		pComp->rArea = pElement->rArea;
+		pComp->ptDest = pElement->ptDest;
+
+		pItmEff->param2 = pElement->cOrient;
+		pItmEff->param1 = pElement->nDelay;
+		pItmEff->resource.Copy(pElement->rArea);
+		pItmEff->timing = 1;
+		POINT pt;
+		pt.x = -1;
+		pt.y = -1;
+		CEffect* pEff = &CEffect::CreateEffect(*pItmEff, pElement->ptDest, pElement->eCre, pt, -1);
+
+		CInfGame* pGame = g_pChitin->pGame;
+		CCreatureObject* pCre = NULL;
+		char threadVal;
+		do {
+			threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectDeny(pElement->eCre, THREAD_ASYNCH, &pCre, INFINITE);
+		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
+		if (threadVal != OBJECT_SUCCESS) {
+			delete pComp;
+		} else {
+			pComp->sCreLongName = pCre->GetLongName();
+
+			bool bFoundIdentical = false;
+			POSITION pos_j = cp.GetHeadPosition();
+			while (pos_j != NULL) {
+				MoveAreasComparator* pCompElement = (MoveAreasComparator*)cp.GetNext(pos_j);
+				if (pCompElement->ptDest.x == pComp->ptDest.x &&
+					pCompElement->ptDest.y == pComp->ptDest.y &&
+					pCompElement->rArea == pComp->rArea &&
+					pCompElement->sCreLongName.Compare(pComp->sCreLongName) == 0) {
+					delete pComp;
+					pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(pElement->eCre, THREAD_ASYNCH, INFINITE);
+					bFoundIdentical = true;
+					break; //Bioware forgot to break this loop
+				}
+			}
+
+			if (!bFoundIdentical) {
+				cp.AddTail(pComp);
+				pCre->m_BaseStats.dwFlags |= 0x4000; //bit14
+				area.m_ObjectsToMarshal.AddTail((void*)pCre->e);
+				pCre->ApplyEffect(*pEff, true, TRUE, FALSE);
+				pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(pElement->eCre, THREAD_ASYNCH, INFINITE);
+			}
+		}
+	}
+
+	POSITION pos_k = cp.GetHeadPosition();
+	while (pos_k != NULL) {
+		MoveAreasComparator* pElement = (MoveAreasComparator*)cp.GetNext(pos_k);
+		delete pElement;
+	}
+	cp.RemoveAll();
+	
+	delete pItmEff;
+	pItmEff = NULL;
+
+	return;
+}
+
+//CInfGame
 int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly) {
 	if (0) IECString("DETOUR_CInfGame::DETOUR_GetNumOfItemInBag");
 

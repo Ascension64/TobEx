@@ -7,6 +7,7 @@
 #include "objcre.h"
 #include "resref.h"
 
+//CRuleTables
 extern CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)();
 extern void (CRuleTables::*Tramp_CRuleTables_Deconstruct)();
 extern int (CRuleTables::*Tramp_CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int);
@@ -26,6 +27,21 @@ public:
 	ResRef DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char nIndex);
 };
 
+//CMoveAreasList
+extern void (CMoveAreasList::*Tramp_CMoveAreasList_MoveAllTo)(CArea&);
+
+class DETOUR_CMoveAreasList : public CMoveAreasList {
+public:
+	void DETOUR_MoveAllTo(CArea& area);
+
+	struct MoveAreasComparator { //size 14h
+		IECString sCreLongName; //0h
+		POINT ptDest; //4h
+		ResRef rArea; //ch 
+	};
+};
+
+//CInfGame
 extern int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL);
 extern void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)();
 

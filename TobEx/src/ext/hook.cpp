@@ -215,6 +215,9 @@ void InitHooks() {
 	if (pGameOptionsEx->bEngineProficiencyRestrictions)
 		DetourMemberFunction(Tramp_CRuleTables_GetWeapProfMax, DETOUR_CRuleTables::DETOUR_GetWeapProfMax);
 
+	if (pGameOptionsEx->bEngineMoveAreasFix)
+		DetourMemberFunction(Tramp_CMoveAreasList_MoveAllTo, DETOUR_CMoveAreasList::DETOUR_MoveAllTo);
+
 	if (pGameOptionsEx->bItemsUseAnimPercentThrowingWeapons)
 		DetourMemberFunction(Tramp_CCreatureObject_ValidateAttackSequence, DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence);
 

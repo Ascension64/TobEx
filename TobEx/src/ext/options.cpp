@@ -94,6 +94,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExternEncumbrance = FALSE;
 	bEngineExternMageSpellsCap = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
+	bEngineMoveAreasFix = FALSE;
 	bEnginePickpocketRemainHidden = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
 	bEngineSummonLimitFix = FALSE;
@@ -231,6 +232,7 @@ void CGameOptionsEx::Init() {
 	bEngineExternEncumbrance = GetCoreIniValue("Engine", "Externalise Encumbrance Restrictions");
 	bEngineExternMageSpellsCap = GetCoreIniValue("Engine", "Externalise Mage Spells Cap");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
+	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");
 	bEnginePickpocketRemainHidden = GetTweakIniValue("Tweak", "Engine:Remain Hidden On Pickpocket Success");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");
 	bEngineSummonLimitFix = GetCoreIniValue("Engine", "Summon Limit Fix");

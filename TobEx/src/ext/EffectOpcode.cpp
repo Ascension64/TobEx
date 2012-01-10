@@ -536,7 +536,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			{
 			delete pEff;
 			pEff = NULL;
-			ITEM_EFFECT* pIF = IENew ITEM_EFFECT();
+			ITEM_EFFECT* pIF = new ITEM_EFFECT;
 			CreateItemEffect(*pIF, CEFFECT_OPCODE_UNCONSCIOUSNESS);
 			pIF->timing = 0;
 			pIF->duration = (1 - creTarget.m_BaseStats.currentHP) * 15;

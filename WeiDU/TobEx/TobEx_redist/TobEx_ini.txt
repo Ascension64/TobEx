@@ -1,4 +1,4 @@
-//1250 This file contains descriptions for all the hack options found in TobEx .ini files
+//1260 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1169,6 +1169,14 @@ Options:
 (Different implentation to, and clashes with tob_hacks)
 Enables proficiency restrictions at level one as described by the FIRST_LEVEL column of PROFSMAX.2DA
 This applies to both character generation and dual classing
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1250 Move Areas Fix [F]
+This hack tries to fix a bug where a creature that is moving between areas may have multiple requests to do so and thus creates multiple copies of the creature in the area and thus the saved game
+Courtesy of the Throne of Bhaal 26499 beta patch
 
 Options:
 -0: disabled

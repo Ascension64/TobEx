@@ -90,6 +90,7 @@ struct CGameOptionsEx {
 	BOOL bEngineExternEncumbrance;
 	BOOL bEngineExternMageSpellsCap;
 	BOOL bEngineProficiencyRestrictions;
+	BOOL bEngineMoveAreasFix;
 	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;
 	BOOL bEngineSummonLimitFix;

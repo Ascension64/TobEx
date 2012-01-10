@@ -145,6 +145,7 @@
     <ClCompile Include="src\lib\cmapstrstrex.cpp" />
     <ClCompile Include="src\lib\cptrlistex.cpp" />
     <ClCompile Include="src\lib\cstringex.cpp" />
+    <ClCompile Include="src\lib\datatypes.cpp" />
     <ClCompile Include="src\lib\dlgcore.cpp" />
     <ClCompile Include="src\lib\effcore.cpp" />
     <ClCompile Include="src\lib\effopcode.cpp" />

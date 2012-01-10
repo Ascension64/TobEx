@@ -1,4 +1,5 @@
 debug/*
+ipch/*
 release/*
 src_dist/*
 TobEx/Debug/*

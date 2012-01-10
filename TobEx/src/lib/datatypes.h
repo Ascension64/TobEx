@@ -299,7 +299,9 @@ struct ItmFileAbility { //Size 38h
 };
 
 struct ITEM_EFFECT { //Size 30h, ItmFileEffect, SplFileEffect
-//Constructor: 0x4FFC3E
+	void* operator new(size_t size);
+	void operator delete(void* mem);
+
 	short opcode; //0h
 	char target; //2h
 	char power; //3h

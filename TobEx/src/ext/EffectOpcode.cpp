@@ -552,6 +552,11 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			pEff->eSource = creTarget.e;
 			pEff->enum2 = ENUM_INVALID_INDEX;
 			pEff->effect.ptDest = effect.ptDest;
+
+			if (pGameOptionsEx->bEffDamageFix) {
+				delete pIF;
+			}
+
 			}
 			
 			creTarget.m_BaseStats.currentHP = 1;

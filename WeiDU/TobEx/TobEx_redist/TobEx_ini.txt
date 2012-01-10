@@ -509,6 +509,7 @@ Options:
 Fixes the following bugs with the damage opcode:
 1. Killing someone with magic fire damage would cause a WEIRD damage assertion failure
 2. Hitting someone with magic cold damage would not play a hit sound
+3. Memory leak when fist damage would make the target unconscious
 
 Options:
 -0: disabled

@@ -1202,10 +1202,11 @@
           <i>TobEx fixes this effect opcode so that it correctly removes the Sleep effect opcode</i></p>
           <hr />
           <a name="effects-12" id="effects-12"></a><p><strong>#12 (0x00C)  HP: Damage [12]</strong><br />
-          <i>TobEx fixes two bugs with this effect opcode:</p>
+          <i>TobEx fixes three bugs with this effect opcode:</p>
           <ul>
             <li>killing someone with magic fire damage would cause a WEIRD damage assertion failure, and</li>
             <li>hitting someone with magic cold damage would not play a hit sound</li>
+            <li>memory leak when fist damage would make the target unconscious</li>
           </ul>
           <p>TobEx allows the scaling of damage type by percentage by using custom scripting stats #387 to #399. Also refer to the <a href="#stats">Scripting Stats</a> section.</p>
           <p>TobEx implements bit 24 (Bypass Mirror Images) of the EFF V2.0 Header offset 0x0040 (Save Type), ITM V1.0 Feature Block offset 0x0024 (Save Type), and SPL V1.0 Feature Block offset 0x0024 (Save Type). When set the mirror image check is skipped on the target creature when checking saving throw.</p>

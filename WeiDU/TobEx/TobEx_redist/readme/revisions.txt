@@ -7,6 +7,7 @@ Beta 0023
 -Added: Castilian translation (by Lisandro)
 -Added: Move Areas Fix
 -Added: Summon Limit Fix
+-Damage Fix: Additionally fixes a memory leak bug when fist damage would make the target unconscious
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position
 

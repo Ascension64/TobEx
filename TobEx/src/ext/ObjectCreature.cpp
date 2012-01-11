@@ -13,6 +13,9 @@
 #include "UserMageBook.h"
 #include "UserPriestBook.h"
 
+CCreatureObject& (CCreatureObject::*Tramp_CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int) =
+	SetFP(static_cast<CCreatureObject& (CCreatureObject::*)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int)>
+																			(&CCreatureObject::Construct),				0x87FB08);
 CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellPriest)(int, int) =
 	SetFP(static_cast<CreFileKnownSpell& (CCreatureObject::*)(int, int)>	(&CCreatureObject::GetKnownSpellPriest),	0x8CB91F);
 CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellMage)(int, int) =
@@ -27,6 +30,22 @@ BOOL (CCreatureObject::*Tramp_CCreatureObject_EvaluateTrigger)(Trigger&) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(Trigger&)>					(&CCreatureObject::EvaluateTrigger),		0x8F6C0E);
 ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)() =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)()>					(&CCreatureObject::ExecuteAction),			0x8E2276);
+
+CCreatureObject& DETOUR_CCreatureObject::DETOUR_Construct(
+	void* pFile,
+	unsigned int dwSize,
+	BOOL bHasSpawned,
+	int nTicksTillRemove,
+	int nMaxMvtDistance,
+	int nMaxMvtDistanceToObject,
+	unsigned int nSchedule,
+	int nDestX,
+	int nDestY,
+	int nFacing
+) {
+	m_nBounceDelay = 0;
+	return (this->*Tramp_CCreatureObject_Construct_10)(pFile, dwSize, bHasSpawned, nTicksTillRemove, nMaxMvtDistance, nMaxMvtDistanceToObject, nSchedule, nDestX, nDestY, nFacing);
+}
 
 CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest(int nLevel, int nIndex) {
 	int Eip;

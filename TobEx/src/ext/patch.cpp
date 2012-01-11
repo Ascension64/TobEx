@@ -2840,6 +2840,15 @@ void InitPatches() {
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
+
+	if (pGameOptionsEx->bVideoSpellTurningAnimFix) {
+		//nop setting of CVisualEffect.eOwner
+		char bytes[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x4651A3, 6, bytes) );
+	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
 	
 	//Remove crash on alpha rendering of RLE-encoded BAMs
 	if (pGameOptionsEx->bVideoVvcAlphaCrashFix) {

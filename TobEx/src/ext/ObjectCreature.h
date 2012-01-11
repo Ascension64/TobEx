@@ -3,6 +3,16 @@
 
 #include "objcre.h"
 
+extern void (CProtectedSplList::*Tramp_CProtectedSplList_AddTail)(CEffect&, int, int, CCreatureObject&, BOOL, STRREF, BOOL, BOOL);
+extern void (CProtectedSplList::*Tramp_CProtectedSplList_Update)(CCreatureObject&);
+
+class DETOUR_CProtectedSplList : public CProtectedSplList {
+public:
+	void DETOUR_AddTail(CEffect& effect, int nPower, int nOpcode, CCreatureObject& cre, BOOL bCreateProj, STRREF strref, BOOL bDoNotUpdateEff, BOOL bRestoreLostSpls);
+	void DETOUR_Update(CCreatureObject& cre);
+};
+
+extern CCreatureObject& (CCreatureObject::*Tramp_CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int);
 extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellPriest)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellMage)(int, int);
 extern BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellPriest)(int, int, int*);
@@ -13,6 +23,7 @@ extern ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)();
 
 class DETOUR_CCreatureObject : public CCreatureObject {
 public:
+	CCreatureObject& DETOUR_Construct(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing);
 	CreFileKnownSpell& DETOUR_GetKnownSpellPriest(int nLevel, int nIndex);
 	CreFileKnownSpell& DETOUR_GetKnownSpellMage(int nLevel, int nIndex);
 	BOOL DETOUR_AddMemSpellPriest(int nLevel , int nIndex, int* pIndex);

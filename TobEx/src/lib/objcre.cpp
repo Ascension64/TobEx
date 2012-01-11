@@ -1,5 +1,16 @@
 #include "objcre.h"
 
+//CProtectedSplList
+void (CProtectedSplList::*CProtectedSplList_AddTail)(CEffect&, int, int, CCreatureObject&, BOOL, STRREF, BOOL, BOOL) =
+	SetFP(static_cast<void (CProtectedSplList::*)(CEffect&, int, int, CCreatureObject&, BOOL, STRREF, BOOL, BOOL)>
+																			(&CProtectedSplList::AddTail),				0x464A50);
+void (CProtectedSplList::*CProtectedSplList_Update)(CCreatureObject&) =
+	SetFP(static_cast<void (CProtectedSplList::*)(CCreatureObject&)>		(&CProtectedSplList::Update),				0x464BFB);
+
+void CProtectedSplList::AddTail(CEffect& effect, int nPower, int nOpcode, CCreatureObject& cre, BOOL bCreateProj, STRREF strref, BOOL bDoNotUpdateEff, BOOL bRestoreLostSpls)
+	{ return (this->*CProtectedSplList_AddTail)(effect, nPower, nOpcode, cre, bCreateProj, strref, bDoNotUpdateEff, bRestoreLostSpls); }
+void CProtectedSplList::Update(CCreatureObject& cre) { return (this->*CProtectedSplList_Update)(cre); }
+
 //CCreatureObject
 CGameObject& (CCreatureObject::*CCreatureObject_SetTarget)(Object&, char) =
 	SetFP(static_cast<CGameObject& (CCreatureObject::*)(Object&, char)>		(&CCreatureObject::SetTarget),				0x48D519);
@@ -16,6 +27,9 @@ CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)() =
 	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetEquippedEffectsList),	0x567540);
 CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)() =
 	SetFP(static_cast<CEffectList& (CCreatureObject::*)()>					(&CCreatureObject::GetMainEffectsList),		0x567560);
+CCreatureObject& (CCreatureObject::*CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int) =
+	SetFP(static_cast<CCreatureObject& (CCreatureObject::*)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int)>
+																			(&CCreatureObject::Construct),				0x87FB08);
 void (CCreatureObject::*CCreatureObject_CreateGore)(int, short, short) =
 	SetFP(static_cast<void (CCreatureObject::*)(int, short, short)>			(&CCreatureObject::CreateGore),				0x8862FE);
 void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&) =
@@ -94,6 +108,8 @@ ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarge
 void CCreatureObject::RemoveItem(CCreatureObject& cre, int nSlot)				{ return (*CCreatureObject_RemoveItem)(cre, nSlot); }
 CEffectList& CCreatureObject::GetEquippedEffectsList()							{ return (this->*CCreatureObject_GetEquippedEffectsList)(); }
 CEffectList& CCreatureObject::GetMainEffectsList()								{ return (this->*CCreatureObject_GetMainEffectsList)(); }
+CCreatureObject::CCreatureObject(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing)
+	{ (this->*CCreatureObject_Construct_10)(pFile, dwSize, bHasSpawned, nTicksTillRemove, nMaxMvtDistance, nMaxMvtDistanceToObject, nSchedule, nDestX, nDestY, nFacing); }
 void CCreatureObject::CreateGore(int dwUnused, short wOrient, short wType)		{ return (this->*CCreatureObject_CreateGore)(dwUnused, wOrient, wType); }
 void CCreatureObject::UpdateHPStatusTooltip(CUIControl& control)				{ return (this->*CCreatureObject_UpdateHPStatusTooltip)(control); }
 short CCreatureObject::GetOrientationTo(POINT& pt)								{ return (this->*CCreatureObject_GetOrientationTo)(pt); }

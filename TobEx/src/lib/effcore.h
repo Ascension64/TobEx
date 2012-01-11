@@ -84,10 +84,12 @@ public:
 	BOOL bPurge; //110h - deconstruct and remove effect from CEffectList after application
 	BOOL bRefreshStats; //114h - use if you change a m_BaseStats member, sets bApplyEffectsAgain in CEffectList, repeating effect application
 	int nDurationAfterDelay; //118h
-	int u11c;
-	int u120;
-	int u124;
-	int u128;
+
+	//used like wildcards when checking against a CEffectList element
+	BOOL m_bMatchOpcode; //11ch, match any with same opcode
+	BOOL m_bMatchOpcodeParam2; //120h, match any with same opcode and param2
+	BOOL m_bMatchOpcodeParam1; //124h, match any with same opcode and param1
+	BOOL m_bMatchOpcodeResource; //128h, match any with same opcode and resource
 	CSound sound;
 	Enum enum2; //196h, Arg7, inherits value of Cre+30h for a global effect of an item equipped by the Cre
 };

@@ -242,9 +242,9 @@ struct EffFileData { //size 108h
 	int nLevelMin; //4ch
 	int nLevelMax; //50h
 		
-	//bit0: CEFFECT_DISPELLABLE
-	//bit1: CEFFECT_IGNORE_RESISTANCE
-	//bit2: CEFFECT_IGNORE_SPELL_LVL_RESISTANCE (only for BounceSplLvl[Dec], ProtSplLvl[Dec], and SplLvlTrap; does not affect ProtSplLvl)
+	//bit0: CEFFECTFLAG_DISPELLABLE
+	//bit1: CEFFECTFLAG_IGNORE_RESISTANCE
+	//bit2: CEFFECTFLAG_IGNORE_SPELL_LVL_RESISTANCE (only for BounceSplLvl[Dec], ProtSplLvl[Dec], and SplLvlTrap; does not affect ProtSplLvl)
 	unsigned int dwFlags; //54h, DispelResistFlags
 		
 	int nParam3; //58h

@@ -97,6 +97,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineMoveAreasFix = FALSE;
 	bEnginePickpocketRemainHidden = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
+	bEngineSpellTurningFix = FALSE;
 	bEngineSummonLimitFix = FALSE;
 	bEngineTargetDeadFix = FALSE;
 	bEngineWeapSpecNumAttacksMod = FALSE;
@@ -142,6 +143,7 @@ CGameOptionsEx::CGameOptionsEx() {
 
 	bVideoEnableMorePaperdolls = FALSE;
 	bVideoIWDAnimAttack3Fix = FALSE;
+	bVideoSpellTurningAnimFix = FALSE;
 	bVideoVvcAlphaCrashFix = FALSE;
 	bVideoVvcShadowAnimFix = FALSE;
 
@@ -235,6 +237,7 @@ void CGameOptionsEx::Init() {
 	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");
 	bEnginePickpocketRemainHidden = GetTweakIniValue("Tweak", "Engine:Remain Hidden On Pickpocket Success");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");
+	bEngineSpellTurningFix = GetCoreIniValue("Engine", "Spell Turning Fix");
 	bEngineSummonLimitFix = GetCoreIniValue("Engine", "Summon Limit Fix");
 	bEngineTargetDeadFix = GetCoreIniValue("Engine", "Targetting Dead Animations Fix");
 	bEngineWeapSpecNumAttacksMod = GetTweakIniValue("Tweak", "Engine:Weapon Specialisation Number of Attacks Mod");
@@ -282,6 +285,7 @@ void CGameOptionsEx::Init() {
 
 	bVideoEnableMorePaperdolls = GetCoreIniValue("Video", "Enable More Paperdolls");
 	bVideoIWDAnimAttack3Fix = GetCoreIniValue("Video", "IWD Animation Attack 3 Fix");
+	bVideoSpellTurningAnimFix = GetCoreIniValue("Video", "Spell Turning Animation Fix");
 	bVideoVvcAlphaCrashFix = GetCoreIniValue("Video", "VVC Alpha Rendering Crash Fix");
 	bVideoVvcShadowAnimFix = GetCoreIniValue("Video", "VVC Shadow Animation Fix");
 

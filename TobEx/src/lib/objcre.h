@@ -77,16 +77,39 @@ struct CFavorite { //Size Eh
 	short nTimesUsed; //ch
 };
 
+struct CProtectedSpl { //Size 1Ch
+	int nLevel; //0h, spl level subtracted from amount of immunity/bounces left
+	int nOpcode; //4h, opcode of the protection effect
+	CProjectile* pProj; //8h
+	BOOL bNoProjectile; //ch, do not make a bounce projectile
+	STRREF strref; //10h
+	BOOL bStrRefOnly; //14h, ignores everything except printing a string to console
+	BOOL bSpellTrap; //18h, applies Restore Lost Spells eff on nPower
+};
+
+class CProtectedSplList : public IECPtrList {
+public:
+	void AddTail(CEffect& effect, int nPower, int nOpcode, CCreatureObject& cre, BOOL bCreateProj, STRREF strref, BOOL bDoNotUpdateEff, BOOL bRestoreLostSpls);
+	void Update(CCreatureObject& cre);
+};
+
+extern void (CProtectedSplList::*CProtectedSplList_AddTail)(CEffect&, int, int, CCreatureObject&, BOOL, STRREF, BOOL, BOOL);
+extern void (CProtectedSplList::*CProtectedSplList_Update)(CCreatureObject&);
+
 class CCreatureObject : public CGameSprite { //Size 6774h
 //Constructor: 0x87FB08
 public:
 	CGameObject& SetTarget(Object& o, char type);
 	void GetSpellIdsName(int nSpellIdx, IECString* ptr);
 	CDerivedStats& GetDerivedStats();
-	ACTIONRESULT CCreatureObject::CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil);
+	ACTIONRESULT CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil);
 	static void RemoveItem(CCreatureObject& cre, int nSlot);
 	CEffectList& GetEquippedEffectsList();
 	CEffectList& GetMainEffectsList();
+
+	CCreatureObject(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing);
+	CCreatureObject& Construct(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing) { return *this; } //dummy
+
 	void CreateGore(int dwUnused, short wOrient, short wType);
 	void UpdateHPStatusTooltip(CUIControl& control);
 	short GetOrientationTo(POINT& pt);
@@ -489,10 +512,10 @@ public:
 	int u641c;
 	CVariableArray* m_pLocalVariables; //6420h
 	int m_bUnmarshalling; //6424h, 1 during Unmarshal, 0 when done
-	IECPtrList ProtectedSpls; //6428h, Size 1Ch objects, DW nPower, DW nOpcodeEffect, CProjectile*, BOOL bCreateProjectile, STRREF, BOOL bDoNotUpdateEffects, BOOL bRestoreLostSpells
+	CProtectedSplList m_ProtectedSpls; //6428h, of CProtectedSpl objects
 	int u6444;
-	int u6448;
-	int u644c;
+	int m_nBounceDelay; //6448h, counts down from 25 frames
+	int m_nMoraleAI; //644ch
 	Enum eVisualEffect; //6450h, contains enum of CVisualEffect
 	int u6454;
 	CQuickObjectList* pSelectSpellSpells; //6458h
@@ -556,13 +579,13 @@ public:
 	int u6770; //assoc sprite update timer, 0 = always sprite update when ready, other = sprite update, reset to 0 if timer > 2
 };
 
-extern CGameObject& (CCreatureObject::*CCreatureObject_SetTarget)(Object&, char);
 extern void (CCreatureObject::*CCreatureObject_GetSpellIdsName)(int, IECString*);
 extern CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)();
 extern ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL);
 extern void (*CCreatureObject_RemoveItem)(CCreatureObject&, int);
 extern CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)();
 extern CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)();
+extern CCreatureObject& (CCreatureObject::*CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int);
 extern void (CCreatureObject::*CCreatureObject_CreateGore)(int, short, short);
 extern void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&);
 extern short (CCreatureObject::*CCreatureObject_GetOrientationTo)(POINT&);

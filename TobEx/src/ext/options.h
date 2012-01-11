@@ -93,6 +93,7 @@ struct CGameOptionsEx {
 	BOOL bEngineMoveAreasFix;
 	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;
+	BOOL bEngineSpellTurningFix;
 	BOOL bEngineSummonLimitFix;
 	BOOL bEngineTargetDeadFix;
 	BOOL bEngineWeapSpecNumAttacksMod;
@@ -139,6 +140,7 @@ struct CGameOptionsEx {
 
 	BOOL bVideoEnableMorePaperdolls;
 	BOOL bVideoIWDAnimAttack3Fix;
+	BOOL bVideoSpellTurningAnimFix;
 	BOOL bVideoVvcAlphaCrashFix;
 	BOOL bVideoVvcShadowAnimFix;
 

@@ -9,6 +9,16 @@
 #include "vidcore.h"
 #include "animcore.h"
 
+/*class ? : public CProjectile { //Size 304h
+//Constructor: 0x6161AC
+	//AACA70
+	CVidCell u172; //graphic
+	CVidBitmap u248;
+	int u2fe;
+	bool u302; // has bmp
+	char u303;
+};*/
+
 class CProjectile : public CGameObject { //Size 172h
 //Projectile type 1
 //Constructor: 0x5FE560
@@ -19,7 +29,7 @@ public:
 	char u45; //pad?
 	short nSpeed; //46h
 	Enum u48; //a party member (source)
-	Enum u4c; //target
+	Enum eTarget; //4ch
 	Enum u50;
 	CEffectList effects; //54h, to apply on target affected by this (Preset target effects from SPL)
 	

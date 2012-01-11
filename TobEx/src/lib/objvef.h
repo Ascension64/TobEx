@@ -88,7 +88,7 @@ public:
 	VidPal u22e; //size 0x24
 	CVidBitmap bitmap; //252h, object of nameBitmap
 	BOOL m_bDurationElapsed; //308h
-	int u30c; //ranges from 0x0-0x10, orientation
+	int m_nOrientation; //30ch
 	TerrainTable u310; //050505ff, 05050505, 05ff0505, 0505ff05
 	CSound u320; //320h, size 0x6a, for currentSnd
 	CVidCell* anim3; //38ah, related to nameAnim3

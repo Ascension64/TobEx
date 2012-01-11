@@ -218,6 +218,9 @@ void InitHooks() {
 	if (pGameOptionsEx->bEngineMoveAreasFix)
 		DetourMemberFunction(Tramp_CMoveAreasList_MoveAllTo, DETOUR_CMoveAreasList::DETOUR_MoveAllTo);
 
+	if (pGameOptionsEx->bEngineSpellTurningFix)
+		DetourMemberFunction(Tramp_CCreatureObject_Construct_10, DETOUR_CCreatureObject::DETOUR_Construct);
+
 	if (pGameOptionsEx->bItemsUseAnimPercentThrowingWeapons)
 		DetourMemberFunction(Tramp_CCreatureObject_ValidateAttackSequence, DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence);
 

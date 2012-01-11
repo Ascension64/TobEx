@@ -30,6 +30,7 @@
 typedef IECPtrList COnAttackEffList; //AA657C
 typedef IECPtrList CColorPalList; //AA6594
 typedef IECPtrList CColorRgbList; //AA6588
+typedef IECPtrList CBounceEffList; //AA6618, CEffect elements
 
 struct CConditionalSpell { //Size 204h
 	void* operator new (size_t size);
@@ -520,7 +521,7 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	COnEquipItemList ApplyEffOnEquipItem; //3b8h, added by effect 182 but not used
 	COnEquipItemtypeList ApplyEffOnEquipItemType; //3d4h, added by effect 183 but not used
 	IECPtrList BounceProjId; //3f0h, AA6624
-	IECPtrList BounceEff; //40ch, AA6618, CEffect
+	CBounceEffList BounceEff; //40ch
 	BOOL BounceSplLvl[10]; //428h, if 1 for a level, is affected by that power level
 	SpellLevelDec BounceSplLvlDec[10]; //450h
 	SpellLevelDec ProtSplLvlDec[10]; //4a0h

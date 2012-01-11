@@ -353,6 +353,7 @@
           <ul>
             <li><a href="#engine-arenas">Arenas Game Type</a></li>
             <li><a href="#engine-casting">Casting Graphics and Sounds</a></li>
+            <li><a href="#engine-creatures-moving-areas">Creatures Moving Between Areas</a></li>
             <li><a href="#engine-dead-statics">Dead Static Animations</a></li>
             <li><a href="#engine-dialogue-bar">Dialogue Bar</a></li>
             <li><a href="#engine-effect-stacking">Effect Stacking Behaviour</a></li>
@@ -366,6 +367,7 @@
             <li><a href="#engine-race-selection">Race Selection Strings</a></li>
             <li><a href="#engine-random-treasure">Random Treasure</a></li>
             <li><a href="#engine-rest-spawns">Rest Spawns</a></li>
+            <li><a href="#engine-spell-turning">Spell Turning</a></li>
             <li><a href="#engine-starting-xp">Starting Experience</a></li>
             <li><a href="#engine-summon-limit-bug">Summon Limit Bug</a></li>
             <li><a href="#engine-talking-to-charmed">Talking to Charmed Creatures</a></li>
@@ -407,6 +409,9 @@
           <p>TobEx fixes this bug by modifying the way that the gender of casting sound selection is handled. Specifically, male gender uses a male casting sound, while all other genders check the Sex field (0x237) in the CRE file format. If the Sex field is male (1), a male casting sound is used. If the Sex field is female (2), a female casting sound is used. For any other value in the Sex field, an unvoiced casting sound is used. In order to do this, TobEx also ensures that the Sex field is correctly set during character generation, and patches some characters and creatures (a la BG2 Fixpack) so that their Sex field is correct.</p>
           <p>TobEx also fixes a bug where the Mental Speed stat is not considered when determining whether to play a casting sound at all, whether to play a gendered or unvoiced casting sound, and whether to play a casting animation.</p>
           <hr />
+          <a name="engine-creatures-moving-areas" id="engine-creatures-moving-areas"></a><h3>Creatures Moving Between Areas</h3>
+          <p>TobEx fixes a bug whereby creatures moving between areas can get multiple copies saved in the area file in a saved game. This bug was fixed in the Throne of Bhaal 26499 BETA patch, and the fix is re-created by TobEx.</p>
+          <hr />
           <a name="engine-dead-statics" id="engine-dead-statics"></a><h3>Dead Static Animations</h3>
           <p>TobEx fixes a bug where dead static animations are still valid scripting targets. Normally, this causes bugs where a creature in berserk amongst dead static animations will permanently remain in berserk, breaking game transitions.</p>
           <hr />
@@ -446,6 +451,9 @@
           <hr />
           <a name="engine-rest-spawns" id="engine-rest-spawns"></a><h3>Rest Spawns</h3>
           <p><strong>Option:</strong> TobEx gives the option of advancing a random time up to, but not including, eight hours if resting is interrupted by spawns. All resting times of one hour or greater will display in the dialogue bar. Resting times less than one hour will not display in the dialogue bar.</p>
+          <hr />
+          <a name="engine-spell-turning" id="engine-spell-turning"></a><h3>Spell Turning</h3>
+          <p>TobEx fixes a bug where on occasions, certain creatures with spell turning absorb spells rather than bouncing them back to the original caster.</p>
           <hr />
           <a name="engine-starting-xp" id="engine-starting-xp"></a><h3>Starting Experience</h3>
           <p><strong>Option:</strong> TobEx gives the option for modmakers to modify the starting experience of Shadows of Amn and Throne of Bhaal.</p>
@@ -1952,6 +1960,7 @@
             <li><a href="#animations-using-items">Animation Sequences when Using Items</a></li>
             <li><a href="#animations-iwd">Icewind Dale-style Animations</a></li>
             <li><a href="#animations-paper-dolls">Paper Dolls</a></li>
+            <li><a href="#animations-spell-turning">Spell Turning Animations</a></li>
             <li><a href="#animations-throwing-weapons">Throwing Weapon Animations</a></li>
             <li><a href="#animations-tooltip">Tooltip Scroll</a></li>
             <li><a href="#animations-vvc">Visual Effect Video Cells (VVCs)</a></li>
@@ -1994,6 +2003,9 @@
           <hr />
           <a name="animations-paper-dolls" id="animations-paper-dolls"></a><h3>Paper Dolls</h3>
           <p>TobEx enables paperdolls to be shown in the inventory and character customisation screens for animation IDs 0x12XX, 0x2XXX, 0x3XXX, and modification-added 0x7XXX (except 0x73XX, which is already shown in vanilla), which would otherwise not show at all. Note that paperdolls for the 0x7XXX group of animation must have to be named &lt;prefix&gt;INV.BAM.</p>
+          <hr />
+          <a name="animations-spell-turning" id="animations-spell-turning"></a><h3>Spell Turning Animation</h3>
+          <p>TobEx fixes a bug introduced somewhere between builds 22941 and 23037 of Shadows of Amn, whereby SPSTURNI.VVC was no longer played each time a spell is bounced off a creature who had spell turning.</p>
           <hr />
           <a name="animations-throwing-weapons" id="animations-throwing-weapons"></a><h3>Throwing Weapon Animations</h3>
           <p><strong>Option:</strong> TobEx gives the option of enabling the use of item ability slash %, backslash %, and jab % fields for ranged weapons equipped in a weapon slot that do not require a launcher. Because this hack makes the creature use of the SEQ_ATTACK_[] animations instead of SEQ_SHOOT, attacks play the SEQ_ATTACK and SEQ_ATTACK_[] animation sounds instead of the SEQ_SHOOT animation sound. These percentages will only affect creatures with animation IDs in the 0x5000-0x53FF group with animation prefix starting with C, and 0x6*** groups to maintain vanilla behaviour and Infinity Animations compatibility.</p>

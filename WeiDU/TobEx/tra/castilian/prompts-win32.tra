@@ -63,14 +63,14 @@ elija uno:"
 @-1039= "[A] Preguntar por cada componente, [R]einstalar la configuracion actual, [U] Desinstalarlos todos, [S]altarlos todos, o elegir una seleccion pre-definida:"
 
 
-@0 = ~TobEx - Nucleo~
-@1 = ~Este componemte requiere una instalacion existente de TobEx.~
+@0 = ~TobEx - N£cleo~
+@1 = ~Este componemte requiere una instalaci¢n existente de TobEx.~
 @100 = ~Extras~
-@101 = ~Aplicar Chequeo de Concentracion en Danos [WIP]~
-@102 = ~Despetar con Daños~
-@103 = ~Como descripcion del hechizo Ceguera~
-@104 = ~Desactivar Color Gris en Piel Petrea [C]~
-@105 = ~No hay interrupcion de hechizos si no afecta el golpe~
+@101 = ~Aplicar Chequeo de Concentraci¢n en Da¤os [WIP]~
+@102 = ~Despetar con Da¤os~
+@103 = ~Como descripci¢n del hechizo Ceguera~
+@104 = ~Desactivar Color Gris en Piel P‚trea [C]~
+@105 = ~No hay interrupci¢n de hechizos si no afecta el golpe~
 @106 = ~Usar Conjurar al Nivel de Imagen Espejada [C]~
 @107 = ~Permitir Todas las Razas a Clase Dual~
 @108 = ~Permitir Equiparse con Armadura en Combate~
@@ -80,10 +80,10 @@ elija uno:"
 @112 = ~Restricciones de Nivel Uno de Pericias~
 @113 = ~Permanecer Oculto si el Hurto es Exitoso [C]~
 @114 = ~Al descansar los Engendros no detienen el Avancer del Tiempo~
-@115 = ~Subtitulos en Dialogos de Saludos~
-@116 = ~Activar Animacion de Sonidos de Ataque~
+@115 = ~Subt¡tulos en Di logos de Saludos~
+@116 = ~Activar Animaci¢n de Sonidos de Ataque~
 @117 = ~Cuatro Ranuras en el Inventario de Armas~
-@118 = ~Subtitulos al Set de Sonidos~
+@118 = ~Subt¡tulos al Set de Sonidos~
 @119 = ~Remover Todas las Restricciones de Raza-Clase~
 @120 = ~Dejar caer el Inventario al Desintegrarse~
 @121 = ~Dejar caer el Inventario al Morir Congelado~

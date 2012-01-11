@@ -13,7 +13,7 @@ LANGUAGE "English"
 
 LANGUAGE "Castellano (Castilian/Spanish)"
          "castilian"
-         "TobEx/tra/castilian/prompts.tra"
+         "TobEx/tra/castilian/prompts-%WEIDU_OS%.tra"
          "TobEx/tra/castilian/setup.tra"
 
 LANGUAGE "Francais (French)"

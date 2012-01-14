@@ -2842,9 +2842,29 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bVideoSpellTurningAnimFix) {
-		//nop setting of CVisualEffect.eOwner
-		char bytes[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
-		vDataList.push_back( Data(0x4651A3, 6, bytes) );
+		//mov eax,dword ptr ss:[ebp-20]
+		//push eax
+		//mov ecx,dword ptr ss:[ebp+8]
+		//push ecx
+		//call
+		char bytes[] = {0x8B, 0x45, 0xE0,
+						0x50,
+						0x8B, 0x4D, 0x08,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x4650D8, 9, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CProtectedSplList_Update_CreateVisualEffect;
+		DWORD address = (DWORD)ptr - 5  - 0x4650E0;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x4650E1, 4, bytes2) );
+
+		//jmp 46530A
+		//nop
+		char bytes3[] = {0xE9, 0x20, 0x02, 0x00, 0x00,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x4650E5, 7, bytes3) );
 	
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

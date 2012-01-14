@@ -113,6 +113,7 @@ public:
 	void CreateGore(int dwUnused, short wOrient, short wType);
 	void UpdateHPStatusTooltip(CUIControl& control);
 	short GetOrientationTo(POINT& pt);
+	static short CalculateOrientation(POINT& pt1, POINT& pt2);
 	void SetAnimationSequence(short wSeq);
 	void StartSpriteEffect(char nEffectType, char nParticleType, int nParticles);
 	CItem& GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot);
@@ -589,6 +590,7 @@ extern CCreatureObject& (CCreatureObject::*CCreatureObject_Construct_10)(void*, 
 extern void (CCreatureObject::*CCreatureObject_CreateGore)(int, short, short);
 extern void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&);
 extern short (CCreatureObject::*CCreatureObject_GetOrientationTo)(POINT&);
+extern short (*CCreatureObject_CalculateOrientation)(POINT&, POINT&);
 extern void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short);
 extern void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int);
 extern CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot);

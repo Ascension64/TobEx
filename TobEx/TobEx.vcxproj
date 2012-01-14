@@ -163,6 +163,7 @@
     <ClCompile Include="src\lib\objcore.cpp" />
     <ClCompile Include="src\lib\objcre.cpp" />
     <ClCompile Include="src\lib\objstats.cpp" />
+    <ClCompile Include="src\lib\objvef.cpp" />
     <ClCompile Include="src\lib\rescore.cpp" />
     <ClCompile Include="src\lib\scrcore.cpp" />
     <ClCompile Include="src\lib\splcore.cpp" />

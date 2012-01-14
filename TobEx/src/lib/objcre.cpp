@@ -36,6 +36,8 @@ void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&) =
 	SetFP(static_cast<void (CCreatureObject::*)(CUIControl&)>				(&CCreatureObject::UpdateHPStatusTooltip),	0x8AC3C5);
 short (CCreatureObject::*CCreatureObject_GetOrientationTo)(POINT&) =
 	SetFP(static_cast<short (CCreatureObject::*)(POINT&)>					(&CCreatureObject::GetOrientationTo),		0x8ACFC2);
+short (*CCreatureObject_CalculateOrientation)(POINT&, POINT&) =
+	reinterpret_cast<short (*)(POINT&, POINT&)>								(0x8AD080);
 void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short) =
 	SetFP(static_cast<void (CCreatureObject::*)(short)>						(&CCreatureObject::SetAnimationSequence),	0x8AD630);
 void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int) =
@@ -113,6 +115,7 @@ CCreatureObject::CCreatureObject(void* pFile, unsigned int dwSize, BOOL bHasSpaw
 void CCreatureObject::CreateGore(int dwUnused, short wOrient, short wType)		{ return (this->*CCreatureObject_CreateGore)(dwUnused, wOrient, wType); }
 void CCreatureObject::UpdateHPStatusTooltip(CUIControl& control)				{ return (this->*CCreatureObject_UpdateHPStatusTooltip)(control); }
 short CCreatureObject::GetOrientationTo(POINT& pt)								{ return (this->*CCreatureObject_GetOrientationTo)(pt); }
+short CCreatureObject::CalculateOrientation(POINT& pt1, POINT& pt2)				{ return (*CCreatureObject_CalculateOrientation)(pt1, pt2); }
 void CCreatureObject::SetAnimationSequence(short wSeq)							{ return (this->*CCreatureObject_SetAnimationSequence)(wSeq); }
 void CCreatureObject::StartSpriteEffect(char nEffectType, char nParticleType, int nParticles)
 	{ return (this->*CCreatureObject_StartSpriteEffect)(nEffectType, nParticleType, nParticles); }

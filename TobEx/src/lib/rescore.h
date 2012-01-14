@@ -41,6 +41,9 @@ struct KeyTableEntry;
 class Res : public CObject { //Size 50h
 //Constructor: 0x987D40
 public:
+	void RemoveFromHandler();
+	void AddToHandler();
+
 	virtual void v0() {}
 
 	unsigned int dwFlags; //0x4
@@ -69,6 +72,9 @@ public:
 	POSITION pNode; //48h, CNode containing this object
 	unsigned int u4c; //4ch, identical to uc of KeyTableEntry (12 bits ?, 8 bits ?, 12 bits biffIndex [-1 for not in biff?])
 };
+
+extern void (Res::*Res_RemoveFromHandler)();
+extern void (Res::*Res_AddToHandler)();
 
 class ResBah : public Res { //Size 7Ah
 //Constructor: 0x98B355
@@ -235,6 +241,8 @@ public:
 
 struct CResHandler { //Size 2A8h
 //Constructor: 0x98CB00
+	void Free(Res& res);
+
 	int u0;
 	BOOL bServiceRequested; //4h, currently demanded or not
 	short nRequests; //8h
@@ -305,5 +313,7 @@ struct CResHandler { //Size 2A8h
 	char u2a6;
 	char u2a7; //pad
 };
+
+extern void (CResHandler::*CResHandler_Free)(Res&);
 
 #endif //RESCORE_H

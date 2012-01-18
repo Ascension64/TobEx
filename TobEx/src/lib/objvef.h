@@ -73,16 +73,16 @@ public:
 	int u46; //46h
 	int u4a; //4ah
 	int u4e; //4eh
-	int u52; //52h, has ownerEnum? or 6e has flags?
+	int u52; //52h, has owner (or 6e has flags?)
 	int m_nSpeed; //56h, Arg8 (zPos)
 	int m_nDuration; //5ah, purge if m_nAIUpdates > this, unless duration <= 0
 	POINT u5e; //5eh
 	int u66; //66h, zPos?
 	int u6a; //6ah
 
-	//bit0 = has entry in u296
+	//bit0 = do not purge if no more vid cells/vef components
 	//bit1 = update zPos
-	//bit2 = attached to owner cre
+	//bit2 = attached to an owner (cre or projectileBAM)
 	DWORD m_dwFlags; //6eh
 	int u72;
 	int u76;

@@ -32,67 +32,6 @@ BOOL (CCreatureObject::*Tramp_CCreatureObject_EvaluateTrigger)(Trigger&) =
 ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)() =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)()>					(&CCreatureObject::ExecuteAction),			0x8E2276);
 
-void __stdcall CProtectedSplList_Update_CreateVisualEffect(CCreatureObject& creSource, CCreatureObject& creTarget) {
-	CVisualEffect* pVisEff = new CVisualEffect();
-	ResVvcContainer vvc(ResRef("spsturni"));
-	CVisualEffectVidCell* pVidCell = &vvc.Unmarshal();
-	pVidCell->m_nOrientation = CCreatureObject::CalculateOrientation(creSource.m_currentLoc, creTarget.m_currentLoc);
-	pVidCell->vvc.posFlags = VVCORIENTATION_IGNORE;
-	pVidCell->m_nPurgeType = 1;
-	//pVisEff->eOwner = creSource.e;
-	pVisEff->u52 = 1;
-	pVisEff->ptSource.x = creSource.m_currentLoc.x;
-	pVisEff->ptSource.y = creSource.m_currentLoc.y;
-	pVisEff->AddToArea(*creSource.pArea, creSource.m_currentLoc, 32, LIST_FRONT);
-	if (pVidCell) {
-		POINT pt;
-		pt.x = pVidCell->vvc.ptOffset.x + creSource.m_currentLoc.x;
-		pt.y = pVidCell->vvc.ptOffset.y + creSource.m_currentLoc.y;
-		pVidCell->AddToArea(*creSource.pArea, pt, pVidCell->vvc.zPos, LIST_FRONT, 0);
-		pVisEff->m_VidCells.AddTail((void*)pVidCell->e);
-	}
-
-	/*//this doesn't work because the vid cell gets purged unless there is an effect holding it in place
-	CVisualEffect* pVisEff = NULL;
-
-	ResVvcContainer vvc(ResRef("spsturni"));
-	CVisualEffectVidCell* pVidCell = &vvc.Unmarshal();
-	if (pVidCell) {
-		pVidCell->m_nOrientation = CCreatureObject::CalculateOrientation(creSource.m_currentLoc, creTarget.m_currentLoc);
-		pVidCell->vvc.posFlags = VVCORIENTATION_IGNORE;
-		pVidCell->m_nPurgeType = 1;
-		POINT pt;
-		pt.x = pVidCell->vvc.ptOffset.x + creSource.m_currentLoc.x;
-		pt.y = pVidCell->vvc.ptOffset.y + creSource.m_currentLoc.y;
-
-		if (creSource.eVisualEffect != ENUM_INVALID_INDEX) {
-			char threadVal;
-			do {
-				threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(creSource.eVisualEffect, THREAD_ASYNCH, &pVisEff, INFINITE);
-			} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
-			if (threadVal == OBJECT_SUCCESS) {
-				pVidCell->AddToArea(*creSource.pArea, pt, pVidCell->vvc.zPos, LIST_FRONT, 0);
-				pVisEff->m_VidCells.AddTail((void*)pVidCell->e);
-				g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(creSource.eVisualEffect, THREAD_ASYNCH, INFINITE);
-			}
-		} else {
-			pVisEff = new CVisualEffect();
-			pVisEff->m_dwFlags |= 1; //bit0
-			pVisEff->m_dwFlags |= 4; //bit2
-			pVisEff->u52 = 1;
-			pVisEff->eOwner = creSource.e;
-			pVisEff->ptSource.x = creSource.m_currentLoc.x;
-			pVisEff->ptSource.y = creSource.m_currentLoc.y;
-			pVisEff->AddToArea(*creSource.pArea, creSource.m_currentLoc, 32, LIST_FRONT);
-
-			pVidCell->AddToArea(*creSource.pArea, pt, pVidCell->vvc.zPos, LIST_FRONT, 0);
-			pVisEff->m_VidCells.AddTail((void*)pVidCell->e);
-		}
-	}*/
-
-	return;
-}
-
 CCreatureObject& DETOUR_CCreatureObject::DETOUR_Construct(
 	void* pFile,
 	unsigned int dwSize,

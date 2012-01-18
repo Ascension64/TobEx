@@ -3,17 +3,6 @@
 
 #include "objcre.h"
 
-extern void (CProtectedSplList::*Tramp_CProtectedSplList_AddTail)(CEffect&, int, int, CCreatureObject&, BOOL, STRREF, BOOL, BOOL);
-extern void (CProtectedSplList::*Tramp_CProtectedSplList_Update)(CCreatureObject&);
-
-class DETOUR_CProtectedSplList : public CProtectedSplList {
-public:
-	void DETOUR_AddTail(CEffect& effect, int nPower, int nOpcode, CCreatureObject& cre, BOOL bCreateProj, STRREF strref, BOOL bDoNotUpdateEff, BOOL bRestoreLostSpls);
-	void DETOUR_Update(CCreatureObject& cre);
-};
-
-void __stdcall CProtectedSplList_Update_CreateVisualEffect(CCreatureObject& creSource, CCreatureObject& creTarget);
-
 extern CCreatureObject& (CCreatureObject::*Tramp_CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int);
 extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellPriest)(int, int);
 extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellMage)(int, int);

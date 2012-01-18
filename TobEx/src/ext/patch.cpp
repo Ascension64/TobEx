@@ -2842,30 +2842,28 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bVideoSpellTurningAnimFix) {
-		//mov eax,dword ptr ss:[ebp-20]
-		//push eax
-		//mov ecx,dword ptr ss:[ebp+8]
-		//push ecx
-		//call
-		char bytes[] = {0x8B, 0x45, 0xE0,
-						0x50,
-						0x8B, 0x4D, 0x08,
-						0x51,
-						0xE8};
-		vDataList.push_back( Data(0x4650D8, 9, bytes) );
-
-		//CALL address
-		void* ptr = (void*)CProtectedSplList_Update_CreateVisualEffect;
-		DWORD address = (DWORD)ptr - 5  - 0x4650E0;
-		char* bytes2 = (char*)&address;
-		vDataList.push_back( Data(0x4650E1, 4, bytes2) );
-
-		//jmp 46530A
+		//mov edx,dword ptr ss:[ebp-2B4]
+		//mov eax,dword ptr ds:[edx+6E]
+		//and eax,4
+		//test eax,eax
+		//je 654D36
+		//mov ecx,dword ptr ss:[ebp-34]
+		//mov eax,dword ptr ds:[ecx+6450]
+		//cmp eax,-1
+		//jnz short 654CCA
 		//nop
-		char bytes3[] = {0xE9, 0x20, 0x02, 0x00, 0x00,
-						0x90, 0x90};
-		vDataList.push_back( Data(0x4650E5, 7, bytes3) );
-	
+		char bytes[] = {0x8B, 0x95, 0x4C, 0xFD, 0xFF, 0xFF,
+						0x8B, 0x42, 0x6E,
+						0x83, 0xE0, 0x04,
+						0x85, 0xC0,
+						0x0F, 0x84, 0xA1, 0x00, 0x00, 0x00,
+						0x8B, 0x4D, 0xCC,
+						0x8B, 0x81, 0x50, 0x64, 0x00, 0x00,
+						0x83, 0xF8, 0xFF,
+						0x75, 0x27,
+						0x90};
+		vDataList.push_back( Data(0x654C81, 35, bytes) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

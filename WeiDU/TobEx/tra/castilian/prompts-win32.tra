@@ -3,39 +3,39 @@
 Para ahorrar tiempo, puedes decidir que hacer con ellos desde un primer momento
 en vez de tener que elegirlos por separado.
 "
-@-1002= "Que deberia hacer con todos los componentes AUN NO instalados?
+@-1002= "®QuÇ deber°a hacer con todos los componentes AÈN NO instalados.
 [I]nstalarlos, [S]altarlos, [A] preguntar por cada uno? "
-@-1003= "Que se debe hacer con todos los componentes que YA ESTAN instalados.
+@-1003= "®QuÇ se debe hacer con todos los componentes que YA ESTµN instalados.
 [R]einstalarlos, [U] Desinstalarlos, [S]altarlos, [A] Preguntar por cada uno? "
 
-@-1004= "POR FAVOR en escribe los contenidos del archivo "
+@-1004= "POR FAVOR escribe los contenidos del archivo "
 @-1005= "en"
 
 @-1006= "Instalar Componente ["
 @-1007= "]?
-[R]einstalar, [N]o cambiar o  [U] Desinstalar [Q] Salir? "
+[R]einstalar, [N]o cambiar o [U] Desinstalar [Q] Salir? "
 @-1008= "]?
 [I]nstalar, o [N]o Instalar o [Q] Salir? "
 
-@-1009= "Insertar parte del nombre del modulo:: "
+@-1009= "Insertar parte del nombre del m¢dulo: "
 
 @-1010= "Reinstalando ["
 @-1011= "] componente "
-@-1012= "Reinstalando usando idioma"
+@-1012= "Reinstalando usando idioma "
 
-@-1013= "Eliminando instalacion  anterior de  ["
-@-1014= "] primero ..."
-@-1015= "INSTALACIION ANTERIOR ELIMINADA CON EXITO"
+@-1013= "Eliminando instalaci¢n anterior de ["
+@-1014= "] primero..."
+@-1015= "INSTALACI‡N ANTERIOR ELIMINADA CON êXITO"
 
 @-1016= "Instalando"
 @-1017= "ERROR al Instalar ["
-@-1018= "],  volviendo al estado anterior"
+@-1018= "], volviendo al estado anterior"
 @-1019= "INSTALADO SATISFACTORIAMENTE     "
 @-1020= "Saltando"
 @-1021= "Eliminando ["
 @-1022= "] (componente #"
 @-1023= ")"
-@-1024= "ELIMINADO CON EXITO["
+@-1024= "ELIMINADO CON êXITO ["
 
 @-1025= "]?
 [R]einstalar, [N]o Cambiar, [U] Desinstalar, [Q] Salir o elija uno:"
@@ -43,9 +43,9 @@ en vez de tener que elegirlos por separado.
 [N]o, [Q] Salir o elija uno:"
 @-1027= " (Ya instalado)"
 
-@-1028= "Quiere ver los componentes de ["
+@-1028= "®Quiere ver los componentes de ["
 @-1029= "]?
-[Y] Si, [N]o? "
+[Y] S÷, [N]o? "
 
 @-1030= "]?
 elija uno:"
@@ -53,21 +53,21 @@ elija uno:"
 [R]einstalar, [N]o Cambiar, [Q] Salir o elija uno:"
 @-1032= "NO INSTALADO DEBIDO A ERRORES"
 @-1033= "INSTALADO CON ALGUNOS FALLOS    "
-@-1034= "Quiere leer el archivo leame? [Y] Si [N]o"
-@-1035= "Usando el idioma"
+@-1034= "®Quiere leer el archivo lÇame? [Y] S÷ [N]o"
+@-1035= "Usando el idioma "
   
 @-1036= "Saltando GRUPO ["
 @-1037= "] porque falla sus requerimientos."
   
-@-1038= "[A] Preguntar por cada componente, [S]altarlos todos, o elegir una seleccion pre-definida:"
-@-1039= "[A] Preguntar por cada componente, [R]einstalar la configuracion actual, [U] Desinstalarlos todos, [S]altarlos todos, o elegir una seleccion pre-definida:"
+@-1038= "[A] Preguntar por cada componente, [S]altarlos todos, o elegir una selecci¢n pre-definida:"
+@-1039= "[A] Preguntar por cada componente, [R]einstalar la configuraci¢n actual, [U] Desinstalarlos todos, [S]altarlos todos, o elegir una selecci¢n pre-definida:"
 
 
 @0 = ~TobEx - N£cleo~
-@1 = ~Este componemte requiere una instalaci¢n existente de TobEx.~
+@1 = ~Este componente requiere una instalaci¢n existente de TobEx.~
 @100 = ~Extras~
 @101 = ~Aplicar Chequeo de Concentraci¢n en Da§os [WIP]~
-@102 = ~Despetar con Da§os~
+@102 = ~Despertar con Da§os~
 @103 = ~Como descripci¢n del hechizo Ceguera~
 @104 = ~Desactivar Color Gris en Piel PÇtrea [C]~
 @105 = ~No hay interrupci¢n de hechizos si no afecta el golpe~
@@ -79,7 +79,7 @@ elija uno:"
 @111 = ~Desactivar Silencio al Hechizar~
 @112 = ~Restricciones de Nivel Uno de Pericias~
 @113 = ~Permanecer Oculto si el Hurto es Exitoso [C]~
-@114 = ~Al descansar los Engendros no detienen el Avancer del Tiempo~
+@114 = ~Al descansar los Engendros no detienen el Avance del Tiempo~
 @115 = ~Subt°tulos en Di†logos de Saludos~
 @116 = ~Activar Animaci¢n de Sonidos de Ataque~
 @117 = ~Cuatro Ranuras en el Inventario de Armas~

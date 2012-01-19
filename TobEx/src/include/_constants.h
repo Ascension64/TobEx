@@ -277,6 +277,7 @@
 //0xAA736C, 14h, DW x, DW y (CMessageForceJump)
 //! 0xAA73DC, CMessagePlaySoundset
 //0xAA73F8, 1Ah, DW nStatedIdx, BYTE, pad, DW (CGameDialog 5ch), DW (CGameDialog 60h) (CMessageShowDialogueState)
+//0xAA743C, 14h, DW nTicks, Enum eTarget (CMessageFaceTalker)
 
 //! 0xAA9970 CMessageCastSpell
 //0xAA99F4, 10h, dwDuration (CMessageTimeStop)

@@ -384,7 +384,7 @@ public:
 	CEffectList m_EffectsMain; //3590h, for all other effects
 	IECPtrList u35bc; //AAA8FC, CPermRepeatingEffList
 	CPtrArray u35d8;
-	POINT u35ec; //assoc actions
+	POINT u35ec; //assoc actions, target for pathfinding
 	int u35f4;
 	int u35f8; //assoc actions
 	short u35fc; //confusion timer?
@@ -412,8 +412,8 @@ public:
 	int u36b2;
 	short u36b6;
 	short u36b8;
-	short u36ba; //assoc actions, and luck
-	int u36bc; //assoc actions
+	short u36ba; //incremental timer, assoc actions, and luck, and when a new pathfinding search request gets sent
+	int u36bc; //assoc actions, ? has search request?
 	short u36c0;
 	short u36c2[2];
 	short wRoundTimer; //36c6h, range 0-100, determines the x-coordinate of the pixel to select in RNDBASE*.BMP
@@ -472,8 +472,8 @@ public:
 	BOOL m_bInAttack; //629ch, in the middle of attack phase of a round
 	short u62a0; //assoc actions
 	int u62a2;
-	int u62a6; //countdown timer, related to 62aa
-	Enum u62aa;
+	int m_nFaceTalkerTimer; //62a6h, countdown timer
+	Enum m_eTalker; //62aah, orients cre to person who is about to talk to them
 	int nSoundLength; //62aeh, in sec
 	char u62b2[3];
 	char u62b5; //padding?

@@ -18,6 +18,8 @@
 #define TERRAINCODE_WORLD_EXIT				14
 #define TERRAINCODE_GRASS					15
 
+struct CSearchBitmap;
+
 struct TerrainTable { //Size 10h
 //For use with search map, each bit corresponding to the search map pixel value
 //0x05 = passable, 0xFF = impassable
@@ -49,21 +51,21 @@ struct CSearchRequest { //Size 60h
 	char m_serviceState; //0h, range: 0-5, (AACC98)4 = SERVICE_STALE
 	char u1;
 	int u2;
-	char u6;
+	char cEnemyAlly; //6h, of owner
 	char u7;
-	char u8;
+	char u8; //numElements of array at u3c
 	char u9;
 	int ua;
 	char ue;
-	int u10;
-	int u14[4]; //struct
-	int u24;
+	CSearchBitmap* m_pSearchMap; //10h
+	TerrainTable tt; //14h
+	BOOL u24; //gets value from Animation v58()
 	int u28;
-	int u2c;
+	Enum e; //2ch, of owner
 	int u30;
 	int u34;
 	int* u38;
-	int* u3c;
+	Enum* u3c; //array of u8 Enum targets
 	int* u40;
 	int u44;
 	int u48;

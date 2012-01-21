@@ -14,8 +14,8 @@ public:
 	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, int nUserArg, bool bResetScrollbar);
 
 	int ufe;
-	int u102;
-	int u106;
+	BOOL m_bInStartTOBArea; //102h, AR4000
+	int m_nTicksInStartTOBArea; //106h
 	int u10a;
 	CRITICAL_SECTION u10e;
 	int u126;

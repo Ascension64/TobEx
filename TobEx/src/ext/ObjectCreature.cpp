@@ -31,6 +31,10 @@ BOOL (CCreatureObject::*Tramp_CCreatureObject_EvaluateTrigger)(Trigger&) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(Trigger&)>					(&CCreatureObject::EvaluateTrigger),		0x8F6C0E);
 ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)() =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)()>					(&CCreatureObject::ExecuteAction),			0x8E2276);
+ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ActionPickPockets)(CCreatureObject&) =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(CCreatureObject&)>	(&CCreatureObject::ActionPickPockets),		0x9431AE);
+void (CCreatureObject::*Tramp_CCreatureObject_UpdateFaceTalkerTimer)() =
+	SetFP(static_cast<void (CCreatureObject::*)()>							(&CCreatureObject::UpdateFaceTalkerTimer),	0x955CD7);
 
 CCreatureObject& DETOUR_CCreatureObject::DETOUR_Construct(
 	void* pFile,
@@ -165,6 +169,238 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ExecuteAction() {
 	bExecutingAction = FALSE;
 
 	return ar;
+}
+
+ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CCreatureObject::DETOUR_ActionPickPockets");
+
+	if (!pGameOptionsEx->bEnginePickpocketRemainHidden &&
+		!pGameOptionsEx->bTriggerPickpocketFailed) {
+		return (this->*Tramp_CCreatureObject_ActionPickPockets)(creTarget);
+	}
+
+	if (&creTarget == NULL ||
+		creTarget.bScheduled == FALSE ||
+		creTarget.bActive == FALSE ||
+		creTarget.bFree == FALSE)
+		return ACTIONRESULT_FAILED;
+
+	if (this->GetDerivedStats().ButtonDisable[1]) {
+		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_DISABLED_ARMOR, 0, 0, 0, -1, 0, IECString(""));
+		return ACTIONRESULT_FAILED;
+	}
+
+	if (creTarget.o.MatchCriteria(this->o.GetOpposingEAObject(), FALSE, FALSE, FALSE)) {
+		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_FAILED_HOSTILE, 0, 0, 0, -1, 0, IECString(""));
+		return ACTIONRESULT_FAILED;
+	}
+
+	if (creTarget.m_bInStore) return ACTIONRESULT_FAILED;
+
+	POINT ptTarget = {creTarget.m_currentLoc.x / PIXELS_PER_SEARCHMAP_PT_X, creTarget.m_currentLoc.y / PIXELS_PER_SEARCHMAP_PT_Y};
+	POINT ptSource = {this->m_currentLoc.x / PIXELS_PER_SEARCHMAP_PT_X, this->m_currentLoc.y / PIXELS_PER_SEARCHMAP_PT_Y};
+	int nDistance = GetLongestAxialDistance(ptSource, ptTarget);
+
+	if (nDistance > 4 ||
+		this->pArea->CheckPointsAccessible(creTarget.m_currentLoc, this->m_currentLoc, this->tt2, FALSE, this->GetSightRadius()) == FALSE
+	) {
+		ACTIONRESULT ar = this->ActionMoveToObject(creTarget);
+		if (ar == ACTIONRESULT_NOACTIONTAKEN) ar = ACTIONRESULT_SUCCESS;
+		return ar;
+	}
+
+	if (!pGameOptionsEx->bEnginePickpocketRemainHidden &&
+		this->GetDerivedStats().stateFlags & STATE_INVISIBLE) {
+		ITEM_EFFECT eff;
+		CEffect::CreateItemEffect(eff, 0x88);
+		eff.timing = TIMING_INSTANT_PERMANENT;
+
+		POINT ptDest = {-1, -1};
+
+		CEffect& ceff = CEffect::CreateEffect(eff, this->m_currentLoc, this->e, ptDest, ENUM_INVALID_INDEX);
+
+		CMessageApplyEffect* pMsg = IENew CMessageApplyEffect();
+		pMsg->eTarget = this->e;
+		pMsg->eSource = this->e;
+		pMsg->pCEffect = &ceff;
+		pMsg->u10 = 0;
+		g_pChitin->messages.Send(*pMsg, FALSE);
+	}
+
+	int nDieRoll = IERand(100) + 1;
+
+	if (nDieRoll == 100 ||
+		nDieRoll >= this->GetDerivedStats().pickPockets - creTarget.GetDerivedStats().pickPockets ||
+		creTarget.GetDerivedStats().pickPockets == 0x0FF
+	) {
+		//failed
+		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_FAILED, 0, 0, 0, -1, 0, IECString(""));
+
+		Trigger tAttackedBy(TRIGGER_ATTACKED_BY, this->o, 0);
+		CMessageSetTrigger* pMsgST = IENew CMessageSetTrigger();
+		pMsgST->eTarget = creTarget.e;
+		pMsgST->eSource = this->e;
+		pMsgST->t = tAttackedBy;
+		g_pChitin->messages.Send(*pMsgST, FALSE);
+
+		if (pGameOptionsEx->bTriggerPickpocketFailed) {
+			Trigger tPickpocketFailed(TRIGGER_PICKPOCKET_FAILED, this->o, 0);
+			CMessageSetTrigger* pMsgST2 = IENew CMessageSetTrigger();
+			pMsgST2->eTarget = creTarget.e;
+			pMsgST2->eSource = this->e;
+			pMsgST2->t = tPickpocketFailed;
+			g_pChitin->messages.Send(*pMsgST2, FALSE);
+		}
+
+		if (pGameOptionsEx->bEnginePickpocketRemainHidden &&
+			this->GetDerivedStats().stateFlags & STATE_INVISIBLE) {
+			ITEM_EFFECT eff;
+			CEffect::CreateItemEffect(eff, 0x88);
+
+			POINT dest = {-1, -1};
+
+			CEffect& ceff = CEffect::CreateEffect(eff, this->m_currentLoc, this->e, dest, ENUM_INVALID_INDEX);
+
+			CMessageApplyEffect* pcmAE = IENew CMessageApplyEffect();
+			pcmAE->eTarget = this->e;
+			pcmAE->eSource = this->e;
+			pcmAE->pCEffect = &ceff;
+			pcmAE->u10 = 0;
+			g_pChitin->messages.Send(*pcmAE, FALSE);
+		}
+
+		if (this->o.EnemyAlly <= EA_GOODCUTOFF) {
+			if (creTarget.InDialogAction() ||
+				creTarget.m_bInDialogue) {
+				CMessageInterruptDialogue* pMsgID = IENew CMessageInterruptDialogue();
+				pMsgID->eTarget = creTarget.e;
+				pMsgID->eSource = this->e;
+				g_pChitin->messages.Send(*pMsgID, FALSE);
+			}
+		}
+
+		return ACTIONRESULT_NOACTIONTAKEN;
+	}
+
+	BOOL bNotStealableArray[39]; //FIX_ME
+	for (int iSlotIdx = 0; iSlotIdx < *g_pInventorySlots; iSlotIdx++) {
+		bNotStealableArray[iSlotIdx] = 0;
+	}
+
+	bNotStealableArray[SLOT_FIST] = 1;
+	bNotStealableArray[SLOT_ARMOR] = 1;
+	bNotStealableArray[SLOT_BELT] = 1;
+	bNotStealableArray[SLOT_BOOTS] = 1;
+	bNotStealableArray[SLOT_CLOAK] = 1;
+	bNotStealableArray[SLOT_GAUNTLETS] = 1;
+	bNotStealableArray[SLOT_HELMET] = 1;
+	bNotStealableArray[SLOT_SHIELD] = 1;
+	bNotStealableArray[creTarget.m_Inventory.nSlotSelected] = 1;
+
+	short nSlotEquippedLauncher = creTarget.GetSlotOfEquippedLauncherOfAmmo(creTarget.m_Inventory.nSlotSelected, creTarget.m_Inventory.nAbilitySelected);
+	if (nSlotEquippedLauncher != -1) bNotStealableArray[nSlotEquippedLauncher] = 1;
+
+	IECString sNameTarget(creTarget.name);
+	short nSlotToStealFirst = IERand(*g_pInventorySlots);
+	short nSlotToSteal = nSlotToStealFirst;
+	while (bNotStealableArray[nSlotToSteal] ||
+		creTarget.m_Inventory.items[nSlotToSteal] == NULL ||
+		creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & ITEMFLAG_TWO_HANDED ||
+		!(creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & ITEMFLAG_DROPPABLE) ||
+		creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & ITEMFLAG_DISPLAYABLE ||
+		(sNameTarget.CompareNoCase("MINSC") && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC84") ||
+		(sNameTarget.CompareNoCase("ALORA") && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC88") ||
+		(sNameTarget.CompareNoCase("EDWIN") && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC89") ||
+		creTarget.m_Inventory.items[nSlotToSteal]->GetType() == ITEMTYPE_CONTAINER
+	) {
+		if (nSlotToStealFirst % 2) {
+			nSlotToSteal--;
+			if (nSlotToSteal < 0) nSlotToSteal = static_cast<short>(*g_pInventorySlots) - 1;
+		} else {
+			nSlotToSteal++;
+			if (nSlotToSteal >= static_cast<short>(*g_pInventorySlots)) nSlotToSteal = 0;
+		}
+
+		if (nSlotToSteal == nSlotToStealFirst) {
+			PrintEventMessage(EVENTMESSAGE_PICKPOCKET_NO_ITEMS, 0, 0, 0, -1, 0, IECString(""));
+			return ACTIONRESULT_NOACTIONTAKEN;
+		}
+	}
+
+	if (IERand(*g_pRandStealGoldChance) == 0 &&
+		g_pChitin->pGame->GetPartyMemberSlot(this->e) == -1) {
+		int nGoldToSteal = IERand(*g_pRandGoldToSteal);
+		CMessageModifyPartyGold* pMsgMPG = IENew CMessageModifyPartyGold();
+		pMsgMPG->eTarget = this->e;
+		pMsgMPG->eSource = this->e;
+		pMsgMPG->nGold = nGoldToSteal;
+		pMsgMPG->cMode = 1; //sum
+		pMsgMPG->bPrintMessage = true;
+		g_pChitin->messages.Send(*pMsgMPG, FALSE);
+
+		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_SUCCESS, 0, 0, 0, -1, 0, IECString(""));
+		return ACTIONRESULT_NOACTIONTAKEN;
+	}
+
+	CItem* pItemToSteal = creTarget.m_Inventory.items[nSlotToSteal];
+	if (g_pChitin->pGame->GetPartyMemberSlot(this->e) == -1) {
+		//non-party
+		for (int iSlotIdx = 0; iSlotIdx < 20; iSlotIdx++) {
+			if (this->m_Inventory.items[iSlotIdx + SLOT_MISC0] == NULL) {
+				CItem* pItem = IENew CItem(*pItemToSteal);
+				this->m_Inventory.items[iSlotIdx + SLOT_MISC0] = pItem;
+
+				CMessageRemoveItem* pMsgRI = IENew CMessageRemoveItem();
+				pMsgRI->eTarget = creTarget.e;
+				pMsgRI->eSource = this->e;
+				pMsgRI->wSlot = nSlotToSteal;
+				g_pChitin->messages.Send(*pMsgRI, FALSE);
+
+				PrintEventMessage(EVENTMESSAGE_PICKPOCKET_SUCCESS, 0, 0, 0, -1, 0, IECString(""));
+				return ACTIONRESULT_NOACTIONTAKEN;
+			}
+		}
+
+		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_INV_FULL, 0, 0, 0, -1, 0, IECString(""));
+		return ACTIONRESULT_FAILED;
+
+	} else {
+		//party
+		for (int iSlotIdx = 0; iSlotIdx < *g_pNumInventorySlots; iSlotIdx++) {
+			if (this->m_Inventory.items[iSlotIdx + SLOT_MISC3] == NULL) {
+				CItem* pItem = IENew CItem(*pItemToSteal);
+				this->m_Inventory.items[iSlotIdx + SLOT_MISC3] = pItem;
+
+				CMessageRemoveItem* pMsgRI = IENew CMessageRemoveItem();
+				pMsgRI->eTarget = creTarget.e;
+				pMsgRI->eSource = this->e;
+				pMsgRI->wSlot = nSlotToSteal;
+				g_pChitin->messages.Send(*pMsgRI, FALSE);
+
+				PrintEventMessage(EVENTMESSAGE_PICKPOCKET_SUCCESS, 0, 0, 0, -1, 0, IECString(""));
+				return ACTIONRESULT_NOACTIONTAKEN;
+			}
+		}
+
+		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_INV_FULL, 0, 0, 0, -1, 0, IECString(""));
+		return ACTIONRESULT_FAILED;
+	}
+}
+
+void DETOUR_CCreatureObject::DETOUR_UpdateFaceTalkerTimer() {
+	if (m_nFaceTalkerTimer > 0) {
+		POSITION pos = triggers.GetHeadPosition();
+		while (pos) {
+			Trigger* pt = (Trigger*)triggers.GetNext(pos);
+			if (pt->opcode == TRIGGER_ATTACKED_BY ||
+				pt->opcode == TRIGGER_HIT_BY) {
+				m_nFaceTalkerTimer = 0;
+				m_eTalker = ENUM_INVALID_INDEX;
+				break;
+			}
+		}
+	}
+	return;
 }
 
 void __stdcall CCreatureObject_PrintExtraCombatInfoText(CCreatureObject& creSelf, IECString& sText) {

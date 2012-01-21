@@ -1657,36 +1657,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	if (pGameOptionsEx->bEnginePickpocketRemainHidden) {
-	    //always JMP the check for STATE_INVISIBLE
-		char bytes[] = {0x90, 0xE9};
-		vDataList.push_back( Data(0x943543, 2, bytes) );
-	
-		//JMP bgmain.943549 (backwards)
-		char bytes2[6] = {0xE9, 0x7C, 0xFC, 0xFF, 0xFF, 0x90};
-		vDataList.push_back( Data(0x9438C8, 6, bytes2) );
-	
-		//CALL
-		char bytes3[8] = {0x8B, 0x85, 0x44, 0xFD, 0xFF, 0xFF, 0x50, 0xE8};
-		vDataList.push_back( Data(0x943549, 8, bytes3) );
-	
-		//CALL address
-		void* ptr = (void*)CCreatureObject_ForceVisible;
-		DWORD address = (DWORD)ptr - 5  - 0x943550;
-		char* bytes4 = (char*)&address;
-		vDataList.push_back( Data(0x943551, 4, bytes4) );
-	
-		//JMP bgmain.9438CE (forwards)
-		char bytes5[5] = {0xE9, 0x74, 0x03, 0x00, 0x00};
-		vDataList.push_back( Data(0x943555, 5, bytes5) );
-	
-		//moved instructions to free up space for above JMP
-		char bytes6[8] = {0x8B, 0x8D, 0x44, 0xFD, 0xFF, 0xFF, 0x8B, 0x11};
-		vDataList.push_back( Data(0x9438CE, 8, bytes6) );
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-
 	if (pGameOptionsEx->bEngineRestSpawnsAdvanceTime) {
 		//mov ecx,dword ptr ds:[<TICKS_EIGHT_HOURS>]
 		//imul ecx,dword ptr ss:[ebp-CC]
@@ -2561,13 +2531,6 @@ void InitPatches() {
 						0x90, 0x90};
 		vDataList.push_back( Data(0x488340, 11, bytes3) );
 
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-
-	if (pGameOptionsEx->bTriggerPickpocketFailed) {
-		char bytes[] = {0x22, 0x5F, 0xAA};
-		vDataList.push_back( Data(0x9437B2, 3, bytes) );
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

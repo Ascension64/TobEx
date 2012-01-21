@@ -77,6 +77,8 @@ CGameObject& (Object::*Object_FindTarget)(CGameObject&, BOOL) =
 
 void (Object::*Object_SetIdentifiers)(ObjectIds&) =
 	SetFP(static_cast<void (Object::*)(ObjectIds&)>							(&Object::SetIdentifiers),		0x41531E);
+Object (Object::*Object_GetOpposingEAObject)() =
+	SetFP(static_cast<Object (Object::*)()>									(&Object::GetOpposingEAObject),	0x4157E9);
 unsigned char (Object::*Object_GetClass)() =
 	SetFP(static_cast<unsigned char (Object::*)()>							(&Object::GetClass),			0x4158A4);
 void (Object::*Object_GetDualClasses)(unsigned char*, unsigned char*) =
@@ -97,6 +99,7 @@ CGameObject& Object::FindTargetOfType(CGameObject& source, char type, BOOL bChec
 	{ return (this->*Object_FindTargetOfType)(source, type, bCheckMiddleList); }
 CGameObject& Object::FindTarget(CGameObject& source, BOOL bCheckMiddleList)		{ return (this->*Object_FindTarget)(source, bCheckMiddleList); }
 void Object::SetIdentifiers(ObjectIds& ids)										{ return (this->*Object_SetIdentifiers)(ids); }
+Object Object::GetOpposingEAObject()											{ return (this->*Object_GetOpposingEAObject)(); }
 unsigned char Object::GetClass()												{ return (this->*Object_GetClass)(); }
 void Object::GetDualClasses(unsigned char* pClassNew, unsigned char* pClassOrg)	{ return (this->*Object_GetDualClasses)(pClassNew, pClassOrg); }
 BOOL Object::HasActiveSubclass(unsigned char nSubclass, BOOL bThreadAsync)		{ return (this->*Object_HasActiveSubclass)(nSubclass, bThreadAsync); }
@@ -126,24 +129,27 @@ BOOL Object::IsAny()			{ return operator==(*poAny); }
 BOOL Object::IsMyself()		{ return operator==(*poMyself); }
 
 //Trigger
+Trigger& (Trigger::*Trigger_Construct_3)(short, Object&, int) =
+	SetFP(static_cast<Trigger& (Trigger::*)(short, Object&, int)>	(&Trigger::Construct),			0x430720);
 Trigger& (Trigger::*Trigger_Construct_2)(short, int) =
-	SetFP(static_cast<Trigger& (Trigger::*)(short, int)>	(&Trigger::Construct),			0x430810);
+	SetFP(static_cast<Trigger& (Trigger::*)(short, int)>			(&Trigger::Construct),			0x430810);
 Trigger& (Trigger::*Trigger_OpAssign)(Trigger&) =
-	SetFP(static_cast<Trigger& (Trigger::*)(Trigger&)>		(&Trigger::OpAssign),			0x496100);
+	SetFP(static_cast<Trigger& (Trigger::*)(Trigger&)>				(&Trigger::OpAssign),			0x496100);
 short (Trigger::*Trigger_GetOpcode)() =
-	SetFP(static_cast<short (Trigger::*)()>					(&Trigger::GetOpcode),			0x4943B0);
+	SetFP(static_cast<short (Trigger::*)()>							(&Trigger::GetOpcode),			0x4943B0);
 void (Trigger::*Trigger_DecodeIdentifiers)(CGameSprite&) =
-	SetFP(static_cast<void (Trigger::*)(CGameSprite&)>		(&Trigger::DecodeIdentifiers),	0x4943D0);
+	SetFP(static_cast<void (Trigger::*)(CGameSprite&)>				(&Trigger::DecodeIdentifiers),	0x4943D0);
 int (Trigger::*Trigger_GetI)() =
-	SetFP(static_cast<int (Trigger::*)()>					(&Trigger::GetI),				0x4943F0);
+	SetFP(static_cast<int (Trigger::*)()>							(&Trigger::GetI),				0x4943F0);
 int (Trigger::*Trigger_GetI2)() =
-	SetFP(static_cast<int (Trigger::*)()>					(&Trigger::GetI2),				0x494410);
+	SetFP(static_cast<int (Trigger::*)()>							(&Trigger::GetI2),				0x494410);
 IECString* (Trigger::*Trigger_GetSName1)() =
-	SetFP(static_cast<IECString* (Trigger::*)()>			(&Trigger::GetSName1),			0x494430);
+	SetFP(static_cast<IECString* (Trigger::*)()>					(&Trigger::GetSName1),			0x494430);
 IECString* (Trigger::*Trigger_GetSName2)() =
-	SetFP(static_cast<IECString* (Trigger::*)()>			(&Trigger::GetSName2),			0x494450);
+	SetFP(static_cast<IECString* (Trigger::*)()>					(&Trigger::GetSName2),			0x494450);
 
 Trigger::Trigger()									{ (this->*Trigger_Construct_2)(TRIGGER_NONE, 0); }
+Trigger::Trigger(short wOpcode, Object& o, int i)	{ (this->*Trigger_Construct_3)(wOpcode, o, i); }
 Trigger::Trigger(short wOpcode, int n)				{ (this->*Trigger_Construct_2)(wOpcode, n); }
 Trigger& Trigger::operator=(Trigger& t)				{ return (this->*Trigger_OpAssign)(t); }
 short Trigger::GetOpcode()							{ return (this->*Trigger_GetOpcode)(); }

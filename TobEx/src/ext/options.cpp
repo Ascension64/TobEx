@@ -93,6 +93,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExternClassRaceRestrictions = FALSE;
 	bEngineExternEncumbrance = FALSE;
 	bEngineExternMageSpellsCap = FALSE;
+	bEngineFakeTalkFix = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
 	bEngineMoveAreasFix = FALSE;
 	bEnginePickpocketRemainHidden = FALSE;
@@ -233,6 +234,7 @@ void CGameOptionsEx::Init() {
 	bEngineExternClassRaceRestrictions = GetCoreIniValue("Engine", "Externalise Class-Race Restrictions");
 	bEngineExternEncumbrance = GetCoreIniValue("Engine", "Externalise Encumbrance Restrictions");
 	bEngineExternMageSpellsCap = GetCoreIniValue("Engine", "Externalise Mage Spells Cap");
+	bEngineFakeTalkFix = GetCoreIniValue("Engine", "Fake Talk Exploit Fix");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
 	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");
 	bEnginePickpocketRemainHidden = GetTweakIniValue("Tweak", "Engine:Remain Hidden On Pickpocket Success");
@@ -264,7 +266,7 @@ void CGameOptionsEx::Init() {
 	bSpellsUnvoicedConfig = GetCoreIniValue("Spells", "Configurable Spells Can Be Unvoiced");
 	bSpellsTargetInvisConfig = GetCoreIniValue("Spells", "Configurable Spells Can Target Invisible");
 
-	bTriggerPickpocketFailed = GetTweakIniValue("Tweak", "Trigger:Enable PickpocketFailed Trigger");
+	bTriggerPickpocketFailed = GetTweakIniValue("Trigger", "Enable PickpocketFailed Trigger");
 	bTriggerExpandedTriggers = GetCoreIniValue("Trigger", "Expanded Triggers");
 	bTriggerKitFix = GetCoreIniValue("Trigger", "Kit Trigger Fix");
 	bTriggerOptimiseBagSearch = GetCoreIniValue("Trigger", "Optimise Bag Search Code");

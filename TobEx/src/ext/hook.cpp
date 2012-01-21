@@ -171,6 +171,8 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffStrengthMod)
 		DetourMemberFunction(Tramp_CEffectStrengthMod_ApplyEffect, DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect);
 
+	DetourMemberFunction(Tramp_CCreatureObject_ActionPickPockets, DETOUR_CCreatureObject::DETOUR_ActionPickPockets);
+
 	if (pGameOptionsEx->bEngineModifyEffectStacking)
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 
@@ -214,6 +216,9 @@ void InitHooks() {
 
 	if (pGameOptionsEx->bEngineProficiencyRestrictions)
 		DetourMemberFunction(Tramp_CRuleTables_GetWeapProfMax, DETOUR_CRuleTables::DETOUR_GetWeapProfMax);
+
+	if (pGameOptionsEx->bEngineFakeTalkFix)
+		DetourMemberFunction(Tramp_CCreatureObject_UpdateFaceTalkerTimer, DETOUR_CCreatureObject::DETOUR_UpdateFaceTalkerTimer);
 
 	if (pGameOptionsEx->bEngineMoveAreasFix)
 		DetourMemberFunction(Tramp_CMoveAreasList_MoveAllTo, DETOUR_CMoveAreasList::DETOUR_MoveAllTo);

@@ -437,8 +437,8 @@
           <p>TobEx removes the 100-row limit on SONGLIST.2DA. The script action PlaySong() supports this change, and extended song numbers are recognised in ARE files.</p>
           <hr />
           <a name="engine-pickpocketing" id="ngine-pickpocketing"></a><h3>Pickpocketing</h3>
+          <p>TobEx sends the PickPocketFailed() trigger in addition to the standard AttackedBy() trigger when a pickpocket attempt fails. Also refer to the <a href="#triggers-005d">PickPocketFailed() trigger</a> section.</p>
           <p><strong>Option:</strong> TobEx gives the option of delaying the end of Stealth mode until the next round, and not terminating invisibility caused by a spell or item, if a successful pickpocket is made.</p>
-          <p><strong>Option:</strong> TobEx gives the option of sending a PickPocketFailed() trigger instead of an Attacked() trigger when a pickpocket attempt fails. Also refer to the <a href="#triggers-005d">PickPocketFailed() trigger</a> section.</p>
           <hr />
           <a name="engine-player1-death" id="engine-player1-death"></a><h3>Player 1 Death</h3>
           <p><strong>Option:</strong> TobEx enables modmakers to disable the game over cutscene when the protagonist dies. In order for the game to be over, modmakers must specify a condition where the new action opcode LoseGame() applies without fail. Also refer to the <a href="#actions-352">LoseGame() action opcode</a> section.</p>
@@ -742,7 +742,7 @@
           <i>TobEx makes no direct changes to these opcodes. However, TobEx expands STATS.IDS to support a variety of new scripting stats. Also refer to the <a href="#stats">Scripting Stats</a> section.</i><br />
           <hr />
           <a name="triggers-005d" id="triggers-005d"></a><p><strong>0x005D PickPocketFailed(O:Object*)</strong><br />
-          <i><strong>Option:</strong> TobEx allows the option of fixing this trigger such that it is sent instead of Attacked() when a pickpocket attempt fails</i></p>
+          <i>TobEx restores the function of this trigger such that it is sent when a pickpocket attempt fails. The standard AttackedBy() trigger is also sent as per vanilla behaviour.</i></p>
           <hr />
           <a name="triggers-4061" id="triggers-4061"></a><p><strong>0x4061 HasItem(S:ResRef*,O:Object*)</strong><br />
           <i>TobEx optimises this trigger by greatly reducing the amount of overhead associated with checking bags</i></p>

@@ -201,6 +201,7 @@ class CArea { //Size B6Eh
 //Constructor: 0x4B7B80
 public:
 	char GetSong(short wType);
+	BOOL CheckPointsAccessible(POINT& pt1, POINT& pt2, TerrainTable& tt, BOOL bCheckVisibility, int nRadius);
 
 	//entire ARE V1.0 header (m_header)
 	ResRef areaPrefix; //0h, used for LM, LN, HT, wed, Nwed
@@ -371,5 +372,6 @@ public:
 };
 
 extern char (CArea::*CArea_GetSong)(short);
+extern BOOL (CArea::*CArea_CheckPointsAccessible)(POINT&, POINT&, TerrainTable&, BOOL, int);
 
 #endif //ARECORE_H

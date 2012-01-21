@@ -22,6 +22,12 @@
 //Event message ids
 #define EVENTMESSAGE_BACKSTAB_SUCCESS			0x01
 #define EVENTMESSAGE_BACKSTAB_WEAPON_UNSUITABLE	0x1C
+#define EVENTMESSAGE_PICKPOCKET_DISABLED_ARMOR	0x1E
+#define EVENTMESSAGE_PICKPOCKET_FAILED_HOSTILE	0x1F
+#define EVENTMESSAGE_PICKPOCKET_FAILED			0x20
+#define EVENTMESSAGE_PICKPOCKET_NO_ITEMS		0x21
+#define EVENTMESSAGE_PICKPOCKET_INV_FULL		0x22
+#define EVENTMESSAGE_PICKPOCKET_SUCCESS			0x23
 #define EVENTMESSAGE_BACKSTAB_FAIL				0x40
 #define EVENTMESSAGE_SPELLFAILED_INVISIBLE		0x42
 
@@ -59,13 +65,15 @@ struct CQuickSlot { //Size 30h
 	ResRef uc; //second name?
 	int u14;
 	short u18;
+	//struct copy constructor at 568340
 		short u1a;
-		short nQuickSlot; //1ch
-		short nQuickAbilityIdx; //1eh
+		short nSlotIdx; //1ch
+		short nAbilityIdx; //1eh
 		ResRef rSpellName; //20h
-	char u28;
-	char u29;
-	int u2a; //-1
+		char u28;
+		char u29;
+		int u2a; //-1
+	//end struct
 	char u2e;
 	char u2f;
 };
@@ -117,6 +125,7 @@ public:
 	void SetAnimationSequence(short wSeq);
 	void StartSpriteEffect(char nEffectType, char nParticleType, int nParticles);
 	CItem& GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot);
+	int GetSlotOfEquippedLauncherOfAmmo(short wAmmoSlot, short wAbilityIdx);
 	void UnequipAll(BOOL bKeepEffects);
 	void EquipAll(BOOL bDoNotApplyEffects);
 	void AddKnownSpell(ResRef& name, BOOL bPrintEventMessage);
@@ -137,9 +146,13 @@ public:
 	void SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bState);
 	void ValidateAttackSequence(char* pSeq);
 	char GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp);
+	BOOL InDialogAction();
 	unsigned int GetKitUnusableFlag();
 	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
+	ACTIONRESULT ActionMoveToObject(CGameObject& cgoTarget);
+	ACTIONRESULT ActionPickPockets(CCreatureObject& creTarget);
 	short GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod);
+	void UpdateFaceTalkerTimer();
 
 	//AA98A8
 	virtual ~CCreatureObject() {} //v0
@@ -434,23 +447,9 @@ public:
 	Enum eTarget; //3738h, the target of actions?
 	POINT ptTarget; //373ch, set by ProtectPoint(), MoveToPoint(), Leader(), cscTarget places here
 	short u3744;
-	char nnSlotSelected; //3746h, copied from af6h
-	char nnAbilitySelected; //3747h, copied from af8h
-	struct _u3748 {
-		ResRef u3748;
-		int u3750;
-		ResRef u3754;
-		int u375c;
-		short u3760;
-		short u3762;
-		short u3764;
-		short u3766;
-		ResRef u3768;
-		int u3770;
-		short u3774;
-		char u3776;
-		char u3777;
-	} m_u3748;
+	char nQuickSlotSelected; //3746h, copied from af6h
+	char nQuickAbilitySelected; //3747h, copied from af8h
+	CQuickSlot m_qsSpellCurrent; //u3748h
 	ResRef rDialog; //3778h
 	ResRef rDialog2; //3780h
 	bool u3788;
@@ -503,8 +502,8 @@ public:
 	short u63fc; //contains an actionOpcode (a dialog or escape area action?)
 	int u63fe; //assoc actions
 	int u6402; //assoc actions
-	int u6406; //timer
-	int u640a; //timer
+	int m_nHighEncumberanceMessageDelay; //6406h, decrementing timer to show Encumbered: Can Not Move
+	int m_nLowEncumbranceMessageDelay; //640ah, decrementing timer to show Encumbered: Slowed
 	short m_wPoisonTimer; //640eh, set to 100 on poison damage
 	short m_wDelayedRefreshCounter; //6410h, if using previous state, Refresh() will delay and increment this counter, next Refresh() will Refresh() the counter number of times (max 5)
 	BOOL bUseCurrentState; //6412h, 0 = uses prevState, 1 = uses currentState, set to 0 when refreshing repeating effects
@@ -542,9 +541,9 @@ public:
 	int u664e;
 	CEnumList u6652;
 	IECPtrList u666e;
-	BOOL bInStore; //668ah, prevents party required area transitions
-	int u668e;
-	int u6692;
+	BOOL m_bInStore; //668ah, prevents party required area transitions
+	BOOL m_bInDialogue; //668eh
+	int m_nDialoguePosition; //6692h, -1 = none, 1 = listener, 2 = speaker
 	int u6696; //assoc actions
 	BOOL m_bLeavingArea; //669ah
 	Enum ePuppet; //669eh
@@ -574,8 +573,8 @@ public:
 	int u6758; //m_nColorsPrev2, compared to cdsCurrent.ColorListRgb count
 	int u675c; //m_nWeaponProtectionsPrev
 	int u6760;
-	int u6764;
-	int u6768;
+	BOOL m_bInitTOB; //6764h, initialises innates, once per construction
+	BOOL u6768; //to do with grabbed item
 	int m_nSpriteUpdateTimer; //676ch, increments up to 15, then set to 0 on before CMessageSpriteUpdate
 	int u6770; //assoc sprite update timer, 0 = always sprite update when ready, other = sprite update, reset to 0 if timer > 2
 };
@@ -594,6 +593,7 @@ extern short (*CCreatureObject_CalculateOrientation)(POINT&, POINT&);
 extern void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short);
 extern void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int);
 extern CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot);
+extern int (CCreatureObject::*CCreatureObject_GetSlotOfEquippedLauncherOfAmmo)(short, short);
 extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
 extern void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL);
 extern void (CCreatureObject::*CCreatureObject_AddKnownSpell)(ResRef&, BOOL);
@@ -614,9 +614,13 @@ extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
 extern void (CCreatureObject::*CCreatureObject_SetSpellMemorizedState)(ResSplContainer&, BOOL);
 extern void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*);
 extern char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef);
+extern BOOL (CCreatureObject::*CCreatureObject_InDialogAction)();
 extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
 extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
+extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionMoveToObject)(CGameObject&);
+extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionPickPockets)(CCreatureObject&);
 extern short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL);
+extern void (CCreatureObject::*CCreatureObject_UpdateFaceTalkerTimer)();
 
 extern bool (CCreatureObject::*CCreatureObject_NeedsAIUpdate)(bool, int);
 extern BOOL (CCreatureObject::*CCreatureObject_EvaluateTrigger)(Trigger&);

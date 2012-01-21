@@ -45,6 +45,9 @@ void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int) =
 CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot) =
 	SetFP(static_cast<CItem& (CCreatureObject::*)(ItmFileAbility&, int*)>	(&CCreatureObject::GetFirstEquippedLauncherOfAbility),
 																														0x8C5981);
+int (CCreatureObject::*CCreatureObject_GetSlotOfEquippedLauncherOfAmmo)(short, short) =
+	SetFP(static_cast<int (CCreatureObject::*)(short, short)>				(&CCreatureObject::GetSlotOfEquippedLauncherOfAmmo),
+																														0x8C5B1E);
 void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL) =
 	SetFP(static_cast<void (CCreatureObject::*)(BOOL)>						(&CCreatureObject::UnequipAll),				0x8CA628);
 void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL) =
@@ -85,13 +88,22 @@ void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*) =
 	SetFP(static_cast<void (CCreatureObject::*)(char*)>						(&CCreatureObject::ValidateAttackSequence),	0x8D6D78);
 char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef) =
 	SetFP(static_cast<char (CCreatureObject::*)(int, ResRef)>				(&CCreatureObject::GetNumUniqueMemSpellMage),0x8DAE88);
+BOOL (CCreatureObject::*CCreatureObject_InDialogAction)() =
+	SetFP(static_cast<BOOL (CCreatureObject::*)()>							(&CCreatureObject::InDialogAction),			0x8DE5F5);
 unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 	SetFP(static_cast<unsigned int (CCreatureObject::*)()>					(&CCreatureObject::GetKitUnusableFlag),		0x8E066B);
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
 	SetFP(static_cast<void (CCreatureObject::*)(short, int, int, int, STRREF, BOOL, IECString&)>
 																			(&CCreatureObject::PrintEventMessage),		0x8FAE5A);
+ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionMoveToObject)(CGameObject&) =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(CGameObject&)>		(&CCreatureObject::ActionMoveToObject),		0x90EBCA);
+ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionPickPockets)(CCreatureObject&) =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(CCreatureObject&)>	(&CCreatureObject::ActionPickPockets),		0x9431AE);
 short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL) =
 	SetFP(static_cast<short (CCreatureObject::*)(ResSplContainer&, BOOL)>	(&CCreatureObject::GetSpellCastingLevel),	0x9514A1);
+void (CCreatureObject::*CCreatureObject_UpdateFaceTalkerTimer)() =
+	SetFP(static_cast<void (CCreatureObject::*)()>							(&CCreatureObject::UpdateFaceTalkerTimer),	0x955CD7);
+
 
 bool (CCreatureObject::*CCreatureObject_NeedsAIUpdate)(bool, int) =
 	SetFP(static_cast<bool (CCreatureObject::*)(bool, int)>					(&CCreatureObject::NeedsAIUpdate),			0x8DE733);
@@ -121,6 +133,8 @@ void CCreatureObject::StartSpriteEffect(char nEffectType, char nParticleType, in
 	{ return (this->*CCreatureObject_StartSpriteEffect)(nEffectType, nParticleType, nParticles); }
 CItem& CCreatureObject::GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot)
 	{ return (this->*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ability, pnSlot); }
+int CCreatureObject::GetSlotOfEquippedLauncherOfAmmo(short wAmmoSlot, short wAbilityIdx)
+	{ return (this->*CCreatureObject_GetSlotOfEquippedLauncherOfAmmo)(wAmmoSlot, wAbilityIdx); }
 void CCreatureObject::UnequipAll(BOOL bKeepEffects)								{ return (this->*CCreatureObject_UnequipAll)(bKeepEffects); }
 void CCreatureObject::EquipAll(BOOL bDoNotApplyEffects)							{ return (this->*CCreatureObject_EquipAll)(bDoNotApplyEffects); }
 void CCreatureObject::AddKnownSpell(ResRef& name, BOOL bPrintEventMessage)		{ return (this->*CCreatureObject_AddKnownSpell)(name, bPrintEventMessage); }
@@ -142,12 +156,16 @@ void CCreatureObject::SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bSt
 	{ return (this->*CCreatureObject_SetSpellMemorizedState)(resSpell, bState); }
 void CCreatureObject::ValidateAttackSequence(char* pSeq)						{ return (this->*CCreatureObject_ValidateAttackSequence)(pSeq); }
 char CCreatureObject::GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp)		{ return (this->*CCreatureObject_GetNumUniqueMemSpellMage)(nLevel, rTemp); }
+BOOL CCreatureObject::InDialogAction()											{ return (this->*CCreatureObject_InDialogAction)(); }
 unsigned int CCreatureObject::GetKitUnusableFlag()								{ return (this->*CCreatureObject_GetKitUnusableFlag)(); }
 void CCreatureObject::PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6) {
 	return (this->*CCreatureObject_PrintEventMessage)(wEventId, nParam1, nParam2, nParam3, strrefParam4, bParam5, sParam6);
 }
+ACTIONRESULT CCreatureObject::ActionMoveToObject(CGameObject& cgoTarget)		{ return (this->*CCreatureObject_ActionMoveToObject)(cgoTarget); }
+ACTIONRESULT CCreatureObject::ActionPickPockets(CCreatureObject& creTarget)		{ return (this->*CCreatureObject_ActionPickPockets)(creTarget); }
 short CCreatureObject::GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod)
 	{ return (this->*CCreatureObject_GetSpellCastingLevel)(resSpell, bUseWildMagicMod); }
+void CCreatureObject::UpdateFaceTalkerTimer()									{ return (this->*CCreatureObject_UpdateFaceTalkerTimer)(); }
 
 bool CCreatureObject::NeedsAIUpdate(bool bRun, int nChitinUpdates)	{ return (this->*CCreatureObject_NeedsAIUpdate)(bRun, nChitinUpdates); }
 BOOL CCreatureObject::EvaluateTrigger(Trigger& t)					{ return (this->*CCreatureObject_EvaluateTrigger)(t); }

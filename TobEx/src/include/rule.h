@@ -363,6 +363,7 @@ const short TRIGGER_SEE							= 0x401C;
 const short TRIGGER_HIT_BY						= 0x0020;
 const short TRIGGER_HP_PERCENT_LT				= 0x402D;
 const short TRIGGER_STATE_CHECK					= 0x4037;
+const short TRIGGER_PICKPOCKET_FAILED			= 0x005D;
 const short TRIGGER_OR							= 0x4089;
 const short TRIGGER_PERSONAL_SPACE_DISTANCE		= 0x40B3;
 const short TRIGGER_TOOK_DAMAGE					= 0x00CC;

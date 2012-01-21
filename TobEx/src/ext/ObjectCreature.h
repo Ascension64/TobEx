@@ -11,6 +11,8 @@ extern BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellMage)(int, int, 
 extern void (CCreatureObject::*Tramp_CCreatureObject_ValidateAttackSequence)(char*);
 extern BOOL (CCreatureObject::*Tramp_CCreatureObject_EvaluateTrigger)(Trigger&);
 extern ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)();
+extern ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ActionPickPockets)(CCreatureObject&);
+extern void (CCreatureObject::*Tramp_CCreatureObject_UpdateFaceTalkerTimer)();
 
 class DETOUR_CCreatureObject : public CCreatureObject {
 public:
@@ -22,6 +24,8 @@ public:
 	void DETOUR_ValidateAttackSequence(char* pSeq);
 	BOOL DETOUR_EvaluateTrigger(Trigger& t);
 	ACTIONRESULT DETOUR_ExecuteAction();
+	ACTIONRESULT DETOUR_ActionPickPockets(CCreatureObject& creTarget);
+	void DETOUR_UpdateFaceTalkerTimer();
 };
 
 void __stdcall CCreatureObject_PrintExtraCombatInfoText(CCreatureObject& creSelf, IECString& sText);

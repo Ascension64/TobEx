@@ -3,7 +3,6 @@
 
 #include "objcre.h"
 
-void __stdcall CCreatureObject_ForceVisible(CCreatureObject& creSource);
 BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a);
 
 #endif //SCRIPTACTION_H

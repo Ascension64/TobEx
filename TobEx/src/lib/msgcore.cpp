@@ -115,6 +115,36 @@ CMessageDisplayText::CMessageDisplayText() {
 	u23 = TRUE;
 }
 
+//CMessageFaceTalker
+void (CMessageFaceTalker::*CMessageFaceTalker_Deconstruct)() =
+	SetFP(static_cast<void (CMessageFaceTalker::*)()>			(&CMessageFaceTalker::Deconstruct),		0x4E9920);
+short (CMessageFaceTalker::*CMessageFaceTalker_GetMsgType)() =
+	SetFP(static_cast<short (CMessageFaceTalker::*)()>			(&CMessageFaceTalker::GetMsgType),		0x4E98B0);
+char (CMessageFaceTalker::*CMessageFaceTalker_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessageFaceTalker::*)()>			(&CMessageFaceTalker::GetNetworkType1),	0x4E98D0);
+char (CMessageFaceTalker::*CMessageFaceTalker_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessageFaceTalker::*)()>			(&CMessageFaceTalker::GetNetworkType2),	0x4E98E0);
+void (CMessageFaceTalker::*CMessageFaceTalker_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessageFaceTalker::*)(void*, int*)>(&CMessageFaceTalker::Marshal),			0x5CEF30);
+BOOL (CMessageFaceTalker::*CMessageFaceTalker_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessageFaceTalker::*)(void*, int*)>(&CMessageFaceTalker::Unmarshal),		0x5CF1E3);
+void (CMessageFaceTalker::*CMessageFaceTalker_DoMessage)() =
+	SetFP(static_cast<void (CMessageFaceTalker::*)()>			(&CMessageFaceTalker::DoMessage),		0x5CF365);
+
+CMessageFaceTalker::CMessageFaceTalker() {
+	SetVT(this, 0xAA743C);
+	nTicks = 0;
+	eTarget = ENUM_INVALID_INDEX;
+}
+
+CMessageFaceTalker::~CMessageFaceTalker()					{ (this->*CMessageFaceTalker_Deconstruct)(); }
+short CMessageFaceTalker::GetMsgType()						{ return (this->*CMessageFaceTalker_GetMsgType)(); }
+char CMessageFaceTalker::GetNetworkType1()					{ return (this->*CMessageFaceTalker_GetNetworkType1)(); }
+char CMessageFaceTalker::GetNetworkType2()					{ return (this->*CMessageFaceTalker_GetNetworkType2)(); }
+void CMessageFaceTalker::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageFaceTalker_Marshal)(pData, dwSize); }
+BOOL CMessageFaceTalker::Unmarshal(void* pData, int* dwSize){ return (this->*CMessageFaceTalker_Unmarshal)(pData, dwSize); }
+void CMessageFaceTalker::DoMessage()						{ return (this->*CMessageFaceTalker_DoMessage)(); }
+
 //CMessageHostReleaseServerStore
 void (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Deconstruct)() =
 	SetFP(static_cast<void (CMessageHostReleaseServerStore::*)()>			(&CMessageHostReleaseServerStore::Deconstruct),		0x4E2BA0);
@@ -142,6 +172,37 @@ char CMessageHostReleaseServerStore::GetNetworkType2()					{ return (this->*CMes
 void CMessageHostReleaseServerStore::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageHostReleaseServerStore_Marshal)(pData, dwSize); }
 BOOL CMessageHostReleaseServerStore::Unmarshal(void* pData, int* dwSize){ return (this->*CMessageHostReleaseServerStore_Unmarshal)(pData, dwSize); }
 void CMessageHostReleaseServerStore::DoMessage()						{ return (this->*CMessageHostReleaseServerStore_DoMessage)(); }
+
+//CMessageModifyPartyGold
+void (CMessageModifyPartyGold::*CMessageModifyPartyGold_Deconstruct)() =
+	SetFP(static_cast<void (CMessageModifyPartyGold::*)()>			(&CMessageModifyPartyGold::Deconstruct),		0x4B6F70);
+short (CMessageModifyPartyGold::*CMessageModifyPartyGold_GetMsgType)() =
+	SetFP(static_cast<short (CMessageModifyPartyGold::*)()>			(&CMessageModifyPartyGold::GetMsgType),			0x5CB613);
+char (CMessageModifyPartyGold::*CMessageModifyPartyGold_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessageModifyPartyGold::*)()>			(&CMessageModifyPartyGold::GetNetworkType1),	0x4B6F20);
+char (CMessageModifyPartyGold::*CMessageModifyPartyGold_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessageModifyPartyGold::*)()>			(&CMessageModifyPartyGold::GetNetworkType2),	0x4B6F30);
+void (CMessageModifyPartyGold::*CMessageModifyPartyGold_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessageModifyPartyGold::*)(void*, int*)>(&CMessageModifyPartyGold::Marshal),			0x5CB646);
+BOOL (CMessageModifyPartyGold::*CMessageModifyPartyGold_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessageModifyPartyGold::*)(void*, int*)>(&CMessageModifyPartyGold::Unmarshal),			0x5CB749);
+void (CMessageModifyPartyGold::*CMessageModifyPartyGold_DoMessage)() =
+	SetFP(static_cast<void (CMessageModifyPartyGold::*)()>			(&CMessageModifyPartyGold::DoMessage),			0x5CB7EA);
+
+CMessageModifyPartyGold::CMessageModifyPartyGold() {
+	SetVT(this, 0xAA6E4C);
+	nGold = 0;
+	cMode = 0;
+	bPrintMessage = false;
+}
+
+CMessageModifyPartyGold::~CMessageModifyPartyGold()				{ (this->*CMessageModifyPartyGold_Deconstruct)(); }
+short CMessageModifyPartyGold::GetMsgType()						{ return (this->*CMessageModifyPartyGold_GetMsgType)(); }
+char CMessageModifyPartyGold::GetNetworkType1()					{ return (this->*CMessageModifyPartyGold_GetNetworkType1)(); }
+char CMessageModifyPartyGold::GetNetworkType2()					{ return (this->*CMessageModifyPartyGold_GetNetworkType2)(); }
+void CMessageModifyPartyGold::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageModifyPartyGold_Marshal)(pData, dwSize); }
+BOOL CMessageModifyPartyGold::Unmarshal(void* pData, int* dwSize){ return (this->*CMessageModifyPartyGold_Unmarshal)(pData, dwSize); }
+void CMessageModifyPartyGold::DoMessage()						{ return (this->*CMessageModifyPartyGold_DoMessage)(); }
 
 //CMessageModifyVariable
 void (CMessageModifyVariable::*CMessageModifyVariable_Deconstruct)() =
@@ -173,6 +234,36 @@ char CMessageModifyVariable::GetNetworkType2()					{ return (this->*CMessageModi
 void CMessageModifyVariable::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageModifyVariable_Marshal)(pData, dwSize); }
 BOOL CMessageModifyVariable::Unmarshal(void* pData, int* dwSize){ return (this->*CMessageModifyVariable_Unmarshal)(pData, dwSize); }
 void CMessageModifyVariable::DoMessage()						{ return (this->*CMessageModifyVariable_DoMessage)(); }
+
+//CMessageInterruptDialogue
+void (CMessageInterruptDialogue::*CMessageInterruptDialogue_Deconstruct)() =
+	SetFP(static_cast<void (CMessageInterruptDialogue::*)()>			(&CMessageInterruptDialogue::Deconstruct),		0x5689E0);
+short (CMessageInterruptDialogue::*CMessageInterruptDialogue_GetMsgType)() =
+	SetFP(static_cast<short (CMessageInterruptDialogue::*)()>			(&CMessageInterruptDialogue::GetMsgType),		0x568970);
+char (CMessageInterruptDialogue::*CMessageInterruptDialogue_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessageInterruptDialogue::*)()>			(&CMessageInterruptDialogue::GetNetworkType1),	0x568990);
+char (CMessageInterruptDialogue::*CMessageInterruptDialogue_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessageInterruptDialogue::*)()>			(&CMessageInterruptDialogue::GetNetworkType2),	0x5689A0);
+void (CMessageInterruptDialogue::*CMessageInterruptDialogue_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessageInterruptDialogue::*)(void*, int*)>(&CMessageInterruptDialogue::Marshal),			0x5E4209);
+BOOL (CMessageInterruptDialogue::*CMessageInterruptDialogue_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessageInterruptDialogue::*)(void*, int*)>(&CMessageInterruptDialogue::Unmarshal),			0x5E43C5);
+void (CMessageInterruptDialogue::*CMessageInterruptDialogue_DoMessage)() =
+	SetFP(static_cast<void (CMessageInterruptDialogue::*)()>			(&CMessageInterruptDialogue::DoMessage),		0x5E449D);
+
+CMessageInterruptDialogue::CMessageInterruptDialogue() {
+	SetVT(this, 0xAA9758);
+	b = 0;
+	ud = 0;
+}
+
+CMessageInterruptDialogue::~CMessageInterruptDialogue()				{ (this->*CMessageInterruptDialogue_Deconstruct)(); }
+short CMessageInterruptDialogue::GetMsgType()						{ return (this->*CMessageInterruptDialogue_GetMsgType)(); }
+char CMessageInterruptDialogue::GetNetworkType1()					{ return (this->*CMessageInterruptDialogue_GetNetworkType1)(); }
+char CMessageInterruptDialogue::GetNetworkType2()					{ return (this->*CMessageInterruptDialogue_GetNetworkType2)(); }
+void CMessageInterruptDialogue::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageInterruptDialogue_Marshal)(pData, dwSize); }
+BOOL CMessageInterruptDialogue::Unmarshal(void* pData, int* dwSize){ return (this->*CMessageInterruptDialogue_Unmarshal)(pData, dwSize); }
+void CMessageInterruptDialogue::DoMessage()						{ return (this->*CMessageInterruptDialogue_DoMessage)(); }
 
 //CMessagePlaySound
 CMessagePlaySound* (CMessagePlaySound::*CMessagePlaySound_Construct_4)(ResRef, int, Enum, Enum) =
@@ -266,6 +357,34 @@ char CMessageRemoveAreaAirEffects::GetNetworkType2()					{ return (this->*CMessa
 void CMessageRemoveAreaAirEffects::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageRemoveAreaAirEffects_Marshal)(pData, dwSize); }
 BOOL CMessageRemoveAreaAirEffects::Unmarshal(void* pData, int* dwSize)	{ return (this->*CMessageRemoveAreaAirEffects_Unmarshal)(pData, dwSize); }
 void CMessageRemoveAreaAirEffects::DoMessage()							{ return (this->*CMessageRemoveAreaAirEffects_DoMessage)(); }
+
+//CMessageRemoveItem
+void (CMessageRemoveItem::*CMessageRemoveItem_Deconstruct)() =
+	SetFP(static_cast<void (CMessageRemoveItem::*)()>				(&CMessageRemoveItem::Deconstruct),		0x4B70A0);
+short (CMessageRemoveItem::*CMessageRemoveItem_GetMsgType)() =
+	SetFP(static_cast<short (CMessageRemoveItem::*)()>				(&CMessageRemoveItem::GetMsgType),		0x4B7030);
+char (CMessageRemoveItem::*CMessageRemoveItem_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessageRemoveItem::*)()>				(&CMessageRemoveItem::GetNetworkType1),	0x4B7050);
+char (CMessageRemoveItem::*CMessageRemoveItem_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessageRemoveItem::*)()>				(&CMessageRemoveItem::GetNetworkType2),	0x4B7060);
+void (CMessageRemoveItem::*CMessageRemoveItem_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessageRemoveItem::*)(void*, int*)>	(&CMessageRemoveItem::Marshal),			0x5CC536);
+BOOL (CMessageRemoveItem::*CMessageRemoveItem_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessageRemoveItem::*)(void*, int*)>	(&CMessageRemoveItem::Unmarshal),		0x5CC6F4);
+void (CMessageRemoveItem::*CMessageRemoveItem_DoMessage)() =
+	SetFP(static_cast<void (CMessageRemoveItem::*)()>				(&CMessageRemoveItem::DoMessage),		0x5CC7CE);
+
+CMessageRemoveItem::CMessageRemoveItem() {
+	SetVT(this, 0xAA6E14);
+	wSlot = 0;
+}
+CMessageRemoveItem::~CMessageRemoveItem()					{ (this->*CMessageRemoveItem_Deconstruct)(); }
+short CMessageRemoveItem::GetMsgType()						{ return (this->*CMessageRemoveItem_GetMsgType)(); }
+char CMessageRemoveItem::GetNetworkType1()					{ return (this->*CMessageRemoveItem_GetNetworkType1)(); }
+char CMessageRemoveItem::GetNetworkType2()					{ return (this->*CMessageRemoveItem_GetNetworkType2)(); }
+void CMessageRemoveItem::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageRemoveItem_Marshal)(pData, dwSize); }
+BOOL CMessageRemoveItem::Unmarshal(void* pData, int* dwSize){ return (this->*CMessageRemoveItem_Unmarshal)(pData, dwSize); }
+void CMessageRemoveItem::DoMessage()						{ return (this->*CMessageRemoveItem_DoMessage)(); }
 
 //CMessageSetAnimationSequence
 void (CMessageSetAnimationSequence::*CMessageSetAnimationSequence_Deconstruct)() =

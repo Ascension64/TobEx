@@ -255,8 +255,8 @@
 //0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
 //0xAA6DC0 38h, Response, DW, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue (CMessageInsertResponse)
 //0xAA6DDC, ch (CMessageClearAllActions)
-//0xAA6E14, eh, W
-//0xAA6E4C, 12h, DW, unsigned char, unsigned char
+//! 0xAA6E14 CMessageRemoveItem
+//! 0xAA6E4C CMessageModifyPartyGold
 //! 0xAA6E68 CMessagePlaySound
 //0xAA6E84, 14h, DW, W, W
 //0xAA6EBC, 10h, DW
@@ -273,14 +273,59 @@
 //! 0xAA7298 CMessageHostReleaseServerStore
 //0xAA72D0, 10ah, CItem, short nRecommendedSlot, bool bTrimEmptySlots, pad (CMessageAddItemToContainerOverwrite)
 //0xAA7334, 18h, CString sDialog, eTarget, int (CMessageLoadDialog)
-//0xAA7350, 10h, unsigned char, pad, W
+//0xAA7350, 10h, bool bOn, pad, short wPosition [1 = listener, 2 = speaker] (CMessageDialogueState)
 //0xAA736C, 14h, DW x, DW y (CMessageForceJump)
 //! 0xAA73DC, CMessagePlaySoundset
 //0xAA73F8, 1Ah, DW nStatedIdx, BYTE, pad, DW (CGameDialog 5ch), DW (CGameDialog 60h) (CMessageShowDialogueState)
-//0xAA743C, 14h, DW nTicks, Enum eTarget (CMessageFaceTalker)
+//0xAA7420, 1ch, CString, DW, DW, DW
+//! 0xAA743C, CMessageFaceTalker
+//0xAA7458, eh, wTicks (CMessageSetTriggerRemovalTimer)
 
+//! 0xAA9758, CMessageInterruptDialogue
+//0xAA9774, 24h, CMessageStatic
+//! 0xAA9790, CMessageCreatureOverlay
+//0xAA97C4, eh, unsigned char, pad
+//0xAA9830, 10h, int nParam2 (CMessageInstantDeath)
 //! 0xAA9970 CMessageCastSpell
-//0xAA99F4, 10h, dwDuration (CMessageTimeStop)
+//0xAA99F4, 10h, int nTicks (CMessageSetTimeStopCounter)
+
+//0xAAB528, 10h, DW mode (CMessageSetRemoteGameMode)
+//0xAAB544, 28h, ResRef storename, ResRef itemname, W arg6, W usage1, W usage2, W usage3, B bIdentified (CMessageAddStoreItem)
+//0xAAB598, 1ah, c, 10, 14, DW, unsigned char, pad (CMessageSetTarget)
+//0xAAB5B4, eh, bool bOn, pad (CMessageSetInStoreState)
+//0xAAB5EC, eh, W (action opcode)
+//0xAAB608, eh, unsigned char, pad
+//0xAAB65C, 14h, CString, Enum source (CMessageNonControlledDialogStart)
+//0xAAB694, 16h, ResRef (filename), unsigned char (filetype, 1 = vvc, 2 = bam of nameanim1), pad (CMessageRemoveVisualEffectVidCell)
+//0xAAB6E8, eh, unsigned char, pad
+//0xAAB704, ch
+//0xAAB720, ch (CMessagePrepareDialogue)
+//0xAAB758, ch (CMessageSetAnimColorRange)
+//0xAAB7C8, ch
+//0xAAB81C, 10h, DW
+//0xAAB838, 14h, ResRef 
+//0xAAB86C, 44h, CColorPalList, CColorRgbList (constructor: 0x5BE891 (pSprite, enum, enum)) (CMessageSetAnimColorsFromList)
+//0xAAB888, 12h, short wNumItems, CItem* pItemArray (CMessageUpdateContainerItems)
+//0xAAB8A4, 16h, DW, W, W, pad?, unsigned char (constructor: 0x5C353B (pSprite, enum, enum))
+//0xAAB8C0, 1eh, W (projIdx), Enum, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
+//0xAAB8DC, 24h, W, DW* , W, DW, DW, DW, CString
+//0xAAB8F8, b4h, CCreInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
+//! 0xAAB914 CMessageSpriteUpdate
+//0xAAB930, 28h, CItemPropertiesList, constructor: 0x5E998E
+//0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
+//0xAAB9B8, eh, bool bNonPausingDialogue, pad (CMessageSetNonPausingDialogue)
+//0xAAB9D4, 14h, ResRef
+//0xAAB9F0, 28h, CObjectList (CMessageSetObjectProtections)
+
+
+
+
+//CSpecificMessages (name, construction, type-subtype, process, structure)
+//MsgGetHostFile(ARE, GAM, WMP, DLG, STO), 0x43D1F5, 52-44, 0x43D44A, int nCResType, char resname[]
+//MsgReceiveHostFile(ARE, GAM, WMP, DLG, STO), 0x43DBE6, 52-52, 0x43E044, char resnameLen, char resname[], int nCResType, int nFileSize, fileData
+
+
+
 /*
 sndtype+1
 
@@ -329,52 +374,3 @@ f area_forest
 2b existance2
 2c existance3
 */
-//0xAA73F8, 1ah, DW, unsigned char, pad, DW, DW
-//0xAA7420, 1ch, CString, DW, DW, DW
-//0xAA743C, 14h, int nTime, Enum eTarget
-//0xAA7458, eh, wTicks (CMessageSetTriggerRemovalTimer)
-
-//0xAA9758, eh, unsigned char, pad (CMessageInterruptDialogue)
-//0xAA9774, 24h, CMessageStatic
-//! 0xAA9790, eh, CMessageCreatureOverlay
-//0xAA97C4, eh, unsigned char, pad
-
-//0xAA9830, 10h, int nParam2 (CMessageInstantDeath)
-
-//0xAA9970, 14h, CString, Enum source (CMessageFireSpell)
-//0xAA99F4, 10h, int nTicks (CMessageSetTimeStopCounter)
-
-//0xAAB528, 10h, DW mode (CMessageSetRemoteGameMode)
-//0xAAB544, 28h, ResRef storename, ResRef itemname, W arg6, W usage1, W usage2, W usage3, B bIdentified (CMessageAddStoreItem)
-//0xAAB598, 1ah, c, 10, 14, DW, unsigned char, pad (CMessageSetTarget)
-//0xAAB5B4, eh, bool bOn, pad (CMessageSetInStoreState)
-//0xAAB5EC, eh, W (action opcode)
-//0xAAB608, eh, unsigned char, pad
-//0xAAB65C, 14h, CString, Enum source (CMessageNonControlledDialogStart)
-//0xAAB694, 16h, ResRef (filename), unsigned char (filetype, 1 = vvc, 2 = bam of nameanim1), pad (CMessageRemoveVisualEffectVidCell)
-//0xAAB6E8, eh, unsigned char, pad
-//0xAAB704, ch
-//0xAAB720, ch (CMessagePrepareDialogue)
-//0xAAB758, ch (CMessageSetAnimColorRange)
-//0xAAB7C8, ch
-//0xAAB81C, 10h, DW
-//0xAAB838, 14h, ResRef 
-//0xAAB86C, 44h, CColorPalList, CColorRgbList (constructor: 0x5BE891 (pSprite, enum, enum)) (CMessageSetAnimColorsFromList)
-//0xAAB888, 12h, short wNumItems, CItem* pItemArray (CMessageUpdateContainerItems)
-//0xAAB8A4, 16h, DW, W, W, pad?, unsigned char (constructor: 0x5C353B (pSprite, enum, enum))
-//0xAAB8C0, 1eh, W (projIdx), Enum, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
-//0xAAB8DC, 24h, W, DW* , W, DW, DW, DW, CString
-//0xAAB8F8, b4h, CCreInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
-//! 0xAAB914 CMessageSpriteUpdate
-//0xAAB930, 28h, CItemPropertiesList, constructor: 0x5E998E
-//0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
-//0xAAB9B8, eh, bool bNonPausingDialogue, pad (CMessageSetNonPausingDialogue)
-//0xAAB9D4, 14h, ResRef
-//0xAAB9F0, 28h, CObjectList (CMessageSetObjectProtections)
-
-
-
-
-//CSpecificMessages (name, construction, type-subtype, process, structure)
-//MsgGetHostFile(ARE, GAM, WMP, DLG, STO), 0x43D1F5, 52-44, 0x43D44A, int nCResType, char resname[]
-//MsgReceiveHostFile(ARE, GAM, WMP, DLG, STO), 0x43DBE6, 52-52, 0x43E044, char resnameLen, char resname[], int nCResType, int nFileSize, fileData

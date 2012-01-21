@@ -128,6 +128,7 @@ public:
 	CGameObject& FindTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList);
 	CGameObject& FindTarget(CGameObject& source, BOOL bCheckMiddleList);
 	void SetIdentifiers(ObjectIds& ids);
+	Object GetOpposingEAObject();
 	unsigned char GetClass();
 	void GetDualClasses(unsigned char* pClassNew, unsigned char* pClassOrg);
 	BOOL HasActiveSubclass(unsigned char nSubClass, BOOL bThreadAsync);
@@ -159,6 +160,7 @@ extern void (Object::*Object_DecodeIdentifiers)(CGameSprite&);
 extern CGameObject& (Object::*Object_FindTargetOfType)(CGameObject&, char, BOOL);
 extern CGameObject& (Object::*Object_FindTarget)(CGameObject&, BOOL);
 extern void (Object::*Object_SetIdentifiers)(ObjectIds&);
+extern Object (Object::*Object_GetOpposingEAObject)();
 extern unsigned char (Object::*Object_GetClass)();
 extern void (Object::*Object_GetDualClasses)(unsigned char*, unsigned char*);
 extern BOOL (Object::*Object_HasActiveSubclass)(unsigned char, BOOL);
@@ -171,6 +173,9 @@ struct Trigger { //Size 2Eh
 //BCS correlation: TR opcode, i, dwFlags, i2, u22, sName1, sName2, o TR
 
 	Trigger();
+
+	Trigger(short wOpcode, Object& o, int i);
+	Trigger& Construct(short wOpcode, Object& o, int i) { return *this; } //dummy
 
 	Trigger(short wOpcode, int i);
 	Trigger& Construct(short wOpcode, int i) { return *this; } //dummy
@@ -199,6 +204,7 @@ struct Trigger { //Size 2Eh
 	IECString sName2; //2ah, (S), second global
 };
 
+extern Trigger& (Trigger::*Trigger_Construct_3)(short, Object&, int);
 extern Trigger& (Trigger::*Trigger_Construct_2)(short, int);
 extern Trigger& (Trigger::*Trigger_OpAssign)(Trigger&);
 extern short (Trigger::*Trigger_GetOpcode)();

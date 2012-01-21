@@ -15,6 +15,7 @@ void* __cdecl operator new[] (size_t size, int i) { return (*_New)(size); }
 void __cdecl operator delete (void* mem, int i) { return (*_Delete)(mem); }
 void __cdecl operator delete[] (void* mem, int i) { return (*_Delete)(mem); }
 int __cdecl IERand() { return (*_Rand)(); }
+int __cdecl IERand(int n) { return IERand() * n >> 15; }
 
 void* ThisCall(void* func, void* pThis) {
 	void* returnVal;

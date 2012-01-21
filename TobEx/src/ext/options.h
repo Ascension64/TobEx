@@ -89,6 +89,7 @@ struct CGameOptionsEx {
 	BOOL bEngineExternClassRaceRestrictions;
 	BOOL bEngineExternEncumbrance;
 	BOOL bEngineExternMageSpellsCap;
+	BOOL bEngineFakeTalkFix;
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEngineMoveAreasFix;
 	BOOL bEnginePickpocketRemainHidden;

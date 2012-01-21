@@ -222,6 +222,33 @@ public:
 	bool u23; //pad
 };
 
+class CMessageFaceTalker : public CMessage { //Size 14h
+public:
+	CMessageFaceTalker();
+
+	//AA743C
+	virtual ~CMessageFaceTalker(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	int nTicks; //ch
+	Enum eTalker; //10h
+};
+
+extern void (CMessageFaceTalker::*CMessageFaceTalker_Deconstruct)();
+extern short (CMessageFaceTalker::*CMessageFaceTalker_GetMsgType)(void);
+extern char (CMessageFaceTalker::*CMessageFaceTalker_GetNetworkType1)(void);
+extern char (CMessageFaceTalker::*CMessageFaceTalker_GetNetworkType2)(void);
+extern void (CMessageFaceTalker::*CMessageFaceTalker_Marshal)(void*, int*);
+extern BOOL (CMessageFaceTalker::*CMessageFaceTalker_Unmarshal)(void*, int*);
+extern void (CMessageFaceTalker::*CMessageFaceTalker_DoMessage)(void);
+
 class CMessageHostReleaseServerStore : public CMessage { //Size 14h
 public:
 	CMessageHostReleaseServerStore();
@@ -247,6 +274,61 @@ extern char (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Get
 extern void (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Marshal)(void*, int*);
 extern BOOL (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_Unmarshal)(void*, int*);
 extern void (CMessageHostReleaseServerStore::*CMessageHostReleaseServerStore_DoMessage)(void);
+
+class CMessageInterruptDialogue : public CMessage { //Size Eh
+public:
+	CMessageInterruptDialogue();
+
+	//AA9758
+	virtual ~CMessageInterruptDialogue(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	bool b; //ch
+	char ud; //pad
+};
+
+extern void (CMessageInterruptDialogue::*CMessageInterruptDialogue_Deconstruct)();
+extern short (CMessageInterruptDialogue::*CMessageInterruptDialogue_GetMsgType)(void);
+extern char (CMessageInterruptDialogue::*CMessageInterruptDialogue_GetNetworkType1)(void);
+extern char (CMessageInterruptDialogue::*CMessageInterruptDialogue_GetNetworkType2)(void);
+extern void (CMessageInterruptDialogue::*CMessageInterruptDialogue_Marshal)(void*, int*);
+extern BOOL (CMessageInterruptDialogue::*CMessageInterruptDialogue_Unmarshal)(void*, int*);
+extern void (CMessageInterruptDialogue::*CMessageInterruptDialogue_DoMessage)(void);
+
+class CMessageModifyPartyGold : public CMessage { //Size 12h
+public:
+	CMessageModifyPartyGold();
+
+	//AA6E4C
+	virtual ~CMessageModifyPartyGold(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	int nGold; //ch
+	unsigned char cMode; //10h, 0 = set, 1 = sum
+	bool bPrintMessage; //11h
+};
+
+extern void (CMessageModifyPartyGold::*CMessageModifyPartyGold_Deconstruct)();
+extern short (CMessageModifyPartyGold::*CMessageModifyPartyGold_GetMsgType)(void);
+extern char (CMessageModifyPartyGold::*CMessageModifyPartyGold_GetNetworkType1)(void);
+extern char (CMessageModifyPartyGold::*CMessageModifyPartyGold_GetNetworkType2)(void);
+extern void (CMessageModifyPartyGold::*CMessageModifyPartyGold_Marshal)(void*, int*);
+extern BOOL (CMessageModifyPartyGold::*CMessageModifyPartyGold_Unmarshal)(void*, int*);
+extern void (CMessageModifyPartyGold::*CMessageModifyPartyGold_DoMessage)(void);
 
 class CMessageModifyVariable : public CMessage { //Size 1Ah
 public:
@@ -412,6 +494,32 @@ extern char (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_GetNetw
 extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Marshal)(void*, int*);
 extern BOOL (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Unmarshal)(void*, int*);
 extern void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_DoMessage)(void);
+
+class CMessageRemoveItem : public CMessage { //Size Eh
+public:
+	//AA6E14
+	CMessageRemoveItem();
+
+	virtual ~CMessageRemoveItem(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	short wSlot; //ch
+};
+
+extern void (CMessageRemoveItem::*CMessageRemoveItem_Deconstruct)();
+extern short (CMessageRemoveItem::*CMessageRemoveItem_GetMsgType)(void);
+extern char (CMessageRemoveItem::*CMessageRemoveItem_GetNetworkType1)(void);
+extern char (CMessageRemoveItem::*CMessageRemoveItem_GetNetworkType2)(void);
+extern void (CMessageRemoveItem::*CMessageRemoveItem_Marshal)(void*, int*);
+extern BOOL (CMessageRemoveItem::*CMessageRemoveItem_Unmarshal)(void*, int*);
+extern void (CMessageRemoveItem::*CMessageRemoveItem_DoMessage)(void);
 
 //CMessageSetAnimationSequence
 class CMessageSetAnimationSequence : public CMessage { //Size Eh

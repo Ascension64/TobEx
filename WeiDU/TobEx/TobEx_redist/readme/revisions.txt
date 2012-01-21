@@ -5,11 +5,14 @@ Beta 0023
 -Improved installation text compatibility with Linux systems
 -Improved stability of hex patching code
 -Added: Castilian translation (by Lisandro)
+-Added: Fake Talk Exploit Fix
 -Added: Move Areas Fix
 -Added: Spell Turning Fix
 -Added: Spell Turning Animation Fix
 -Added: Summon Limit Fix
 -Damage Fix: Additionally fixes a memory leak bug when fist damage would make the target unconscious
+-Enable PickpocketFailed Trigger: Re-implemented the hack, now sends PickPocketFailed() in addition to the original AttackedBy() trigger, moved to core hacks, now overrides tob_hacks
+-Remain Hidden On Pickpocket Success: Re-implemented the hack, now overrides tob_hacks
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position
 

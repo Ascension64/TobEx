@@ -4,6 +4,8 @@
 
 CItem& (CItem::*CItem_Construct_0)() =
 	SetFP(static_cast<CItem& (CItem::*)()>							(&CItem::Construct),		0x5A83F0);
+CItem& (CItem::*CItem_Construct_1)(CItem&) =
+	SetFP(static_cast<CItem& (CItem::*)(CItem&)>					(&CItem::Construct),		0x5A84BE);
 void (CItem::*CItem_Deconstruct)() =
 	SetFP(static_cast<void (CItem::*)()>							(&CItem::Deconstruct),		0x5A9E16);
 BOOL (CItem::*CItem_Demand)() =
@@ -27,6 +29,7 @@ unsigned int (CItem::*CItem_GetUnusableFlags)() =
 	SetFP(static_cast<unsigned int (CItem::*)()>					(&CItem::GetUnusableFlags),	0x5AB609);
 
 CItem::CItem()																{ (this->*CItem_Construct_0)(); }
+CItem::CItem(CItem& itm)													{ (this->*CItem_Construct_1)(itm); }
 CItem::~CItem()																{ (this->*CItem_Deconstruct)(); }
 BOOL CItem::Demand()														{ return (this->*CItem_Demand)(); }
 BOOL CItem::Release()														{ return (this->*CItem_Release)(); }

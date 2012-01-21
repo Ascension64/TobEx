@@ -33,6 +33,7 @@ void* __cdecl operator new[] (size_t, int);
 void __cdecl operator delete (void*, int);
 void __cdecl operator delete[] (void*, int);
 int __cdecl IERand(void);
+int __cdecl IERand(int n);
 
 void* ThisCall(void*, void*);
 void* ThisCall(void*, void*, void*);

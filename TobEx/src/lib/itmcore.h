@@ -24,6 +24,9 @@ public:
 	CItem();
 	CItem& Construct() { return *this; } //dummy
 
+	CItem(CItem& itm);
+	CItem& Construct(CItem& itm) { return *this; } //dummy
+
 	BOOL Demand();
 	BOOL Release();
 	void LoadResource(ResRef& res, BOOL bAddToHandler);
@@ -60,6 +63,7 @@ public:
 };
 
 extern CItem& (CItem::*CItem_Construct_0)();
+extern CItem& (CItem::*CItem_Construct_1)(CItem&);
 extern void (CItem::*CItem_Deconstruct)();
 extern BOOL (CItem::*CItem_Demand)();
 extern BOOL (CItem::*CItem_Release)();

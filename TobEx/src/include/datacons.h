@@ -1,8 +1,26 @@
 #ifndef DATACONS_H
 #define DATACONS_H
 
+//Area search map conversions
+#define PIXELS_PER_SEARCHMAP_PT_X	16
+#define PIXELS_PER_SEARCHMAP_PT_Y	12
+
 //Creature memorized spell flags
 #define CREMEMSPELL_MEMORIZED		0x0001
+
+//Effect timing modes
+#define TIMING_INSTANT_LIMITED			0
+#define TIMING_INSTANT_PERMANENT		1
+#define TIMING_INSTANT_EQUIPPED			2
+#define TIMING_DELAY_LIMITED			3
+#define TIMING_DELAY_PERMANENT			4
+#define TIMING_DELAY_EQUIPPED			5
+#define TIMING_DELAYEND_LIMITED			6
+#define TIMING_DELAYEND_PERMANENT		7
+#define TIMING_DELAYEND_EQUIPPED		8
+#define TIMING_VERY_PERMANENT			9
+#define TIMING_INSTANT_LIMITED_TICKS	10
+#define TIMING_END_TICKS				0x1000
 
 //Effect opcodes
 #define CEFFECT_OPCODE_ATTACKS_PER_ROUND	0x001
@@ -107,6 +125,8 @@
 #define ITEMTYPE_GOLD			0x21
 #define ITEMTYPE_GEM			0x22
 #define ITEMTYPE_WAND			0x23
+#define ITEMTYPE_CONTAINER		0x24
+
 
 //Item unusable flags
 #define ITEMUNUSABLE_THIEF		0x00400000

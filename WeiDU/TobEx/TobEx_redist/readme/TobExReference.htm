@@ -357,6 +357,7 @@
             <li><a href="#engine-dead-statics">Dead Static Animations</a></li>
             <li><a href="#engine-dialogue-bar">Dialogue Bar</a></li>
             <li><a href="#engine-effect-stacking">Effect Stacking Behaviour</a></li>
+            <li><a href="#engine-fake-talk-exploit">Fake Talk Exploit</a></li>
             <li><a href="#engine-gaining-xp">Gaining Experience</a></li>
             <li><a href="#engine-inventory-pause">Inventory Screen Pausing</a></li>
             <li><a href="#engine-kit-support">Kit Support</a></li>
@@ -420,6 +421,9 @@
           <hr />
           <a name="engine-effect-stacking" id="engine-effect-stacking"></a><h3>Effect Stacking Behaviour</h3>
           <p>TobEx allows modmakers to modify the way that effect opcodes stack. This hack is currently in beta and has a number of problems. Please do not use it.</p>
+          <hr />
+          <a name="engine-fake-talk-exploit" id="engine-fake-talk-exploit"></a><h3>Fake Talk Exploit</h3>
+          <p>TobEx fixes an exploit where players could intend to initiate dialogue with a neutral creature, cancel their action, and then perform a hostile action instead, resulting in the creature wasting up to 10 seconds doing nothing before becoming hostile.</p>
           <hr />
           <a name="engine-gaining-xp" id="engine-gaining-xp"></a><h3>Gaining Experience</h3>
           <p><strong>Option:</strong> Normally, Throne of Bhaal gives the party 110% of the experience actually coded into creatures and given by the AddExperienceParty() action opcode. However, the amount coded into creatures (100%) is reported in the dialogue bar. TobEx gives the option of fixing this issue and giving the party the coded amount of experience (100%) in these situations.</p>
@@ -510,6 +514,7 @@
             <li><a href="#ruleset-mage-spells">Mage Spells</a></li>
             <li><a href="#ruleset-magical-weapons">Magical Weapons</a></li>
             <li><a href="#ruleset-mirror-images">Mirror Images</a></li>
+            <li><a href="#ruleset-pickpocketing">Pickpocketing</a></li>
             <li><a href="#ruleset-priest-spells">Priest Spells</a></li>
             <li><a href="#ruleset-proficiencies">Proficiencies</a></li>
             <li><a href="#ruleset-spell-selection">Spell Selection</a></li>
@@ -653,6 +658,13 @@
           <hr />
           <a name="ruleset-mirror-images" id="ruleset-mirror-images"></a><h3>Mirror Images</h3>
           <p>TobEx allows modmakers to create effects that bypass mirror images. Also refer to the <a href="#effects-119">Mirror Image effect</a> section.</p>
+          <hr />
+          <a name="ruleset-pickpocketing" id="ruleset-pickpocketing"></a><h3>Pickpocketing</h3>
+          <p>TobEx allows modmakers to customise which item slots are amenable to pickpocketing, and the minimum skill level required to steal an item from each slot. This behaviour is governed by SLTSTEAL.2DA.</p>
+          <p class="important">SLTSTEAL.2DA<br />
+          <br />
+          SKILL: The minimum pickpocketing skill with which the item in the item slot can be stolen. If the skill is set to 0, the item slot can never be stolen from. Note that the SLOT_FIST value is ignored.<br />
+          [ROWNAME]: The name of the item slot. The row numbers are mapped to the item slot, not the name, except for SLOT_EQUIPPED. SLOT_EQUIPPED refers to the currently equipped weapon slot, or the currently equipped ammo slot and its launcher slot.</p>
           <hr />
           <a name="ruleset-priest-spells" id="ruleset-priest-spells"></a><h3>Priest Spells</h3>
           <p>TobEx allow extension of priest spells allowed at each level from 50 to 99 (SPPR*00-SPPR*99). This is still limited by SPELLS.2DA. If this hack is used, the following change should be made to SPELLS.2DA to avoid existing Throne of Bhaal priest spells that should not be included:</p>

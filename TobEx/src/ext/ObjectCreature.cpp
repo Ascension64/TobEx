@@ -9,6 +9,7 @@
 #include "console.h"
 #include "log.h"
 
+#include "InfGameCommon.h"
 #include "ObjectCommon.h"
 #include "ObjectStats.h"
 #include "UserMageBook.h"
@@ -175,7 +176,9 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 	if (0) IECString("DETOUR_CCreatureObject::DETOUR_ActionPickPockets");
 
 	if (!pGameOptionsEx->bEnginePickpocketRemainHidden &&
-		!pGameOptionsEx->bTriggerPickpocketFailed) {
+		!pGameOptionsEx->bTriggerPickpocketFailed &&
+		(!pGameOptionsEx->bEngineExternStealSlots || !pRuleEx->m_StealSlots.m_2da.bLoaded)
+	) {
 		return (this->*Tramp_CCreatureObject_ActionPickPockets)(creTarget);
 	}
 
@@ -282,35 +285,65 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		return ACTIONRESULT_NOACTIONTAKEN;
 	}
 
-	BOOL bNotStealableArray[39]; //FIX_ME
+	BOOL bNotStealableArray[39]; //FIX_ME, should use a global variable
 	for (int iSlotIdx = 0; iSlotIdx < *g_pInventorySlots; iSlotIdx++) {
 		bNotStealableArray[iSlotIdx] = 0;
 	}
 
-	bNotStealableArray[SLOT_FIST] = 1;
-	bNotStealableArray[SLOT_ARMOR] = 1;
-	bNotStealableArray[SLOT_BELT] = 1;
-	bNotStealableArray[SLOT_BOOTS] = 1;
-	bNotStealableArray[SLOT_CLOAK] = 1;
-	bNotStealableArray[SLOT_GAUNTLETS] = 1;
-	bNotStealableArray[SLOT_HELMET] = 1;
-	bNotStealableArray[SLOT_SHIELD] = 1;
-	bNotStealableArray[creTarget.m_Inventory.nSlotSelected] = 1;
+	if (pGameOptionsEx->bEngineExternStealSlots && pRuleEx->m_StealSlots.m_2da.bLoaded) {
+		for (int iRow = 0; iRow < *g_pInventorySlots; iRow++) {
+			if (iRow == SLOT_FIST) {
+				bNotStealableArray[iRow] = 1;
+				continue;
+			}
 
-	short nSlotEquippedLauncher = creTarget.GetSlotOfEquippedLauncherOfAmmo(creTarget.m_Inventory.nSlotSelected, creTarget.m_Inventory.nAbilitySelected);
-	if (nSlotEquippedLauncher != -1) bNotStealableArray[nSlotEquippedLauncher] = 1;
+			if (iRow >= pRuleEx->m_StealSlots.nRows) break;
+			int nCol = 0;
+			if (nCol >= pRuleEx->m_StealSlots.nCols) break;
+
+			IECString sValue = *((pRuleEx->m_StealSlots.pDataArray) + (pRuleEx->m_StealSlots.nCols * iRow + nCol));
+			int nValue = atoi((LPCTSTR)sValue);
+			if (nValue == 0 || nValue > this->GetDerivedStats().pickPockets) bNotStealableArray[iRow] = 1;
+		}
+
+		IECString sRowName("SLOT_EQUIPPED");
+		IECString sColName("SKILL");
+		IECString sValue(pRuleEx->m_StealSlots.GetValue(sColName, sRowName));
+		int nValue = atoi((LPCTSTR)sValue);
+
+		if (nValue == 0 || nValue > this->GetDerivedStats().pickPockets) {
+			bNotStealableArray[creTarget.m_Inventory.nSlotSelected] = 1;
+
+			short nSlotEquippedLauncher = creTarget.GetSlotOfEquippedLauncherOfAmmo(creTarget.m_Inventory.nSlotSelected, creTarget.m_Inventory.nAbilitySelected);
+			if (nSlotEquippedLauncher != -1) bNotStealableArray[nSlotEquippedLauncher] = 1;
+		}
+
+	} else {
+		bNotStealableArray[SLOT_FIST] = 1;
+		bNotStealableArray[SLOT_ARMOR] = 1;
+		bNotStealableArray[SLOT_BELT] = 1;
+		bNotStealableArray[SLOT_BOOTS] = 1;
+		bNotStealableArray[SLOT_CLOAK] = 1;
+		bNotStealableArray[SLOT_GAUNTLETS] = 1;
+		bNotStealableArray[SLOT_HELMET] = 1;
+		bNotStealableArray[SLOT_SHIELD] = 1;
+		bNotStealableArray[creTarget.m_Inventory.nSlotSelected] = 1;
+
+		short nSlotEquippedLauncher = creTarget.GetSlotOfEquippedLauncherOfAmmo(creTarget.m_Inventory.nSlotSelected, creTarget.m_Inventory.nAbilitySelected);
+		if (nSlotEquippedLauncher != -1) bNotStealableArray[nSlotEquippedLauncher] = 1;
+	}
 
 	IECString sNameTarget(creTarget.name);
 	short nSlotToStealFirst = IERand(*g_pInventorySlots);
 	short nSlotToSteal = nSlotToStealFirst;
 	while (bNotStealableArray[nSlotToSteal] ||
 		creTarget.m_Inventory.items[nSlotToSteal] == NULL ||
-		creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & ITEMFLAG_TWO_HANDED ||
-		!(creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & ITEMFLAG_DROPPABLE) ||
-		creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & ITEMFLAG_DISPLAYABLE ||
-		(sNameTarget.CompareNoCase("MINSC") && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC84") ||
-		(sNameTarget.CompareNoCase("ALORA") && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC88") ||
-		(sNameTarget.CompareNoCase("EDWIN") && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC89") ||
+		creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & CREITEM_UNSTEALABLE ||
+		!(creTarget.m_Inventory.items[nSlotToSteal]->GetFlags() & ITEMFLAG_DROPPABLE) ||
+		creTarget.m_Inventory.items[nSlotToSteal]->dwFlags & CREITEM_UNDROPPABLE ||
+		(sNameTarget.CompareNoCase("MINSC") == 0 && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC84") ||
+		(sNameTarget.CompareNoCase("ALORA") == 0 && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC88") ||
+		(sNameTarget.CompareNoCase("EDWIN") == 0 && creTarget.m_Inventory.items[nSlotToSteal]->m_itm.name == "MISC89") ||
 		creTarget.m_Inventory.items[nSlotToSteal]->GetType() == ITEMTYPE_CONTAINER
 	) {
 		if (nSlotToStealFirst % 2) {

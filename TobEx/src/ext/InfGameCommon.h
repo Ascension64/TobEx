@@ -26,6 +26,7 @@ public:
 	short m_nEncumbranceHighThreshold;
 	CRuleTable m_HPClass;
 	CRuleTable m_HPBarbarian;
+	CRuleTable m_StealSlots;
 
 protected:
 	void Init(CRuleTables& rule);

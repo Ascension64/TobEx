@@ -93,6 +93,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExternClassRaceRestrictions = FALSE;
 	bEngineExternEncumbrance = FALSE;
 	bEngineExternMageSpellsCap = FALSE;
+	bEngineExternStealSlots = FALSE;
 	bEngineFakeTalkFix = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
 	bEngineMoveAreasFix = FALSE;
@@ -234,6 +235,7 @@ void CGameOptionsEx::Init() {
 	bEngineExternClassRaceRestrictions = GetCoreIniValue("Engine", "Externalise Class-Race Restrictions");
 	bEngineExternEncumbrance = GetCoreIniValue("Engine", "Externalise Encumbrance Restrictions");
 	bEngineExternMageSpellsCap = GetCoreIniValue("Engine", "Externalise Mage Spells Cap");
+	bEngineExternStealSlots = GetCoreIniValue("Engine", "Externalise Stealable Item Slots");
 	bEngineFakeTalkFix = GetCoreIniValue("Engine", "Fake Talk Exploit Fix");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
 	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");

@@ -1,0 +1,2 @@
+//Externalise Stealable Item Slots
+COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/override/sltsteal.2da" "override/sltsteal.2da"

@@ -218,5 +218,15 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
+	if (pGameOptionsEx->bEngineExternStealSlots) {
+		m_StealSlots.LoadTable(ResRef("SLTSTEAL"));
+		if (!m_StealSlots.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): SLTSTEAL.2DA not found\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		}
+	}
+
 	return;
 }

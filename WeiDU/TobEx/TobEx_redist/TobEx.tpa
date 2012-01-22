@@ -183,6 +183,8 @@ ACTION_IF (%tobex_installed_version% < 22) BEGIN
 END
 
 ACTION_IF (%tobex_installed_version% < 23) BEGIN
+  INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0023.tpa"
+
   COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
     REPLACE_TEXTUALLY "Trigger:Enable PickpocketFailed Trigger=.*" ""
   BUT_ONLY_IF_IT_CHANGES

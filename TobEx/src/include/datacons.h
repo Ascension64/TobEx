@@ -5,6 +5,12 @@
 #define PIXELS_PER_SEARCHMAP_PT_X	16
 #define PIXELS_PER_SEARCHMAP_PT_Y	12
 
+//Creature item flags
+#define CREITEM_IDENTIFIED		0x1
+#define CREITEM_UNSTEALABLE		0x2
+#define CREITEM_STOLEN			0x4
+#define CREITEM_UNDROPPABLE		0x8
+
 //Creature memorized spell flags
 #define CREMEMSPELL_MEMORIZED		0x0001
 
@@ -126,7 +132,6 @@
 #define ITEMTYPE_GEM			0x22
 #define ITEMTYPE_WAND			0x23
 #define ITEMTYPE_CONTAINER		0x24
-
 
 //Item unusable flags
 #define ITEMUNUSABLE_THIEF		0x00400000

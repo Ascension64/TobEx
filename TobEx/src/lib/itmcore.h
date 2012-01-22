@@ -56,7 +56,7 @@ public:
 	//bit1: unstealable
 	//bit2: stolen
 	//bit3: undroppable, used during simulacrum
-	unsigned int dwFlags; //20h, Arg7 (as per StoFileItem)
+	unsigned int dwFlags; //20h, Arg7 (as per Cre/StoFileItem)
 	CSound sndAttack1; //24h
 	CSound sndAttack2; //8eh
 	short m_wNumAttackSounds; //f8h

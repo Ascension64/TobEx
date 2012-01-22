@@ -2600,9 +2600,12 @@ void InitPatches() {
 
 	
 	if (pGameOptionsEx->bUserLargerTooltipScroll) {
-	    //fix brackets in formula when caster level > effect level
 		char bytes[] = {0xE0};
+		//1. CInfToolTip.wScrollWidth height
 		vDataList.push_back( Data(0x6739D9, 1, bytes) );
+		
+		//2. DDSURFACEDESC.dwWidth
+		vDataList.push_back( Data(0x9B73C0, 1, bytes) );
 	
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

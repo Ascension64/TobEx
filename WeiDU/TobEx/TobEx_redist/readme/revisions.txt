@@ -12,6 +12,7 @@ Beta 0023
 -Added: Summon Limit Fix
 -Damage Fix: Additionally fixes a memory leak bug when fist damage would make the target unconscious
 -Enable PickpocketFailed Trigger: Re-implemented the hack, now sends PickPocketFailed() in addition to the original AttackedBy() trigger, moved to core hacks, now overrides tob_hacks
+-Enlarge Tooltip Scroll: Fixed the DDERR_INVALIDRECT issue in software renderer causing the tooltip to get stuck on the screen; re-enabled by default
 -Remain Hidden On Pickpocket Success: Re-implemented the hack, now overrides tob_hacks
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position

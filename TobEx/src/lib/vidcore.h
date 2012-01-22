@@ -117,12 +117,12 @@ public:
 		BOOL bLoaded;
 		ResBam* pBam;
 		ResRef name; //init to "STATES"
-	} ua0;
+	} m_bam; //a0h
 	struct ResBahContainer {
 		BOOL bLoaded;
 		ResBah* pBah;
 		ResRef name;
-	} ub0;
+	} m_bah; //b0h
 	short nFrameCurr; //c0h, current frame
 	short nCycleCurr; //c2h, current cycle, related to ua2 in VisualEffect
 	int uc4;
@@ -130,7 +130,7 @@ public:
 	void* pFrameEntry; //cch, from BAM file - via GetFrame()
 	char ud0; //bool bColorOneIsNotBlack; if 0, palette[1] is set to [0.0.0]; inits to 1; is never changed
 	char ud1; //padding?
-	BOOL ud2; //bAnimDataCompressed (from BAM file)
+	BOOL bAnimDataCompressed; //d2h (from BAM file)
 };
 
 struct CVidMosaic : public CVid { //Size B0h
@@ -239,6 +239,10 @@ public:
 	//1 = CVIDINF_SURFACE_FRONT
 	//2 = SURFACE_FX
 	//3 = SURFACE_MIRROR_FX
+	//4 = for tooltips
+	//5
+	//6
+	//7
 
 	ABGR ua4; //Color Correction light mask, copied from CInfinity.u1b8
 		
@@ -363,7 +367,7 @@ struct CVideo { //Size 168h
 	BOOL bBackwardsCompatible3d; //13ah, Backwards Compatible 3d (3080h)
 	int u13e; //GLuint texture (for glBindTexture)
 	int u142; //pIDirectDraw (DirectDrawCreate onto here)
-	int u146; //pIDirectDraw2
+	int u146; //LPDDSURFACEDESC pIDirectDraw2 (pSurface[1])
 	int u14a; //pIDirectDrawClipper
 	CVideoMode* VideoModes[4]; //14eh
 	int nCurrentVideoModeIdx; //15eh

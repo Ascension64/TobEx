@@ -363,7 +363,6 @@
             <li><a href="#engine-kit-support">Kit Support</a></li>
             <li><a href="#engine-launchers">Launchers with No Ammo</a></li>
             <li><a href="#engine-music">Music Song List</a></li>
-            <li><a href="#engine-pickpocketing">Pickpocketing</a></li>
             <li><a href="#engine-player1-death">Player 1 Death</a></li>
             <li><a href="#engine-race-selection">Race Selection Strings</a></li>
             <li><a href="#engine-random-treasure">Random Treasure</a></li>
@@ -439,10 +438,6 @@
           <hr />
           <a name="engine-music" id="engine-music"></a><h3>Music Song List</h3>
           <p>TobEx removes the 100-row limit on SONGLIST.2DA. The script action PlaySong() supports this change, and extended song numbers are recognised in ARE files.</p>
-          <hr />
-          <a name="engine-pickpocketing" id="ngine-pickpocketing"></a><h3>Pickpocketing</h3>
-          <p>TobEx sends the PickPocketFailed() trigger in addition to the standard AttackedBy() trigger when a pickpocket attempt fails. Also refer to the <a href="#triggers-005d">PickPocketFailed() trigger</a> section.</p>
-          <p><strong>Option:</strong> TobEx gives the option of delaying the end of Stealth mode until the next round, and not terminating invisibility caused by a spell or item, if a successful pickpocket is made.</p>
           <hr />
           <a name="engine-player1-death" id="engine-player1-death"></a><h3>Player 1 Death</h3>
           <p><strong>Option:</strong> TobEx enables modmakers to disable the game over cutscene when the protagonist dies. In order for the game to be over, modmakers must specify a condition where the new action opcode LoseGame() applies without fail. Also refer to the <a href="#actions-352">LoseGame() action opcode</a> section.</p>
@@ -839,6 +834,7 @@
           <p>TobEx makes changes to the following script action opcodes:</p>
           <ul>
             <li><a href="#actions-19">19 JoinParty()</a></li>
+            <li><a href="#actions-25">25 PickPockets(O:Target*)</a></li>
             <li><a href="#actions-34">34 UseItem(S:Object*,O:Target*)</a></li>
             <li><a href="#actions-97">97 UseItemPoint(S:Item,P:Target*,I:Ability*)</a></li>
             <li><a href="#actions-174">174 EquipRanged()</a></li>
@@ -856,6 +852,10 @@
           <hr />
           <a name="actions-19" id="actions-19"></a><p><strong>19 JoinParty()</strong><br />
           <i>TobEx fixes this action opcode to prevent the action restoring all class abilities, which would allow players to re-use class abilities over and over again.</i></p>
+          <hr />
+          <a name="actions-25" id="actions-25"></a><p><strong>25 PickPockets(O:Target*)</strong><br />
+          <p>TobEx extends this action opcode by sending the PickPocketFailed() trigger in addition to the standard AttackedBy() trigger when a pickpocket attempt fails. Also refer to the <a href="#triggers-005d">PickPocketFailed() trigger</a> section.</p>
+          <p><strong>Option:</strong> TobEx gives the option of modifying this action by delaying the end of Stealth mode until the next round, and not terminating invisibility caused by a spell or item, if a successful pickpocket is made.</p>
           <hr />
           <a name="actions-34" id="actions-34"></a><p><strong>34 UseItem(S:Object*,O:Target*)</strong><br />
           <i>TobEx modifies this action opcode indirectly by allowing custom animation sequences to be played on the creature using the item. This is controlled by ITEMANIM.2DA and is item ability-specific. Also refer to the <a href="#animations-using-items">Animation Sequences when Using Items</a> section.</i></p>

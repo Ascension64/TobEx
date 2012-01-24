@@ -10,6 +10,7 @@ struct CGameOptionsEx {
 	BOOL bActionEquipRangedFix;
 	BOOL bActionExpandedActions;
 	BOOL bActionJoinPartyFix;
+	BOOL bActionPickpocketRemainHidden;
 
 	BOOL bArenasEnable;
 	
@@ -94,7 +95,6 @@ struct CGameOptionsEx {
 	BOOL bEngineFakeTalkFix;
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEngineMoveAreasFix;
-	BOOL bEnginePickpocketRemainHidden;
 	BOOL bEngineRestSpawnsAdvanceTime;
 	BOOL bEngineSpellTurningFix;
 	BOOL bEngineSummonLimitFix;

@@ -116,7 +116,7 @@ COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
 BEGIN @113 DESIGNATED 113 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
-  REPLACE_TEXTUALLY ~Engine:Remain Hidden On Pickpocket Success=0~ ~Engine:Remain Hidden On Pickpocket Success=1~
+  REPLACE_TEXTUALLY ~Action:Remain Hidden On Pickpocket Success=0~ ~Action:Remain Hidden On Pickpocket Success=1~
 
 BEGIN @114 DESIGNATED 114 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1

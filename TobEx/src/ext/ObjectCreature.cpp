@@ -547,7 +547,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ExecuteAction() {
 ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CCreatureObject::DETOUR_ActionPickPockets");
 
-	if (!pGameOptionsEx->bEnginePickpocketRemainHidden &&
+	if (!pGameOptionsEx->bActionPickpocketRemainHidden &&
 		!pGameOptionsEx->bTriggerPickpocketFailed &&
 		(!pGameOptionsEx->bEngineExternStealSlots || !pRuleEx->m_StealSlots.m_2da.bLoaded)
 	) {
@@ -584,7 +584,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		return ar;
 	}
 
-	if (!pGameOptionsEx->bEnginePickpocketRemainHidden &&
+	if (!pGameOptionsEx->bActionPickpocketRemainHidden &&
 		this->GetDerivedStats().stateFlags & STATE_INVISIBLE) {
 		ITEM_EFFECT eff;
 		CEffect::CreateItemEffect(eff, 0x88);
@@ -627,7 +627,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 			g_pChitin->messages.Send(*pMsgST2, FALSE);
 		}
 
-		if (pGameOptionsEx->bEnginePickpocketRemainHidden &&
+		if (pGameOptionsEx->bActionPickpocketRemainHidden &&
 			this->GetDerivedStats().stateFlags & STATE_INVISIBLE) {
 			ITEM_EFFECT eff;
 			CEffect::CreateItemEffect(eff, 0x88);

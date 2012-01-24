@@ -187,5 +187,6 @@ ACTION_IF (%tobex_installed_version% < 23) BEGIN
 
   COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
     REPLACE_TEXTUALLY "Trigger:Enable PickpocketFailed Trigger=.*" ""
+    REPLACE_TEXTUALLY "Engine:Remain Hidden On Pickpocket Success=.*" "Action:Remain Hidden On Pickpocket Success=.*"
   BUT_ONLY_IF_IT_CHANGES
 END

@@ -69,6 +69,15 @@ Options:
 -0: disabled
 -1: enabled
 
+-----590 Remain Hidden On Pickpocket Success [C, T]
+(Different implementation to, and overrides tob_hacks)
+If pickpocketing is successful, the character does not become visible
+Limitation: Hide In Shadows will still terminate at the end of the round
+
+Options:
+-0: disabled
+-1: enabled
+
 /////////////////////////////////////// ARENAS
 
 -----1100 Enable Arenas Game Type [M]
@@ -1204,15 +1213,6 @@ Options:
 -----1250 Move Areas Fix [F]
 This hack tries to fix a bug where a creature that is moving between areas may have multiple requests to do so and thus creates multiple copies of the creature in the area and thus the saved game
 Courtesy of the Throne of Bhaal 26499 beta patch
-
-Options:
--0: disabled
--1: enabled
-
------590 Remain Hidden On Pickpocket Success [C, T]
-(Different implementation to, and overrides tob_hacks)
-If pickpocketing is successful, the character does not become visible
-Limitation: Hide In Shadows will still terminate at the end of the round
 
 Options:
 -0: disabled

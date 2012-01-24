@@ -15,6 +15,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bActionEquipRangedFix = FALSE;
 	bActionExpandedActions = FALSE;
 	bActionJoinPartyFix = FALSE;
+	bActionPickpocketRemainHidden = FALSE;
 
 	bArenasEnable = FALSE;
 
@@ -98,7 +99,6 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineFakeTalkFix = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
 	bEngineMoveAreasFix = FALSE;
-	bEnginePickpocketRemainHidden = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
 	bEngineSpellTurningFix = FALSE;
 	bEngineSummonLimitFix = FALSE;
@@ -158,6 +158,7 @@ void CGameOptionsEx::Init() {
 	bActionEquipRangedFix = GetCoreIniValue("Action", "EquipRanged Action Fix");
 	bActionExpandedActions = GetCoreIniValue("Action", "Expanded Actions");
 	bActionJoinPartyFix = GetCoreIniValue("Action", "JoinParty Action Class Ability Refresh Fix");
+	bActionPickpocketRemainHidden = GetTweakIniValue("Tweak", "Action:Remain Hidden On Pickpocket Success");
 
 	bArenasEnable = GetCoreIniValue("Arenas", "Enable Arenas Game Type");
 
@@ -241,7 +242,6 @@ void CGameOptionsEx::Init() {
 	bEngineFakeTalkFix = GetCoreIniValue("Engine", "Fake Talk Exploit Fix");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
 	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");
-	bEnginePickpocketRemainHidden = GetTweakIniValue("Tweak", "Engine:Remain Hidden On Pickpocket Success");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");
 	bEngineSpellTurningFix = GetCoreIniValue("Engine", "Spell Turning Fix");
 	bEngineSummonLimitFix = GetCoreIniValue("Engine", "Summon Limit Fix");

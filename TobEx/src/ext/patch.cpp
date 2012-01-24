@@ -714,6 +714,27 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bActionJoinPartyFix) {
+		//push ecx
+		//call
+		char bytes[] = {0x51,
+						0xE8};
+		vDataList.push_back( Data(0x9331C0, 2, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_JoinParty_UpdateClassAbilities;
+		DWORD address = (DWORD)ptr - 5  - 0x9331C1;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x9331C2, 4, bytes2) );
+
+		char bytes3[] = {0xEB, 0x11,
+						0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x9331C6, 7, bytes3) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bArenasEnable) {
 		char bytes[] = {0x75};
 		vDataList.push_back( Data(0x7958D7, 1, bytes) );

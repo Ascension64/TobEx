@@ -1,6 +1,5 @@
 debug/*
 ipch/*
-release/*
 src_dist/*
 TobEx/Debug/*
 TobEx/detours/*
@@ -13,6 +12,7 @@ TobExLoader/Release/*
 TobExLoader/TobExLoader.vcxproj.filters
 TobExLoader/TobExLoader.vcxproj.user
 ToDo/*
+WeiDU/Setup-TobEx.exe
 WeiDU/TobEx/src.zip
 WeiDU/TobEx/TobEx_redist/TobEx.dll
 WeiDU/TobEx/TobEx_redist/TobExLoader.exe

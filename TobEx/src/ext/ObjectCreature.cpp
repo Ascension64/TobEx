@@ -136,6 +136,378 @@ void DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence(char* pSeq) {
 	return;
 }
 
+void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, unsigned char cClass, int nLevels, IECPtrList& cpl) {
+	IECString sAbilName;
+	IECString sSpell;
+	CRuleTable* pRuleTable = NULL;
+	CDerivedStats* pcds = NULL;
+	unsigned short wStartLevel;
+	unsigned short cSubclassLevel;
+
+	if (cClass == CLASS_RANGER && cre.m_BaseStats.dwFlags & CREFLAG_FALLEN_RANGER) {
+		pRuleTable = &g_pChitin->pGame->CLABRN05;
+	}
+	else if (cClass == CLASS_PALADIN && cre.m_BaseStats.dwFlags & CREFLAG_FALLEN_PALADIN) {
+		pRuleTable = &g_pChitin->pGame->CLABPA05;
+	} else {
+		pRuleTable = &g_pChitin->pGame->GetClassAbilityTable(cClass, cre.m_BaseStats.kit[1] | (cre.m_BaseStats.kit[0] << 16));
+	}
+
+	wStartLevel = 0;
+	pcds = &cre.GetDerivedStats();
+	cSubclassLevel = pcds->GetSubclassLevel(cre.o.GetClass(), cClass);
+	if (nLevels != -1) {
+		wStartLevel = cSubclassLevel - nLevels;
+	}
+	for (unsigned int nCol = wStartLevel; nCol < cSubclassLevel; nCol++) {
+		if (nCol >= pRuleTable->nCols) break;
+		for (unsigned int nRow = 0; nRow < pRuleTable->nRows; nRow++) {
+			if (nCol < pRuleTable->nCols &&
+				nRow < pRuleTable->nRows &&
+				nCol >= 0 &&
+				nRow >= 0) {
+				sAbilName = *((pRuleTable->pDataArray) + (pRuleTable->nCols * nRow + nCol));
+			} else {
+				sAbilName = pRuleTable->defaultVal;
+			}
+
+			if (sAbilName.CompareNoCase(pRuleTable->GetDefaultValue())) {
+				sSpell = sAbilName.Right(sAbilName.GetLength() - 3); //remove XX_ prefix
+				sAbilName = sAbilName.Left(3); //XX_ prefix
+				if (sAbilName.CompareNoCase("GA_") == 0) {
+					cpl.AddTail(new ResRef((LPCTSTR)sSpell));
+				}
+			}
+		}
+	}
+
+	POSITION pos = cpl.GetHeadPosition();
+	while (pos) {
+		ResRef* pr = (ResRef*)cpl.GetNext(pos);
+	}
+
+	return;
+}
+
+void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, CDerivedStats& cdsTarget, IECPtrList& cpl) {
+	unsigned char cClass = cre.oBase.GetClass();
+	switch (cClass) {
+	case CLASS_MAGE:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MAGE,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_CLERIC:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_CLERIC,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_THIEF:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_THIEF,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_BARD:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_BARD,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_PALADIN:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_PALADIN,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER_MAGE:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MAGE,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER_CLERIC:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_CLERIC,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER_THIEF:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_THIEF,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER_MAGE_THIEF:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MAGE,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_THIEF,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_DRUID:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_DRUID,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_RANGER:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_RANGER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_MAGE_THIEF:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MAGE,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_THIEF,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_CLERIC_MAGE:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_CLERIC,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MAGE,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_CLERIC_THIEF:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_CLERIC,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_THIEF,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER_DRUID:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_DRUID,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_FIGHTER_MAGE_CLERIC:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_CLERIC,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MAGE,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_CLERIC_RANGER:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_CLERIC,
+			cre.cdsCurrent.GetClericClassLevel(cClass) - cdsTarget.GetClericClassLevel(cClass),
+			cpl
+		);
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_RANGER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_SORCERER:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_SORCERER,
+			cre.cdsCurrent.GetMageClassLevel(cClass) - cdsTarget.GetMageClassLevel(cClass),
+			cpl
+		);
+		break;
+	case CLASS_MONK:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_MONK,
+			cre.cdsCurrent.GetThiefClassLevel(cClass) - cdsTarget.GetThiefClassLevel(cClass),
+			cpl
+		);
+		break;
+	default:
+		CCreatureObject_GetClassAbilities(
+			cre,
+			CLASS_FIGHTER,
+			cre.cdsCurrent.GetFighterClassLevel(cClass) - cdsTarget.GetFighterClassLevel(cClass),
+			cpl
+		);
+		break;
+	}
+
+	return;
+}
+
+void __stdcall CCreatureObject_JoinParty_UpdateClassAbilities(CCreatureObject& cre, CDerivedStats& cds) {
+	IECPtrList cplInnate;
+	IECPtrList cplModify;
+	POSITION pos;
+	POSITION pos2;
+	CreFileMemSpell* pMemSpell;
+
+	//create a list of all used class abilities
+	pos = cre.m_MemSpellsInnate.GetHeadPosition();
+	while (pos) {
+		pMemSpell = (CreFileMemSpell*)cre.m_MemSpellsInnate.GetNext(pos);
+		if (!(pMemSpell->wFlags & CREMEMSPELL_MEMORIZED)) {
+			cplInnate.AddTail(new ResRef(pMemSpell->name));
+		}
+	}
+
+	//create a list of all class abilities to be modified
+	CCreatureObject_GetClassAbilities(cre, cds, cplModify);
+
+	//trim modify list to only include class abilities that need to be un-memorised
+	pos = cplModify.GetHeadPosition();
+	while (pos) {
+		bool bMatch = false;
+
+		POSITION posCurrent = pos;
+		ResRef* pr = (ResRef*)cplModify.GetNext(pos);
+		pos2 = cplInnate.GetHeadPosition();
+		while (pos2) {
+			POSITION posCurrent2 = pos2;
+			ResRef* pr2 = (ResRef*)cplInnate.GetNext(pos2);
+			if (*pr == *pr2) {
+				bMatch = true;
+				cplInnate.RemoveAt(posCurrent2);
+				delete pr2;
+				pr2 = NULL;
+				break;
+			}
+		}
+		if (pos2 == NULL && bMatch == false) {
+			cplModify.RemoveAt(posCurrent);
+			delete pr;
+			pr = NULL;
+		}
+	}
+
+	//vanilla code
+	cre.RemoveClassAbilities(cds);
+	cre.ApplyClassAbilities(cds, FALSE);
+
+	//un-memorise previously used abilities
+	pos = cplModify.GetHeadPosition();
+	while (pos) {
+		ResRef* prName = (ResRef*)cplModify.GetNext(pos);
+
+		pos2 = cre.m_MemSpellsInnate.GetHeadPosition();
+		while (pos2) {
+			pMemSpell = (CreFileMemSpell*)cre.m_MemSpellsInnate.GetNext(pos2);
+			if (pMemSpell->name == *prName && pMemSpell->wFlags & CREMEMSPELL_MEMORIZED) {
+				pMemSpell->wFlags &= ~(CREMEMSPELL_MEMORIZED);
+				break;
+			}
+		}
+	}
+
+	while (!cplInnate.IsEmpty()) delete (ResRef*)cplInnate.RemoveHead();
+	while (!cplModify.IsEmpty()) delete (ResRef*)cplModify.RemoveHead();
+
+	return;
+}
+
+
 BOOL DETOUR_CCreatureObject::DETOUR_EvaluateTrigger(Trigger& t) {
 	if (0) IECString("DETOUR_CCreatureObject::DETOUR_EvaluateTrigger");
 

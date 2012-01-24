@@ -838,6 +838,7 @@
           <h2>Actions</h2>
           <p>TobEx makes changes to the following script action opcodes:</p>
           <ul>
+            <li><a href="#actions-19">19 JoinParty()</a></li>
             <li><a href="#actions-34">34 UseItem(S:Object*,O:Target*)</a></li>
             <li><a href="#actions-97">97 UseItemPoint(S:Item,P:Target*,I:Ability*)</a></li>
             <li><a href="#actions-174">174 EquipRanged()</a></li>
@@ -852,6 +853,9 @@
             <li><a href="#actions-354">354 DialogueIncrementGlobal(S:Name*,S:Area*,I:Value*)</a></li>
             <li><a href="#actions-355">355 DialogueSG(S:Name*,I:Num*)</a></li>
           </ul>
+          <hr />
+          <a name="actions-19" id="actions-19"></a><p><strong>19 JoinParty()</strong><br />
+          <i>TobEx fixes this action opcode to prevent the action restoring all class abilities, which would allow players to re-use class abilities over and over again.</i></p>
           <hr />
           <a name="actions-34" id="actions-34"></a><p><strong>34 UseItem(S:Object*,O:Target*)</strong><br />
           <i>TobEx modifies this action opcode indirectly by allowing custom animation sequences to be played on the creature using the item. This is controlled by ITEMANIM.2DA and is item ability-specific. Also refer to the <a href="#animations-using-items">Animation Sequences when Using Items</a> section.</i></p>

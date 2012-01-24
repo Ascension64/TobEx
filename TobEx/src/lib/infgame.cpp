@@ -20,23 +20,26 @@ Enum CPartySelection::GetFirstSelected() { return (this->*CPartySelection_GetFir
 
 //CRuleTable
 CRuleTable& (CRuleTable::*CRuleTable_Construct)() =
-	SetFP(static_cast<CRuleTable& (CRuleTable::*)()>						(&CRuleTable::Construct),	0x63E230);
+	SetFP(static_cast<CRuleTable& (CRuleTable::*)()>						(&CRuleTable::Construct),		0x63E230);
 void (CRuleTable::*CRuleTable_LoadRes)(ResRef&) =
-	SetFP(static_cast<void (CRuleTable::*)(ResRef&)>						(&CRuleTable::LoadTable),	0x402D85);
+	SetFP(static_cast<void (CRuleTable::*)(ResRef&)>						(&CRuleTable::LoadTable),		0x402D85);
 IECString& (CRuleTable::*CRuleTable_GetValue_2)(IECString&, IECString&) =
-	SetFP(static_cast<IECString& (CRuleTable::*)(IECString&, IECString&)>	(&CRuleTable::GetValue),	0x4047EF);
+	SetFP(static_cast<IECString& (CRuleTable::*)(IECString&, IECString&)>	(&CRuleTable::GetValue),		0x4047EF);
 extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL) =
-	SetFP(static_cast<bool (CRuleTable::*)(IECString&, POSITION*, BOOL)>	(&CRuleTable::FindString),	0x404D61);
+	SetFP(static_cast<bool (CRuleTable::*)(IECString&, POSITION*, BOOL)>	(&CRuleTable::FindString),		0x404D61);
 void (CRuleTable::*CRuleTable_UnloadRes)() =
-	SetFP(static_cast<void (CRuleTable::*)()>								(&CRuleTable::UnloadRes),	0x43C010);
+	SetFP(static_cast<void (CRuleTable::*)()>								(&CRuleTable::UnloadRes),		0x43C010);
+IECString (CRuleTable::*CRuleTable_GetDefaultValue)() =
+	SetFP(static_cast<IECString (CRuleTable::*)()>							(&CRuleTable::GetDefaultValue),	0x43C6B0);
 extern IECString& (CRuleTable::*CRuleTable_GetValue_1)(POINT&) =
-	SetFP(static_cast<IECString& (CRuleTable::*)(POINT&)>					(&CRuleTable::GetValue),	0x63E2B0);
+	SetFP(static_cast<IECString& (CRuleTable::*)(POINT&)>					(&CRuleTable::GetValue),		0x63E2B0);
 
 CRuleTable::CRuleTable() { (this->*CRuleTable_Construct)(); nRows = 0; nCols = 0; }
 void CRuleTable::LoadTable(ResRef& r) { return (this->*CRuleTable_LoadRes)(r); }
 IECString& CRuleTable::GetValue(IECString& sColName, IECString& sRowName) { return (this->*CRuleTable_GetValue_2)(sColName, sRowName); }
 bool CRuleTable::FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders) { return (this->*CRuleTable_FindString)(s, ppos, bCheckHeaders); }
 void CRuleTable::UnloadRes() { return (this->*CRuleTable_UnloadRes)(); }
+IECString CRuleTable::GetDefaultValue() { return (this->*CRuleTable_GetDefaultValue)(); }
 IECString& CRuleTable::GetValue(POINT& ptColRow) { return (this->*CRuleTable_GetValue_1)(ptColRow); }
 
 CRuleTable::~CRuleTable() { //as 0x43C420 except for ~CString()
@@ -101,6 +104,8 @@ char (CRuleTables::*CRuleTables_GetMageSchool)(short) =
 	SetFP(static_cast<char (CRuleTables::*)(short)>											(&CRuleTables::GetMageSchool),					0x639D4A);
 bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, STRREF*, short) =
 	SetFP(static_cast<bool (CRuleTables::*)(STRREF*, STRREF*, short)>						(&CRuleTables::GetContingencyConditionTexts),	0x639E94);
+CRuleTable& (CRuleTables::*CRuleTables_GetClassAbilityTable)(unsigned char, unsigned int) =
+	SetFP(static_cast<CRuleTable& (CRuleTables::*)(unsigned char, unsigned int)>			(&CRuleTables::GetClassAbilityTable),			0x63A81C);
 bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short) =
 	SetFP(static_cast<bool (CRuleTables::*)(STRREF*, STRREF*, short)>						(&CRuleTables::GetContingencyTargetTexts),		0x639FD5);
 ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char) =
@@ -127,6 +132,7 @@ int CRuleTables::GetIntModMaxSpellsPerLevel(CDerivedStats& cds) { return (this->
 char CRuleTables::GetMageSchool(short wKitLow) { return (this->*CRuleTables_GetMageSchool)(wKitLow); }
 bool CRuleTables::GetContingencyConditionTexts(STRREF* pStrref, STRREF* pDescription, short wIndex) { return (this->*CRuleTables_GetContingencyConditionTexts)(pStrref, pDescription, wIndex); }
 bool CRuleTables::GetContingencyTargetTexts(STRREF* pStrref, STRREF* pDescription, short wIndex) { return (this->*CRuleTables_GetContingencyTargetTexts)(pStrref, pDescription, wIndex); }
+CRuleTable& CRuleTables::GetClassAbilityTable(unsigned char cClass, unsigned int dwKit) { return (this->*CRuleTables_GetClassAbilityTable)(cClass, dwKit); }
 ResRef CRuleTables::GetMageSpellRefAutoPick(char nSpellLevel, char nIndex) { return (this->*CRuleTables_GetMageSpellRefAutoPick)(nSpellLevel, nIndex); }
 
 //CMoveAreasList

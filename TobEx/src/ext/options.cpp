@@ -14,6 +14,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bActionAddKitFix = FALSE;
 	bActionEquipRangedFix = FALSE;
 	bActionExpandedActions = FALSE;
+	bActionJoinPartyFix = FALSE;
 
 	bArenasEnable = FALSE;
 
@@ -156,6 +157,7 @@ void CGameOptionsEx::Init() {
 	bActionAddKitFix = GetCoreIniValue("Action", "AddKit Actions Fix");
 	bActionEquipRangedFix = GetCoreIniValue("Action", "EquipRanged Action Fix");
 	bActionExpandedActions = GetCoreIniValue("Action", "Expanded Actions");
+	bActionJoinPartyFix = GetCoreIniValue("Action", "JoinParty Action Class Ability Refresh Fix");
 
 	bArenasEnable = GetCoreIniValue("Arenas", "Enable Arenas Game Type");
 

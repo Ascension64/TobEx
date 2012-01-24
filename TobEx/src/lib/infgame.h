@@ -54,6 +54,7 @@ struct CRuleTable { //Size 24h
 	IECString& GetValue(IECString& sColName, IECString& sRowName);
 	bool FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders);
 	void UnloadRes();
+	IECString GetDefaultValue();
 	IECString& GetValue(POINT& ptColRow);
 
 	//custom
@@ -74,6 +75,7 @@ extern void (CRuleTable::*CRuleTable_LoadRes)(ResRef&);
 extern IECString& (CRuleTable::*CRuleTable_GetValue_2)(IECString&, IECString&);
 extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL);
 extern void (CRuleTable::*CRuleTable_UnloadRes)();
+extern IECString (CRuleTable::*CRuleTable_GetDefaultValue)();
 extern IECString& (CRuleTable::*CRuleTable_GetValue_1)(POINT&);
 
 struct IdsEntry { //Size Ch
@@ -104,6 +106,7 @@ struct CRuleTables { //Size 1DB0h
 	char GetMageSchool(short wKitLow);
 	bool GetContingencyConditionTexts(STRREF* pStrref, STRREF* pDescription, short wIndex);
 	bool GetContingencyTargetTexts(STRREF* pStrref, STRREF* pDescription, short wIndex);
+	CRuleTable& GetClassAbilityTable(unsigned char cClass, unsigned int dwKit);
 	ResRef GetMageSpellRefAutoPick(char nSpellLevel, char nIndex);
 
 	CRuleTable RMODCHR; //0h
@@ -304,6 +307,7 @@ extern int (CRuleTables::*CRuleTables_GetIntModMaxSpellsPerLevel)(CDerivedStats&
 extern char (CRuleTables::*CRuleTables_GetMageSchool)(short);
 extern bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, STRREF*, short);
 extern bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short);
+extern CRuleTable& (CRuleTables::*CRuleTables_GetClassAbilityTable)(unsigned char, unsigned int);
 extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
 
 struct MoveAreasElement { //Size 1Ah

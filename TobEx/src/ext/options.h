@@ -9,6 +9,7 @@ struct CGameOptionsEx {
 	BOOL bActionAddKitFix;
 	BOOL bActionEquipRangedFix;
 	BOOL bActionExpandedActions;
+	BOOL bActionJoinPartyFix;
 
 	BOOL bArenasEnable;
 	

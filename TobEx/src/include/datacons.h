@@ -5,6 +5,10 @@
 #define PIXELS_PER_SEARCHMAP_PT_X	16
 #define PIXELS_PER_SEARCHMAP_PT_Y	12
 
+//Creature flags
+#define CREFLAG_FALLEN_PALADIN	0x0200
+#define CREFLAG_FALLEN_RANGER	0x0400
+
 //Creature item flags
 #define CREITEM_IDENTIFIED		0x1
 #define CREITEM_UNSTEALABLE		0x2

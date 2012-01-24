@@ -78,6 +78,10 @@ BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellMage)(ResRef&, int) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(ResRef&, int)>				(&CCreatureObject::AddKnownSpellMage),		0x8CC524);
 BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellInnate)(ResRef&, int) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(ResRef&, int)>				(&CCreatureObject::AddKnownSpellInnate),	0x8CC554);
+void (CCreatureObject::*CCreatureObject_ApplyClassAbilities)(CDerivedStats&, BOOL) =
+	SetFP(static_cast<void (CCreatureObject::*)(CDerivedStats&, BOOL)>		(&CCreatureObject::ApplyClassAbilities),	0x8D22D8);
+void (CCreatureObject::*CCreatureObject_RemoveClassAbilities)(CDerivedStats&) =
+	SetFP(static_cast<void (CCreatureObject::*)(CDerivedStats&)>			(&CCreatureObject::RemoveClassAbilities),	0x8D2E5F);
 IECString& (CCreatureObject::*CCreatureObject_GetLongName)() =
 	SetFP(static_cast<IECString& (CCreatureObject::*)()>					(&CCreatureObject::GetLongName),			0x8D49D9);
 STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)() =
@@ -144,6 +148,10 @@ CreFileKnownSpell& CCreatureObject::GetKnownSpellInnate(int nLevel, int nIndex)	
 CreFileMemSpell& CCreatureObject::GetMemSpellPriest(int nLevel, int nIndex)		{ return (this->*CCreatureObject_GetMemSpellPriest)(nLevel, nIndex); }
 CreFileMemSpell& CCreatureObject::GetMemSpellMage(int nLevel, int nIndex)		{ return (this->*CCreatureObject_GetMemSpellMage)(nLevel, nIndex); }
 CreFileMemSpell& CCreatureObject::GetMemSpellInnate(int nLevel, int nIndex)		{ return (this->*CCreatureObject_GetMemSpellInnate)(nLevel, nIndex); }
+void CCreatureObject::ApplyClassAbilities(CDerivedStats& cdsOld, BOOL bPrintMsgForSpecAbil)
+	{ return (this->*CCreatureObject_ApplyClassAbilities)(cdsOld, bPrintMsgForSpecAbil); }
+void CCreatureObject::RemoveClassAbilities(CDerivedStats& cdsTarget)
+	{ return (this->*CCreatureObject_RemoveClassAbilities)(cdsTarget); }
 BOOL CCreatureObject::AddMemSpellPriest(int nLevel, int nIndex, int* pIndex)	{ return (this->*CCreatureObject_AddMemSpellPriest)(nLevel, nIndex, pIndex); }
 BOOL CCreatureObject::AddMemSpellMage(int nLevel, int nIndex, int* pIndex)		{ return (this->*CCreatureObject_AddMemSpellMage)(nLevel, nIndex, pIndex); }
 BOOL CCreatureObject::AddMemSpellInnate(int nLevel, int nIndex, int* pIndex)	{ return (this->*CCreatureObject_AddMemSpellInnate)(nLevel, nIndex, pIndex); }

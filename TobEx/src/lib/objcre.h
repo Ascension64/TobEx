@@ -141,6 +141,8 @@ public:
 	BOOL AddKnownSpellPriest(ResRef& name, int nLevel);
 	BOOL AddKnownSpellMage(ResRef& name, int nLevel);
 	BOOL AddKnownSpellInnate(ResRef& name, int nLevel);
+	void ApplyClassAbilities(CDerivedStats& cdsOld, BOOL bPrintMsgForSpecAbil);
+	void RemoveClassAbilities(CDerivedStats& cdsTarget);
 	IECString& GetLongName();
 	STRREF GetLongNameStrRef();
 	void SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bState);
@@ -450,8 +452,8 @@ public:
 	char nQuickSlotSelected; //3746h, copied from af6h
 	char nQuickAbilitySelected; //3747h, copied from af8h
 	CQuickSlot m_qsSpellCurrent; //u3748h
-	ResRef rDialog; //3778h
-	ResRef rDialog2; //3780h
+	ResRef rDialog; //3778h, main dialog
+	ResRef rDialogInteract; //3780h, interact dialog
 	bool u3788;
 	char u3789; //padding?
 	CStrRef soundset[100]; //378ah
@@ -609,6 +611,8 @@ extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*
 extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellPriest)(ResRef&, int);
 extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellMage)(ResRef&, int);
 extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellInnate)(ResRef&, int);
+extern void (CCreatureObject::*CCreatureObject_ApplyClassAbilities)(CDerivedStats& cdsOld, BOOL bPrintMsgForSpecAbil);
+extern void (CCreatureObject::*CCreatureObject_RemoveClassAbilities)(CDerivedStats& cdsTarget);
 extern IECString& (CCreatureObject::*CCreatureObject_GetLongName)();
 extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
 extern void (CCreatureObject::*CCreatureObject_SetSpellMemorizedState)(ResSplContainer&, BOOL);

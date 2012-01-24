@@ -120,6 +120,14 @@ char (CDerivedStats::*CDerivedStats_GetSubclassLevel)(char, char) =
 	SetFP(static_cast<char (CDerivedStats::*)(char, char)>					(&CDerivedStats::GetSubclassLevel),			0x473F40);
 short (CDerivedStats::*CDerivedStats_GetMeanLevel)(char nClass) =
 	SetFP(static_cast<short (CDerivedStats::*)(char)>						(&CDerivedStats::GetMeanLevel),				0x4740A2);
+unsigned char (CDerivedStats::*CDerivedStats_GetFighterClassLevel)(unsigned char) =
+	SetFP(static_cast<unsigned char (CDerivedStats::*)(unsigned char)>		(&CDerivedStats::GetFighterClassLevel),		0x474805);
+unsigned char (CDerivedStats::*CDerivedStats_GetMageClassLevel)(unsigned char) =
+	SetFP(static_cast<unsigned char (CDerivedStats::*)(unsigned char)>		(&CDerivedStats::GetMageClassLevel),		0x4748AE);
+unsigned char (CDerivedStats::*CDerivedStats_GetThiefClassLevel)(unsigned char) =
+	SetFP(static_cast<unsigned char (CDerivedStats::*)(unsigned char)>		(&CDerivedStats::GetThiefClassLevel),		0x47496D);
+unsigned char (CDerivedStats::*CDerivedStats_GetClericClassLevel)(unsigned char) =
+	SetFP(static_cast<unsigned char (CDerivedStats::*)(unsigned char)>		(&CDerivedStats::GetClericClassLevel),		0x4749F9);
 void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate**, int*) =
 	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate**, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
 void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int) =
@@ -146,6 +154,10 @@ void CDerivedStats::LimitStats()												{ return (this->*CDerivedStats_Limit
 int CDerivedStats::GetStat(short nOpcode)										{ return (this->*CDerivedStats_GetStat)(nOpcode); }
 char CDerivedStats::GetSubclassLevel(char nClass, char nSubclass)				{ return (this->*CDerivedStats_GetSubclassLevel)(nClass, nSubclass); }
 short CDerivedStats::GetMeanLevel(char nClass)									{ return (this->*CDerivedStats_GetMeanLevel)(nClass); }
+unsigned char CDerivedStats::GetFighterClassLevel(unsigned char cClass)			{ return (this->*CDerivedStats_GetFighterClassLevel)(cClass); }
+unsigned char CDerivedStats::GetMageClassLevel(unsigned char cClass)			{ return (this->*CDerivedStats_GetMageClassLevel)(cClass); }
+unsigned char CDerivedStats::GetThiefClassLevel(unsigned char cClass)			{ return (this->*CDerivedStats_GetThiefClassLevel)(cClass); }
+unsigned char CDerivedStats::GetClericClassLevel(unsigned char cClass)			{ return (this->*CDerivedStats_GetClericClassLevel)(cClass); }
 void CDerivedStats::MarshalTemplate(CDerivedStatsTemplate** ppcdst, int* pnSize){ return (this->*CDerivedStats_MarshalTemplate)(ppcdst, pnSize); }
 void CDerivedStats::UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize)	{ return (this->*CDerivedStats_UnmarshalTemplate)(cds, nSize); }
 char CDerivedStats::GetEffectiveClericLevel(unsigned char nClass)				{ return (this->*CDerivedStats_GetEffectiveClericLevel)(nClass); }

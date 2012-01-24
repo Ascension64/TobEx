@@ -1,4 +1,4 @@
-//1290 This file contains descriptions for all the hack options found in TobEx .ini files
+//1310 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -57,6 +57,13 @@ Limitations: Variables become set asynchronously to the order in which the actio
 355 DialogueSG(S:Name*,I:Num*)
 Sets the global variable 'Name' to 'Num' immediately instead of being added through the dialogue owner's action queue. This allows variables to be set instantaneously and checked immediately afterwards in the same dialogue. ActionOverride() is supported. If used outside dialogue, this action behaves exactly as SG().
 Limitations: Variables become set asynchronously to the order in which the action is present on the script block. This can cause issues when an action is purposely sandwiched between two modifications of the same variable.
+
+Options:
+-0: disabled
+-1: enabled
+
+----1300 JoinParty Action Class Ability Refresh Fix [F]
+Fixes an exploit whereby the JoinParty() action restores all class abilities, allowing players to re-use class abilities over and over again
 
 Options:
 -0: disabled

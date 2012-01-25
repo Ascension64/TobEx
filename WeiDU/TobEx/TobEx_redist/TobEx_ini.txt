@@ -1,4 +1,4 @@
-//1310 This file contains descriptions for all the hack options found in TobEx .ini files
+//1460 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -417,6 +417,14 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1310 Charisma Mod Fix [F]
+Fixes a bug so that a net negative charisma value will limit to 0 rather than wrap to 25
+This removes an exploit involving the Rod of Terror and the Ring of Human Influence
+
+Options:
+-0: disabled
+-1: enabled
+
 -----130 Configurable Backstab Every Hit [C, M]
 (Incompatible with tob_hacks)
 Modifies the backstab every hit opcode parameter 2 to configure whether STATE_INVISIBLE and position matters in a backstab
@@ -482,6 +490,13 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1320 Constitution Mod Fix [F]
+Fixes a bug so that a net negative constitution value will limit to 0 rather than wrap to 25
+
+Options:
+-0: disabled
+-1: enabled
+
 -----1020 Container Use EFF File Fix [F]
 Fixes memory deallocation bug for use EFF file opcode on containers and doors
 
@@ -531,7 +546,8 @@ Options:
 -0: disabled
 -1: enabled
 
------450 Dexterity Mod [M, X]
+-----450 Dexterity Mod [F, M, X]
+Fixes a bug so that a net negative dexterity value will limit to 0 rather than wrap to 25
 Adds the Icewind Dale Type 3 Cat's Grace Spell to the dexterity modifier effect opcode
 
 #15 (0x00F)  Stat: Dexterity Modifier [15]
@@ -595,9 +611,37 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1360 Fatigue Mod Fix [F]
+Fixes a bug so that a net negative fatigue limit value will limit to 0 rather than wrap to 100
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1440 Find Traps Mod Fix [F]
+Fixes a bug so that an out of bounds find traps skill will limit to 0 or 255 rather than wrap around
+
+Options:
+-0: disabled
+-1: enabled
+
 -----420 Forbid Item Type Fix [C, F]
 (Identical to tob_hacks)
 Fixes an engine bug that caused the forbidden item type information to be placed in an unused list whenever parameter 2 was non-zero
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1330 Intelligence Mod Fix [F]
+Fixes a bug so that a net negative intelligence value will limit to 0 rather than wrap to 25
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1370 Intoxication Mod Fix [F]
+Fixes a bug so that a net negative intoxication value will limit to 0 rather than wrap to 100
 
 Options:
 -0: disabled
@@ -632,6 +676,20 @@ Bit 4: If the spell is already learnt, no experience is given (excludes inventor
 Bit 5: Learning the spell obeys mage school exclusions (excludes inventory screen)
 Bit 6: The spell cannot be learnt by sorcerer class (excludes inventory screen)
 Bit 7: Learning fails if the target has already learnt the maximum number of spells as per INTMOD.2DA for the spell's level (excludes inventory screen)
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1380 Level Mod Fix [F]
+Fixes a bug so that a net negative level will limit to 0 rather than wrap to 100
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1340 Lore Mod Fix [F]
+Fixes a bug so that a net negative lore value will limit to 0 rather than wrap to 100
 
 Options:
 -0: disabled
@@ -686,8 +744,29 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1410 Morale Break Mod Fix [F]
+Fixes a bug so that an out of bounds morale break value will limit to 0 or 255 rather than wrap around
+
+Options:
+-0: disabled
+-1: enabled
+
 -----870 No Spell Interruption On Zero Damage [T]
 Modifies the damage opcode such that if damage is reduced to zero (with normal damage behaviour; wParam2Low = 0), spellcasting and casting animations are not interrupted
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1450 Open Locks Mod Fix [F]
+Fixes a bug so that an out of bounds open locks skill will limit to 0 or 255 rather than wrap around
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1430 Pick Pockets Mod Fix [F]
+Fixes a bug so that an out of bounds pick pockets skill will limit to 0 or 255 rather than wrap around
 
 Options:
 -0: disabled
@@ -779,7 +858,15 @@ Options:
 -0: disabled
 -1: enabled
 
------1130 Save Vs Breath Mod [M]
+-----1400 Reputation Mod Fix [F]
+Fixes a bug so that an out of bounds reputation value will limit to 0 or 255 rather than wrap around
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1130 Save Vs Breath Mod [F, M]
+Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
 Adds instantaneous sum type (3)
 
 Description
@@ -799,7 +886,8 @@ Known values for 'Type' are:
 
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
------1140 Save Vs Death Mod [M]
+-----1140 Save Vs Death Mod [F, M]
+Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
 Adds instantaneous sum type (3)
 
 Description
@@ -819,7 +907,8 @@ Known values for 'Type' are:
 
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
------1150 Save Vs Poly Mod [M]
+-----1150 Save Vs Poly Mod [F, M]
+Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
 Adds instantaneous sum type (3)
 
 Description
@@ -839,7 +928,8 @@ Known values for 'Type' are:
 
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
------1160 Save Vs Spells Mod [M]
+-----1160 Save Vs Spells Mod [F, M]
+Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
 Adds instantaneous sum type (3)
 
 Description
@@ -859,7 +949,8 @@ Known values for 'Type' are:
 
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
------1170 Save Vs Wands Mod [M]
+-----1170 Save Vs Wands Mod [F, M]
+Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
 Adds instantaneous sum type (3)
 
 Description
@@ -879,7 +970,22 @@ Known values for 'Type' are:
 
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
+-----1460 Stealth Mod Fix [F]
+Fixes a bug so that an out of bounds move silently skill will limit to 0 or 255 rather than wrap around
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1390 Strength Extra Mod Fix [F]
+Fixes a bug so that a net negative strength extra value will limit to 0 rather than wrap to 100
+
+Options:
+-0: disabled
+-1: enabled
+
 -----480 Strength Mod [M, X]
+Fixes a bug so that a net negative strength value will limit to 0 rather than wrap to 25
 Alters the strength modifier effect opcode to work similar to Icewind Dale behaviour
 
 Description
@@ -908,6 +1014,21 @@ Options:
 -----700 Use Caster Level On Mirror Image [C, M, T]
 (Identical to tob_hacks, SCS, SCSII, Spell Revisions)
 Modifies the mirror image opcode to keeps caster level so dispel formulae will work on it
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1420 Tracking Mod Fix [F]
+Fixes a bug so that an out of bounds tracking skill will limit to 0 or 255 rather than wrap around
+
+Options:
+-0: disabled
+-1: enabled
+
+
+-----1350 Wisdom Mod Fix [F]
+Fixes a bug so that a net negative wisdom value will limit to 0 rather than wrap to 25
 
 Options:
 -0: disabled

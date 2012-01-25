@@ -89,6 +89,12 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CEffectAttacksPerRoundMod_ApplyEffect, DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect);
 	}
 
+	if (pGameOptionsEx->bEffCharismaModFix)
+		DetourMemberFunction(Tramp_CEffectCharismaMod_ApplyEffect, DETOUR_CEffectCharismaMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffConstitutionModFix)
+		DetourMemberFunction(Tramp_CEffectConstitutionMod_ApplyEffect, DETOUR_CEffectConstitutionMod::DETOUR_ApplyEffect);
+
 	if (pGameOptionsEx->bEffBlindnessFix || pGameOptionsEx->bEffBlindnessAsSpellDesc)
 		DetourMemberFunction(Tramp_CEffectBlindness_ApplyEffect, DETOUR_CEffectBlindness::DETOUR_ApplyEffect);
 
@@ -119,8 +125,26 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffDispelMagicalItemConfig)
 		DetourMemberFunction(Tramp_CEffectDispel_ApplyEffect, DETOUR_CEffectDispel::DETOUR_ApplyEffect);
 
+	if (pGameOptionsEx->bEffFatigueModFix)
+		DetourMemberFunction(Tramp_CEffectFatigueMod_ApplyEffect, DETOUR_CEffectFatigueMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffFindTrapsModFix)
+		DetourMemberFunction(Tramp_CEffectFindTrapsMod_ApplyEffect, DETOUR_CEffectFindTrapsMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffIntelligenceModFix)
+		DetourMemberFunction(Tramp_CEffectIntelligenceMod_ApplyEffect, DETOUR_CEffectIntelligenceMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffIntoxicationModFix)
+		DetourMemberFunction(Tramp_CEffectIntoxicationMod_ApplyEffect, DETOUR_CEffectIntoxicationMod::DETOUR_ApplyEffect);
+
 	if (pGameOptionsEx->bEffLearnSpellMod)
 		DetourMemberFunction(Tramp_CEffectLearnSpell_ApplyEffect, DETOUR_CEffectLearnSpell::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffLevelModFix)
+		DetourMemberFunction(Tramp_CEffectLevelMod_ApplyEffect, DETOUR_CEffectLevelMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffLoreModFix)
+		DetourMemberFunction(Tramp_CEffectLoreMod_ApplyEffect, DETOUR_CEffectLoreMod::DETOUR_ApplyEffect);
 
 	if (pGameOptionsEx->bEffLuckMod)
 		DetourMemberFunction(Tramp_CEffectLuckMod_ApplyEffect, DETOUR_CEffectLuckMod::DETOUR_ApplyEffect);
@@ -128,8 +152,17 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffMageMemSpellMod)
 		DetourMemberFunction(Tramp_CEffectMageMemSpellMod_ApplyEffect, DETOUR_CEffectMageMemSpellMod::DETOUR_ApplyEffect);
 
-	if (pGameOptionsEx->bEffMagicResistFix)
+	if (pGameOptionsEx->bEffMagicResistModFix)
 		DetourMemberFunction(Tramp_CEffectMagicResistMod_ApplyEffect, DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffMoraleBreakModFix)
+		DetourMemberFunction(Tramp_CEffectMoraleBreakMod_ApplyEffect, DETOUR_CEffectMoraleBreakMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffOpenLocksModFix)
+		DetourMemberFunction(Tramp_CEffectOpenLocksMod_ApplyEffect, DETOUR_CEffectOpenLocksMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffPickPocketsModFix)
+		DetourMemberFunction(Tramp_CEffectPickPocketsMod_ApplyEffect, DETOUR_CEffectPickPocketsMod::DETOUR_ApplyEffect);
 
 	if (pGameOptionsEx->bEffPoisonFix)
 		DetourMemberFunction(Tramp_CEffectPoison_ApplyEffect, DETOUR_CEffectPoison::DETOUR_ApplyEffect);
@@ -153,6 +186,9 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CEffectRepeatingEff_ApplyEffect, DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect);
 	}
 
+	if (pGameOptionsEx->bEffReputationModFix)
+		DetourMemberFunction(Tramp_CEffectReputationMod_ApplyEffect, DETOUR_CEffectReputationMod::DETOUR_ApplyEffect);
+
 	if (pGameOptionsEx->bEffSaveVsBreathMod)
 		DetourMemberFunction(Tramp_CEffectSaveVsBreathMod_ApplyEffect, DETOUR_CEffectSaveVsBreathMod::DETOUR_ApplyEffect);
 
@@ -168,8 +204,20 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffSaveVsWandsMod)
 		DetourMemberFunction(Tramp_CEffectSaveVsWandsMod_ApplyEffect, DETOUR_CEffectSaveVsWandsMod::DETOUR_ApplyEffect);
 
+	if (pGameOptionsEx->bEffStealthModFix)
+		DetourMemberFunction(Tramp_CEffectStealthMod_ApplyEffect, DETOUR_CEffectStealthMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffStrengthExModFix)
+		DetourMemberFunction(Tramp_CEffectStrengthExMod_ApplyEffect, DETOUR_CEffectStrengthExMod::DETOUR_ApplyEffect);
+
 	if (pGameOptionsEx->bEffStrengthMod)
 		DetourMemberFunction(Tramp_CEffectStrengthMod_ApplyEffect, DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffTrackingModFix)
+		DetourMemberFunction(Tramp_CEffectTrackingMod_ApplyEffect, DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect);
+
+	if (pGameOptionsEx->bEffWisdomModFix)
+		DetourMemberFunction(Tramp_CEffectWisdomMod_ApplyEffect, DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect);
 
 	DetourMemberFunction(Tramp_CCreatureObject_ActionPickPockets, DETOUR_CCreatureObject::DETOUR_ActionPickPockets);
 

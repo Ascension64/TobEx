@@ -20,10 +20,18 @@
 
 BOOL (CEffectAttacksPerRoundMod::*Tramp_CEffectAttacksPerRoundMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectAttacksPerRoundMod::*)(CCreatureObject&)>(&CEffectAttacksPerRoundMod::ApplyEffect),	0x5030F6);
+BOOL (CEffectCharismaMod::*Tramp_CEffectCharismaMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectCharismaMod::*)(CCreatureObject&)>		(&CEffectCharismaMod::ApplyEffect),			0x5046EC);
+BOOL (CEffectConstitutionMod::*Tramp_CEffectConstitutionMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectConstitutionMod::*)(CCreatureObject&)>	(&CEffectConstitutionMod::ApplyEffect),		0x50515F);
 BOOL (CEffectDamage::*Tramp_CEffectDamage_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDamage::*)(CCreatureObject&)>			(&CEffectDamage::ApplyEffect),				0x505570);
 BOOL (CEffectDexterityMod::*Tramp_CEffectDexterityMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDexterityMod::*)(CCreatureObject&)>		(&CEffectDexterityMod::ApplyEffect),		0x510DCF);
+BOOL (CEffectIntelligenceMod::*Tramp_CEffectIntelligenceMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectIntelligenceMod::*)(CCreatureObject&)>	(&CEffectIntelligenceMod::ApplyEffect),		0x5121DB);
+BOOL (CEffectLoreMod::*Tramp_CEffectLoreMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectLoreMod::*)(CCreatureObject&)>			(&CEffectLoreMod::ApplyEffect),				0x512733);
 BOOL (CEffectLuckMod::*Tramp_CEffectLuckMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectLuckMod::*)(CCreatureObject&)>			(&CEffectLuckMod::ApplyEffect),				0x5129F3);
 BOOL (CEffectPoison::*Tramp_CEffectPoison_ApplyEffect)(CCreatureObject&) =
@@ -42,16 +50,40 @@ BOOL (CEffectMageMemSpellMod::*Tramp_CEffectMageMemSpellMod_ApplyEffect)(CCreatu
 	SetFP(static_cast<BOOL (CEffectMageMemSpellMod::*)(CCreatureObject&)>	(&CEffectMageMemSpellMod::ApplyEffect),		0x5161AB);
 BOOL (CEffectStrengthMod::*Tramp_CEffectStrengthMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectStrengthMod::*)(CCreatureObject&)>		(&CEffectStrengthMod::ApplyEffect),			0x516673);
+BOOL (CEffectWisdomMod::*Tramp_CEffectWisdomMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectWisdomMod::*)(CCreatureObject&)>			(&CEffectWisdomMod::ApplyEffect),			0x516DF1);
 BOOL (CEffectDispel::*Tramp_CEffectDispel_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDispel::*)(CCreatureObject&)>			(&CEffectDispel::ApplyEffect),				0x5184DA);
+BOOL (CEffectStealthMod::*Tramp_CEffectStealthMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectStealthMod::*)(CCreatureObject&)>		(&CEffectStealthMod::ApplyEffect),			0x51877E);
 BOOL (CEffectPriestMemSpellMod::*Tramp_CEffectPriestMemSpellMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectPriestMemSpellMod::*)(CCreatureObject&)>	(&CEffectPriestMemSpellMod::ApplyEffect),	0x518AA3);
 BOOL (CEffectBlindness::*Tramp_CEffectBlindness_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectBlindness::*)(CCreatureObject&)>			(&CEffectBlindness::ApplyEffect),			0x51ADF9);
 BOOL (CEffectDisease::*Tramp_CEffectDisease_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectDisease::*)(CCreatureObject&)>			(&CEffectDisease::ApplyEffect),				0x51B1FB);
+BOOL (CEffectOpenLocksMod::*Tramp_CEffectOpenLocksMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectOpenLocksMod::*)(CCreatureObject&)>		(&CEffectOpenLocksMod::ApplyEffect),		0x51D1B8);
+BOOL (CEffectFindTrapsMod::*Tramp_CEffectFindTrapsMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectFindTrapsMod::*)(CCreatureObject&)>		(&CEffectFindTrapsMod::ApplyEffect),		0x51D420);
+BOOL (CEffectPickPocketsMod::*Tramp_CEffectPickPocketsMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectPickPocketsMod::*)(CCreatureObject&)>	(&CEffectPickPocketsMod::ApplyEffect),		0x51D688);
+BOOL (CEffectFatigueMod::*Tramp_CEffectFatigueMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectFatigueMod::*)(CCreatureObject&)>		(&CEffectFatigueMod::ApplyEffect),			0x51D8F0);
+BOOL (CEffectIntoxicationMod::*Tramp_CEffectIntoxicationMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectIntoxicationMod::*)(CCreatureObject&)>	(&CEffectIntoxicationMod::ApplyEffect),		0x51DBB0);
+BOOL (CEffectTrackingMod::*Tramp_CEffectTrackingMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectTrackingMod::*)(CCreatureObject&)>		(&CEffectTrackingMod::ApplyEffect),			0x51DE70);
+BOOL (CEffectLevelMod::*Tramp_CEffectLevelMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectLevelMod::*)(CCreatureObject&)>			(&CEffectLevelMod::ApplyEffect),			0x51E36C);
+BOOL (CEffectStrengthExMod::*Tramp_CEffectStrengthExMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectStrengthExMod::*)(CCreatureObject&)>		(&CEffectStrengthExMod::ApplyEffect),		0x51E0AC);
 BOOL (CEffectRegeneration::*Tramp_CEffectRegeneration_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectRegeneration::*)(CCreatureObject&)>		(&CEffectRegeneration::ApplyEffect),		0x51C615);
+BOOL (CEffectMoraleBreakMod::*Tramp_CEffectMoraleBreakMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectMoraleBreakMod::*)(CCreatureObject&)>	(&CEffectMoraleBreakMod::ApplyEffect),		0x51F080);
+BOOL (CEffectReputationMod::*Tramp_CEffectReputationMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectReputationMod::*)(CCreatureObject&)>		(&CEffectReputationMod::ApplyEffect),		0x51F4C1);
 BOOL (CEffectAid::*Tramp_CEffectAid_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectAid::*)(CCreatureObject&)>				(&CEffectAid::ApplyEffect),					0x52720A);
 BOOL (CEffectBless::*Tramp_CEffectBless_ApplyEffect)(CCreatureObject&) =
@@ -154,6 +186,118 @@ BOOL DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(CCreatureObject& creTa
 		break;
 	}
 
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectCharismaMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectCharismaMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.charisma += effect.nParam1;
+			creTarget.m_BaseStats.charisma = min(creTarget.m_BaseStats.charisma, 25);
+			creTarget.m_BaseStats.charisma = max(creTarget.m_BaseStats.charisma, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.charisma += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.charisma = effect.nParam1;
+			creTarget.m_BaseStats.charisma = min(creTarget.m_BaseStats.charisma, 25);
+			creTarget.m_BaseStats.charisma = max(creTarget.m_BaseStats.charisma, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.charisma = effect.nParam1;
+			creTarget.cdsCurrent.charisma = min(creTarget.cdsCurrent.charisma, 25);
+			creTarget.cdsCurrent.charisma = max(creTarget.cdsCurrent.charisma, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.charisma = creTarget.m_BaseStats.charisma * effect.nParam1 / 100;
+			creTarget.m_BaseStats.charisma = min(creTarget.m_BaseStats.charisma, 25);
+			creTarget.m_BaseStats.charisma = max(creTarget.m_BaseStats.charisma, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.charisma = creTarget.cdsCurrent.charisma * effect.nParam1 / 100;
+			creTarget.cdsCurrent.charisma = min(creTarget.cdsCurrent.charisma, 25);
+			creTarget.cdsCurrent.charisma = max(creTarget.cdsCurrent.charisma, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectCharisma::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectConstitutionMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectConstitutionMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.constitution += effect.nParam1;
+			creTarget.m_BaseStats.constitution = min(creTarget.m_BaseStats.constitution, 25);
+			creTarget.m_BaseStats.constitution = max(creTarget.m_BaseStats.constitution, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.constitution += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.constitution = effect.nParam1;
+			creTarget.m_BaseStats.constitution = min(creTarget.m_BaseStats.constitution, 25);
+			creTarget.m_BaseStats.constitution = max(creTarget.m_BaseStats.constitution, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.constitution = effect.nParam1;
+			creTarget.cdsCurrent.constitution = min(creTarget.cdsCurrent.constitution, 25);
+			creTarget.cdsCurrent.constitution = max(creTarget.cdsCurrent.constitution, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.constitution = creTarget.m_BaseStats.constitution * effect.nParam1 / 100;
+			creTarget.m_BaseStats.constitution = min(creTarget.m_BaseStats.constitution, 25);
+			creTarget.m_BaseStats.constitution = max(creTarget.m_BaseStats.constitution, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.constitution = creTarget.cdsCurrent.constitution * effect.nParam1 / 100;
+			creTarget.cdsCurrent.constitution = min(creTarget.cdsCurrent.constitution, 25);
+			creTarget.cdsCurrent.constitution = max(creTarget.cdsCurrent.constitution, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectConstitution::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
 	return TRUE;
 }
 
@@ -737,6 +881,118 @@ BOOL DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	}
 
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectIntelligenceMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectIntelligenceMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.intelligence += effect.nParam1;
+			creTarget.m_BaseStats.intelligence = min(creTarget.m_BaseStats.intelligence, 25);
+			creTarget.m_BaseStats.intelligence = max(creTarget.m_BaseStats.intelligence, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.intelligence += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.intelligence = effect.nParam1;
+			creTarget.m_BaseStats.intelligence = min(creTarget.m_BaseStats.intelligence, 25);
+			creTarget.m_BaseStats.intelligence = max(creTarget.m_BaseStats.intelligence, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.intelligence = effect.nParam1;
+			creTarget.cdsCurrent.intelligence = min(creTarget.cdsCurrent.intelligence, 25);
+			creTarget.cdsCurrent.intelligence = max(creTarget.cdsCurrent.intelligence, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.intelligence = creTarget.m_BaseStats.intelligence * effect.nParam1 / 100;
+			creTarget.m_BaseStats.intelligence = min(creTarget.m_BaseStats.intelligence, 25);
+			creTarget.m_BaseStats.intelligence = max(creTarget.m_BaseStats.intelligence, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.intelligence = creTarget.cdsCurrent.intelligence * effect.nParam1 / 100;
+			creTarget.cdsCurrent.intelligence = min(creTarget.cdsCurrent.intelligence, 25);
+			creTarget.cdsCurrent.intelligence = max(creTarget.cdsCurrent.intelligence, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectIntelligence::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectLoreMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectLoreMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.lore += effect.nParam1;
+			creTarget.m_BaseStats.lore = min(creTarget.m_BaseStats.lore, 100);
+			creTarget.m_BaseStats.lore = max(creTarget.m_BaseStats.lore, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.lore += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.lore = effect.nParam1;
+			creTarget.m_BaseStats.lore = min(creTarget.m_BaseStats.lore, 100);
+			creTarget.m_BaseStats.lore = max(creTarget.m_BaseStats.lore, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.lore = effect.nParam1;
+			creTarget.cdsCurrent.lore = min(creTarget.cdsCurrent.lore, 100);
+			creTarget.cdsCurrent.lore = max(creTarget.cdsCurrent.lore, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.lore = creTarget.m_BaseStats.lore * effect.nParam1 / 100;
+			creTarget.m_BaseStats.lore = min(creTarget.m_BaseStats.lore, 100);
+			creTarget.m_BaseStats.lore = max(creTarget.m_BaseStats.lore, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.lore = creTarget.cdsCurrent.lore * effect.nParam1 / 100;
+			creTarget.cdsCurrent.lore = min(creTarget.cdsCurrent.lore, 100);
+			creTarget.cdsCurrent.lore = max(creTarget.cdsCurrent.lore, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectLore::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
 	return TRUE;
 }
 
@@ -1375,6 +1631,62 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	return TRUE;
 }
 
+BOOL DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.wisdom += effect.nParam1;
+			creTarget.m_BaseStats.wisdom = min(creTarget.m_BaseStats.wisdom, 25);
+			creTarget.m_BaseStats.wisdom = max(creTarget.m_BaseStats.wisdom, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.wisdom += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.wisdom = effect.nParam1;
+			creTarget.m_BaseStats.wisdom = min(creTarget.m_BaseStats.wisdom, 25);
+			creTarget.m_BaseStats.wisdom = max(creTarget.m_BaseStats.wisdom, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.wisdom = effect.nParam1;
+			creTarget.cdsCurrent.wisdom = min(creTarget.cdsCurrent.wisdom, 25);
+			creTarget.cdsCurrent.wisdom = max(creTarget.cdsCurrent.wisdom, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.wisdom = creTarget.m_BaseStats.wisdom * effect.nParam1 / 100;
+			creTarget.m_BaseStats.wisdom = min(creTarget.m_BaseStats.wisdom, 25);
+			creTarget.m_BaseStats.wisdom = max(creTarget.m_BaseStats.wisdom, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.wisdom = creTarget.cdsCurrent.wisdom * effect.nParam1 / 100;
+			creTarget.cdsCurrent.wisdom = min(creTarget.cdsCurrent.wisdom, 25);
+			creTarget.cdsCurrent.wisdom = max(creTarget.cdsCurrent.wisdom, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectWisdom::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
 BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CEffectDispel::DETOUR_ApplyEffect");
 
@@ -1455,6 +1767,73 @@ BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 	return TRUE;
 };
+
+BOOL DETOUR_CEffectStealthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectStealthMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.stealth + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.stealth = 0;
+			} else if (creTarget.m_BaseStats.stealth + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.stealth = 255;
+			} else {
+				creTarget.m_BaseStats.stealth += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else if (effect.nTiming == 9) {
+			creTarget.cdsDiff.moveSilently9 += effect.nParam1;
+			bPurge = FALSE;
+		} else {
+			creTarget.cdsDiff.stealth += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.stealth = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.stealth = effect.nParam1;
+			creTarget.cdsCurrent.stealth = min(creTarget.cdsCurrent.stealth, 255);
+			creTarget.cdsCurrent.stealth = max(creTarget.cdsCurrent.stealth, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.stealth * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.stealth = 0;
+			} else if (creTarget.m_BaseStats.stealth * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.stealth = 255;
+			} else {
+				creTarget.m_BaseStats.stealth = creTarget.m_BaseStats.stealth * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.stealth = creTarget.cdsCurrent.stealth * effect.nParam1 / 100;
+			creTarget.cdsCurrent.stealth = min(creTarget.cdsCurrent.stealth, 255);
+			creTarget.cdsCurrent.stealth = max(creTarget.cdsCurrent.stealth, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectStealthMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
 
 BOOL DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CEffectPriestMemSpellMod::DETOUR_ApplyEffect");
@@ -1630,6 +2009,495 @@ BOOL DETOUR_CEffectDisease::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	return TRUE;
 }
 
+BOOL DETOUR_CEffectOpenLocksMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectOpenLocksMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.lockpicking + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.lockpicking = 0;
+			} else if (creTarget.m_BaseStats.lockpicking + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.lockpicking = 255;
+			} else {
+				creTarget.m_BaseStats.lockpicking += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else if (effect.nTiming == 9) {
+			creTarget.cdsDiff.openLocks9 += effect.nParam1;
+			bPurge = FALSE;
+		} else {
+			creTarget.cdsDiff.lockpicking += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.lockpicking = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.lockpicking = effect.nParam1;
+			creTarget.cdsCurrent.lockpicking = min(creTarget.cdsCurrent.lockpicking, 255);
+			creTarget.cdsCurrent.lockpicking = max(creTarget.cdsCurrent.lockpicking, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.lockpicking * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.lockpicking = 0;
+			} else if (creTarget.m_BaseStats.lockpicking * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.lockpicking = 255;
+			} else {
+				creTarget.m_BaseStats.lockpicking = creTarget.m_BaseStats.lockpicking * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.lockpicking = creTarget.cdsCurrent.lockpicking * effect.nParam1 / 100;
+			creTarget.cdsCurrent.lockpicking = min(creTarget.cdsCurrent.lockpicking, 255);
+			creTarget.cdsCurrent.lockpicking = max(creTarget.cdsCurrent.lockpicking, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectOpenLocksMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectFindTrapsMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectFindTrapsMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.findTraps + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.findTraps = 0;
+			} else if (creTarget.m_BaseStats.findTraps + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.findTraps = 255;
+			} else {
+				creTarget.m_BaseStats.findTraps += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else if (effect.nTiming == 9) {
+			creTarget.cdsDiff.findTraps9 += effect.nParam1;
+			bPurge = FALSE;
+		} else {
+			creTarget.cdsDiff.findTraps += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.findTraps = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.findTraps = effect.nParam1;
+			creTarget.cdsCurrent.findTraps = min(creTarget.cdsCurrent.findTraps, 255);
+			creTarget.cdsCurrent.findTraps = max(creTarget.cdsCurrent.findTraps, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.findTraps * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.findTraps = 0;
+			} else if (creTarget.m_BaseStats.findTraps * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.findTraps = 255;
+			} else {
+				creTarget.m_BaseStats.findTraps = creTarget.m_BaseStats.findTraps * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.findTraps = creTarget.cdsCurrent.findTraps * effect.nParam1 / 100;
+			creTarget.cdsCurrent.findTraps = min(creTarget.cdsCurrent.findTraps, 255);
+			creTarget.cdsCurrent.findTraps = max(creTarget.cdsCurrent.findTraps, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectFindTrapsMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectPickPocketsMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectPickPocketsMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.pickPockets + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.pickPockets = 0;
+			} else if (creTarget.m_BaseStats.pickPockets + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.pickPockets = 255;
+			} else {
+				creTarget.m_BaseStats.pickPockets += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else if (effect.nTiming == 9) {
+			creTarget.cdsDiff.pickPockets9 += effect.nParam1;
+			bPurge = FALSE;
+		} else {
+			creTarget.cdsDiff.pickPockets += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.pickPockets = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.pickPockets = effect.nParam1;
+			creTarget.cdsCurrent.pickPockets = min(creTarget.cdsCurrent.pickPockets, 255);
+			creTarget.cdsCurrent.pickPockets = max(creTarget.cdsCurrent.pickPockets, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.pickPockets * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.pickPockets = 0;
+			} else if (creTarget.m_BaseStats.pickPockets * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.pickPockets = 255;
+			} else {
+				creTarget.m_BaseStats.pickPockets = creTarget.m_BaseStats.pickPockets * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.pickPockets = creTarget.cdsCurrent.pickPockets * effect.nParam1 / 100;
+			creTarget.cdsCurrent.pickPockets = min(creTarget.cdsCurrent.pickPockets, 255);
+			creTarget.cdsCurrent.pickPockets = max(creTarget.cdsCurrent.pickPockets, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectPickPocketsMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectFatigueMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectFatigueMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.fatigueLimit += effect.nParam1;
+			creTarget.m_BaseStats.fatigueLimit = min(creTarget.m_BaseStats.fatigueLimit, 100);
+			creTarget.m_BaseStats.fatigueLimit = max(creTarget.m_BaseStats.fatigueLimit, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.fatigue += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.fatigueLimit = effect.nParam1;
+			creTarget.m_BaseStats.fatigueLimit = min(creTarget.m_BaseStats.fatigueLimit, 100);
+			creTarget.m_BaseStats.fatigueLimit = max(creTarget.m_BaseStats.fatigueLimit, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.fatigue = effect.nParam1;
+			creTarget.cdsCurrent.fatigue = min(creTarget.cdsCurrent.fatigue, 100);
+			creTarget.cdsCurrent.fatigue = max(creTarget.cdsCurrent.fatigue, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.fatigueLimit = creTarget.m_BaseStats.fatigueLimit * effect.nParam1 / 100;
+			creTarget.m_BaseStats.fatigueLimit = min(creTarget.m_BaseStats.fatigueLimit, 100);
+			creTarget.m_BaseStats.fatigueLimit = max(creTarget.m_BaseStats.fatigueLimit, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.fatigue = creTarget.cdsCurrent.fatigue * effect.nParam1 / 100;
+			creTarget.cdsCurrent.fatigue = min(creTarget.cdsCurrent.fatigue, 100);
+			creTarget.cdsCurrent.fatigue = max(creTarget.cdsCurrent.fatigue, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectFatigue::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectIntoxicationMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectIntoxicationMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.intoxication += effect.nParam1;
+			creTarget.m_BaseStats.intoxication = min(creTarget.m_BaseStats.intoxication, 100);
+			creTarget.m_BaseStats.intoxication = max(creTarget.m_BaseStats.intoxication, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.intoxication += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.intoxication = effect.nParam1;
+			creTarget.m_BaseStats.intoxication = min(creTarget.m_BaseStats.intoxication, 100);
+			creTarget.m_BaseStats.intoxication = max(creTarget.m_BaseStats.intoxication, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.intoxication = effect.nParam1;
+			creTarget.cdsCurrent.intoxication = min(creTarget.cdsCurrent.intoxication, 100);
+			creTarget.cdsCurrent.intoxication = max(creTarget.cdsCurrent.intoxication, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.intoxication = creTarget.m_BaseStats.intoxication * effect.nParam1 / 100;
+			creTarget.m_BaseStats.intoxication = min(creTarget.m_BaseStats.intoxication, 100);
+			creTarget.m_BaseStats.intoxication = max(creTarget.m_BaseStats.intoxication, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.intoxication = creTarget.cdsCurrent.intoxication * effect.nParam1 / 100;
+			creTarget.cdsCurrent.intoxication = min(creTarget.cdsCurrent.intoxication, 100);
+			creTarget.cdsCurrent.intoxication = max(creTarget.cdsCurrent.intoxication, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectIntoxication::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.tracking + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.tracking = 0;
+			} else if (creTarget.m_BaseStats.tracking + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.tracking = 255;
+			} else {
+				creTarget.m_BaseStats.tracking += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.tracking += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.tracking = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.tracking = effect.nParam1;
+			creTarget.cdsCurrent.tracking = min(creTarget.cdsCurrent.tracking, 255);
+			creTarget.cdsCurrent.tracking = max(creTarget.cdsCurrent.tracking, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.tracking * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.tracking = 0;
+			} else if (creTarget.m_BaseStats.tracking * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.tracking = 255;
+			} else {
+				creTarget.m_BaseStats.tracking = creTarget.m_BaseStats.tracking * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.tracking = creTarget.cdsCurrent.tracking * effect.nParam1 / 100;
+			creTarget.cdsCurrent.tracking = min(creTarget.cdsCurrent.tracking, 255);
+			creTarget.cdsCurrent.tracking = max(creTarget.cdsCurrent.tracking, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectLevelMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectLevelMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.levelPrimary += effect.nParam1;
+			creTarget.m_BaseStats.levelPrimary = min(creTarget.m_BaseStats.levelPrimary, 100);
+			creTarget.m_BaseStats.levelPrimary = max(creTarget.m_BaseStats.levelPrimary, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.levelPrimary += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.levelPrimary = effect.nParam1;
+			creTarget.m_BaseStats.levelPrimary = min(creTarget.m_BaseStats.levelPrimary, 100);
+			creTarget.m_BaseStats.levelPrimary = max(creTarget.m_BaseStats.levelPrimary, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.levelPrimary = effect.nParam1;
+			creTarget.cdsCurrent.levelPrimary = min(creTarget.cdsCurrent.levelPrimary, 100);
+			creTarget.cdsCurrent.levelPrimary = max(creTarget.cdsCurrent.levelPrimary, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.levelPrimary = creTarget.m_BaseStats.levelPrimary * effect.nParam1 / 100;
+			creTarget.m_BaseStats.levelPrimary = min(creTarget.m_BaseStats.levelPrimary, 100);
+			creTarget.m_BaseStats.levelPrimary = max(creTarget.m_BaseStats.levelPrimary, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.levelPrimary = creTarget.cdsCurrent.levelPrimary * effect.nParam1 / 100;
+			creTarget.cdsCurrent.levelPrimary = min(creTarget.cdsCurrent.levelPrimary, 100);
+			creTarget.cdsCurrent.levelPrimary = max(creTarget.cdsCurrent.levelPrimary, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectLevel::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectStrengthExMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectStrengthExMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.strengthEx += effect.nParam1;
+			creTarget.m_BaseStats.strengthEx = min(creTarget.m_BaseStats.strengthEx, 100);
+			creTarget.m_BaseStats.strengthEx = max(creTarget.m_BaseStats.strengthEx, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.strengthEx += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.strengthEx = effect.nParam1;
+			creTarget.m_BaseStats.strengthEx = min(creTarget.m_BaseStats.strengthEx, 100);
+			creTarget.m_BaseStats.strengthEx = max(creTarget.m_BaseStats.strengthEx, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.strengthEx = effect.nParam1;
+			creTarget.cdsCurrent.strengthEx = min(creTarget.cdsCurrent.strengthEx, 100);
+			creTarget.cdsCurrent.strengthEx = max(creTarget.cdsCurrent.strengthEx, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			creTarget.m_BaseStats.strengthEx = creTarget.m_BaseStats.strengthEx * effect.nParam1 / 100;
+			creTarget.m_BaseStats.strengthEx = min(creTarget.m_BaseStats.strengthEx, 100);
+			creTarget.m_BaseStats.strengthEx = max(creTarget.m_BaseStats.strengthEx, 0);
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.strengthEx = creTarget.cdsCurrent.strengthEx * effect.nParam1 / 100;
+			creTarget.cdsCurrent.strengthEx = min(creTarget.cdsCurrent.strengthEx, 100);
+			creTarget.cdsCurrent.strengthEx = max(creTarget.cdsCurrent.strengthEx, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectStrengthEx::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
 BOOL DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CEffectRegeneration::DETOUR_ApplyEffect");
 
@@ -1692,6 +2560,134 @@ BOOL DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 
 	creTarget.cdsCurrent.m_RepeatingEffs.AddTail(pRepeat);
 
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectMoraleBreakMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectMoraleBreakMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.moraleBreak + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.moraleBreak = 0;
+			} else if (creTarget.m_BaseStats.moraleBreak + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.moraleBreak = 255;
+			} else {
+				creTarget.m_BaseStats.moraleBreak += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.moraleBreak += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.moraleBreak = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.moraleBreak = effect.nParam1;
+			creTarget.cdsCurrent.moraleBreak = min(creTarget.cdsCurrent.moraleBreak, 255);
+			creTarget.cdsCurrent.moraleBreak = max(creTarget.cdsCurrent.moraleBreak, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.moraleBreak * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.moraleBreak = 0;
+			} else if (creTarget.m_BaseStats.moraleBreak * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.moraleBreak = 255;
+			} else {
+				creTarget.m_BaseStats.moraleBreak = creTarget.m_BaseStats.moraleBreak * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.moraleBreak = creTarget.cdsCurrent.moraleBreak * effect.nParam1 / 100;
+			creTarget.cdsCurrent.moraleBreak = min(creTarget.cdsCurrent.moraleBreak, 255);
+			creTarget.cdsCurrent.moraleBreak = max(creTarget.cdsCurrent.moraleBreak, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectMoraleBreakMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
+	return TRUE;
+}
+
+BOOL DETOUR_CEffectReputationMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectReputationMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+	case 0: //sum
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.reputation + effect.nParam1 < 0) {
+				creTarget.m_BaseStats.reputation = 0;
+			} else if (creTarget.m_BaseStats.reputation + effect.nParam1 > 255) {
+				creTarget.m_BaseStats.reputation = 255;
+			} else {
+				creTarget.m_BaseStats.reputation += effect.nParam1;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsDiff.reputation += effect.nParam1;
+			bPurge = FALSE;
+		}
+		break;
+	case 1: //set
+		if (effect.nTiming == 1) {
+			effect.nParam1 = min(effect.nParam1, 255);
+			effect.nParam1 = max(effect.nParam1, 0);
+			creTarget.m_BaseStats.reputation = effect.nParam1;
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.reputation = effect.nParam1;
+			creTarget.cdsCurrent.reputation = min(creTarget.cdsCurrent.reputation, 255);
+			creTarget.cdsCurrent.reputation = max(creTarget.cdsCurrent.reputation, 0);
+			bPurge = FALSE;
+		}
+		break;
+	case 2:	//percentage
+		if (effect.nTiming == 1) {
+			if (creTarget.m_BaseStats.reputation * effect.nParam1 / 100 < 0) {
+				creTarget.m_BaseStats.reputation = 0;
+			} else if (creTarget.m_BaseStats.reputation * effect.nParam1 / 100 > 255) {
+				creTarget.m_BaseStats.reputation = 255;
+			} else {
+				creTarget.m_BaseStats.reputation = creTarget.m_BaseStats.reputation * effect.nParam1 / 100;
+			}
+			bRefreshStats = TRUE;
+			bPurge = TRUE;
+		} else {
+			creTarget.cdsCurrent.reputation = creTarget.cdsCurrent.reputation * effect.nParam1 / 100;
+			creTarget.cdsCurrent.reputation = min(creTarget.cdsCurrent.reputation, 255);
+			creTarget.cdsCurrent.reputation = max(creTarget.cdsCurrent.reputation, 0);
+			bPurge = FALSE;
+		}
+		break;
+	default:
+		LPCTSTR lpsz = "DETOUR_CEffectReputationMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+		console.write(lpsz, 1, effect.nParam2);
+		L.timestamp();
+		L.append(lpsz, 1, effect.nParam2);
+		bPurge = TRUE;
+		break;
+	}
+	
 	return TRUE;
 }
 

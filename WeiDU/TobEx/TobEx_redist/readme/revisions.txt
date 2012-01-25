@@ -5,18 +5,37 @@ Beta 0023
 -Improved installation text compatibility with Linux systems
 -Improved stability of hex patching code
 -Added: Castilian translation (by Lisandro)
+-Added: Charisma Mod Fix
+-Added: Constitution Mod Fix
 -Added: Fake Talk Exploit Fix
+-Added: Fatigue Mod Fix
+-Added: Find Traps Mod Fix
+-Added: Intelligence Mod Fix
+-Added: Intoxication Mod Fix
 -Added: JoinParty Action Class Ability Refresh Fix
+-Added: Level Mod Fix
+-Added: Lore Mod Fix
+-Added: Morale Break Mod Fix
 -Added: Move Areas Fix
+-Added: Open Locks Mod Fix
+-Added: Pick Pockets Mod Fix
+-Added: Reputation Mod Fix
 -Added: Spell Turning Fix
 -Added: Spell Turning Animation Fix
+-Added: Stealth Mod Fix
+-Added: Strength Extra Mod Fix
 -Added: Summon Limit Fix
+-Added: Tracking Mod Fix
+-Added: Wisdom Mod Fix
 -Damage Fix: Additionally fixes a memory leak bug when fist damage would make the target unconscious
+-Dexterity Mod: Added information to reference that this hack also fixes incorrect wrapping of attribute values
+-Save Vs <> Mod: Added information to reference that these hacks also fix incorrect wrapping of save values
 -Enable PickpocketFailed Trigger: Re-implemented the hack, now sends PickPocketFailed() in addition to the original AttackedBy() trigger, moved to core hacks, now overrides tob_hacks
 -Enlarge Tooltip Scroll: Fixed the DDERR_INVALIDRECT issue in software renderer causing the tooltip to get stuck on the screen, re-enabled by default
 -Remain Hidden On Pickpocket Success: Re-implemented the hack, re-classified the hack as of type Action, now overrides tob_hacks
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position
+-Strength Mod: Added information to reference that this hack also fixes incorrect wrapping of attribute values
 
 Beta 0022
 ---------

@@ -36,6 +36,36 @@ extern void (CEffectAwaken::*CEffectAwaken_Deconstruct)();
 extern CEffect& (CEffectAwaken::*CEffectAwaken_Duplicate)();
 extern BOOL (CEffectAwaken::*CEffectAwaken_ApplyEffect)(CCreatureObject&);
 
+//CEffectCharismaMod
+class CEffectCharismaMod : public CEffect { //opcode 6h
+public:
+	//AA9640
+	virtual ~CEffectCharismaMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectCharismaMod::*CEffectCharismaMod_Deconstruct)();
+extern CEffect& (CEffectCharismaMod::*CEffectCharismaMod_Duplicate)();
+extern BOOL (CEffectCharismaMod::*CEffectCharismaMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectConstitutionMod
+class CEffectConstitutionMod : public CEffect { //opcode Ah
+public:
+	//AA95A0
+	virtual ~CEffectConstitutionMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectConstitutionMod::*CEffectConstitutionMod_Deconstruct)();
+extern CEffect& (CEffectConstitutionMod::*CEffectConstitutionMod_Duplicate)();
+extern BOOL (CEffectConstitutionMod::*CEffectConstitutionMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectDamage
 #define EFFECTDAMAGE_BEHAVIOR_NORMAL		0x0
 #define EFFECTDAMAGE_BEHAVIOR_SETVALUE		0x1
@@ -133,6 +163,36 @@ extern void (CEffectCurrentHPMod::*CEffectCurrentHPMod_Deconstruct)();
 extern CEffect& (CEffectCurrentHPMod::*CEffectCurrentHPMod_Duplicate)();
 extern BOOL (CEffectCurrentHPMod::*CEffectCurrentHPMod_ApplyEffect)(CCreatureObject&);
 extern BOOL (CEffectCurrentHPMod::*CEffectCurrentHPMod_IgnoreLevelCheck)();
+
+//CEffectIntelligenceMod
+class CEffectIntelligenceMod : public CEffect { //opcode 13h
+public:
+	//AA9460
+	virtual ~CEffectIntelligenceMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectIntelligenceMod::*CEffectIntelligenceMod_Deconstruct)();
+extern CEffect& (CEffectIntelligenceMod::*CEffectIntelligenceMod_Duplicate)();
+extern BOOL (CEffectIntelligenceMod::*CEffectIntelligenceMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectLoreMod
+class CEffectLoreMod : public CEffect { //opcode 15h
+public:
+	//AA9410
+	virtual ~CEffectLoreMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectLoreMod::*CEffectLoreMod_Deconstruct)();
+extern CEffect& (CEffectLoreMod::*CEffectLoreMod_Duplicate)();
+extern BOOL (CEffectLoreMod::*CEffectLoreMod_ApplyEffect)(CCreatureObject&);
 
 //CEffectLuckMod
 class CEffectLuckMod : public CEffect { //opcode 16h
@@ -271,6 +331,21 @@ extern void (CEffectStrengthMod::*CEffectStrengthMod_Deconstruct)();
 extern CEffect& (CEffectStrengthMod::*CEffectStrengthMod_Duplicate)();
 extern BOOL (CEffectStrengthMod::*CEffectStrengthMod_ApplyEffect)(CCreatureObject&);
 
+//CEffectWisdomMod
+class CEffectWisdomMod : public CEffect { //opcode 31h
+public:
+	//AA8FB0
+	virtual ~CEffectWisdomMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectWisdomMod::*CEffectWisdomMod_Deconstruct)();
+extern CEffect& (CEffectWisdomMod::*CEffectWisdomMod_Duplicate)();
+extern BOOL (CEffectWisdomMod::*CEffectWisdomMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectDispel
 class CEffectDispel : public CEffect { //opcode 3Ah
 public:
@@ -285,6 +360,21 @@ public:
 extern void (CEffectDispel::*CEffectDispel_Deconstruct)();
 extern CEffect& (CEffectDispel::*CEffectDispel_Duplicate)();
 extern BOOL (CEffectDispel::*CEffectDispel_ApplyEffect)(CCreatureObject&);
+
+//CEffectStealthMod
+class CEffectStealthMod : public CEffect { //opcode 3Bh
+public:
+	//AA8E20
+	virtual ~CEffectStealthMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectStealthMod::*CEffectStealthMod_Deconstruct)();
+extern CEffect& (CEffectStealthMod::*CEffectStealthMod_Duplicate)();
+extern BOOL (CEffectStealthMod::*CEffectStealthMod_ApplyEffect)(CCreatureObject&);
 
 //CEffectPriestMemSpellMod
 class CEffectPriestMemSpellMod : public CEffect { //opcode 3Eh
@@ -333,6 +423,126 @@ extern CEffect& (CEffectDisease::*CEffectDisease_Duplicate)();
 extern BOOL (CEffectDisease::*CEffectDisease_ApplyEffect)(CCreatureObject&);
 extern void (CEffectDisease::*CEffectDisease_OnDelayFinished)(CCreatureObject&);
 
+//CEffectOpenLocksMod
+class CEffectOpenLocksMod : public CEffect { //opcode 5Ah
+public:
+	//AA8880
+	virtual ~CEffectOpenLocksMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectOpenLocksMod::*CEffectOpenLocksMod_Deconstruct)();
+extern CEffect& (CEffectOpenLocksMod::*CEffectOpenLocksMod_Duplicate)();
+extern BOOL (CEffectOpenLocksMod::*CEffectOpenLocksMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectFindTrapsMod
+class CEffectFindTrapsMod : public CEffect { //opcode 5Bh
+public:
+	//AA8858
+	virtual ~CEffectFindTrapsMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectFindTrapsMod::*CEffectFindTrapsMod_Deconstruct)();
+extern CEffect& (CEffectFindTrapsMod::*CEffectFindTrapsMod_Duplicate)();
+extern BOOL (CEffectFindTrapsMod::*CEffectFindTrapsMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectPickPocketsMod
+class CEffectPickPocketsMod : public CEffect { //opcode 5Ch
+public:
+	//AA8830
+	virtual ~CEffectPickPocketsMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectPickPocketsMod::*CEffectPickPocketsMod_Deconstruct)();
+extern CEffect& (CEffectPickPocketsMod::*CEffectPickPocketsMod_Duplicate)();
+extern BOOL (CEffectPickPocketsMod::*CEffectPickPocketsMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectFatigueMod
+class CEffectFatigueMod : public CEffect { //opcode 5Dh
+public:
+	//AA8808
+	virtual ~CEffectFatigueMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectFatigueMod::*CEffectFatigueMod_Deconstruct)();
+extern CEffect& (CEffectFatigueMod::*CEffectFatigueMod_Duplicate)();
+extern BOOL (CEffectFatigueMod::*CEffectFatigueMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectIntoxicationMod
+class CEffectIntoxicationMod : public CEffect { //opcode 5Eh
+public:
+	//AA87E0
+	virtual ~CEffectIntoxicationMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectIntoxicationMod::*CEffectIntoxicationMod_Deconstruct)();
+extern CEffect& (CEffectIntoxicationMod::*CEffectIntoxicationMod_Duplicate)();
+extern BOOL (CEffectIntoxicationMod::*CEffectIntoxicationMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectTrackingMod
+class CEffectTrackingMod : public CEffect { //opcode 5Fh
+public:
+	//AA87B8
+	virtual ~CEffectTrackingMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectTrackingMod::*CEffectTrackingMod_Deconstruct)();
+extern CEffect& (CEffectTrackingMod::*CEffectTrackingMod_Duplicate)();
+extern BOOL (CEffectTrackingMod::*CEffectTrackingMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectLevelMod
+class CEffectLevelMod : public CEffect { //opcode 60h
+public:
+	//AA8790
+	virtual ~CEffectLevelMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectLevelMod::*CEffectLevelMod_Deconstruct)();
+extern CEffect& (CEffectLevelMod::*CEffectLevelMod_Duplicate)();
+extern BOOL (CEffectLevelMod::*CEffectLevelMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectStrengthExMod
+class CEffectStrengthExMod : public CEffect { //opcode 61h
+public:
+	//AA8768
+	virtual ~CEffectStrengthExMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectStrengthExMod::*CEffectStrengthExMod_Deconstruct)();
+extern CEffect& (CEffectStrengthExMod::*CEffectStrengthExMod_Duplicate)();
+extern BOOL (CEffectStrengthExMod::*CEffectStrengthExMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectRegeneration
 class CEffectRegeneration : public CEffect { //opcode 62h
 public:
@@ -349,6 +559,36 @@ extern void (CEffectRegeneration::*CEffectRegeneration_Deconstruct)();
 extern CEffect& (CEffectRegeneration::*CEffectRegeneration_Duplicate)();
 extern BOOL (CEffectRegeneration::*CEffectRegeneration_ApplyEffect)(CCreatureObject&);
 extern void (CEffectRegeneration::*CEffectRegeneration_OnDelayFinished)(CCreatureObject&);
+
+//CEffectMoraleBreakMod
+class CEffectMoraleBreakMod : public CEffect { //opcode 6Ah
+public:
+	//AA8600
+	virtual ~CEffectMoraleBreakMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectMoraleBreakMod::*CEffectMoraleBreakMod_Deconstruct)();
+extern CEffect& (CEffectMoraleBreakMod::*CEffectMoraleBreakMod_Duplicate)();
+extern BOOL (CEffectMoraleBreakMod::*CEffectMoraleBreakMod_ApplyEffect)(CCreatureObject&);
+
+//CEffectReputationMod
+class CEffectReputationMod : public CEffect { //opcode 6Ch
+public:
+	//AA85B0
+	virtual ~CEffectReputationMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectReputationMod::*CEffectReputationMod_Deconstruct)();
+extern CEffect& (CEffectReputationMod::*CEffectReputationMod_Duplicate)();
+extern BOOL (CEffectReputationMod::*CEffectReputationMod_ApplyEffect)(CCreatureObject&);
 
 //CEffectAid
 class CEffectAid : public CEffect { //opcode 81h

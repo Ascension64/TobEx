@@ -13,6 +13,22 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectCharismaMod
+extern BOOL (CEffectCharismaMod::*Tramp_CEffectCharismaMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectCharismaMod : public CEffectCharismaMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectConstitutionMod
+extern BOOL (CEffectConstitutionMod::*Tramp_CEffectConstitutionMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectConstitutionMod : public CEffectConstitutionMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectDamage
 extern BOOL (CEffectDamage::*Tramp_CEffectDamage_ApplyEffect)(CCreatureObject&);
 
@@ -25,6 +41,22 @@ public:
 extern BOOL (CEffectDexterityMod::*Tramp_CEffectDexterityMod_ApplyEffect)(CCreatureObject&);
 
 class DETOUR_CEffectDexterityMod : public CEffectDexterityMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectIntelligenceMod
+extern BOOL (CEffectIntelligenceMod::*Tramp_CEffectIntelligenceMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectIntelligenceMod : public CEffectIntelligenceMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectLoreMod
+extern BOOL (CEffectLoreMod::*Tramp_CEffectLoreMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectLoreMod : public CEffectLoreMod {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
@@ -101,10 +133,26 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectWisdomMod
+extern BOOL (CEffectWisdomMod::*Tramp_CEffectWisdomMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectWisdomMod : public CEffectWisdomMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectDispel
 extern BOOL (CEffectDispel::*Tramp_CEffectDispel_ApplyEffect)(CCreatureObject&);
 
 class DETOUR_CEffectDispel : public CEffectDispel {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectStealthMod
+extern BOOL (CEffectStealthMod::*Tramp_CEffectStealthMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectStealthMod : public CEffectStealthMod {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
@@ -133,10 +181,90 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectOpenLocksMod
+extern BOOL (CEffectOpenLocksMod::*Tramp_CEffectOpenLocksMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectOpenLocksMod : public CEffectOpenLocksMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectFindTrapsMod
+extern BOOL (CEffectFindTrapsMod::*Tramp_CEffectFindTrapsMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectFindTrapsMod : public CEffectFindTrapsMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectPickPocketsMod
+extern BOOL (CEffectPickPocketsMod::*Tramp_CEffectPickPocketsMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectPickPocketsMod : public CEffectPickPocketsMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectFatigueMod
+extern BOOL (CEffectFatigueMod::*Tramp_CEffectFatigueMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectFatigueMod : public CEffectFatigueMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectIntoxicationMod
+extern BOOL (CEffectIntoxicationMod::*Tramp_CEffectIntoxicationMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectIntoxicationMod : public CEffectIntoxicationMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectTrackingMod
+extern BOOL (CEffectTrackingMod::*Tramp_CEffectTrackingMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectTrackingMod : public CEffectTrackingMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectLevelMod
+extern BOOL (CEffectLevelMod::*Tramp_CEffectLevelMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectLevelMod : public CEffectLevelMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectStrengthExMod
+extern BOOL (CEffectStrengthExMod::*Tramp_CEffectStrengthExMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectStrengthExMod : public CEffectStrengthExMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectRegeneration
 extern BOOL (CEffectRegeneration::*Tramp_CEffectRegeneration_ApplyEffect)(CCreatureObject&);
 
 class DETOUR_CEffectRegeneration : public CEffectRegeneration {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectMoraleBreakMod
+extern BOOL (CEffectMoraleBreakMod::*Tramp_CEffectMoraleBreakMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectMoraleBreakMod : public CEffectMoraleBreakMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
+//CEffectReputationMod
+extern BOOL (CEffectReputationMod::*Tramp_CEffectReputationMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectReputationMod : public CEffectReputationMod {
 public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };

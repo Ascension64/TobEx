@@ -866,7 +866,7 @@ Options:
 -1: enabled
 
 -----1130 Save Vs Breath Mod [F, M]
-Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
+Fixes a bug so that the save value correctly limits to -20 or 20, rather than a net negative save value wrapping to 20
 Adds instantaneous sum type (3)
 
 Description
@@ -887,7 +887,7 @@ Known values for 'Type' are:
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
 -----1140 Save Vs Death Mod [F, M]
-Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
+Fixes a bug so that the save value correctly limits to -20 or 20, rather than a net negative save value wrapping to 20
 Adds instantaneous sum type (3)
 
 Description
@@ -908,7 +908,7 @@ Known values for 'Type' are:
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
 -----1150 Save Vs Poly Mod [F, M]
-Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
+Fixes a bug so that the save value correctly limits to -20 or 20, rather than a net negative save value wrapping to 20
 Adds instantaneous sum type (3)
 
 Description
@@ -929,7 +929,7 @@ Known values for 'Type' are:
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
 -----1160 Save Vs Spells Mod [F, M]
-Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
+Fixes a bug so that the save value correctly limits to -20 or 20, rather than a net negative save value wrapping to 20
 Adds instantaneous sum type (3)
 
 Description
@@ -950,7 +950,7 @@ Known values for 'Type' are:
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
 
 -----1170 Save Vs Wands Mod [F, M]
-Fixes a bug so that a net negative save value would always wrap to 20, rather than allow values between -1 and -20, and limit to -20 if lower
+Fixes a bug so that the save value correctly limits to -20 or 20, rather than a net negative save value wrapping to 20
 Adds instantaneous sum type (3)
 
 Description
@@ -984,7 +984,7 @@ Options:
 -0: disabled
 -1: enabled
 
------480 Strength Mod [M, X]
+-----480 Strength Mod [F, M, X]
 Fixes a bug so that a net negative strength value will limit to 0 rather than wrap to 25
 Alters the strength modifier effect opcode to work similar to Icewind Dale behaviour
 

@@ -137,6 +137,8 @@ void DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence(char* pSeq) {
 }
 
 void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, unsigned char cClass, int nLevels, IECPtrList& cpl) {
+	if (0) IECString("CCreatureObject_GetClassAbilities4");
+
 	IECString sAbilName;
 	IECString sSpell;
 	CRuleTable* pRuleTable = NULL;
@@ -159,9 +161,9 @@ void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, unsigned 
 	if (nLevels != -1) {
 		wStartLevel = cSubclassLevel - nLevels;
 	}
-	for (unsigned int nCol = wStartLevel; nCol < cSubclassLevel; nCol++) {
+	for (int nCol = wStartLevel; nCol < cSubclassLevel; nCol++) {
 		if (nCol >= pRuleTable->nCols) break;
-		for (unsigned int nRow = 0; nRow < pRuleTable->nRows; nRow++) {
+		for (int nRow = 0; nRow < pRuleTable->nRows; nRow++) {
 			if (nCol < pRuleTable->nCols &&
 				nRow < pRuleTable->nRows &&
 				nCol >= 0 &&
@@ -190,6 +192,8 @@ void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, unsigned 
 }
 
 void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, CDerivedStats& cdsTarget, IECPtrList& cpl) {
+	if (0) IECString("CCreatureObject_GetClassAbilities3");
+
 	unsigned char cClass = cre.oBase.GetClass();
 	switch (cClass) {
 	case CLASS_MAGE:
@@ -438,6 +442,8 @@ void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, CDerivedS
 }
 
 void __stdcall CCreatureObject_JoinParty_UpdateClassAbilities(CCreatureObject& cre, CDerivedStats& cds) {
+	if (0) IECString("CCreatureObject_JoinParty_UpdateClassAbilities");
+
 	IECPtrList cplInnate;
 	IECPtrList cplModify;
 	POSITION pos;

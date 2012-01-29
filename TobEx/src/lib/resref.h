@@ -54,7 +54,7 @@ public:
 
 	void ToUpper();
 	ResRef CopyToUpper(IECString& s);
-	void Copy(ResRef& r);
+	void Copy(ResRef& rTarget);
 
 	//additional implementations
 	operator LPTSTR() const;

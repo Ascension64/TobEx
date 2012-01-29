@@ -175,11 +175,24 @@ public:
 	char u432;
 	char u433; //pad
 	int u434;
-	int u438;
+	CPanel* m_pMainPanel; //438h
 	int u43c;
 	IECPtrList u440;
 	int u45c;
 	IECPtrList u460;
+	/*//2Ch size
+	ResRef 0h;
+	CItem* pItem; //8h
+	BOOL bSelected; //ch
+	int u10;
+	int nIndex; //14h
+	int u18;
+	unsigned int nSellPrice; //1ch
+	int u20;
+	int u24;
+	int nQuantity; //28h
+	*/
+
 	int u47c;
 	IECPtrList u480;
 	int u49c;
@@ -188,7 +201,7 @@ public:
 	ResRef u4c0;
 	ResRef u4c8;
 	int u4d0[4];
-	int u4e0;
+	CServerStore* m_pServerStore; //4e0h
 	int u4e4;
 	int u4e8;
 	int u4ec;
@@ -207,7 +220,8 @@ public:
 	int u560;
 	int u564;
 	int u568[6];
-	short u580;
+	char u580;
+	char u581; //pad
 	CVidFont u582;
 	CVidFont ua7e;
 	CVidFont uf7a;

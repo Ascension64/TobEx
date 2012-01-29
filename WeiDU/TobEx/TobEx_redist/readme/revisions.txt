@@ -36,6 +36,7 @@ Beta 0023
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Scrollable Priest Spellbook: Fixed a bug in calculating the maximum scroll bar position
 -Strength Mod: Added information to reference that this hack also fixes incorrect wrapping of attribute values
+-Subtitles For Standard Soundsets: Fixed a typo in the FEMALE3 soundset subtitles
 
 Beta 0022
 ---------

@@ -77,7 +77,7 @@ ResRef ResRef::operator=(IECString& s)			{ return (this->*ResRef_OpAssign_CStrin
 ResRef ResRef::operator=(LPTSTR sz)				{ return (this->*ResRef_OpAssign_LPTSTR)(sz); }
 void ResRef::ToUpper()							{ return (this->*ResRef_ToUpper)(); }
 ResRef ResRef::CopyToUpper(IECString& s)		{ return (this->*ResRef_CopyToUpper)(s); }
-void ResRef::Copy(ResRef& r)					{ return (this->*ResRef_Copy)(r); }
+void ResRef::Copy(ResRef& rTarget)				{ return (this->*ResRef_Copy)(rTarget); }
 
 ResRef::operator LPTSTR() const					{ return GetBuffer(); }
 BOOL ResRef::operator==(ResRef& r)				{ return !(this->*ResRef_OpNeq_ResRef)(r); }

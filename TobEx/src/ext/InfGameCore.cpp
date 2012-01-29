@@ -242,7 +242,7 @@ void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) {
 
 		pItmEff->param2 = pElement->cOrient;
 		pItmEff->param1 = pElement->nDelay;
-		pItmEff->resource.Copy(pElement->rArea);
+		pElement->rArea.Copy(pItmEff->resource);
 		pItmEff->timing = 1;
 		POINT pt;
 		pt.x = -1;

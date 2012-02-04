@@ -12,6 +12,7 @@ Beta 0023
 -Added: Find Traps Mod Fix
 -Added: Intelligence Mod Fix
 -Added: Intoxication Mod Fix
+-Added: Item Recharge in Bag Fix
 -Added: JoinParty Action Class Ability Refresh Fix
 -Added: Level Mod Fix
 -Added: Lore Mod Fix

@@ -139,6 +139,8 @@ struct CGameOptionsEx {
 	BOOL bSpellsUnvoicedConfig;
 	BOOL bSpellsTargetInvisConfig;
 
+	BOOL bStoreItemRechargeFix;
+
 	BOOL bTriggerPickpocketFailed;
 	BOOL bTriggerExpandedTriggers;
 	BOOL bTriggerKitFix;

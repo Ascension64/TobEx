@@ -16,6 +16,7 @@
 #include "ItemCommon.h"
 #include "ScriptAction.h"
 #include "ScriptTrigger.h"
+#include "StoreCore.h"
 #include "UserCommon.h"
 #include "ObjectCreature.h"
 
@@ -2521,6 +2522,43 @@ void InitPatches() {
 						0x0F, 0x84, 0xEB, 0x00, 0x00, 0x00,
 						0xE9, 0x6E, 0x03, 0x00, 0x00};
 		vDataList.push_back( Data(0x911EB4, 13, bytes3) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bStoreItemRechargeFix) {
+		//push edx
+		//push eax
+		//mov ecx,dword ptr ss:[ebp+C]
+		//push ecx
+		//mov ecx,dword ptr ss:[ebp-64]
+		//push ecx
+		//call ...
+		char bytes[] = {0x52,
+						0x50,
+						0x8B, 0x4D, 0x0C,
+						0x51,
+						0x8B, 0x4D, 0x9C,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x645AE6, 11, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CStore_UnmarshalItem_SetUsages;
+		DWORD address = (DWORD)ptr - 5  - 0x645AF0;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x645AF1, 4, bytes2) );
+
+		//jmp
+		char bytes3[] = {0xEB, 0xDA,
+						0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x645AF5, 7, bytes3) );
+
+		//fix so a non-zero charge item will not stack onto an identical but zero charge item in the bag
+		//1 -> 0
+		char bytes4[] = {0x00};
+		vDataList.push_back( Data(0x645E34, 1, bytes4) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

@@ -1,4 +1,4 @@
-//1460 This file contains descriptions for all the hack options found in TobEx .ini files
+//1470 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1665,6 +1665,15 @@ It reads 'Spell Cancelled: Can not target spells on invisible or sanctuaried cre
 This is not consistent with this hack.
 Mods using this hack should change the string reference to read 'Action Cancelled: Can not target action on invisible or sanctuaried creatures.'
 This substitutes the words 'Spell[s]' with 'Action' and allows compatibility with the 'Configurable Items Cannot Target Invisible' hack.
+
+Options:
+-0: disabled
+-1: enabled
+
+/////////////////////////////////////// STORE
+
+-----1470 Item Recharge in Bag Fix [F]
+Fixes an exploit where depleted items can be recharged by putting them in a bag and taking it out again
 
 Options:
 -0: disabled

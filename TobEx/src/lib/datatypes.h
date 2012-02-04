@@ -349,50 +349,50 @@ struct SplFileAbility { //Size 28h
 
 //Sto
 struct StoFileData { //Size 94h
-	int type; //0h
-	STRREF name; //4h
-	unsigned int flags; //8h
-	int nSellPercent; //ch
-	int nBuyPercent; //10h
-	int nDepreciationRate; //14h
-	short nStealFailPercent; //18h
-	short nMaxItems; //1ah
+	int m_nType; //0h
+	STRREF m_strrefName; //4h
+	unsigned int m_dwFlags; //8h
+	int m_nSellPercent; //ch
+	int m_nBuyPercent; //10h
+	int m_nDepreciationRate; //14h
+	short m_nStealFailPercent; //18h
+	short m_nMaxItems; //1ah
 	long u1c[2]; //1ch
-	int* pItemTypesBought; //24h
-	int nItemTypesBought; //28h
-	int* pItemsSold; //2ch
-	int nItemsSold; //30h
-	int nLore; //34h
-	int nPriceID; //38h
-	ResRef RumoursTavern; //3ch
-	int* pDrinks; //40h
-	int nDrinks; //48h
-	ResRef RumoursTemple; //4ch
-	int flagsRoom; //54h
-	int nPriceRoomPeasant; //58h
-	int nPriceRoomMerchant; //5ch
-	int nPriceRoomNoble; //60h
-	int nPriceRoomRoyal; //64h
-	int* pCures; //68h
-	int nCures; //6ch
+	int* m_pItemTypesBought; //24h
+	int m_nItemTypesBought; //28h
+	int* m_pItemsSold; //2ch
+	int m_nItemsSold; //30h
+	int m_nLore; //34h
+	int m_nPriceID; //38h
+	ResRef m_rRumoursTavern; //3ch
+	int* m_pDrinks; //40h
+	int m_nDrinks; //48h
+	ResRef m_rRumoursTemple; //4ch
+	int m_dwFlagsRoom; //54h
+	int m_nPriceRoomPeasant; //58h
+	int m_nPriceRoomMerchant; //5ch
+	int m_nPriceRoomNoble; //60h
+	int m_nPriceRoomRoyal; //64h
+	int* m_pSpells; //68h
+	int m_nSpells; //6ch
 	int u70[9];
 };
 
 struct StoFileBuyType { //Size 4h
-	int type;
+	int m_nType;
 };
 
 struct StoFileDrink { //Size 14h
 //corresponds to 'Drinks for sale' extended header
-	ResRef rumour; //0h
-	STRREF name; //8h
-	int price; //ch
-	int drinkStrength; //10h
+	ResRef m_rRumour; //0h
+	STRREF m_strrefName; //8h
+	int m_nPrice; //ch
+	int m_nStrength; //10h
 };
 
 struct StoFileItem { //Size 1Ch
 //corresponds to 'Item for sale' extended header
-	ResRef name; //0h
+	ResRef m_rName; //0h
 	short m_wWear; //8h, 0xFF + time until recharge in absolute game hours
 	short m_wUsage[3]; //ah
 	unsigned int dwFlags; //10h
@@ -402,8 +402,8 @@ struct StoFileItem { //Size 1Ch
 
 struct StoFileSpell { //Size 10h
 //corresponds to 'Cures for sale' extended header
-	ResRef spell; //0h
-	int price; //8h
+	ResRef m_rSpell; //0h
+	int m_nPrice; //8h
 };
 
 //Vef

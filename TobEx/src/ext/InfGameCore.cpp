@@ -329,7 +329,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 		while (pos != NULL) {
 			StoFileItem* pItem = (StoFileItem*)store.m_items.GetNext(pos);
 			if (pItem) {
-				if (pItem->name == rItem) {
+				if (pItem->m_rName == rItem) {
 					if (bIdentifiedOnly) {
 						if (pItem->dwFlags & CITEMFLAG_IDENTIFIED) {
 							int nAdd = pItem->m_bInfinite ? 1 : pItem->m_nNumInStock;
@@ -363,7 +363,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 		while (pos != NULL) {
 			StoFileItem* pItem = (StoFileItem*)store.m_items.GetNext(pos);
 			if (pItem) {
-				if (pItem->name == rItem) {
+				if (pItem->m_rName == rItem) {
 					if (bIdentifiedOnly) {
 						if (pItem->dwFlags & CITEMFLAG_IDENTIFIED) {
 							int nAdd = pItem->m_bInfinite ? 1 : pItem->m_nNumInStock;

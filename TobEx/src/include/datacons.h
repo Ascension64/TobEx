@@ -190,6 +190,14 @@
 #define SPELLTYPE_INNATE	4
 #define SPELLTYPE_BARDSONG	5
 
+//Store types
+#define STORETYPE_STORE		0
+#define STORETYPE_TAVERN	1
+#define STORETYPE_INN		2
+#define STORETYPE_TEMPLE	3
+#define STORETYPE_4			4
+#define STORETYPE_BAG		5
+
 //Vvc orientation flags
 #define VVCORIENTATION_PREVIOUS	0x0
 #define VVCORIENTATION_ORIGIN	0x1

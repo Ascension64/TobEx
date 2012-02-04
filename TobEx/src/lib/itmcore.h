@@ -30,12 +30,16 @@ public:
 	BOOL Demand();
 	BOOL Release();
 	void LoadResource(ResRef& res, BOOL bAddToHandler);
+	int GetNumAbilities();
+	short GetNumCharges(int nAbilityIdx);
+	void SetNumUsage(int nUsageIdx, short wValue);
 	void Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotApplyEffects);
 	ItmFileAbility& GetAbility(int nAbilityIdx);
 	CEffect& GetAbilityEffect(int nAbilityIdx, int nEffectIdx, CCreatureObject& creSource);
 	short GetType();
 	unsigned int GetFlags();
 	unsigned int GetUnusableFlags();
+	short GetMaximumStackSize();
 
 	//AAB400
 	virtual ~CItem();
@@ -68,12 +72,16 @@ extern void (CItem::*CItem_Deconstruct)();
 extern BOOL (CItem::*CItem_Demand)();
 extern BOOL (CItem::*CItem_Release)();
 extern void (CItem::*CItem_LoadResource)(ResRef&, BOOL);
+extern int (CItem::*CItem_GetNumAbilities)();
+extern short (CItem::*CItem_GetNumCharges)(int);
+extern void (CItem::*CItem_SetNumUsage)(int, short);
 extern void (CItem::*CItem_Equip)(CCreatureObject&, int, BOOL);
 extern ItmFileAbility& (CItem::*CItem_GetAbility)(int);
 extern CEffect& (CItem::*CItem_GetAbilityEffect)(int, int, CCreatureObject&);
 extern short (CItem::*CItem_GetType)();
 extern unsigned int (CItem::*CItem_GetFlags)();
 extern unsigned int (CItem::*CItem_GetUnusableFlags)();
+extern short (CItem::*CItem_GetMaximumStackSize)();
 
 struct CCreInventory { //Size A4h
 //Constructor: 0x8BE36A

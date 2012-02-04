@@ -141,6 +141,8 @@ CGameOptionsEx::CGameOptionsEx() {
 	bSpellsCastingFix = FALSE;
 	bSpellsUnvoicedConfig = FALSE;
 	bSpellsTargetInvisConfig = FALSE;
+
+	bStoreItemRechargeFix = FALSE;
 		
 	bTriggerPickpocketFailed = FALSE;
 	bTriggerExpandedTriggers = FALSE;
@@ -301,6 +303,8 @@ void CGameOptionsEx::Init() {
 	bSpellsCastingFix = GetCoreIniValue("Spells", "Casting Fixes");
 	bSpellsUnvoicedConfig = GetCoreIniValue("Spells", "Configurable Spells Can Be Unvoiced");
 	bSpellsTargetInvisConfig = GetCoreIniValue("Spells", "Configurable Spells Can Target Invisible");
+
+	bStoreItemRechargeFix = GetCoreIniValue("Store", "Item Recharge in Bag Fix");
 
 	bTriggerPickpocketFailed = GetTweakIniValue("Trigger", "Enable PickpocketFailed Trigger");
 	bTriggerExpandedTriggers = GetCoreIniValue("Trigger", "Expanded Triggers");

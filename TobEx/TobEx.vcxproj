@@ -138,6 +138,7 @@
     <ClCompile Include="src\ext\ScriptCore.cpp" />
     <ClCompile Include="src\ext\ScriptTrigger.cpp" />
     <ClCompile Include="src\ext\SpellCore.cpp" />
+    <ClCompile Include="src\ext\StoreCore.cpp" />
     <ClCompile Include="src\ext\UserButton.cpp" />
     <ClCompile Include="src\include\globals.cpp" />
     <ClCompile Include="src\lib\animext.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="src\ext\ScriptCore.h" />
     <ClInclude Include="src\ext\ScriptTrigger.h" />
     <ClInclude Include="src\ext\SpellCore.h" />
+    <ClInclude Include="src\ext\StoreCore.h" />
     <ClInclude Include="src\ext\UserButton.h" />
     <ClInclude Include="src\include\datacons.h" />
     <ClInclude Include="src\lib\cmapstrstrex.h" />

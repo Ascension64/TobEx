@@ -177,20 +177,20 @@ int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char nClassId, char nClassPrimary,
 	int dwWeapProfMax = (this->*Tramp_CRuleTables_GetWeapProfMax)(nClassId, nClassPrimary, nClassSecondary, bTwoClasses, nWeapProfId, dwKit);
 	int dwClassProfsMax = 0;
 
-	if (Eip == 0x6DAEC1 || //CRecord::DualClassProficiencyPanelOnLoad()
-		Eip == 0x6DC79A || //CRecord::LevelUpPanelOnLoad()
-		Eip == 0x6DC80C || //CRecord::LevelUpPanelOnLoad()
-		Eip == 0x6DFAFE || //CRecord::LevelUpPanelOnLoad()
-		Eip == 0x6E2196 || //CRecord::DualClassProficiencyPanelOnUpdate()
-		Eip == 0x6E28BE || //CRecord::LevelUpPanelOnUpdate()
-		Eip == 0x6F082C || //CRecord::DualClass()
+	if (Eip == 0x6DAEC1 || //CScreenRecord::DualClassProficiencyPanelOnLoad()
+		Eip == 0x6DC79A || //CScreenRecord::LevelUpPanelOnLoad()
+		Eip == 0x6DC80C || //CScreenRecord::LevelUpPanelOnLoad()
+		Eip == 0x6DFAFE || //CScreenRecord::LevelUpPanelOnLoad()
+		Eip == 0x6E2196 || //CScreenRecord::DualClassProficiencyPanelOnUpdate()
+		Eip == 0x6E28BE || //CScreenRecord::LevelUpPanelOnUpdate()
+		Eip == 0x6F082C || //CScreenRecord::DualClass()
 		Eip == 0x6F86E9 || //CUIButtonRecordLevelUpProficiency::UpdateCharacter()
 		Eip == 0x6FD498) //CUIButtonRecordDualClassProficiency::UpdateCharacter()
 		dwClassProfsMax = g_pChitin->pCharacter->dwProfsMax;
 
-	if (Eip == 0x71D9B7 || //CCharGen::ProficienciesPanelOnLoad()
-		Eip == 0x71FAC2 || //CCharGen::ProficienciesPanelOnUpdate()
-		Eip == 0x71FB11 || //CCharGen::ProficienciesPanelOnUpdate()
+	if (Eip == 0x71D9B7 || //CScreenCharGen::ProficienciesPanelOnLoad()
+		Eip == 0x71FAC2 || //CScreenCharGen::ProficienciesPanelOnUpdate()
+		Eip == 0x71FB11 || //CScreenCharGen::ProficienciesPanelOnUpdate()
 		Eip == 0x7305F5 || //CUIButtonCharGenProficiency::UpdateCharacter()
 		Eip == 0x730649) //CUIButtonCharGenProficiency::UpdateCharacter()
 		dwClassProfsMax = g_pChitin->pCreateChar->dwProfsMax;
@@ -304,7 +304,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 
 	if (g_pChitin->cNetwork.bSessionOpen) {
 		BOOL bRequested = FALSE;
-		CServerStore store;
+		CStore store;
 
 		if (!g_pChitin->cNetwork.bSessionHosting) {
 			store.Unmarshal(rBag);
@@ -356,7 +356,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 		}
 
 	} else {
-		CServerStore store(rBag);
+		CStore store(rBag);
 		int nItemCount = 0;
 		POSITION pos = store.m_items.GetHeadPosition();
 
@@ -392,8 +392,8 @@ void DETOUR_CInfGame::DETOUR_SetLoseCutscene() {
 		Eip == 0x5277E6 || //CEffectPetrification::ApplyEffect()
 		Eip == 0x527859 || //CEffectPetrification::ApplyEffect()
 		Eip == 0x531E37 || //CEffectImprisonment::ApplyEffect()
-		Eip == 0x7C612B || //CWorld::Init()?
-		Eip == 0x7D37B8) { //CWorld::Update()
+		Eip == 0x7C612B || //CScreenWorld::Init()?
+		Eip == 0x7D37B8) { //CScreenWorld::Update()
 		return;
 	}
 	

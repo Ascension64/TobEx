@@ -28,7 +28,7 @@ CUIButtonMageBookUp::CUIButtonMageBookUp(CPanel& panel, ChuFileControlInfoBase& 
 CUIButtonMageBookUp::~CUIButtonMageBookUp() {}
 
 void CUIButtonMageBookUp::OnLClicked(POINT pt) {
-	CMageBook* pWizSpell = g_pChitin->pWizSpell;
+	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	CPanel& panel = pWizSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
@@ -70,7 +70,7 @@ CUIButtonMageBookDn::CUIButtonMageBookDn(CPanel& panel, ChuFileControlInfoBase& 
 CUIButtonMageBookDn::~CUIButtonMageBookDn() {}
 
 void CUIButtonMageBookDn::OnLClicked(POINT pt) {
-	CMageBook* pWizSpell = g_pChitin->pWizSpell;
+	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	CPanel& panel = pWizSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
@@ -122,7 +122,7 @@ CUICheckButtonMageBookContChoice& DETOUR_CUICheckButtonMageBookContChoice::DETOU
 }
 
 void DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(POINT pt) {
-	CMageBook* pWizSpell = g_pChitin->pWizSpell;
+	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	if (pWizSpell == NULL) {
 		LPCTSTR lpsz = "DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(): pWiz == NULL\r\n";
 		L.timestamp();
@@ -140,7 +140,7 @@ void DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(POINT pt) {
 	switch (nArrowDirection) {
 		case 0:
 			if (rSpell.IsNotEmpty()) {
-				if (CMageBook_AddContingencySpellEx(pWizSpell, sSpell, sParentSpell)) {
+				if (CScreenMageBook_AddContingencySpellEx(pWizSpell, sSpell, sParentSpell)) {
 					pWizSpell->SetSpellContingencyState(rParentSpell.IsEmpty() ? sSpell : sParentSpell, FALSE);
 				}
 				ResSplContainer resSpell(rSpell);
@@ -177,14 +177,14 @@ CUICheckButtonMageBookContSelected& DETOUR_CUICheckButtonMageBookContSelected::D
 }
 
 void DETOUR_CUICheckButtonMageBookContSelected::DETOUR_OnLClicked(POINT pt) {
-	CMageBook* pWizSpell = g_pChitin->pWizSpell;
+	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	pWizSpell->SetSpellContingencyState(rParentSpell.IsEmpty() ? IECString(rSpell.GetBuffer()) : IECString(rParentSpell.GetBuffer()), TRUE);
 	pWizSpell->ClearContingencySpell(index - 22);
 	pWizSpell->ContingencySelectOnUpdate(pPanel->index);
 	return;
 }
 
-bool __stdcall CMageBook_AddContingencySpellEx(CMageBook* pWiz, IECString sSpell, IECString sParentSpell) {
+bool __stdcall CScreenMageBook_AddContingencySpellEx(CScreenMageBook* pWiz, IECString sSpell, IECString sParentSpell) {
 	if (pWiz->m_rContSpell1.IsEmpty()) {
 		pWiz->m_rContSpell1 = sSpell;
 		DETOUR_CUICheckButtonMageBookContSelected& spell1 = (DETOUR_CUICheckButtonMageBookContSelected&)pWiz->GetTopPanel().GetUIControl(22);

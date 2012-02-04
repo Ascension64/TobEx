@@ -264,6 +264,7 @@
     <ClInclude Include="src\lib\engpriestbk.h" />
     <ClInclude Include="src\lib\engproj.h" />
     <ClInclude Include="src\lib\engrecord.h" />
+    <ClInclude Include="src\lib\engstore.h" />
     <ClInclude Include="src\lib\engworld.h" />
     <ClInclude Include="src\lib\infbtarr.h" />
     <ClInclude Include="src\lib\infcursor.h" />

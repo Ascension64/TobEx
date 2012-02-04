@@ -57,7 +57,7 @@ CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest(int nLevel
 	int Eip;
 	GetEip(Eip);
 
-	if (Eip == 0x78744E) { //from CPriestBook::Update()
+	if (Eip == 0x78744E) { //from CScreenPriestBook::Update()
 		nIndex += CUIButtonPriestBook_KnownSpellOffset;
 	}
 
@@ -68,7 +68,7 @@ CreFileKnownSpell& DETOUR_CCreatureObject::DETOUR_GetKnownSpellMage(int nLevel, 
 	int Eip;
 	GetEip(Eip);
 
-	if (Eip == 0x7B8952) { //from CMageBook::Update()
+	if (Eip == 0x7B8952) { //from CScreenMageBook::Update()
 		nIndex += CUIButtonMageBook_KnownSpellOffset;
 	}
 

@@ -3,32 +3,32 @@
 #include "chitin.h"
 #include "UserMageBook.h"
 
-void (CMageBook::*Tramp_CMageBook_SetLevel)(int) =
-	SetFP(static_cast<void (CMageBook::*)(int)>				(&CMageBook::SetLevel),						0x7B7BDC);
-void (CMageBook::*Tramp_CMageBook_ContingencySelectOnLoad)(CPanel&) =
-	SetFP(static_cast<void (CMageBook::*)(CPanel&)>			(&CMageBook::ContingencySelectOnLoad),		0x7BA23B);
-void (CMageBook::*Tramp_CMageBook_ContingencySelectOnUpdate)(int) =
-	SetFP(static_cast<void (CMageBook::*)(int)>				(&CMageBook::ContingencySelectOnUpdate),	0x7BAC41);
-bool (CMageBook::*Tramp_CMageBook_ClearContingencySpell)(char index) =
-	SetFP(static_cast<bool (CMageBook::*)(char)>			(&CMageBook::ClearContingencySpell),		0x7BD516);
-void (CMageBook::*Tramp_CMageBook_CreateContingencySpellList)(char, char) =
-	SetFP(static_cast<void (CMageBook::*)(char, char)>		(&CMageBook::CreateContingencySpellList),	0x7BDCB1);
+void (CScreenMageBook::*Tramp_CScreenMageBook_SetLevel)(int) =
+	SetFP(static_cast<void (CScreenMageBook::*)(int)>			(&CScreenMageBook::SetLevel),					0x7B7BDC);
+void (CScreenMageBook::*Tramp_CScreenMageBook_ContingencySelectOnLoad)(CPanel&) =
+	SetFP(static_cast<void (CScreenMageBook::*)(CPanel&)>		(&CScreenMageBook::ContingencySelectOnLoad),	0x7BA23B);
+void (CScreenMageBook::*Tramp_CScreenMageBook_ContingencySelectOnUpdate)(int) =
+	SetFP(static_cast<void (CScreenMageBook::*)(int)>			(&CScreenMageBook::ContingencySelectOnUpdate),	0x7BAC41);
+bool (CScreenMageBook::*Tramp_CScreenMageBook_ClearContingencySpell)(char index) =
+	SetFP(static_cast<bool (CScreenMageBook::*)(char)>			(&CScreenMageBook::ClearContingencySpell),		0x7BD516);
+void (CScreenMageBook::*Tramp_CScreenMageBook_CreateContingencySpellList)(char, char) =
+	SetFP(static_cast<void (CScreenMageBook::*)(char, char)>	(&CScreenMageBook::CreateContingencySpellList),	0x7BDCB1);
 
 MemSpellContingency::MemSpellContingency() {
 	wMemorizedCount = 0;
 	ua = 0;
 }
 
-void DETOUR_CMageBook::DETOUR_SetLevel(int nLevel) {
-	if (0) IECString("DETOUR_CMageBook::DETOUR_SetLevel");
+void DETOUR_CScreenMageBook::DETOUR_SetLevel(int nLevel) {
+	if (0) IECString("DETOUR_CScreenMageBook::DETOUR_SetLevel");
 
 	CUIButtonMageBook_KnownSpellOffset = 0;
-	(this->*Tramp_CMageBook_SetLevel)(nLevel);
+	(this->*Tramp_CScreenMageBook_SetLevel)(nLevel);
 	return;
 }
 
-void DETOUR_CMageBook::DETOUR_ContingencySelectOnLoad(CPanel& panel) {
-	if (0) IECString("DETOUR_CMageBook::DETOUR_ContingencySelectOnLoad");
+void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnLoad(CPanel& panel) {
+	if (0) IECString("DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnLoad");
 
 	DETOUR_CUICheckButtonMageBookContSelected& spell1 = (DETOUR_CUICheckButtonMageBookContSelected&)panel.GetUIControl(22);
 	DETOUR_CUICheckButtonMageBookContSelected& spell2 = (DETOUR_CUICheckButtonMageBookContSelected&)panel.GetUIControl(23);
@@ -39,11 +39,11 @@ void DETOUR_CMageBook::DETOUR_ContingencySelectOnLoad(CPanel& panel) {
 	spell1.rParentSpell = "";
 	spell2.rParentSpell = "";
 	spell3.rParentSpell = "";
-	return (this->*Tramp_CMageBook_ContingencySelectOnLoad)(panel);
+	return (this->*Tramp_CScreenMageBook_ContingencySelectOnLoad)(panel);
 }
 
-void DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
-	if (0) IECString("DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate");
+void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
+	if (0) IECString("DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate");
 
 	CPanel& panel = GetManager().GetPanel(nPanelIdx);
 	pScrollActive = (CUIScrollBar*)&panel.GetUIControl(26);
@@ -200,7 +200,7 @@ void DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 			spell3.SetVisible(true);
 			break;
 		default:
-			LPCTSTR lpsz = "DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate: invalid m_nMaxContSpells\r\n";
+			LPCTSTR lpsz = "DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate: invalid m_nMaxContSpells\r\n";
 			L.timestamp();
 			L.append(lpsz);
 			console.write(lpsz);
@@ -239,7 +239,7 @@ void DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 
 };
 
-bool DETOUR_CMageBook::DETOUR_ClearContingencySpell(char index) {
+bool DETOUR_CScreenMageBook::DETOUR_ClearContingencySpell(char index) {
 	switch (index) {
 	case 0:
 		if (m_rContSpell1.IsNotEmpty()) m_rContSpell1 = "";
@@ -257,7 +257,7 @@ bool DETOUR_CMageBook::DETOUR_ClearContingencySpell(char index) {
 		return true;
 		break;
 	default:
-		LPCTSTR lpsz = "DETOUR_CMageBook::DETOUR_ClearContingencySpell(): invalid contingency spell index\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenMageBook::DETOUR_ClearContingencySpell(): invalid contingency spell index\r\n";
 		L.timestamp();
 		L.append(lpsz);
 		console.write(lpsz);
@@ -267,7 +267,7 @@ bool DETOUR_CMageBook::DETOUR_ClearContingencySpell(char index) {
 	return false;
 }
 
-void DETOUR_CMageBook::DETOUR_CreateContingencySpellList(char nSpellType, char nLevel) {
+void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, char nLevel) {
 	m_ContSpells.RemoveAll();
 	CInfGame* pGame = g_pChitin->pGame;
 	short wPlayerIdx = (short)nActivePlayerIdx;

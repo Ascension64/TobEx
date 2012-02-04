@@ -6,7 +6,7 @@
 #include "vidcore.h"
 #include "uitext.h"
 
-class CWorld : public CEngine { //Size 124Ch
+class CScreenWorld : public CEngine { //Size 124Ch
 //Constructor: 0x7C3EE0
 public:
 	//AB5768
@@ -125,7 +125,7 @@ public:
 	int u10ee;
 	ResRef u10f2;
 	bool bUseNetworkDialog; //10fah
-	char u10fb; //pad
+	bool u10fb; //some overriding button active state setting
 	int u10fc;
 	ResRef u1100;
 	Enum eAutoPauseObject; //1108h
@@ -200,7 +200,7 @@ public:
 	int u11fe;
 	int u1202;
 	int u1206;
-	char u120a;
+	bool u120a; //set to whether or not MP settings checked when starting store
 	char u120b; //pad
 	CEnumList u120c;
 	int u1228;
@@ -214,7 +214,7 @@ public:
 	int u1248;
 };
 
-extern POSITION (CWorld::*CWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, bool);
-extern POSITION (CWorld::*CWorld_PrintToConsole_4)(IECString&, IECString&, int, bool);
+extern POSITION (CScreenWorld::*CScreenWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, bool);
+extern POSITION (CScreenWorld::*CScreenWorld_PrintToConsole_4)(IECString&, IECString&, int, bool);
 
 #endif //ENGWORLD_H

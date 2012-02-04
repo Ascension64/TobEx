@@ -44,6 +44,6 @@ public:
 	ResRef rParentSpell;
 };
 
-bool __stdcall CMageBook_AddContingencySpellEx(CMageBook* pWiz, IECString sSpell, IECString sParentSpell);
+bool __stdcall CScreenMageBook_AddContingencySpellEx(CScreenMageBook* pWiz, IECString sSpell, IECString sParentSpell);
 
 #endif //USERMAGEBOOK_H

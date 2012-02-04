@@ -183,11 +183,9 @@ public:
 	int nThisPlayerID; //6e2h (3790h)
 	IECString sThisPlayerName; //6e6h
 	int u6ea;
-	IECString sPlayerName[6]; //6eeh
-	int nPlayerID[6]; //706h
-	bool m_bSoloServer; //71eh
-	char u71f; //pad
-	int u720;
+	IECString sPlayerNameArray[6]; //6eeh
+	int nPlayerIdArray[6]; //706h
+	bool m_bSoloServerArray[6]; //71eh
 	char u724;
 	char u725; //[ad
 	int u726[7];

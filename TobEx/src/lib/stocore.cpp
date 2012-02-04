@@ -1,28 +1,28 @@
 #include "stocore.h"
 
-CServerStore& (CServerStore::*CServerStore_Construct_0)() =
-	SetFP(static_cast<CServerStore& (CServerStore::*)()>		(&CServerStore::Construct),			0x643CB0);
-CServerStore& (CServerStore::*CServerStore_Construct_1_ResRef)(ResRef&) =
-	SetFP(static_cast<CServerStore& (CServerStore::*)(ResRef&)>	(&CServerStore::Construct),			0x643D4B);
-void (CServerStore::*CServerStore_Deconstruct)() =
-	SetFP(static_cast<void (CServerStore::*)()>					(&CServerStore::Deconstruct),		0x643E21);
-void (CServerStore::*CServerStore_Unmarshal)(ResRef&) =
-	SetFP(static_cast<void (CServerStore::*)(ResRef&)>			(&CServerStore::Unmarshal),			0x64424C);
-int (CServerStore::*CServerStore_GetNumItemsInStock)() =
-	SetFP(static_cast<int (CServerStore::*)()>					(&CServerStore::GetNumItemsInStock),0x645758);
-int (CServerStore::*CServerStore_GetItemAmount)(int) =
-	SetFP(static_cast< int (CServerStore::*)(int)>				(&CServerStore::GetItemAmount),		0x6457E7);
-BOOL (CServerStore::*CServerStore_UnmarshalItem)(int, CItem*) =
-	SetFP(static_cast<BOOL (CServerStore::*)(int, CItem*)>		(&CServerStore::UnmarshalItem),		0x64583E);
-ResRef (CServerStore::*CServerStore_GetItemName)(int) =
-	SetFP(static_cast<ResRef (CServerStore::*)(int)>			(&CServerStore::GetItemName),		0x645B43);
+CStore& (CStore::*CStore_Construct_0)() =
+	SetFP(static_cast<CStore& (CStore::*)()>			(&CStore::Construct),			0x643CB0);
+CStore& (CStore::*CStore_Construct_1_ResRef)(ResRef&) =
+	SetFP(static_cast<CStore& (CStore::*)(ResRef&)>		(&CStore::Construct),			0x643D4B);
+void (CStore::*CStore_Deconstruct)() =
+	SetFP(static_cast<void (CStore::*)()>				(&CStore::Deconstruct),			0x643E21);
+void (CStore::*CStore_Unmarshal)(ResRef&) =
+	SetFP(static_cast<void (CStore::*)(ResRef&)>		(&CStore::Unmarshal),			0x64424C);
+int (CStore::*CStore_GetNumItemsInStock)() =
+	SetFP(static_cast<int (CStore::*)()>				(&CStore::GetNumItemsInStock),	0x645758);
+int (CStore::*CStore_GetItemAmount)(int) =
+	SetFP(static_cast< int (CStore::*)(int)>			(&CStore::GetItemAmount),		0x6457E7);
+BOOL (CStore::*CStore_UnmarshalItem)(int, CItem*) =
+	SetFP(static_cast<BOOL (CStore::*)(int, CItem*)>	(&CStore::UnmarshalItem),		0x64583E);
+ResRef (CStore::*CStore_GetItemName)(int) =
+	SetFP(static_cast<ResRef (CStore::*)(int)>			(&CStore::GetItemName),			0x645B43);
 
-CServerStore::CServerStore() { (this->*CServerStore_Construct_0)(); }
-CServerStore::CServerStore(ResRef& rName) { (this->*CServerStore_Construct_1_ResRef)(rName); }
-CServerStore::~CServerStore() { (this->*CServerStore_Deconstruct)(); }
-void CServerStore::Unmarshal(ResRef& rName) { return (this->*CServerStore_Unmarshal)(rName); }
-int CServerStore::GetNumItemsInStock() { return (this->*CServerStore_GetNumItemsInStock)(); }
-BOOL CServerStore::UnmarshalItem(int nIndex, CItem* ptr) { return (this->*CServerStore_UnmarshalItem)(nIndex, ptr); }
-int CServerStore::GetItemAmount(int nIndex) { return (this->*CServerStore_GetItemAmount)(nIndex); }
-ResRef CServerStore::GetItemName(int nIndex) { return (this->*CServerStore_GetItemName)(nIndex); }
+CStore::CStore() { (this->*CStore_Construct_0)(); }
+CStore::CStore(ResRef& rName) { (this->*CStore_Construct_1_ResRef)(rName); }
+CStore::~CStore() { (this->*CStore_Deconstruct)(); }
+void CStore::Unmarshal(ResRef& rName) { return (this->*CStore_Unmarshal)(rName); }
+int CStore::GetNumItemsInStock() { return (this->*CStore_GetNumItemsInStock)(); }
+BOOL CStore::UnmarshalItem(int nIndex, CItem* ptr) { return (this->*CStore_UnmarshalItem)(nIndex, ptr); }
+int CStore::GetItemAmount(int nIndex) { return (this->*CStore_GetItemAmount)(nIndex); }
+ResRef CStore::GetItemName(int nIndex) { return (this->*CStore_GetItemName)(nIndex); }
 

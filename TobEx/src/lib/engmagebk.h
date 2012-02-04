@@ -3,7 +3,7 @@
 
 #include "engine.h"
 
-class CMageBook : public CEngine { //Size 14DAh
+class CScreenMageBook : public CEngine { //Size 14DAh
 //constructor: 0x7B5970
 public:
 	//AB4EAC
@@ -77,17 +77,17 @@ public:
 	int u14d6;
 };
 
-extern void (CMageBook::*CMageBook_SetLevel)(int);
-extern BOOL (CMageBook::*CMageBook_UpdatePanel)(int);
-extern CPanel& (CMageBook::*CMageBook_GetTopPanel)();
-extern BOOL (CMageBook::*CMageBook_CanContinue)();
-extern void (CMageBook::*CMageBook_ContingencySelectOnLoad)(CPanel&);
-extern void (CMageBook::*CMageBook_ContingencySelectOnUpdate)(int);
-extern bool (CMageBook::*CMageBook_AddContingencySpell)(IECString);
-extern bool (CMageBook::*CMageBook_ClearContingencySpell)(char index);
-extern void (CMageBook::*CMageBook_SetSpellContingencyState)(IECString, bool);
-extern void (CMageBook::*CMageBook_UpdateContingencySpellList)();
-extern void (CMageBook::*CMageBook_CreateContingencySpellList)(char, char);
-extern bool (CMageBook::*CMageBook_IsSpellAllowedInContingency)(int, IECString);
+extern void (CScreenMageBook::*CScreenMageBook_SetLevel)(int);
+extern BOOL (CScreenMageBook::*CScreenMageBook_UpdatePanel)(int);
+extern CPanel& (CScreenMageBook::*CScreenMageBook_GetTopPanel)();
+extern BOOL (CScreenMageBook::*CScreenMageBook_CanContinue)();
+extern void (CScreenMageBook::*CScreenMageBook_ContingencySelectOnLoad)(CPanel&);
+extern void (CScreenMageBook::*CScreenMageBook_ContingencySelectOnUpdate)(int);
+extern bool (CScreenMageBook::*CScreenMageBook_AddContingencySpell)(IECString);
+extern bool (CScreenMageBook::*CScreenMageBook_ClearContingencySpell)(char index);
+extern void (CScreenMageBook::*CScreenMageBook_SetSpellContingencyState)(IECString, bool);
+extern void (CScreenMageBook::*CScreenMageBook_UpdateContingencySpellList)();
+extern void (CScreenMageBook::*CScreenMageBook_CreateContingencySpellList)(char, char);
+extern bool (CScreenMageBook::*CScreenMageBook_IsSpellAllowedInContingency)(int, IECString);
 
 #endif //ENGMAGEBK_H

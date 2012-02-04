@@ -597,14 +597,14 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 		CPtrArray u0; //of IECPtrList AAA9A4s (11 of them)
 	} m_CGameJournal; //464ah
 
-	struct CWorldMap { //Size 1Ch
+	struct CScreenWorldMap { //Size 1Ch
 	//Constructor: 0x65CCD0
 		ResRef u0;
 		long u8[2]; //struct
 		int u10;
 		int u14;
 		int u18;
-	} m_CWorldMap; //465eh
+	} m_CScreenWorldMap; //465eh
 
 	//char+20 = hotkey for keymap
 	//0-8: [Keymap Page]
@@ -680,7 +680,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int m_nTimeStopGreyscaleTicksLeft; //4cfch, remaining timestop (Greyscale) ticks
 	int m_nDreamSepiaTicksLeft; //4d00h, remaining dream (Sepia) ticks
 	CScriptParser* m_pScriptParser; //4d04h
-	CServerStore* m_aServerStore[12]; //4d08h
+	CStore* m_aServerStore[12]; //4d08h
 	char m_nServerStoreDemands[12]; //4d38h
 	IECString u4d44;
 	IECString u4d48;

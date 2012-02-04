@@ -394,9 +394,7 @@ struct StoFileItem { //Size 1Ch
 //corresponds to 'Item for sale' extended header
 	ResRef name; //0h
 	short m_wWear; //8h, 0xFF + time until recharge in absolute game hours
-	short m_wUsage1; //ah
-	short m_wUsage2; //ch
-	short m_wUsage3; //eh
+	short m_wUsage[3]; //ah
 	unsigned int dwFlags; //10h
 	int m_nNumInStock; //14h
 	BOOL m_bInfinite; //18h

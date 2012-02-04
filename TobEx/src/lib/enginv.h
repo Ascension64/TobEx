@@ -4,7 +4,7 @@
 #include "engine.h"
 #include "itmcore.h"
 
-class CInventory : public CEngine { //Size 1424h
+class CScreenInventory : public CEngine { //Size 1424h
 public:
 	//AB09AC
 	virtual void Init(); //v14
@@ -69,9 +69,9 @@ public:
 	int u1414;
 	int u1418;
 	int u141c;
-	BOOL bWorldPaused; //from CWorld.146h;
+	BOOL bWorldPaused; //from CScreenWorld.146h;
 };
 
-extern void (CInventory::*CInventory_Init)();
+extern void (CScreenInventory::*CScreenInventory_Init)();
 
 #endif //ENGINV_H

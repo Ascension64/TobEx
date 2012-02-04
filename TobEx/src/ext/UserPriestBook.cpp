@@ -17,7 +17,7 @@ CUIButtonPriestBookUp::CUIButtonPriestBookUp(CPanel& panel, ChuFileControlInfoBa
 CUIButtonPriestBookUp::~CUIButtonPriestBookUp() {}
 
 void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
-	CPriestBook* pPriestSpell = g_pChitin->pPriestSpell;
+	CScreenPriestBook* pPriestSpell = g_pChitin->pPriestSpell;
 	CPanel& panel = pPriestSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
@@ -59,7 +59,7 @@ CUIButtonPriestBookDn::CUIButtonPriestBookDn(CPanel& panel, ChuFileControlInfoBa
 CUIButtonPriestBookDn::~CUIButtonPriestBookDn() {}
 
 void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
-	CPriestBook* pPriestSpell = g_pChitin->pPriestSpell;
+	CScreenPriestBook* pPriestSpell = g_pChitin->pPriestSpell;
 	CPanel& panel = pPriestSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;

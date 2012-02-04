@@ -3,9 +3,9 @@
 
 #include "engpriestbk.h"
 
-extern void (CPriestBook::*Tramp_CPriestBook_SetLevel)(int);
+extern void (CScreenPriestBook::*Tramp_CScreenPriestBook_SetLevel)(int);
 
-class DETOUR_CPriestBook : public CPriestBook {
+class DETOUR_CScreenPriestBook : public CScreenPriestBook {
 public:
 	void DETOUR_SetLevel(int nLevel);
 };

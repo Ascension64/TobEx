@@ -3,11 +3,11 @@
 
 #include "engrecord.h"
 
-extern void (CRecord::*Tramp_CRecord_MageBookPanelOnLoad)(CCreatureObject&);
-extern void (CRecord::*Tramp_CRecord_MageBookPanelOnUpdate)(CCreatureObject&);
-extern void (CRecord::*Tramp_CRecord_UpdateCharacter)();
+extern void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnLoad)(CCreatureObject&);
+extern void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnUpdate)(CCreatureObject&);
+extern void (CScreenRecord::*Tramp_CScreenRecord_UpdateCharacter)();
 
-class DETOUR_CRecord : public CRecord {
+class DETOUR_CScreenRecord : public CScreenRecord {
 public:
 	void DETOUR_MageBookPanelOnLoad(CCreatureObject& cre);
 	void DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre);

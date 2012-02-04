@@ -5,7 +5,7 @@
 #include "uicore.h"
 #include "objcre.h"
 
-class CCharGen : public CEngine { //Size 148Ch
+class CScreenCharGen : public CEngine { //Size 148Ch
 //Constructor: 0x715333
 public:
 	//AAF5F0
@@ -108,15 +108,15 @@ public:
 	IECString u1488;
 };
 
-extern void (CCharGen::*CCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_UpdatePanel)(int, CCreatureObject&);
-extern void (CCharGen::*CCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CCharGen::*CCharGen_InitSoundset)(CCreatureObject&);
-extern BOOL (CCharGen::*CCharGen_CanContinue)(CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_UpdatePanel)(int, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern void (CScreenCharGen::*CScreenCharGen_InitSoundset)(CCreatureObject&);
+extern BOOL (CScreenCharGen::*CScreenCharGen_CanContinue)(CCreatureObject&);
 
 #endif //ENGCHAGEN_H

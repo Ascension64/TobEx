@@ -12,7 +12,7 @@ LPCTSTR Assertion_GetReason(int Eip) {
 		return "CUICheckButtonRecMageSpell::SetSpell: spell has no icon";
 		break;
 	case 0x796F6E:
-		return "CStart::UpdatePanel: nPanelIdx == 6, 7, or out of bounds";
+		return "CScreenStart::UpdatePanel: nPanelIdx == 6, 7, or out of bounds";
 		break;
 	case 0x8AE58D:
 		return "CCreatureObject::SetAnimationSequence: pItmFileAbility->meleeIdx overflow past JAB %";

@@ -12,13 +12,13 @@ struct MemSpellContingency { //Size 14h
 	ResRef rParentSpell; //ch
 };
 
-extern void (CMageBook::*Tramp_CMageBook_SetLevel)(int);
-extern void (CMageBook::*Tramp_CMageBook_ContingencySelectOnLoad)(CPanel&);
-extern void (CMageBook::*Tramp_CMageBook_ContingencySelectOnUpdate)(int);
-extern bool (CMageBook::*Tramp_CMageBook_ClearContingencySpell)(char index);
-extern void (CMageBook::*Tramp_CMageBook_CreateContingencySpellList)(char, char);
+extern void (CScreenMageBook::*Tramp_CScreenMageBook_SetLevel)(int);
+extern void (CScreenMageBook::*Tramp_CScreenMageBook_ContingencySelectOnLoad)(CPanel&);
+extern void (CScreenMageBook::*Tramp_CScreenMageBook_ContingencySelectOnUpdate)(int);
+extern bool (CScreenMageBook::*Tramp_CScreenMageBook_ClearContingencySpell)(char index);
+extern void (CScreenMageBook::*Tramp_CScreenMageBook_CreateContingencySpellList)(char, char);
 
-class DETOUR_CMageBook : public CMageBook {
+class DETOUR_CScreenMageBook : public CScreenMageBook {
 public:
 	void DETOUR_SetLevel(int nLevel);
 	void DETOUR_ContingencySelectOnLoad(CPanel& panel);

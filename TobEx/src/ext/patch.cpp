@@ -1105,7 +1105,7 @@ void InitPatches() {
 	}
 	
 	if (pGameOptionsEx->bEngineAssBHPenaltyKit) {
-		//1. CRecord::LevelUpPanelOnLoad()
+		//1. CScreenRecord::LevelUpPanelOnLoad()
 		char bytes[] = {0x25, 0x00, 0x00, 0x08, 0x00,
 						0x85, 0xC0,
 						0x90, 0x90, 0x90, 0x90,
@@ -1126,7 +1126,7 @@ void InitPatches() {
 						0x2A, 0xCA};
 		vDataList.push_back( Data(0x6DF0EE, 33, bytes2) );
 
-		//2. CCharGen::SkillsBG1PanelOnLoad()
+		//2. CScreenCharGen::SkillsBG1PanelOnLoad()
 		char bytes3[] = {0x25, 0x00, 0x00, 0x08, 0x00,
 						0x85, 0xC0,
 						0x90, 0x90, 0x90,
@@ -1203,10 +1203,10 @@ void InitPatches() {
 
 	if (pGameOptionsEx->bEngineDisableInvPauseSP) {
 		char bytes[] = {0xEB};
-		//void CInventory::Init()
+		//void CScreenInventory::Init()
 		vDataList.push_back( Data(0x7402A8, 1, bytes) );
 
-		//void CInventory::DeInit()
+		//void CScreenInventory::DeInit()
 		vDataList.push_back( Data(0x7403D0, 1, bytes) );
 
 		char bytes2[] = {0x90, 0x90};
@@ -1244,7 +1244,7 @@ void InitPatches() {
 
 	if (pGameOptionsEx->bEngineExpandedStats) {
 		//WEIGHTALLOWANCEMOD
-		//1. CRecord::RefreshMainPanel()
+		//1. CScreenRecord::RefreshMainPanel()
 
 		//push edx
 		//call
@@ -1284,7 +1284,7 @@ void InitPatches() {
 						0x90, 0x90};
 		vDataList.push_back( Data(0x7428F6, 10, bytes6) );
 
-		//2. In CStore::?()
+		//2. In CScreenStore::?()
 
 		//push eax
 		//call
@@ -1326,7 +1326,7 @@ void InitPatches() {
 						0x90, 0x90};
 		vDataList.push_back( Data(0x7A006E, 10, bytes12) );
 
-		//3. In CWorld::?()
+		//3. In CScreenWorld::?()
 
 		//push ecx
 		//call
@@ -1458,7 +1458,7 @@ void InitPatches() {
 		vDataList.push_back( Data(0x72B3DC, 2, bytes) );
 
 		//CALL address
-		void* ptr = (void*)CCharGen_MageSchoolPanelCanContinue;
+		void* ptr = (void*)CScreenCharGen_MageSchoolPanelCanContinue;
 		DWORD address = (DWORD)ptr - 5  - 0x72B3DD;
 		char* bytes2 = (char*)&address;
 		vDataList.push_back( Data(0x72B3DE, 4, bytes2) );
@@ -1619,7 +1619,7 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bEngineExternMageSpellsCap) {
-		//1. CRecord::MageBookPanelOnLoad() - terminate loop at 200 instead of when invalid spell
+		//1. CScreenRecord::MageBookPanelOnLoad() - terminate loop at 200 instead of when invalid spell
 		//mov eax,dword ptr ss:[ebp-9C]
 		//cmp eax,0C7
 		//jl short 6E14BC
@@ -1630,7 +1630,7 @@ void InitPatches() {
 						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x6E14A3, 20, bytes1) );
 
-		//2. CCharGen::MageBookPanelOnLoad() - terminate loop at 200 instead of when invalid spell
+		//2. CScreenCharGen::MageBookPanelOnLoad() - terminate loop at 200 instead of when invalid spell
 		//mov eax,dword ptr ss:[ebp-98]
 		//cmp eax,0C8
 		//jl short 71B74B
@@ -1641,7 +1641,7 @@ void InitPatches() {
 						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x71B732, 20, bytes2) );
 
-		//3. CCharGen::AutoPickSpells() - loop end point
+		//3. CScreenCharGen::AutoPickSpells() - loop end point
 		//movzx eax,byte ptr ss:[ebp-2C]
 		//cmp eax,0C7
 		//nop
@@ -1650,7 +1650,7 @@ void InitPatches() {
 						0x90, 0x90};
 		vDataList.push_back( Data(0x72F369, 11, bytes3) );
 
-		//4. CCharGen::HasSpecialistSpells() - loop end point
+		//4. CScreenCharGen::HasSpecialistSpells() - loop end point
 		//movzx ecx,byte ptr ss:[ebp-1C]
 		//cmp eax,0C7
 		//nop

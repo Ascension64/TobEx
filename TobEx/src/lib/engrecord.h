@@ -4,7 +4,7 @@
 #include "engine.h"
 #include "uicore.h"
 
-class CRecord : public CEngine { //Size 1520h
+class CScreenRecord : public CEngine { //Size 1520h
 //Constructor: 0x6D62B2
 public:
 	//AAD6B4
@@ -119,10 +119,10 @@ public:
 	char u151f; //pad
 };
 
-extern void (CRecord::*CRecord_MageBookPanelOnLoad)(CCreatureObject&);
-extern void (CRecord::*CRecord_MageBookPanelOnUpdate)(CCreatureObject&);
-extern void (CRecord::*CRecord_UpdatePanel)(int, CCreatureObject&);
-extern CPanel& (CRecord::*CRecord_GetTopPanel)(void);
-extern void (CRecord::*CRecord_UpdateCharacter)(void);
+extern void (CScreenRecord::*CScreenRecord_MageBookPanelOnLoad)(CCreatureObject&);
+extern void (CScreenRecord::*CScreenRecord_MageBookPanelOnUpdate)(CCreatureObject&);
+extern void (CScreenRecord::*CScreenRecord_UpdatePanel)(int, CCreatureObject&);
+extern CPanel& (CScreenRecord::*CScreenRecord_GetTopPanel)(void);
+extern void (CScreenRecord::*CScreenRecord_UpdateCharacter)(void);
 
 #endif //ENGRECORD_H

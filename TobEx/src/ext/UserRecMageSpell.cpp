@@ -18,7 +18,7 @@ CUIScrollBarRecMageSpell::CUIScrollBarRecMageSpell(CPanel& panel, ChuFileControl
 void CUIScrollBarRecMageSpell::UpdatePanel() {
 	Enum eChar = ENUM_INVALID_INDEX;
 	CInfGame* pGame = g_pChitin->pGame;
-	CRecord* pCharacter = g_pChitin->pCharacter;
+	CScreenRecord* pCharacter = g_pChitin->pCharacter;
 	int nPlayerIdx = pCharacter->GetActivePlayerIdx();
 	if (nPlayerIdx < pGame->numInParty) {
 		eChar = pGame->ePlayersPartyOrder[nPlayerIdx];

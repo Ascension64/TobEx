@@ -3,9 +3,9 @@
 
 #include "enginv.h"
 
-extern void (CInventory::*Tramp_CInventory_Init)();
+extern void (CScreenInventory::*Tramp_CScreenInventory_Init)();
 
-class DETOUR_CInventory : public CInventory {
+class DETOUR_CScreenInventory : public CScreenInventory {
 public:
 	void DETOUR_Init();
 };

@@ -14,14 +14,14 @@
 #include "UserRecMageSpell.h"
 #include "UserCommon.h"
 
-void (CRecord::*Tramp_CRecord_MageBookPanelOnLoad)(CCreatureObject&) =
-	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>	(&CRecord::MageBookPanelOnLoad),	0x6E0FE6);
-void (CRecord::*Tramp_CRecord_MageBookPanelOnUpdate)(CCreatureObject&) =
-	SetFP(static_cast<void (CRecord::*)(CCreatureObject&)>	(&CRecord::MageBookPanelOnUpdate),	0x6E563F);
-void (CRecord::*Tramp_CRecord_UpdateCharacter)() =
-	SetFP(static_cast<void (CRecord::*)()>					(&CRecord::UpdateCharacter),		0x6E9F57);
+void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnLoad)(CCreatureObject&) =
+	SetFP(static_cast<void (CScreenRecord::*)(CCreatureObject&)>	(&CScreenRecord::MageBookPanelOnLoad),	0x6E0FE6);
+void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnUpdate)(CCreatureObject&) =
+	SetFP(static_cast<void (CScreenRecord::*)(CCreatureObject&)>	(&CScreenRecord::MageBookPanelOnUpdate),0x6E563F);
+void (CScreenRecord::*Tramp_CScreenRecord_UpdateCharacter)() =
+	SetFP(static_cast<void (CScreenRecord::*)()>					(&CScreenRecord::UpdateCharacter),		0x6E9F57);
 
-void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
+void DETOUR_CScreenRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	CPanel& panel = manager.GetPanel(8);
 	assert(&panel != NULL);
 	CUIScrollBarRecMageSpell& scroll = (CUIScrollBarRecMageSpell&)panel.GetUIControl(30);
@@ -31,7 +31,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return (this->*Tramp_CRecord_MageBookPanelOnLoad)(cre);
+		return (this->*Tramp_CScreenRecord_MageBookPanelOnLoad)(cre);
 	}
 
 	//clear values
@@ -40,7 +40,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	scroll.nRows = 0;
 	scroll.cplTempSpells.RemoveAll();
 
-	(this->*Tramp_CRecord_MageBookPanelOnLoad)(cre);
+	(this->*Tramp_CScreenRecord_MageBookPanelOnLoad)(cre);
 
 	if (this->bHighLevelAbility == FALSE) {
 		scroll.nValues = MageBookSpells.GetCount() / 5;
@@ -53,7 +53,7 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	return;
 }
 
-void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
+void DETOUR_CScreenRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 	CPanel& panel = manager.GetPanel(8);
 	assert(&panel != NULL);
 	CUIScrollBarRecMageSpell& scroll = (CUIScrollBarRecMageSpell&)panel.GetUIControl(30);
@@ -63,12 +63,12 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return (this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
+		return (this->*Tramp_CScreenRecord_MageBookPanelOnUpdate)(cre);
 	}
 
 	//do not apply to selecting high level abilities
 	if (this->bHighLevelAbility == TRUE) {
-		(this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
+		(this->*Tramp_CScreenRecord_MageBookPanelOnUpdate)(cre);
 		scroll.SetEnabled(FALSE);
 		scroll.SetVisible(FALSE);
 		return;
@@ -108,13 +108,13 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		}
 	}
 
-	(this->*Tramp_CRecord_MageBookPanelOnUpdate)(cre);
+	(this->*Tramp_CScreenRecord_MageBookPanelOnUpdate)(cre);
 
 	//Update on/off status of spell buttons
 	for (int i = 0; i <= 24; i++ ) {
 		Enum eChar = ENUM_INVALID_INDEX;
 		CInfGame* pGame = g_pChitin->pGame;
-		CRecord* pCharacter = g_pChitin->pCharacter;
+		CScreenRecord* pCharacter = g_pChitin->pCharacter;
 		int nPlayerIdx = pCharacter->GetActivePlayerIdx();
 		if (nPlayerIdx < pGame->numInParty) {
 			eChar = pGame->ePlayersPartyOrder[nPlayerIdx];
@@ -159,11 +159,11 @@ void DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 	return;
 }
 
-void DETOUR_CRecord::DETOUR_UpdateCharacter() {
+void DETOUR_CScreenRecord::DETOUR_UpdateCharacter() {
 	CPanel& cp = GetTopPanel();
 	assert(&cp != NULL);
 
-	(this->*Tramp_CRecord_UpdateCharacter)();
+	(this->*Tramp_CScreenRecord_UpdateCharacter)();
 
 	if (cp.index - 3 == 17) {
 

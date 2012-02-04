@@ -3,7 +3,7 @@
 
 #include "engine.h"
 
-class CPriestBook : public CEngine { //Size 1470h
+class CScreenPriestBook : public CEngine { //Size 1470h
 //constructor: 0x784820
 public:
 	void SetLevel(int);
@@ -16,7 +16,7 @@ public:
 	//0x572 - BOOL showKnownSpellIcons (?)
 };
 
-extern void (CPriestBook::*CPriestBook_SetLevel)(int);
-extern void (CPriestBook::*CPriestBook_Update)();
+extern void (CScreenPriestBook::*CScreenPriestBook_SetLevel)(int);
+extern void (CScreenPriestBook::*CScreenPriestBook_Update)();
 
 #endif //ENGPRIESTBK_H

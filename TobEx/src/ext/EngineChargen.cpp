@@ -14,31 +14,31 @@
 #include "log.h"
 #include "InfGameCommon.h"
 
-void (CCharGen::*Tramp_CCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::KitPanelOnLoad),			0x71A081);
-void (CCharGen::*Tramp_CCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MageBookPanelOnLoad),		0x71B220);
-void (CCharGen::*Tramp_CCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::KitPanelOnUpdate),			0x71E3A5);
-void (CCharGen::*Tramp_CCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MageBookPanelOnUpdate),		0x720425);
-void (CCharGen::*Tramp_CCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::ClassPanelOnUpdate),		0x720B4B);
-void (CCharGen::*Tramp_CCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MulticlassPanelOnUpdate),	0x721518);
-void (CCharGen::*Tramp_CCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CPanel&, CCreatureObject&)>	(&CCharGen::MageSchoolPanelOnUpdate),	0x721BA6);
-void (CCharGen::*Tramp_CCharGen_InitSoundset)(CCreatureObject&) =
-	SetFP(static_cast<void (CCharGen::*)(CCreatureObject&)>				(&CCharGen::InitSoundset),				0x724E37);
+void (CScreenCharGen::*Tramp_CScreenCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::KitPanelOnLoad),			0x71A081);
+void (CScreenCharGen::*Tramp_CScreenCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::MageBookPanelOnLoad),		0x71B220);
+void (CScreenCharGen::*Tramp_CScreenCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::KitPanelOnUpdate),		0x71E3A5);
+void (CScreenCharGen::*Tramp_CScreenCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::MageBookPanelOnUpdate),	0x720425);
+void (CScreenCharGen::*Tramp_CScreenCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::ClassPanelOnUpdate),		0x720B4B);
+void (CScreenCharGen::*Tramp_CScreenCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::MulticlassPanelOnUpdate),	0x721518);
+void (CScreenCharGen::*Tramp_CScreenCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CPanel&, CCreatureObject&)>	(&CScreenCharGen::MageSchoolPanelOnUpdate),	0x721BA6);
+void (CScreenCharGen::*Tramp_CScreenCharGen_InitSoundset)(CCreatureObject&) =
+	SetFP(static_cast<void (CScreenCharGen::*)(CCreatureObject&)>			(&CScreenCharGen::InitSoundset),			0x724E37);
 
-void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
+void DETOUR_CScreenCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenKit& scroll = (CUIScrollBarChargenKit&)panel.GetUIControl(15);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnLoad(): Kit scroll bar not found\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_KitPanelOnLoad(): Kit scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return (this->*Tramp_CCharGen_KitPanelOnLoad)(panel, cre);
+		return (this->*Tramp_CScreenCharGen_KitPanelOnLoad)(panel, cre);
 	}
 
 	//clear values
@@ -46,21 +46,21 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnLoad(CPanel& panel, CCreatureObject& cre)
 	scroll.nValues = 0;
 	scroll.nRows = 0;
 
-	(this->*Tramp_CCharGen_KitPanelOnLoad)(panel, cre);
+	(this->*Tramp_CScreenCharGen_KitPanelOnLoad)(panel, cre);
 
 	scroll.UpdateKnobPosition(scroll.nCurrentValue, scroll.nValues, scroll.nRows);
 
 	return;
 }
 
-void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
+void DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenMageSpell& scroll = (CUIScrollBarChargenMageSpell&)panel.GetUIControl(31);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(): Chargen mage spell selection scroll bar not found\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnLoad(): Chargen mage spell selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return (this->*Tramp_CCharGen_MageBookPanelOnLoad)(panel, cre);
+		return (this->*Tramp_CScreenCharGen_MageBookPanelOnLoad)(panel, cre);
 	}
 
 	//clear values
@@ -69,14 +69,14 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 	scroll.nRows = 0;
 	scroll.cplTempSpells.RemoveAll();
 
-	(this->*Tramp_CCharGen_MageBookPanelOnLoad)(panel, cre);
+	(this->*Tramp_CScreenCharGen_MageBookPanelOnLoad)(panel, cre);
 
 	scroll.nValues = MageBookSpells.GetCount() / 6;
 	if (MageBookSpells.GetCount() % 6) scroll.nValues++;
 	scroll.nRows = 4;
 
 	if (pGameOptionsEx->bDebugVerbose) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(): nMageSpells(%d), nScrollValues(%d)\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnLoad(): nMageSpells(%d), nScrollValues(%d)\r\n";
 		console.write(lpsz, 2, MageBookSpells.GetCount(), max(scroll.nValues - scroll.nRows, 0));
 		L.timestamp();
 		L.append(lpsz, 2, MageBookSpells.GetCount(), scroll.nValues);
@@ -87,7 +87,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureObject&
 	return;
 }
 
-void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+void DETOUR_CScreenCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(6);
 	pScrollActive = &scroll;
 	Object& o = cre.oBase;
@@ -106,7 +106,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 	CUICheckButtonChargenKit& option10 = (CUICheckButtonChargenKit&)panel.GetUIControl(14);
 	CUICheckButtonChargenKit& option11 = (CUICheckButtonChargenKit&)panel.GetUIControl(16);
 
-	CCharGen* pCreateChar = g_pChitin->pCreateChar;
+	CScreenCharGen* pCreateChar = g_pChitin->pCreateChar;
 	CInfGame* pGame = g_pChitin->pGame;
 
 	assert(&option1 != NULL);
@@ -124,11 +124,11 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	if (&scrollKit == NULL ||
 		&option11 == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(): Kit selection scroll bar or button 11 not found\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_KitPanelOnUpdate(): Kit selection scroll bar or button 11 not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return (this->*Tramp_CCharGen_KitPanelOnUpdate)(panel, cre);
+		return (this->*Tramp_CScreenCharGen_KitPanelOnUpdate)(panel, cre);
 	}
 
 	IECString sClass, sRace, sKitName, sAlignment, sRowName, sKitFile;
@@ -484,7 +484,7 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 
 	if (pGameOptionsEx->bDebugVerbose) {
 		
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(): nKits(%d), nScrollValues(%d), wKit(0x%X)\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_KitPanelOnUpdate(): nKits(%d), nScrollValues(%d), wKit(0x%X)\r\n";
 		console.write(lpsz, 3, Kit_Class_Race.nRows, max(scrollKit.nValues - scrollKit.nRows, 0), dwKit);
 		L.timestamp();
 		L.append(lpsz, 3, Kit_Class_Race.nRows, scrollKit.nValues, dwKit);
@@ -493,14 +493,14 @@ void DETOUR_CCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObject& cr
 	return;
 };
 
-void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+void DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
 	CUIScrollBarChargenMageSpell& scroll = (CUIScrollBarChargenMageSpell&)panel.GetUIControl(31);
 	if (&scroll == NULL) {
-		LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Chargen mage spell selection scroll bar not found\r\n";
+		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnUpdate(): Chargen mage spell selection scroll bar not found\r\n";
 		console.write(lpsz);
 		L.timestamp();
 		L.append(lpsz);
-		return (this->*Tramp_CCharGen_MageBookPanelOnUpdate)(panel, cre);
+		return (this->*Tramp_CScreenCharGen_MageBookPanelOnUpdate)(panel, cre);
 	}
 
 	//Depending on offset in MageBookSpells, transfer spells to/from temporary spell pile
@@ -511,7 +511,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		int i = nSliderCount - nPileCount;
 		while (i) {
 			if (MageBookSpells.IsEmpty()) {
-				LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Mage book is empty\r\n";
+				LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnUpdate(): Mage book is empty\r\n";
 				console.write(lpsz);
 				L.timestamp();
 				L.append(lpsz);
@@ -526,7 +526,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		int i = nPileCount - nSliderCount;
 		while (i) {
 			if (scroll.cplTempSpells.IsEmpty()) {
-				LPCTSTR lpsz = "DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(): Mage spell pile is empty\r\n";
+				LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnUpdate(): Mage spell pile is empty\r\n";
 				console.write(lpsz);
 				L.timestamp();
 				L.append(lpsz);
@@ -537,7 +537,7 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 		}
 	}
 
-	(this->*Tramp_CCharGen_MageBookPanelOnUpdate)(panel, cre);
+	(this->*Tramp_CScreenCharGen_MageBookPanelOnUpdate)(panel, cre);
 
 	//Update on/off status of spell buttons
 	for (int i = 2; i <= 25; i++ ) {
@@ -571,8 +571,8 @@ void DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate(CPanel& panel, CCreatureObjec
 	return;
 }
 
-void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
-	if (!pRuleEx->m_ClassRaceReq.m_2da.bLoaded) return (this->*Tramp_CCharGen_ClassPanelOnUpdate)(panel, cre);
+void DETOUR_CScreenCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+	if (!pRuleEx->m_ClassRaceReq.m_2da.bLoaded) return (this->*Tramp_CScreenCharGen_ClassPanelOnUpdate)(panel, cre);
 
 	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(12);
 	pScrollActive = &scroll;
@@ -629,8 +629,8 @@ void DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate(CPanel& panel, CCreatureObject& 
 	return;
 }
 
-void DETOUR_CCharGen::DETOUR_MulticlassPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
-	if (!pRuleEx->m_ClassRaceReq.m_2da.bLoaded) return (this->*Tramp_CCharGen_MulticlassPanelOnUpdate)(panel, cre);
+void DETOUR_CScreenCharGen::DETOUR_MulticlassPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+	if (!pRuleEx->m_ClassRaceReq.m_2da.bLoaded) return (this->*Tramp_CScreenCharGen_MulticlassPanelOnUpdate)(panel, cre);
 
 	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(13);
 	pScrollActive = &scroll;
@@ -655,8 +655,8 @@ void DETOUR_CCharGen::DETOUR_MulticlassPanelOnUpdate(CPanel& panel, CCreatureObj
 	return;
 }
 
-void DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
-	if (!pRuleEx->m_MageSchoolRaceReq.m_2da.bLoaded) return (this->*Tramp_CCharGen_MageSchoolPanelOnUpdate)(panel, cre);
+void DETOUR_CScreenCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObject& cre) {
+	if (!pRuleEx->m_MageSchoolRaceReq.m_2da.bLoaded) return (this->*Tramp_CScreenCharGen_MageSchoolPanelOnUpdate)(panel, cre);
 
 	CUIScrollBar& scroll = (CUIScrollBar&)panel.GetUIControl(10);
 	pScrollActive = &scroll;
@@ -720,12 +720,12 @@ void DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObj
 	return;
 }
 
-void DETOUR_CCharGen::DETOUR_InitSoundset(CCreatureObject& cre) {
-	(this->*Tramp_CCharGen_InitSoundset)(cre);
+void DETOUR_CScreenCharGen::DETOUR_InitSoundset(CCreatureObject& cre) {
+	(this->*Tramp_CScreenCharGen_InitSoundset)(cre);
 	EngineCommon_ApplySoundset(cre);
 	return;
 }
 
-BOOL CCharGen_MageSchoolPanelCanContinue(CCreatureObject& cre) {
+BOOL CScreenCharGen_MageSchoolPanelCanContinue(CCreatureObject& cre) {
 	return g_pChitin->pGame->IsMageSchoolAllowed(cre.GetKitUnusableFlag(), cre.oBase.Race);
 }

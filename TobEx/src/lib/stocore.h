@@ -15,16 +15,16 @@ struct ResStoContainer { //Size 10h
 	ResRef name; //8h
 };
 
-struct CServerStore { //Size DCh
+struct CStore { //Size DCh
 //constructor: 0x643CB0
 public:
-	CServerStore();
-	CServerStore& Construct() { return *this; } //dummy
+	CStore();
+	CStore& Construct() { return *this; } //dummy
 
-	CServerStore(ResRef& rName);
-	CServerStore& Construct(ResRef& rName) { return *this; } //dummy
+	CStore(ResRef& rName);
+	CStore& Construct(ResRef& rName) { return *this; } //dummy
 
-	~CServerStore();
+	~CStore();
 	void Deconstruct() {} //dummy
 
 	void Unmarshal(ResRef& rName);
@@ -46,13 +46,13 @@ public:
 	BOOL bUnmarshaled; //d8h
 };
 
-extern CServerStore& (CServerStore::*CServerStore_Construct_0)();
-extern CServerStore& (CServerStore::*CServerStore_Construct_1_ResRef)(ResRef&);
-extern void (CServerStore::*CServerStore_Deconstruct)();
-extern void (CServerStore::*CServerStore_Unmarshal)(ResRef&);
-extern int (CServerStore::*CServerStore_GetNumItemsInStock)();
-extern int (CServerStore::*CServerStore_GetItemAmount)(int);
-extern BOOL (CServerStore::*CServerStore_UnmarshalItem)(int, CItem*);
-extern ResRef (CServerStore::*CServerStore_GetItemName)(int);
+extern CStore& (CStore::*CStore_Construct_0)();
+extern CStore& (CStore::*CStore_Construct_1_ResRef)(ResRef&);
+extern void (CStore::*CStore_Deconstruct)();
+extern void (CStore::*CStore_Unmarshal)(ResRef&);
+extern int (CStore::*CStore_GetNumItemsInStock)();
+extern int (CStore::*CStore_GetItemAmount)(int);
+extern BOOL (CStore::*CStore_UnmarshalItem)(int, CItem*);
+extern ResRef (CStore::*CStore_GetItemName)(int);
 
 #endif //STOCORE_H

@@ -13,7 +13,7 @@ STRREF (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitHelpText
 	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>		(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
 
 unsigned int DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
-	CCharGen* pCreateChar = g_pChitin->pCreateChar;
+	CScreenCharGen* pCreateChar = g_pChitin->pCreateChar;
 	assert(pCreateChar != NULL);
 	CPanel& panel = pCreateChar->manager.GetPanel(22);
 	assert(&panel != NULL);
@@ -87,7 +87,7 @@ unsigned int DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 }
 
 STRREF DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitHelpText(Object& o) {
-	CCharGen* pCreateChar = g_pChitin->pCreateChar;
+	CScreenCharGen* pCreateChar = g_pChitin->pCreateChar;
 	assert(pCreateChar != NULL);
 	CPanel& panel = pCreateChar->manager.GetPanel(22);
 	assert(&panel != NULL);

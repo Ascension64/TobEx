@@ -8,6 +8,7 @@
 #include "engrecord.h"
 #include "engpriestbk.h"
 #include "engmagebk.h"
+#include "engstore.h"
 #include "engworld.h"
 #include "msgcore.h"
 #include "network.h"
@@ -302,22 +303,22 @@ public:
 	CInfGame* pGame; //42bah
 
 	//21 objects in CHUIObjects IECPtrList in this order
-	void* u42be; //size 0xfe, CStartingEngine
+	void* u42be; //size 0xfe, CScreenStartingEngine
 	void* pBaldurProjector; //42c2h, size 0x6d0, uses NORMAL.BAM, for movies
 	void* u42c6; //size 0x212, uses SPLASHSC.2DA
-	CRecord* pCharacter; //42cah, size 0x1520
-	CCharGen* pCreateChar; //42ceh, GUICG
-	CInventory* pInventory; //42d2h, GUIINV
+	CScreenRecord* pCharacter; //42cah, size 0x1520
+	CScreenCharGen* pCreateChar; //42ceh, GUICG
+	CScreenInventory* pInventory; //42d2h, GUIINV
 	void* u42d6; //size 0xeaa, GUIJRNL
 	void* u42da; //size 0xb84, GUILOAD
 	void* u42de; //size 0x1376, GUIMAP
 	void* u42e2; //size 0xe9c, GUIOPT
-	CPriestBook* pPriestSpell; //42e6h, size 0x1470, GUIPR
+	CScreenPriestBook* pPriestSpell; //42e6h, size 0x1470, GUIPR
 	void* u42ea; //size 0xe8c, GUISAVE
-	CStart* pStart; //42eeh, START
-	CMageBook* pWizSpell; //42f2h, size 0x14da, GUIMG
-	CWorld* pWorld; //42f6h, GUIW
-	CStore* pStore; //42fah, size 0x148a, GUISTORE
+	CScreenStart* pStart; //42eeh, START
+	CScreenMageBook* pWizSpell; //42f2h, size 0x14da, GUIMG
+	CScreenWorld* pWorld; //42f6h, GUIW
+	CScreenStore* pStore; //42fah, size 0x148a, GUISTORE
 	void* u42fe; //size 0x1384, pMultiplayer, GUIMP
 	void* u4302; //size 0xeb0, GUICONN
 	void* u4306; //size 0x1a44, GUIWMAP

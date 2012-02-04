@@ -313,6 +313,7 @@
 //! 0xAAB914 CMessageSpriteUpdate
 //0xAAB930, 28h, CItemPropertiesList, constructor: 0x5E998E
 //0xAAB94C, 2ah, unsigned char bUseList0, pad, CPtrListAAB968 (CMessageStorePartyLocations)
+//0xAAb980, 3ch, Object oHost, Object oCustomer, ResRef rStore (CMessageStartStore)
 //0xAAB9B8, eh, bool bNonPausingDialogue, pad (CMessageSetNonPausingDialogue)
 //0xAAB9D4, 14h, ResRef
 //0xAAB9F0, 28h, CObjectList (CMessageSetObjectProtections)

@@ -3,6 +3,7 @@
 #include "animext.h"
 #include "chitin.h"
 #include "engine.h"
+#include "engstore.h"
 #include "infcursor.h"
 #include "infbtarr.h"
 #include "infgame.h"
@@ -40,7 +41,7 @@
 #define SIZE_CANIMATIONE000			0x3278
 #define SIZE_CBALDURCHITIN			0x720C
 #define SIZE_CBUTTONARRAY			0x1820
-#define SIZE_CCHARGEN				0x148C
+#define SIZE_CSCREENCHARGEN			0x148C
 #define SIZE_CCONTAINEROBJECT		0x0712
 #define SIZE_CCREATUREOBJECT		0x6774
 #define SIZE_CENGINE				0x00FE
@@ -48,7 +49,7 @@
 #define SIZE_CGUIMAIN				0x19E8
 #define SIZE_CINFCURSOR				0x08F6
 #define SIZE_CINFGAME				0x4DC8
-#define SIZE_CINVENTORY				0x1424
+#define SIZE_CSCREENINVENTORY		0x1424
 #define SIZE_CMESSAGEHANDLER		0x0114
 #define SIZE_CNETWORK				0x0F3A
 #define SIZE_CNETWORKWINDOW			0x0088
@@ -56,15 +57,15 @@
 #define SIZE_CRESHANDLER			0x02A8
 #define SIZE_CSOUND					0x006A
 #define SIZE_CSOUNDMIXER			0x28DA
-#define SIZE_CRECORD				0x1520
-#define SIZE_CSERVERSTORE			0x00DC
-#define SIZE_CSTORE					0x148A
+#define SIZE_CSCREENRECORD			0x1520
+#define SIZE_CSTORE					0x00DC
+#define SIZE_CSCREENSTORE			0x148A
 #define SIZE_CTLKTBL				0x00A6
 #define SIZE_CUITEXTAREA			0x0AA8
 #define SIZE_CVIDEO					0x0168
 #define SIZE_CVIDEOMODE				0x0732
 #define SIZE_CVISUALEFFECTVIDCELL	0x03A0
-#define SIZE_CWORLD					0x124C
+#define SIZE_CSCREENWORLD			0x124C
 
 void CheckSize(LPCTSTR lpszName, size_t nExpectedSize, size_t nActualSize) {
 	if (nActualSize != nExpectedSize) console.write("Debug(): %s has incorrect size 0x%X (expected 0x%X)\r\n", 3, lpszName, nActualSize, nExpectedSize);
@@ -91,7 +92,7 @@ void Debug() {
 	_CheckSize(SIZE_CANIMATIONE000, CAnimationE000);
 	_CheckSize(SIZE_CBALDURCHITIN, CBaldurChitin);
 	_CheckSize(SIZE_CBUTTONARRAY, CButtonArray);
-	_CheckSize(SIZE_CCHARGEN, CCharGen);
+	_CheckSize(SIZE_CSCREENCHARGEN, CScreenCharGen);
 	_CheckSize(SIZE_CCONTAINEROBJECT, CContainerObject);
 	_CheckSize(SIZE_CCREATUREOBJECT, CCreatureObject);
 	_CheckSize(SIZE_CENGINE, CEngine);
@@ -99,22 +100,22 @@ void Debug() {
 	_CheckSize(SIZE_CGUIMAIN, CBaldurChitin::CGUIMain);
 	_CheckSize(SIZE_CINFCURSOR, CInfCursor);
 	_CheckSize(SIZE_CINFGAME, CInfGame);
-	_CheckSize(SIZE_CINVENTORY, CInventory);
+	_CheckSize(SIZE_CSCREENINVENTORY, CScreenInventory);
 	_CheckSize(SIZE_CMESSAGEHANDLER, CMessageHandler);
 	_CheckSize(SIZE_CNETWORK, CNetwork);
 	_CheckSize(SIZE_CNETWORKWINDOW, CNetworkWindow);
 	_CheckSize(SIZE_COBJECTMARKER, CObjectMarker);
 	_CheckSize(SIZE_CSOUND, CSound);
 	_CheckSize(SIZE_CSOUNDMIXER, CSoundMixer);
-	_CheckSize(SIZE_CRECORD, CRecord);
-	_CheckSize(SIZE_CSERVERSTORE, CServerStore);
+	_CheckSize(SIZE_CSCREENRECORD, CScreenRecord);
 	_CheckSize(SIZE_CSTORE, CStore);
+	_CheckSize(SIZE_CSCREENSTORE, CScreenStore);
 	_CheckSize(SIZE_CTLKTBL, CTlkTbl);
 	_CheckSize(SIZE_CUITEXTAREA, CUITextArea);
 	_CheckSize(SIZE_CVIDEO, CVideo);
 	_CheckSize(SIZE_CVIDEOMODE, CVideoMode);
 	_CheckSize(SIZE_CVISUALEFFECTVIDCELL, CVisualEffectVidCell);
-	_CheckSize(SIZE_CWORLD, CWorld);
+	_CheckSize(SIZE_CSCREENWORLD, CScreenWorld);
 
 	//to check location of members, just replace the temp object type, member name and expected location
 	//CCreatureObject temp;

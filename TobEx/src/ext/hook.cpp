@@ -61,8 +61,8 @@ void InitHooks() {
 		DetourFunction(Tramp_WriteToFile, DETOUR_WriteToFile);
 
 	if (pGameOptionsEx->bDebugLogDialogueBar) {
-		DetourMemberFunction(Tramp_CWorld_PrintToConsole_6, DETOUR_CWorld::DETOUR_PrintToConsoleColor)
-		DetourMemberFunction(Tramp_CWorld_PrintToConsole_4, DETOUR_CWorld::DETOUR_PrintToConsole)
+		DetourMemberFunction(Tramp_CScreenWorld_PrintToConsole_6, DETOUR_CScreenWorld::DETOUR_PrintToConsoleColor)
+		DetourMemberFunction(Tramp_CScreenWorld_PrintToConsole_4, DETOUR_CScreenWorld::DETOUR_PrintToConsole)
 	}
 
 	if (pGameOptionsEx->bDebugLogFailures)
@@ -225,7 +225,7 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 
 	if (pGameOptionsEx->bEngineDisableInvPauseSP)
-		DetourMemberFunction(Tramp_CInventory_Init, DETOUR_CInventory::DETOUR_Init);
+		DetourMemberFunction(Tramp_CScreenInventory_Init, DETOUR_CScreenInventory::DETOUR_Init);
 
 	if (pGameOptionsEx->bEngineDisableEndPlayer1Dead)
 		DetourMemberFunction(Tramp_CInfGame_SetLoseCutscene, DETOUR_CInfGame::DETOUR_SetLoseCutscene);
@@ -257,9 +257,9 @@ void InitHooks() {
 		DetourFunction(Tramp_CAnimation_IsPlayableAnimation, DETOUR_CAnimation::DETOUR_IsPlayableAnimation);
 		DetourMemberFunction(Tramp_CAnimation5000_Construct, DETOUR_CAnimation5000::DETOUR_Construct);
 		DetourMemberFunction(Tramp_CRuleTables_IsMageSchoolAllowed, DETOUR_CRuleTables::DETOUR_IsMageSchoolAllowed);
-		DetourMemberFunction(Tramp_CCharGen_ClassPanelOnUpdate, DETOUR_CCharGen::DETOUR_ClassPanelOnUpdate);
-		DetourMemberFunction(Tramp_CCharGen_MulticlassPanelOnUpdate, DETOUR_CCharGen::DETOUR_MulticlassPanelOnUpdate);
-		DetourMemberFunction(Tramp_CCharGen_MageSchoolPanelOnUpdate, DETOUR_CCharGen::DETOUR_MageSchoolPanelOnUpdate);
+		DetourMemberFunction(Tramp_CScreenCharGen_ClassPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_ClassPanelOnUpdate);
+		DetourMemberFunction(Tramp_CScreenCharGen_MulticlassPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_MulticlassPanelOnUpdate);
+		DetourMemberFunction(Tramp_CScreenCharGen_MageSchoolPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_MageSchoolPanelOnUpdate);
 	}
 
 	if (pGameOptionsEx->bEngineProficiencyRestrictions)
@@ -303,8 +303,8 @@ void InitHooks() {
 	}
 
 	if (pGameOptionsEx->bSoundSoundsetSubtitles) {
-		DetourMemberFunction(Tramp_CRecord_UpdateCharacter, DETOUR_CRecord::DETOUR_UpdateCharacter);
-		DetourMemberFunction(Tramp_CCharGen_InitSoundset, DETOUR_CCharGen::DETOUR_InitSoundset);
+		DetourMemberFunction(Tramp_CScreenRecord_UpdateCharacter, DETOUR_CScreenRecord::DETOUR_UpdateCharacter);
+		DetourMemberFunction(Tramp_CScreenCharGen_InitSoundset, DETOUR_CScreenCharGen::DETOUR_InitSoundset);
 	}
 
 	if (pGameOptionsEx->bTriggerExpandedTriggers) {
@@ -327,40 +327,40 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CUICheckButtonMageBookContChoice_OnLClicked, DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked);
 		DetourMemberFunction(Tramp_CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase, DETOUR_CUICheckButtonMageBookContSelected::DETOUR_Construct);
 		DetourMemberFunction(Tramp_CUICheckButtonMageBookContSelected_OnLClicked, DETOUR_CUICheckButtonMageBookContSelected::DETOUR_OnLClicked);
-		DetourMemberFunction(Tramp_CMageBook_ContingencySelectOnLoad, DETOUR_CMageBook::DETOUR_ContingencySelectOnLoad);
-		DetourMemberFunction(Tramp_CMageBook_ContingencySelectOnUpdate, DETOUR_CMageBook::DETOUR_ContingencySelectOnUpdate);
-		DetourMemberFunction(Tramp_CMageBook_ClearContingencySpell, DETOUR_CMageBook::DETOUR_ClearContingencySpell);
-		DetourMemberFunction(Tramp_CMageBook_CreateContingencySpellList, DETOUR_CMageBook::DETOUR_CreateContingencySpellList);
+		DetourMemberFunction(Tramp_CScreenMageBook_ContingencySelectOnLoad, DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnLoad);
+		DetourMemberFunction(Tramp_CScreenMageBook_ContingencySelectOnUpdate, DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate);
+		DetourMemberFunction(Tramp_CScreenMageBook_ClearContingencySpell, DETOUR_CScreenMageBook::DETOUR_ClearContingencySpell);
+		DetourMemberFunction(Tramp_CScreenMageBook_CreateContingencySpellList, DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList);
 	}
 
 	if (pGameOptionsEx->bUserExternMageSpellHiding)
 		DetourMemberFunction(Tramp_CRuleTables_GetMageSpellRefAutoPick, DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick);
 
 	if (pGameOptionsEx->bUserChargenMageSpellScroll) {
-		DetourMemberFunction(Tramp_CCharGen_MageBookPanelOnUpdate, DETOUR_CCharGen::DETOUR_MageBookPanelOnUpdate);
-		DetourMemberFunction(Tramp_CCharGen_MageBookPanelOnLoad, DETOUR_CCharGen::DETOUR_MageBookPanelOnLoad);
+		DetourMemberFunction(Tramp_CScreenCharGen_MageBookPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnUpdate);
+		DetourMemberFunction(Tramp_CScreenCharGen_MageBookPanelOnLoad, DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnLoad);
 	}
 
 	if (pGameOptionsEx->bUserChargenKitSelectScroll) {
-		DetourMemberFunction(Tramp_CCharGen_KitPanelOnUpdate, DETOUR_CCharGen::DETOUR_KitPanelOnUpdate);
-		DetourMemberFunction(Tramp_CCharGen_KitPanelOnLoad, DETOUR_CCharGen::DETOUR_KitPanelOnLoad);
+		DetourMemberFunction(Tramp_CScreenCharGen_KitPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_KitPanelOnUpdate);
+		DetourMemberFunction(Tramp_CScreenCharGen_KitPanelOnLoad, DETOUR_CScreenCharGen::DETOUR_KitPanelOnLoad);
 		DetourMemberFunction(Tramp_CUICheckButtonChargenKit_GetKitId, DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId);
 		DetourMemberFunction(Tramp_CUICheckButtonChargenKit_GetKitHelpText, DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitHelpText);
 	}
 
 	if (pGameOptionsEx->bUserRecordMageSpellScroll) {
-		DetourMemberFunction(Tramp_CRecord_MageBookPanelOnUpdate, DETOUR_CRecord::DETOUR_MageBookPanelOnUpdate);
-		DetourMemberFunction(Tramp_CRecord_MageBookPanelOnLoad, DETOUR_CRecord::DETOUR_MageBookPanelOnLoad);
+		DetourMemberFunction(Tramp_CScreenRecord_MageBookPanelOnUpdate, DETOUR_CScreenRecord::DETOUR_MageBookPanelOnUpdate);
+		DetourMemberFunction(Tramp_CScreenRecord_MageBookPanelOnLoad, DETOUR_CScreenRecord::DETOUR_MageBookPanelOnLoad);
 	}
 
 	if (pGameOptionsEx->bUserMageBookScroll) {
-		DetourMemberFunction(Tramp_CMageBook_SetLevel, DETOUR_CMageBook::DETOUR_SetLevel);
+		DetourMemberFunction(Tramp_CScreenMageBook_SetLevel, DETOUR_CScreenMageBook::DETOUR_SetLevel);
 		DetourMemberFunction(Tramp_CCreatureObject_GetKnownSpellMage, DETOUR_CCreatureObject::DETOUR_GetKnownSpellMage);
 		DetourMemberFunction(Tramp_CCreatureObject_AddMemSpellMage, DETOUR_CCreatureObject::DETOUR_AddMemSpellMage);
 	}
 
 	if (pGameOptionsEx->bUserPriestBookScroll) {
-		DetourMemberFunction(Tramp_CPriestBook_SetLevel, DETOUR_CPriestBook::DETOUR_SetLevel);
+		DetourMemberFunction(Tramp_CScreenPriestBook_SetLevel, DETOUR_CScreenPriestBook::DETOUR_SetLevel);
 		DetourMemberFunction(Tramp_CCreatureObject_GetKnownSpellPriest, DETOUR_CCreatureObject::DETOUR_GetKnownSpellPriest);
 		DetourMemberFunction(Tramp_CCreatureObject_AddMemSpellPriest, DETOUR_CCreatureObject::DETOUR_AddMemSpellPriest);
 	}

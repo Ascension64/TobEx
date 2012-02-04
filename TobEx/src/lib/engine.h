@@ -141,7 +141,7 @@ public:
 	int nTimeElapsed; //1ch
 };
 
-class CStart : public CEngine { //Size 680h
+class CScreenStart : public CEngine { //Size 680h
 //constructor: 0x7934E2
 public:
 	//AB3BEC
@@ -160,76 +160,6 @@ public:
 	int u15c[8];
 	int u17c;
 	CVidFont u184; //STONESML
-};
-
-class CStore : public CEngine { //Size 148Ah
-//constructor: 0x799A53
-public:
-	//AB3FD4
-	virtual void v0() {}
-
-	CHotkey ufe[91];
-	int u3d6[22];
-	char u42e[3];
-	char u431;
-	char u432;
-	char u433; //pad
-	int u434;
-	CPanel* m_pMainPanel; //438h
-	int u43c;
-	IECPtrList u440;
-	int u45c;
-	IECPtrList u460;
-	/*//2Ch size
-	ResRef 0h;
-	CItem* pItem; //8h
-	BOOL bSelected; //ch
-	int u10;
-	int nIndex; //14h
-	int u18;
-	unsigned int nSellPrice; //1ch
-	int u20;
-	int u24;
-	int nQuantity; //28h
-	*/
-
-	int u47c;
-	IECPtrList u480;
-	int u49c;
-	IECPtrList u4a0;
-	int u4bc;
-	ResRef u4c0;
-	ResRef u4c8;
-	int u4d0[4];
-	CServerStore* m_pServerStore; //4e0h
-	int u4e4;
-	int u4e8;
-	int u4ec;
-	int u4f0;
-	int u4f4;
-	int u4f8;
-	Object u4fc;
-	Object u510;
-	int u524;
-	int u528;
-	int u52c;
-	IECPtrList u530;
-	int u54c[2];
-	ResRef u554;
-	int u55c;
-	int u560;
-	int u564;
-	int u568[6];
-	char u580;
-	char u581; //pad
-	CVidFont u582;
-	CVidFont ua7e;
-	CVidFont uf7a;
-	int u1476;
-	int u147a;
-	int u147e;
-	int u1482;
-	int u1486;
 };
 
 #endif //ENGINE_H

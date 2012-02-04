@@ -1,6 +1,6 @@
 #include "enginv.h"
 
-void (CInventory::*CInventory_Init)() =
-	SetFP(static_cast<void (CInventory::*)()>	(&CInventory::Init),	0x740178);
+void (CScreenInventory::*CScreenInventory_Init)() =
+	SetFP(static_cast<void (CScreenInventory::*)()>	(&CScreenInventory::Init),	0x740178);
 
-void CInventory::Init() { return (this->*CInventory_Init)(); }
+void CScreenInventory::Init() { return (this->*CScreenInventory_Init)(); }

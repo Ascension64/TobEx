@@ -31,7 +31,8 @@ Beta 0023
 -Damage Fix: Additionally fixes a memory leak bug when fist damage would make the target unconscious
 -Dexterity Mod: Added information to reference that this hack also fixes incorrect wrapping of attribute values
 -Save Vs <> Mod: Added information to reference that these hacks also fix incorrect wrapping of save values
--Enable PickpocketFailed Trigger: Re-implemented the hack, now sends PickPocketFailed() in addition to the original AttackedBy() trigger, moved to core hacks, now overrides tob_hacks
+-Enable PickpocketFailed Trigger: Re-implemented the hack, old hack has been renamed (see below), now sends PickPocketFailed() in addition to the original AttackedBy() trigger, moved to core hacks, now overrides tob_hacks
+-PickpocketFailed Trigger Only: Renamed from the previous tweak hack Enabled PickpocketFailed Trigger
 -Enlarge Tooltip Scroll: Fixed the DDERR_INVALIDRECT issue in software renderer causing the tooltip to get stuck on the screen, re-enabled by default
 -Remain Hidden On Pickpocket Success: Re-implemented the hack, re-classified the hack as of type Action, now overrides tob_hacks
 -Scrollable Mage Spellbook: Fixed a bug in calculating the maximum scroll bar position

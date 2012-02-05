@@ -513,7 +513,6 @@ void __stdcall CCreatureObject_JoinParty_UpdateClassAbilities(CCreatureObject& c
 	return;
 }
 
-
 BOOL DETOUR_CCreatureObject::DETOUR_EvaluateTrigger(Trigger& t) {
 	if (0) IECString("DETOUR_CCreatureObject::DETOUR_EvaluateTrigger");
 
@@ -617,20 +616,32 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		//failed
 		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_FAILED, 0, 0, 0, -1, 0, IECString(""));
 
-		Trigger tAttackedBy(TRIGGER_ATTACKED_BY, this->o, 0);
-		CMessageSetTrigger* pMsgST = IENew CMessageSetTrigger();
-		pMsgST->eTarget = creTarget.e;
-		pMsgST->eSource = this->e;
-		pMsgST->t = tAttackedBy;
-		g_pChitin->messages.Send(*pMsgST, FALSE);
+		if (!pGameOptionsEx->bTriggerPickpocketFailedOnly) {
+			Trigger tAttackedBy(TRIGGER_ATTACKED_BY, this->o, 0);
+			CMessageSetTrigger* pMsgST = IENew CMessageSetTrigger();
+			pMsgST->eTarget = creTarget.e;
+			pMsgST->eSource = this->e;
+			pMsgST->t = tAttackedBy;
+			g_pChitin->messages.Send(*pMsgST, FALSE);
+		}
 
-		if (pGameOptionsEx->bTriggerPickpocketFailed) {
+		if (pGameOptionsEx->bTriggerPickpocketFailed ||
+			pGameOptionsEx->bTriggerPickpocketFailedOnly) {
 			Trigger tPickpocketFailed(TRIGGER_PICKPOCKET_FAILED, this->o, 0);
 			CMessageSetTrigger* pMsgST2 = IENew CMessageSetTrigger();
 			pMsgST2->eTarget = creTarget.e;
 			pMsgST2->eSource = this->e;
 			pMsgST2->t = tPickpocketFailed;
 			g_pChitin->messages.Send(*pMsgST2, FALSE);
+		}
+
+		if (pGameOptionsEx->bTriggerPickpocketFailedOnly) {
+			CMessageFaceTalker* pMsgFT = IENew CMessageFaceTalker();
+			pMsgFT->eTarget = creTarget.e;
+			pMsgFT->eSource = creTarget.e;
+			pMsgFT->eTalker = ENUM_INVALID_INDEX;
+			pMsgFT->nTicks = 0;
+			g_pChitin->messages.Send(*pMsgFT, FALSE);
 		}
 
 		if (pGameOptionsEx->bActionPickpocketRemainHidden &&

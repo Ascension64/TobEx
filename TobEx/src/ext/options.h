@@ -145,6 +145,7 @@ struct CGameOptionsEx {
 	BOOL bTriggerExpandedTriggers;
 	BOOL bTriggerKitFix;
 	BOOL bTriggerOptimiseBagSearch;
+	BOOL bTriggerPickpocketFailedOnly;
 
 	BOOL bUserKitsExtend;
 	BOOL bUserContingencySelectSpell;

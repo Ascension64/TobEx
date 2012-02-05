@@ -148,6 +148,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bTriggerExpandedTriggers = FALSE;
 	bTriggerKitFix = FALSE;
 	bTriggerOptimiseBagSearch = FALSE;
+	bTriggerPickpocketFailedOnly = FALSE;
 
 	bUserKitsExtend = FALSE;
 	bUserContingencySelectSpell = FALSE;
@@ -306,10 +307,11 @@ void CGameOptionsEx::Init() {
 
 	bStoreItemRechargeFix = GetCoreIniValue("Store", "Item Recharge in Bag Fix");
 
-	bTriggerPickpocketFailed = GetTweakIniValue("Trigger", "Enable PickpocketFailed Trigger");
+	bTriggerPickpocketFailed = GetCoreIniValue("Trigger", "Enable PickpocketFailed Trigger");
 	bTriggerExpandedTriggers = GetCoreIniValue("Trigger", "Expanded Triggers");
 	bTriggerKitFix = GetCoreIniValue("Trigger", "Kit Trigger Fix");
 	bTriggerOptimiseBagSearch = GetCoreIniValue("Trigger", "Optimise Bag Search Code");
+	bTriggerPickpocketFailedOnly = GetTweakIniValue("Tweak", "Trigger:PickpocketFailed Trigger Only");
 
 	bUserKitsExtend = GetCoreIniValue("UI", "Allow 1280 Total Kits");
 	bUserContingencySelectSpell = GetCoreIniValue("UI", "Contingency Detects Select Spell");

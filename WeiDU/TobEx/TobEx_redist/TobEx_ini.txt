@@ -1683,8 +1683,8 @@ Options:
 
 -----320 Enable PickpocketFailed Trigger [C, M]
 (Different implementation to, and overrides tob_hacks)
-When pickpocketing fails, a PickPocketFailed() trigger is sent
-In previous versions of TobEx and tob_hacks, this trigger replaced AttackedBy(), but this would cause some issues with hostile actions
+When pickpocketing fails, a PickPocketFailed() trigger is sent in addition to AttackedBy()
+Compare this behaviour with PickpocketFailed Trigger Only, where only PickPocketFailed() is sent
 
 Options:
 -0: disabled
@@ -1765,6 +1765,15 @@ Options:
 -----1090 Optimise Bag Search Code [F, O]
 Greatly reduces the amount of overhead with triggers that check bags for the presence of items (i.e. HasItem() and variants)
 Also fixes the PartyHasItemIdentified() trigger, which had identical behaviour to the PartyHasItem() trigger in single player
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1480 PickpocketFailed Trigger Only [C, M, T]
+(Different implementation to, and overrides tob_hacks)
+When pickpocketing fails, a PickPocketFailed() trigger is sent instead of AttackedBy()
+Compare this behaviour with Enable PickpocketFailed Trigger, where both triggers are sent 
 
 Options:
 -0: disabled

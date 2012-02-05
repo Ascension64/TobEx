@@ -219,8 +219,6 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffWisdomModFix)
 		DetourMemberFunction(Tramp_CEffectWisdomMod_ApplyEffect, DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect);
 
-	DetourMemberFunction(Tramp_CCreatureObject_ActionPickPockets, DETOUR_CCreatureObject::DETOUR_ActionPickPockets);
-
 	if (pGameOptionsEx->bEngineModifyEffectStacking)
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 
@@ -306,6 +304,8 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CScreenRecord_UpdateCharacter, DETOUR_CScreenRecord::DETOUR_UpdateCharacter);
 		DetourMemberFunction(Tramp_CScreenCharGen_InitSoundset, DETOUR_CScreenCharGen::DETOUR_InitSoundset);
 	}
+
+	DetourMemberFunction(Tramp_CCreatureObject_ActionPickPockets, DETOUR_CCreatureObject::DETOUR_ActionPickPockets);
 
 	if (pGameOptionsEx->bTriggerExpandedTriggers) {
 		DetourMemberFunction(Tramp_CScriptBlock_Evaluate, DETOUR_CScriptBlock::DETOUR_Evaluate);

@@ -753,7 +753,8 @@
           <i>TobEx makes no direct changes to these opcodes. However, TobEx expands STATS.IDS to support a variety of new scripting stats. Also refer to the <a href="#stats">Scripting Stats</a> section.</i><br />
           <hr />
           <a name="triggers-005d" id="triggers-005d"></a><p><strong>0x005D PickPocketFailed(O:Object*)</strong><br />
-          <i>TobEx restores the function of this trigger such that it is sent when a pickpocket attempt fails. The standard AttackedBy() trigger is also sent as per vanilla behaviour.</i></p>
+          <i>TobEx restores the function of this trigger such that it is sent when a pickpocket attempt fails. The standard AttackedBy() trigger is also sent as per vanilla behaviour. Also refer to the <a href="#actions-25">PickPockets(O:Target*)</a> action.</i></p>
+          <p><strong>Option:</strong> TobEx gives the option of modifying the <a href="#actions-25">PickPockets(O:Target*)</a> action so that upon failure, it sends only the PickPocketFailed() trigger, and not sending the standard AttackedBy() trigger.</p>
           <hr />
           <a name="triggers-4061" id="triggers-4061"></a><p><strong>0x4061 HasItem(S:ResRef*,O:Object*)</strong><br />
           <i>TobEx optimises this trigger by greatly reducing the amount of overhead associated with checking bags</i></p>
@@ -859,6 +860,7 @@
           <hr />
           <a name="actions-25" id="actions-25"></a><p><strong>25 PickPockets(O:Target*)</strong><br />
           <p>TobEx extends this action opcode by sending the PickPocketFailed() trigger in addition to the standard AttackedBy() trigger when a pickpocket attempt fails. Also refer to the <a href="#triggers-005d">PickPocketFailed() trigger</a> section.</p>
+          <p><strong>Option:</strong> TobEx gives the option of modifying this action so that upon failure, it sends only the PickPocketFailed() trigger, and not sending the standard AttackedBy() trigger.</p>
           <p><strong>Option:</strong> TobEx gives the option of modifying this action by delaying the end of Stealth mode until the next round, and not terminating invisibility caused by a spell or item, if a successful pickpocket is made.</p>
           <hr />
           <a name="actions-34" id="actions-34"></a><p><strong>34 UseItem(S:Object*,O:Target*)</strong><br />

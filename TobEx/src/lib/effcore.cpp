@@ -103,8 +103,8 @@ BOOL CEffectList::RemoveOneEffect(CEffect& eff, CCreatureObject& cre, BOOL bMatc
 void CEffectList::RemoveEffect(CCreatureObject& creTarget, int nOpcode, POSITION posSkip, int nParam2, ResRef rResource, BOOL bCheckPermTiming) {
 	return (this->*CEffectList_RemoveEffect)(creTarget, nOpcode, posSkip, nParam2, rResource, bCheckPermTiming);
 }
-void CEffectList::TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char nRand, char nMaxLevel) {
-	return (this->*CEffectList_TryDispel)(creTarget, posSkip, bCheckDispellableFlag, bCheckProbability, nRand, nMaxLevel);
+void CEffectList::TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char cRand, char cDispelLevel) {
+	return (this->*CEffectList_TryDispel)(creTarget, posSkip, bCheckDispellableFlag, bCheckProbability, cRand, cDispelLevel);
 }
 BOOL CEffectList::ApplyEffects(CCreatureObject& cre) { return (this->*CEffectList_ApplyEffects)(cre); }
 POSITION CEffectList::GetCurrentPosition() { return (this->*CEffectList_GetCurrentPosition)(); }

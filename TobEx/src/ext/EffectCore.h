@@ -15,4 +15,13 @@ public:
 	BOOL DETOUR_ApplyTiming(CCreatureObject& creTarget);
 };
 
+//CEffectList
+extern void (CEffectList::*Tramp_CEffectList_TryDispel)(CCreatureObject&, POSITION, BOOL, BOOL, char, char);
+
+class DETOUR_CEffectList : public CEffectList {
+public:
+	void DETOUR_TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char cRand, char cDispelLevel);
+};
+
+
 #endif //EFFECTCOMMON_H

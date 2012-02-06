@@ -122,6 +122,10 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffDisintegrateFix)
 		DetourMemberFunction(Tramp_CEffectDisintegrate_ApplyEffect, DETOUR_CEffectDisintegrate::DETOUR_ApplyEffect);
 
+	if (pGameOptionsEx->bEffDispelFix) {
+		DetourMemberFunction(Tramp_CEffectList_TryDispel, DETOUR_CEffectList::DETOUR_TryDispel);
+	}
+
 	if (pGameOptionsEx->bEffDispelMagicalItemConfig)
 		DetourMemberFunction(Tramp_CEffectDispel_ApplyEffect, DETOUR_CEffectDispel::DETOUR_ApplyEffect);
 

@@ -596,7 +596,7 @@ Options:
 -1: enabled
 
 -----290 Dispel Formula Fix [C, F]
-(Different implementation to, and clashes with tob_hacks, SCS, SCSII, Spell Revisions)
+(Different implementation to, and overrides tob_hacks, SCS, SCSII, Spell Revisions)
 Corrects the formula used for the dispel opcode
 
 Options:

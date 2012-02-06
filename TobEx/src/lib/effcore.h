@@ -120,7 +120,7 @@ public:
 	//AAA8A8
 	BOOL RemoveOneEffect(CEffect& eff, CCreatureObject& cre, BOOL bMatchSourceAndParent);
 	void RemoveEffect(CCreatureObject& creTarget, int nOpcode, POSITION posSkip, int nParam2, ResRef rResource, BOOL bCheckPermTiming);
-	void TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char nRand, char nMaxLevel);
+	void TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char cRand, char cDispelLevel);
 	BOOL ApplyEffects(CCreatureObject& cre);
 	POSITION GetCurrentPosition();
 

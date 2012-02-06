@@ -930,33 +930,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	if (pGameOptionsEx->bEffDispelFix) {
-		/*Pseudocode
-		rand(); <--0 to 99
-		difficulty = 50
-		if (nEffectLevel > nDispelLevel) {
-			difficulty += 10 * nEffectLevel - nDispelLevel <--brackets forgotten
-		} else {
-			difficulty -= 5 * (nDispelLevel - nEffectLevel)
-		}
-	
-		if (rand == 0) {no dispel}
-		elseif (rand > difficulty) {dispel}
-		    elseif (rand > 99) {dispel} <--change to 98, cannot roll > 100
-				else {no dispel}*/
-		
-		//fix brackets in formula when caster level > effect level
-		char bytes[] = {0x8B, 0x4D, 0x1C, 0x81, 0xE1, 0xFF, 0x00, 0x00, 0x00, 0x2B, 0xC1, 0x6B, 0xC0, 0x0A};
-		vDataList.push_back( Data(0x543F42, 14, bytes) );
-
-		//correct 1% chance of always success
-		char bytes2[] = {0x62};
-		vDataList.push_back( Data(0x543FA6, 1, bytes2) );
-	
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-
 	if (pGameOptionsEx->bEffDropInvDisintegrate) {
 		char bytes[] = {0x00};
 		vDataList.push_back( Data(0x50B30A, 1, bytes) );

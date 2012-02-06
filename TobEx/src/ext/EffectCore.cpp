@@ -188,15 +188,16 @@ void DETOUR_CEffectList::DETOUR_TryDispel(
 		if (bCheckProbability) {
 			nDispelChance = 50;
 			if (pEff->effect.nSourceCreLevel > cDispelLevel) {
-				//nDispelChance += pEff->effect.nSourceCreLevel * 10 - nDispelLevel; //original code without proper brackets
-				nDispelChance += (pEff->effect.nSourceCreLevel - cDispelLevel) * 10;
+				//nDispelChance += pEff->effect.nSourceCreLevel * 10 - nDispelLevel;
+				nDispelChance += (pEff->effect.nSourceCreLevel - cDispelLevel) * 10; //original code without proper brackets
 			} else {
 				nDispelChance -= (cDispelLevel - pEff->effect.nSourceCreLevel) * 5;
 			}
 			if (cRand == 0) {
 				bDispel = FALSE;
 			} else {
-				bDispel = (cRand > nDispelChance || cRand > 99) ? 1 : 0;
+				//bDispel = (cRand > nDispelChance || cRand > 99) ? 1 : 0;
+				bDispel = (cRand > nDispelChance || cRand > 98) ? 1 : 0; //roll is 0-99, allow 99 for always dispel
 			}
 		} else {
 			bDispel = TRUE;

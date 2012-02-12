@@ -1216,6 +1216,13 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bEngineAutoPauseAllSP) {
+		char bytes[] = {0xEB};
+		vDataList.push_back( Data(0x8D1D35, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bEngineExpandedStats) {
 		//WEIGHTALLOWANCEMOD
 		//1. CScreenRecord::RefreshMainPanel()

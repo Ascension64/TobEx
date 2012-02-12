@@ -88,3 +88,4 @@ elija uno:"
 @120 = ~Dejar caer el Inventario al Desintegrarse~
 @121 = ~Dejar caer el Inventario al Morir Congelado~
 @122 = ~Dejar caer el Inventario al Morir Petrificado~
+@123 = ~Activar Auto-Pausa en todas las pantallas~

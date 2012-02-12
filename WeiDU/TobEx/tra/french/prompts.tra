@@ -9,7 +9,7 @@ Les [I]nstaller, les [S]auter, dem[A]nder pour chacun ? "
 Les [R]einstaller, les s[U]pprimer, les [S]auter, dem[A]nder pour chacun ? "
 
 @-1004= "S'IL VOUS PLAIT, postez le fichier "
-@-1005= "sur"
+@-1005= "dans"
 
 @-1006= "Installer le composant ["
 @-1007= "] ?
@@ -89,3 +89,4 @@ choisir un parmi :"
 @120 = ~Faire tomber l'inventaire au sol en cas de desintegration~
 @121 = ~Faire tomber l'inventaire au sol en cas de mort due au froid~
 @122 = ~Faire tomber l'inventaire au sol en cas de petrification~
+@123 = ~Activer la pause automatique sur tous les ecrans~

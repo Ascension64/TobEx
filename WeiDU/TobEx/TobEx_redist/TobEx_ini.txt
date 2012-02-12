@@ -1,4 +1,4 @@
-//1470 This file contains descriptions for all the hack options found in TobEx .ini files
+//1480 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1160,6 +1160,17 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1480 Enable Auto-Pause On All Screens [T]
+In single player, auto-pause will work on any screen, not just the game screen
+Used by itself, this tweak will generally have effect on the map screen, because all other screens pause the game automatically
+Changing to a different screen from the map screen with the game unpaused keeps the game unpaused, so auto-pause will also work in these situations
+
+When combined with the Disable Force Inventory Pause hack, this tweak will also have effect in the inventory screen
+
+Options:
+-0: disabled
+-1: enabled
+
 -----730 Expanded Stats [M]
 Allows modders to extend STATS.IDS to use opcodes 202-SHRT_MAX (32767)
 Features of new stats:
@@ -1472,28 +1483,29 @@ Options:
 -1: enabled
 
 -----740 Externalise Item-Creature Exclusions [M, X]
-Externalises creature-specific item restrictions to ITCREXCL.2DA.
+Externalises creature-specific item restrictions to ITEM_USE.2DA.
 
-ITCREXCL.2DA
+ITEM_USE.2DA
 Description
-[ROWNAME]: Death variable/Script name of creature (not case-sensitive)
-ITEM: the resource name of the item that the item-creature restrictions apply to
-NO_PICKUP_E: if set to non-zero, the ITEM cannot be removed from any equipment slot of the creature with associated death variable
-STRREF_PE: the string reference to display in the inventory screen when the ITEM is attempted to be removed from an equipment slot of the creature with associated death variable
-ONLY_EQUIP: if set to non-zero, the ITEM can only be equipped by the creature with associated death variable (this is 'stackable', in that multiple ITEM entries under different death variables mean that multiple creatures with associated death variables can equip the ITEM)
-STRREF_E: the string reference to display in when a creature other than that with the associated death variables tries to equip the ITEM
-NO_PICKUP_I: if set to non-zero, the ITEM cannot be removed from any inventory slot of the creature with associated death variable
-STRREF_I: the string reference to display in the inventory screen when the ITEM is attempted to be removed from an equipment slot of the creature with associated death variable
-NO_DROP_I: if set to non-zero, the ITEM cannot be placed in any inventory slot of the creature with associated death variable
-STRREF_DI: the string reference to display in the inventory screen when the ITEM is attempted to be placed in any inventory slot of the creature with associated death variable
-NO_DROP_E: if set to non-zero, the ITEM cannot be placed in any equipment slot of the creature with associated death variable
-STRREF_DE: the string reference to display in the inventory screen when the ITEM is attmpted to be placed in any equipment slot of the creature with associated death variable
+[ROWNAME]: the resource name of the item that the item-creature restrictions apply to
+USER: death variable/script name of creature (not case-sensitive)
+STRREF#: the string reference to display in the inventory screen when the restriction indicated by the flag value of # applies
+FLAG: bitfield indicating the type/s of restriction to apply
+
+FLAG bits
+bit 0 [1]: the item cannot be picked up from any slot of the creature (this overrides bits 3 and 4)
+bit 1 [2]: the item can only be equipped by the creature (this is 'stackable', so multiple item entries with different creatures mean that each of the listed creatures can equip the item)
+bit 2 [4]: no restrictions (this bit is reserved for GemRB)
+bit 3 [8]: the item cannot be picked up from any equipped slot of the creature
+bit 4 [16]: the item cannot be picked up from any inventory slot of the creature
+bit 5 [32]: the item cannot be dropped into any equipped slot of the creature
+bit 6 [64]: the item cannot be dropped into any inventory slot of the creature
 
 For example,
-	ITEM	NO_PICKUP_E	STRREF_PE	ONLY_EQUIP	STRREF_E	NO_PICKUP_I	STRREF_I	NO_DROP_I	STRREF_DI	NO_DROP_E	STRREF_DE
-MINSC	MISC84	1	10218	1	10218	1	10218	0	-1	0	-1
+	USER	STRREF	FLAG	STRREF2	STRREF4	STRREF8	STRREF16	STRREF32	STRREF64
+MISC84	MINSC	10218	3	10218	-1	-1	-1	-1	-1
 
-Item MISC84 cannot be removed from "Minsc"'s equipment slots or inventory slots, and can only be equipped by "Minsc".
+Item MISC84 cannot be picked up from any slot of "Minsc", and can only be equipped by "Minsc".
 
 Options:
 -0: disabled

@@ -352,6 +352,7 @@
           <p>The following core engine changes are discussed:</p>
           <ul>
             <li><a href="#engine-arenas">Arenas Game Type</a></li>
+            <li><a href="#engine-auto-pause">Auto-pause</a></li>
             <li><a href="#engine-casting">Casting Graphics and Sounds</a></li>
             <li><a href="#engine-creatures-moving-areas">Creatures Moving Between Areas</a></li>
             <li><a href="#engine-dead-statics">Dead Static Animations</a></li>
@@ -405,6 +406,9 @@
             <li>Summoned creatures turn enemy when hit by opposing players</li>
           </ul>
           <hr />
+          <a name="engine-auto-pause" id="engine-auto-pause"></a><h3>Auto-pause</h3>
+          <p><strong>Option:</strong> TobEx gives the option of allowing auto-pause to work on any screen in single player. The behavior mimics that of multiplayer. The original behaviour is that auto-pause only works in the main game screen when in single player.</p>
+          <hr />
           <a name="engine-casting" id="engine-casting"></a><h3>Casting Graphics and Sounds</h3>
           <p>Normally, female gender uses a female casting sound, other and niether gender use an unvoiced casting sound, and all other genders use a male casting sound. This caused problems with spells like Project Image where illusory female creatures used male casting sounds.</p>
           <p>TobEx fixes this bug by modifying the way that the gender of casting sound selection is handled. Specifically, male gender uses a male casting sound, while all other genders check the Sex field (0x237) in the CRE file format. If the Sex field is male (1), a male casting sound is used. If the Sex field is female (2), a female casting sound is used. For any other value in the Sex field, an unvoiced casting sound is used. In order to do this, TobEx also ensures that the Sex field is correctly set during character generation, and patches some characters and creatures (a la BG2 Fixpack) so that their Sex field is correct.</p>
@@ -428,7 +432,7 @@
           <a name="engine-gaining-xp" id="engine-gaining-xp"></a><h3>Gaining Experience</h3>
           <p><strong>Option:</strong> Normally, Throne of Bhaal gives the party 110% of the experience actually coded into creatures and given by the AddExperienceParty() action opcode. However, the amount coded into creatures (100%) is reported in the dialogue bar. TobEx gives the option of fixing this issue and giving the party the coded amount of experience (100%) in these situations.</p>
           <hr />
-          <a name="engine-inventory-pause" id="ruleset-inventory-pause"></a><h3>Inventory Screen Pausing</h3>
+          <a name="engine-inventory-pause" id="engine-inventory-pause"></a><h3>Inventory Screen Pausing</h3>
           <p><strong>Option:</strong> TobEx gives the option of disabling a forced game pause when the inventory screen is opened in single player. The behavior mimics that of multiplayer.</p>
           <hr />
           <a name="engine-kit-support" id="engine-kit-support"></a><h3>Kit Support</h3>
@@ -596,55 +600,54 @@
           <p>Additionally, TobEx externalises Barbarian from Fighter class hit point tables to HPBARB.2DA.</p>
           <hr />
           <a name="ruleset-item-restrictions" id="ruleset-item-restrictions"></a><h3>Item Restrictions</h3>
-          <p>TobEx externalises creature-specific item restrictions to ITCREXCL.2DA. This allows modmakers to customise specific item restrictions for creatures in the style of Minsc's Boo and Xan's Moonblade.</p>
+          <p>TobEx externalises creature-specific item restrictions to ITEM_USE.2DA. This allows modmakers to customise specific item restrictions for creatures in the style of Minsc's Boo and Xan's Moonblade.</p>
           <div class="important">
-            <p>ITCREXCL.2DA<br />
+            <p>ITEM_USE.2DA<br />
             <br />
-            [ROWNAME]: Death variable/Script name of creature (not case-sensitive)<br />
-            ITEM: the resource name of the item that the item-creature restrictions apply to<br />
-            NO_PICKUP_E: if set to non-zero, the ITEM cannot be removed from any equipment slot of the creature with associated death variable<br />
-            STRREF_PE: the string reference to display in the inventory screen when the ITEM is attempted to be removed from an equipment slot of the creature with associated death variable<br />
-            ONLY_EQUIP: if set to non-zero, the ITEM can only be equipped by the creature with associated death variable (this is 'stackable', in that multiple ITEM entries under different death variables mean that multiple creatures with associated death variables can equip the ITEM)<br />
-            STRREF_E: the string reference to display in when a creature other than that with the associated death variables tries to equip the ITEM<br />
-            NO_PICKUP_I: if set to non-zero, the ITEM cannot be removed from any inventory slot of the creature with associated death variable<br />
-            STRREF_I: the string reference to display in the inventory screen when the ITEM is attempted to be removed from an equipment slot of the creature with associated death variable<br />
-            NO_DROP_I: if set to non-zero, the ITEM cannot be placed in any inventory slot of the creature with associated death variable<br />
-            STRREF_DI: the string reference to display in the inventory screen when the ITEM is attempted to be placed in any inventory slot of the creature with associated death variable<br />
-            NO_DROP_E: if set to non-zero, the ITEM cannot be placed in any equipment slot of the creature with associated death variable<br />
-            STRREF_DE: the string reference to display in the inventory screen then the ITEM is attmpted to be placed in any equipment slot of the creature with associated death variable<br />
+            [ROWNAME]: the resource name of the item that the item-creature restrictions apply to<br />
+            USER: death variable/script name of creature (not case-sensitive)<br />
+            STRREF#: the string reference to display in the inventory screen when the restriction indicated by the flag value of # applies<br />
+            FLAG: bitfield indicating the type/s of restriction to apply<br />
+            <br />
+            FLAG bits<br />
+            <ul>
+              <li>bit 0 [1]: the item cannot be picked up from any slot of the creature (this overrides bits 3 and 4)</li>
+              <li>bit 1 [2]: the item can only be equipped by the creature (this is 'stackable', so multiple item entries with different creatures mean that each of the listed creatures can equip the item)</li>
+              <li>bit 2 [4]: no restrictions (this bit is reserved for GemRB)</li>
+              <li>bit 3 [8]: the item cannot be picked up from any equipped slot of the creature</li>
+              <li>bit 4 [16]: the item cannot be picked up from any inventory slot of the creature</li>
+              <li>bit 5 [32]: the item cannot be dropped into any equipped slot of the creature</li>
+              <li>bit 6 [64]: the item cannot be dropped into any inventory slot of the creature</li>
+            </ul>
             <br />
             Example</p>
             <table class="important">
               <tr>
                 <td></td>
-                <td>ITEM</td>
-                <td>NO_PICKUP_E</td>
-                <td>STRREF_PE</td>
-                <td>ONLY_EQUIP</td>
-                <td>STRREF_E</td>
-                <td>NO_PICKUP_I</td>
-                <td>STRREF_I</td>
-                <td>NO_DROP_I</td>
-                <td>STRREF_DI</td>
-                <td>NO_DROP_E</td>
-                <td>STRREF_DE</td>
+                <td>USER</td>
+                <td>STRREF</td>
+                <td>FLAG</td>
+                <td>STRREF2</td>
+                <td>STRREF4</td>
+                <td>STRREF8</td>
+                <td>STRREF16</td>
+                <td>STRREF32</td>
+                <td>STRREF64</td>
               </tr>
               <tr>
-                <td>MINSC</td>
                 <td>MISC84</td>
-                <td>1</td>
+                <td>MINSC</td>
                 <td>10218</td>
-                <td>1</td>
+                <td>3</td>
                 <td>10218</td>
-                <td>1</td>
-                <td>10218</td>
-                <td>0</td>
                 <td>-1</td>
-                <td>0</td>
+                <td>-1</td>
+                <td>-1</td>
+                <td>-1</td>
                 <td>-1</td>
               </tr>
             </table>
-            <p>Item MISC84 cannot be removed from "Minsc"'s equipment slots or inventory slots, and can only be equipped by "Minsc".</p>
+            <p>Item MISC84 cannot be picked up from any slot of "Minsc", and can only be equipped by "Minsc".</p>
           </div>
           <hr />
           <a name="ruleset-mage-spells" id="ruleset-mage-spells"></a><h3>Mage Spells</h3>

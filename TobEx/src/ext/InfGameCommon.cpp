@@ -145,9 +145,9 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 	}
 
 	if (pGameOptionsEx->bItemsExternCreExcl) {
-		m_ItemCreExclude.LoadTable(ResRef("ITCREXCL"));
+		m_ItemCreExclude.LoadTable(ResRef("ITEM_USE"));
 		if (!m_ItemCreExclude.m_2da.bLoaded) {
-			LPCTSTR lpsz = "CRuleTablesEx::Init(): ITCREXCL.2DA not found\r\n";
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): ITEM_USE.2DA not found\r\n";
 			console.write(lpsz);
 			L.timestamp();
 			L.append(lpsz);

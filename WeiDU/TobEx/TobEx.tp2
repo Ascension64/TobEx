@@ -26,9 +26,9 @@ LANGUAGE "Italiano (Italian)"
          "TobEx/tra/italian/prompts.tra"
          "TobEx/tra/italian/setup.tra"
 
-LANGUAGE "ê„··™®© (Russian)"
+LANGUAGE "Russian"
          "russian"
-         "TobEx/tra/russian/prompts-%WEIDU_OS%.tra"
+         "TobEx/tra/russian/prompts.tra"
          "TobEx/tra/russian/setup.tra"
 
 LANGUAGE "ºÚÃÂ÷–Œƒ - ∫∫ªØ£∫H'sD (Simplified Chinese)"
@@ -345,3 +345,8 @@ BEGIN @122 DESIGNATED 122 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Stone Death=0~ ~Effect Opcodes:Drop Inventory on Stone Death=1~
+
+BEGIN @123 DESIGNATED 123 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Engine:Enable Auto-Pause On All Screens=0~ ~Engine:Enable Auto-Pause On All Screens=1~

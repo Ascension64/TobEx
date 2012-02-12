@@ -106,6 +106,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineDisableInvPauseSP = FALSE;
 	bEngineDisableXPBoost = FALSE;
 	bEngineCharmSilenceRemoval = FALSE;
+	bEngineAutoPauseAllSP = FALSE;
 	bEngineExpandedStats = FALSE;
 	bEngineExternHPTables = FALSE;
 	bEngineExternClassRaceRestrictions = FALSE;
@@ -268,6 +269,7 @@ void CGameOptionsEx::Init() {
 	bEngineDisableInvPauseSP = GetTweakIniValue("Tweak", "Engine:Disable Force Inventory Pause");
 	bEngineDisableXPBoost = GetTweakIniValue("Tweak", "Engine:Disable Experience Boost");
 	bEngineCharmSilenceRemoval = GetTweakIniValue("Tweak", "Engine:Disable Silence On Charm");
+	bEngineAutoPauseAllSP = GetTweakIniValue("Tweak","Engine:Enable Auto-Pause On All Screens");
 	bEngineExpandedStats = GetCoreIniValue("Engine", "Expanded Stats");
 	bEngineExternHPTables = GetCoreIniValue("Engine", "Externalise HP Tables");
 	bEngineExternClassRaceRestrictions = GetCoreIniValue("Engine", "Externalise Class-Race Restrictions");

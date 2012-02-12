@@ -102,6 +102,7 @@ struct CGameOptionsEx {
 	BOOL bEngineDisableInvPauseSP;
 	BOOL bEngineDisableXPBoost;
 	BOOL bEngineCharmSilenceRemoval;
+	BOOL bEngineAutoPauseAllSP;
 	BOOL bEngineExpandedStats;
 	BOOL bEngineExternHPTables;
 	BOOL bEngineExternClassRaceRestrictions;

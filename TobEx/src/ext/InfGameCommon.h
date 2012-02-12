@@ -3,6 +3,27 @@
 
 #include "infgame.h"
 
+//m_ItemCreExclude column names
+const int ITEM_USE_COL_USER = 0;
+const int ITEM_USE_COL_STRREF1 = 1;
+const int ITEM_USE_COL_FLAG = 2;
+const int ITEM_USE_COL_STRREF2 = 3;
+const int ITEM_USE_COL_STRREF4 = 4;
+const int ITEM_USE_COL_STRREF8 = 5;
+const int ITEM_USE_COL_STRREF16 = 6;
+const int ITEM_USE_COL_STRREF32 = 7;
+const int ITEM_USE_COL_STRREF64 = 8;
+
+//m_ItemCreExclude flags
+const int ITEM_USE_FLAG_NO_PICKUP = 0x01;
+const int ITEM_USE_FLAG_ONLY_EQUIP = 0x02;
+const int ITEM_USE_FLAG_ONLY_SWAP = 0x04; //used by GemRB for PS:T
+const int ITEM_USE_FLAG_NO_PICKUP_E = 0x08;
+const int ITEM_USE_FLAG_NO_PICKUP_I = 0x10;
+const int ITEM_USE_FLAG_NO_DROP_E = 0x20;
+const int ITEM_USE_FLAG_NO_DROP_I = 0x40;
+
+//CRuleTablesEx
 class CRuleTablesEx {
 public:
 	CRuleTablesEx(CRuleTables& rule);

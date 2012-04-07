@@ -306,18 +306,9 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 	if (!pGameOptionsEx->bEffApplyConcCheckDamage &&
 		!pGameOptionsEx->bEffDamageFix &&
-		!pGameOptionsEx->bEffNoDamageNoSpellInterrupt) {
-
-		(this->*Tramp_CEffectDamage_ApplyEffect)(creTarget);
-		
-		if (pGameOptionsEx->bEffDamageAwaken) {
-			creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
-			creTarget.cdsCurrent.stateFlags &= ~STATE_SLEEPING;
-			creTarget.m_EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
-			creTarget.m_EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsMain.posItrPrev, -1, ResRef(), FALSE);
-		}
-
-		return TRUE;
+		!pGameOptionsEx->bEffNoDamageNoSpellInterrupt &&
+		!pGameOptionsEx->bEffDamageAwaken) {
+		return (this->*Tramp_CEffectDamage_ApplyEffect)(creTarget);
 	}
 
 	if (creTarget.m_bUnmarshalling) return TRUE;
@@ -666,6 +657,8 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.m_BaseStats.currentHP = creTarget.cdsPrevious.minHitPoints;
 	}
 
+	bool bStunned = false; //added to prevent Awaken on Damage to reverse the unconsciousness effect of fist below
+
 	if (creTarget.m_BaseStats.currentHP <= 0) {
 		if (g_pChitin->pGame->GetPartyMemberSlot(creTarget.e) != -1 &&
 			creTarget.m_BaseStats.currentHP > -20) {
@@ -678,6 +671,8 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		switch (nDamageType) {
 		case DAMAGETYPE_STUNNING:
 			{
+			bStunned = true;
+
 			delete pEff;
 			pEff = NULL;
 			ITEM_EFFECT* pIF = new ITEM_EFFECT;
@@ -746,11 +741,11 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.ApplyEffect(*pEff, 1, TRUE, TRUE);
 	}
 
-	if (pGameOptionsEx->bEffDamageAwaken) {
+	if (pGameOptionsEx->bEffDamageAwaken && !bStunned) {
 		creTarget.m_BaseStats.stateFlags &= ~STATE_SLEEPING;
 		creTarget.cdsCurrent.stateFlags &= ~STATE_SLEEPING;
-		creTarget.m_EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
-		creTarget.m_EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_SLEEP, creTarget.m_EffectsMain.posItrPrev, -1, ResRef(), FALSE);
+		creTarget.m_EffectsEquipped.RemoveEffect(creTarget, CEFFECT_OPCODE_UNCONSCIOUSNESS, creTarget.m_EffectsEquipped.posItrPrev, -1, ResRef(), FALSE);
+		creTarget.m_EffectsMain.RemoveEffect(creTarget, CEFFECT_OPCODE_UNCONSCIOUSNESS, creTarget.m_EffectsMain.posItrPrev, -1, ResRef(), FALSE);
 	}
 
 	int n = creTarget.cdsPrevious.maxHP < 1 ? 1 : creTarget.cdsPrevious.maxHP;

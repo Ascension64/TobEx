@@ -1,4 +1,4 @@
-OUTER_SET tobex_redist_version = 23
+OUTER_SET tobex_redist_version = 24
 
 ACTION_IF NOT (FILE_EXISTS "TobEx_ini/TobExVer.txt") BEGIN
 

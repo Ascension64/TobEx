@@ -1,3 +1,7 @@
+Beta 0024
+---------
+-Awaken On Damage: Fixed a bug where creatures hit unconscious by FIST/STUNNING damage would still be a target and would recover consciousness in the same around
+
 Beta 0023
 ---------
 -Class/structure updates

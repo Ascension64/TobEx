@@ -43,10 +43,10 @@ Log& Log::append(CString& s) {
 	return *this;
 }
 
-Log& Log::append(LPCTSTR format, int n, ...) {
+Log& Log::appendf(LPCTSTR format, ...) {
 	CString s;
     va_list v;
-    va_start(v, n);
+    va_start(v, format);
 	s.FormatV(format, v);
 	DWORD size = s.GetLength();
 

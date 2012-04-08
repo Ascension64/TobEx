@@ -148,18 +148,18 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 			effect.nSaveType |= EFFECT_STACKING_SUSPEND;
 			if (pGameOptionsEx->bDebugVerbose) {
 				LPCTSTR lpsz = "[DETOUR]CEffect::ApplyTiming(): 0x%X suspended (similar to 0x%x)\r\n";
-				console.write(lpsz, 2, (DWORD)this, (DWORD)pFound);
+				console.writef(lpsz, (DWORD)this, (DWORD)pFound);
 				L.timestamp();
-				L.append(lpsz, 2, (DWORD)this, (DWORD)pFound);
+				L.appendf(lpsz, (DWORD)this, (DWORD)pFound);
 			}
 			return TRUE;
 		} else {
 			if (effect.nSaveType & EFFECT_STACKING_SUSPEND) {
 				if (pGameOptionsEx->bDebugVerbose) {
 					LPCTSTR lpsz = "[DETOUR]CEffect::ApplyTiming(): 0x%X unsuspended\r\n";
-					console.write(lpsz, 1, (DWORD)this);
+					console.writef(lpsz, (DWORD)this);
 					L.timestamp();
-					L.append(lpsz, 1, (DWORD)this);
+					L.appendf(lpsz, (DWORD)this);
 				}
 				effect.nSaveType &= ~(EFFECT_STACKING_SUSPEND);
 			}

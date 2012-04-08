@@ -18,12 +18,12 @@ void Init() {
 
 	//init console
 	if (console.Init())
-		console.write(CONSOLEFORECOLOR_HEADER, buffer, 10, "", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		console.writef(CONSOLEFORECOLOR_HEADER, buffer, "", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
 	//init log
 	int nDebugLogFileMode = GetCoreIniValue("Debug", "Log File Mode");
 	if (L.Init(nDebugLogFileMode))
-		L.append(buffer, 10, "-----", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		L.appendf(buffer, "-----", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 
 	char lpFile[MAX_PATH];
 	if (GetModuleFileName(NULL, lpFile, MAX_PATH)) {
@@ -33,7 +33,7 @@ void Init() {
 
 			if (pGameOptionsEx->bDebugLogDialogueBar) {
 				if (LD.Init(nDebugLogFileMode))
-					LD.append(bufferD, 8, "-----", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+					LD.appendf(bufferD, "-----", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			}
 
 			InitPatches();
@@ -44,9 +44,9 @@ void Init() {
 #endif //_DEBUG
 		} else {
 			LPCTSTR lpsz = "Init(): Executable loaded at incompatible address 0x%X. All TobEx features disabled. Please report this error.\r\n";
-			console.write(lpsz, 1, nPEAddress);
+			console.writef(lpsz, nPEAddress);
 			L.timestamp();
-			L.append(lpsz, 1, nPEAddress);
+			L.appendf(lpsz, nPEAddress);
 		}
 	} else {
 		LPCTSTR lpsz = "Init(): Unable to resolve module name. All TobEx features disabled.\r\n";

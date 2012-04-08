@@ -46,14 +46,14 @@ extern int (IECString::*IECString_Find_LPCTSTR_int)(LPCTSTR, int) const =
 	SetFP(static_cast<int (IECString::*)(LPCTSTR, int) const>							(&IECString::Find),						0xA4D7B2);
 extern void (IECString::*IECString_FormatV)(LPCTSTR, va_list) =
 	SetFP(static_cast<void (IECString::*)(LPCTSTR, va_list)>							(&IECString::FormatV),					0xA4D7DD);
-//extern void (AFX_CDECL IECString::*IECString_Format_LPCTSTR)(LPCTSTR, ...) =
-//	SetFP(static_cast<void (AFX_CDECL IECString::*)(LPCTSTR, ...)>						(&IECString::Format),					0xA4DAE5);
-//extern void (AFX_CDECL IECString::*IECString_Format_UINT)(UINT, ...) =
-//	SetFP(static_cast<void (AFX_CDECL IECString::*)(UINT, ...)>							(&IECString::Format),					0xA4DAF8);
-//extern void (AFX_CDECL IECString::*IECString_FormatMessage_LPCTSTR)(LPCTSTR, ...) =
-//	SetFP(static_cast<void (AFX_CDECL IECString::*)(LPCTSTR, ...)>						(&IECString::FormatMessage),			0xA4DB41);
-//extern void (AFX_CDECL IECString::*IECString_FormatMessage_UINT)(UINT, ...) =
-//	SetFP(static_cast<void (AFX_CDECL IECString::*)(UINT, ...)>							(&IECString::FormatMessage),			0xA4DB8D);
+/*extern void (AFX_CDECL IECString::*IECString_Format_LPCTSTR)(LPCTSTR, ...) =
+	SetFP(static_cast<void (AFX_CDECL IECString::*)(LPCTSTR, ...)>						(&IECString::Format),					0xA4DAE5);
+extern void (AFX_CDECL IECString::*IECString_Format_UINT)(UINT, ...) =
+	SetFP(static_cast<void (AFX_CDECL IECString::*)(UINT, ...)>							(&IECString::Format),					0xA4DAF8);
+extern void (AFX_CDECL IECString::*IECString_FormatMessage_LPCTSTR)(LPCTSTR, ...) =
+	SetFP(static_cast<void (AFX_CDECL IECString::*)(LPCTSTR, ...)>						(&IECString::FormatMessage),			0xA4DB41);
+extern void (AFX_CDECL IECString::*IECString_FormatMessage_UINT)(UINT, ...) =
+	SetFP(static_cast<void (AFX_CDECL IECString::*)(UINT, ...)>							(&IECString::FormatMessage),			0xA4DB8D);*/
 extern void (IECString::*IECString_TrimRight_LPCTSTR)(LPCTSTR) =
 	SetFP(static_cast<void (IECString::*)(LPCTSTR)>										(&IECString::TrimRight),				0xA4DC10);
 extern void (IECString::*IECString_TrimRight_TCHAR)(TCHAR) =
@@ -127,6 +127,8 @@ void (IECString::*IECString_AnsiToOem)() =
 	SetFP(static_cast<void (IECString::*)()>											(&IECString::AnsiToOem),				0xA50E98);
 void (IECString::*IECString_OemToAnsi)() =
 	SetFP(static_cast<void (IECString::*)()>											(&IECString::OemToAnsi),				0xA50EAC);
+BOOL (IECString::*IECString_LoadStringA)(UINT) =
+	SetFP(static_cast<BOOL (IECString::*)(UINT)>										(&IECString::LoadStringA),				0xA52004);
 
 IECString::IECString(TCHAR ch, int nRepeat)									{ (this->*IECString_Construct_2TCHAR_int)(ch, nRepeat); }
 IECString::IECString(LPCSTR lpch, int nLength)								{ (this->*IECString_Construct_2LPCSTR_int)(lpch, nLength); }
@@ -150,10 +152,70 @@ int IECString::ReverseFind(TCHAR ch) const									{ return (this->*IECString_Re
 int IECString::Find(LPCTSTR lpszSub) const									{ return (this->*IECString_Find_LPCTSTR)(lpszSub); }
 int IECString::Find(LPCTSTR lpszSub, int nStart) const						{ return (this->*IECString_Find_LPCTSTR_int)(lpszSub, nStart); }
 void IECString::FormatV(LPCTSTR lpszFormat, va_list argList)				{ return (this->*IECString_FormatV)(lpszFormat, argList); }
-//void AFX_CDECL IECString::Format(LPCTSTR lpszFormat, ...)					{ return (this->*IECString_Format_LPCTSTR)(lpszFormat, ...); }
-//void AFX_CDECL IECString::Format(UINT nFormatID, ...)						{ return (this->*IECString_Format_UINT)(nFormatID, ...); }
-//void AFX_CDECL IECString::FormatMessage(LPCTSTR lpszFormat, ...)			{ return (this->*IECString_FormatMessage_LPCTSTR)(lpszFormat, ...); }
-//void AFX_CDECL IECString::FormatMessage(UINT nFormatID, ...)				{ return (this->*IECString_FormatMessage_UINT)(nFormatID, ...); }
+
+//re-implementations from STREX.CPP
+void AFX_CDECL IECString::Format(LPCTSTR lpszFormat, ...) {
+	va_list argList;
+	va_start(argList, lpszFormat);
+	FormatV(lpszFormat, argList);
+	va_end(argList);
+	return;
+}
+
+void AFX_CDECL IECString::Format(UINT nFormatID, ...) {
+	IECString strFormat;
+	VERIFY(strFormat.LoadString(nFormatID) != 0);
+
+	va_list argList;
+	va_start(argList, nFormatID);
+	FormatV(strFormat, argList);
+	va_end(argList);
+	return;
+}
+
+void AFX_CDECL IECString::FormatMessage(LPCTSTR lpszFormat, ...) {
+	// format message into temporary buffer lpszTemp
+	va_list argList;
+	va_start(argList, lpszFormat);
+	LPTSTR lpszTemp;
+
+	if (::FormatMessage(FORMAT_MESSAGE_FROM_STRING|FORMAT_MESSAGE_ALLOCATE_BUFFER,
+		lpszFormat, 0, 0, (LPTSTR)&lpszTemp, 0, &argList) == 0 ||
+		lpszTemp == NULL)
+	{
+		AfxThrowMemoryException();
+	}
+
+	// assign lpszTemp into the resulting string and free the temporary
+	*this = lpszTemp;
+	LocalFree(lpszTemp);
+	va_end(argList);
+	return;
+}
+
+void AFX_CDECL IECString::FormatMessage(UINT nFormatID, ...) {
+	// get format string from string table
+	IECString strFormat;
+	VERIFY(strFormat.LoadString(nFormatID) != 0);
+
+	// format message into temporary buffer lpszTemp
+	va_list argList;
+	va_start(argList, nFormatID);
+	LPTSTR lpszTemp;
+	if (::FormatMessage(FORMAT_MESSAGE_FROM_STRING|FORMAT_MESSAGE_ALLOCATE_BUFFER,
+		strFormat, 0, 0, (LPTSTR)&lpszTemp, 0, &argList) == 0 ||
+		lpszTemp == NULL)
+	{
+		AfxThrowMemoryException();
+	}
+
+	// assign lpszTemp into the resulting string and free lpszTemp
+	*this = lpszTemp;
+	LocalFree(lpszTemp);
+	va_end(argList);
+	return;
+}
+
 void IECString::TrimRight(LPCTSTR lpszTargets)								{ return (this->*IECString_TrimRight_LPCTSTR)(lpszTargets); }
 void IECString::TrimRight(TCHAR chTarget)									{ return (this->*IECString_TrimRight_TCHAR)(chTarget); }
 void IECString::TrimRight()													{ return (this->*IECString_TrimRight)(); }
@@ -191,6 +253,7 @@ void IECString::MakeReverse()													{ return (this->*IECString_MakeReverse
 void IECString::SetAt(int nIndex, TCHAR ch)										{ return (this->*IECString_SetAt)(nIndex, ch); }
 void IECString::AnsiToOem()														{ return (this->*IECString_AnsiToOem)(); }
 void IECString::OemToAnsi()														{ return (this->*IECString_OemToAnsi)(); }
+BOOL IECString::LoadString(UINT nID)											{ return (this->*IECString_LoadStringA)(nID); }
 
 void* IECString::operator new(size_t size)						{ return ::operator new(size, 0); }
 void IECString::operator delete(void* mem)						{ return ::operator delete(mem, 0); }

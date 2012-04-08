@@ -39,10 +39,10 @@ public:
 	int Find(LPCTSTR lpszSub) const;
 	int Find(LPCTSTR lpszSub, int nStart) const;
 	void FormatV(LPCTSTR lpzFormat, va_list argList);
-	//void AFX_CDECL Format(LPCTSTR lpszFormat, ...);
-	//void AFX_CDECL Format(UINT nFormatID, ...);
-	//void AFX_CDECL FormatMessage(LPCTSTR lpszFormat, ...);
-	//void AFX_CDECL FormatMessage(UINT nFormatID, ...);
+	void AFX_CDECL Format(LPCTSTR lpszFormat, ...); //re-implemented
+	void AFX_CDECL Format(UINT nFormatID, ...); //re-implemented
+	void AFX_CDECL FormatMessage(LPCTSTR lpszFormat, ...); //re-implemented
+	void AFX_CDECL FormatMessage(UINT nFormatID, ...); //re-implemented
 	void TrimRight(LPCTSTR lpszTargets);
 	void TrimRight(TCHAR chTarget);
 	void TrimRight();
@@ -109,6 +109,7 @@ public:
 	void SetAt(int nIndex, TCHAR ch);
 	void AnsiToOem();
 	void OemToAnsi();
+	BOOL LoadString(UINT nID);
 
 	//integration with IECString
 	void* operator new(size_t size);
@@ -125,7 +126,6 @@ public:
 	int CompareNoCase(LPCTSTR lpsz) const;
 	int Collate(LPCTSTR lpsz) const;
 	int CollateNoCase(LPCTSTR lpsz) const;
-	BOOL LoadString(UINT nID);
 	int GetAllocLength() const;
 
 protected:
@@ -154,10 +154,6 @@ extern int (IECString::*IECString_ReverseFind)(TCHAR) const;
 extern int (IECString::*IECString_Find_LPCTSTR)(LPCTSTR) const;
 extern int (IECString::*IECString_Find_LPCTSTR_valist)(LPCTSTR, int) const;
 extern void (IECString::*IECString_FormatV)(LPCTSTR, va_list);
-//extern void (AFX_CDECL IECString::*IECString_Format_LPCTSTR)(LPCTSTR, ...);
-//extern void (AFX_CDECL IECString::*IECString_Format_UINT)(UINT, ...);
-//extern void (AFX_CDECL IECString::*IECString_FormatMessage_LPCTSTR)(LPCTSTR, ...);
-//extern void (AFX_CDECL IECString::*IECString_FormatMessage_UINT)(UINT, ...);
 extern void (IECString::*IECString_TrimRight_LPCTSTR)(LPCTSTR);
 extern void (IECString::*IECString_TrimRight_TCHAR)(TCHAR);
 extern void (IECString::*IECString_TrimRight)();
@@ -195,5 +191,6 @@ extern void (IECString::*IECString_MakeReverse)();
 extern void (IECString::*IECString_SetAt)(int, TCHAR);
 extern void (IECString::*IECString_AnsiToOem)();
 extern void (IECString::*IECString_OemToAnsi)();
+extern BOOL (IECString::*IECString_LoadStringA)(UINT);
 
 #endif //CSTRINGEX_H

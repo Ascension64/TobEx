@@ -431,13 +431,13 @@ public:
 	int u36bc; //assoc actions, ? has search request?
 	short u36c0;
 	short u36c2[2];
-	short wRoundTimer; //36c6h, range 0-100, determines the x-coordinate of the pixel to select in RNDBASE*.BMP
+	short m_wRoundTimer; //36c6h, range 0-100, determines the x-coordinate of the pixel to select in RNDBASE*.BMP
 	int u36c8; //assoc actions (idle time?), ++ with NoAction()
 	int u36cc;
 	BOOL m_bForceRefresh; //36d0h, Refresh() despite nTimeFree % 15 == e % 15
-	char u36d4; //assoc actions
+	char m_bMakingAttack; //36d4h, statistical attack (i.e. rolling die to hit, applying damage/effects, depleting charges, etc.)
 	char u36d5;
-	BOOL m_bUsingLeftWeapon; //36d6h, assoc actions
+	BOOL m_bUsingLeftWeapon; //36d6h
 	short u36da;
 	BOOL m_bResetAnimationColors; //36dch
 	BOOL m_bForceSetAnimColors; //36e0h, set to 1 when Set Item Color effect used or when applying petrify colouring but only if animation uses color ranges

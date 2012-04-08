@@ -17,7 +17,7 @@ public:
 	Log& append(ResRef& rText);
 	Log& append(LPCTSTR lpsz);
 	Log& append(CString& s);
-	Log& append(LPCTSTR format, int n, ...);
+	Log& appendf(LPCTSTR format, ...);
 	Log& timestamp();
 
 	BOOL bFileOpen;

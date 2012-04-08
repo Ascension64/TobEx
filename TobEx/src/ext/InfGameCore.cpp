@@ -106,8 +106,8 @@ int DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(char nClass, char nSubclas
 	if (pGameOptionsEx->bDebugVerbose) {
 		LPCTSTR lpsz = "DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(): Using table %s.2DA\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, (LPCTSTR)sTable);
-		console.write(lpsz, 1, (LPCTSTR)sTable);
+		L.appendf(lpsz, (LPCTSTR)sTable);
+		console.writef(lpsz, (LPCTSTR)sTable);
 	}
 
 	return CalculateNewHPRule(table, nSubclassLevelOld, nSubclassLevelNew, nMinRoll, nDivisor, FALSE, 0, FALSE, 0);
@@ -122,8 +122,8 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 	if (nSpellLevel <= 0 || nSpellLevel > 9) {
 		LPCTSTR lpsz = "DETOUR_CRuleTables::DETOUR_GetMageSpellRef(): Invalid spell level %d\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, nSpellLevel);
-		console.write(lpsz, 1, nSpellLevel);
+		L.appendf(lpsz, nSpellLevel);
+		console.writef(lpsz, nSpellLevel);
 
 		return rSpell;
 	}
@@ -539,8 +539,8 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 				if (pGameOptionsEx->bDebugVerbose) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_PICKUP[_E]\r\n";
 					L.timestamp();
-					L.append(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
-					console.write(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					console.writef(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
 				}
 					
 				bPass = FALSE;
@@ -558,8 +558,8 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 				if (pGameOptionsEx->bDebugVerbose) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_ONLY_EQUIP\r\n";
 					L.timestamp();
-					L.append(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
-					console.write(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					console.writef(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
 				}
 				
 				bPass = FALSE;
@@ -577,8 +577,8 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 				if (pGameOptionsEx->bDebugVerbose) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_DROP_E\r\n";
 					L.timestamp();
-					L.append(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
-					console.write(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					console.writef(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
 				}
 
 				bPass = FALSE;
@@ -671,8 +671,8 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 				if (pGameOptionsEx->bDebugVerbose) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_PICKUP[_I]\r\n";
 					L.timestamp();
-					L.append(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
-					console.write(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					console.writef(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
 				}
 
 				bPass = FALSE;
@@ -690,8 +690,8 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 				if (pGameOptionsEx->bDebugVerbose) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_DROP_I\r\n";
 					L.timestamp();
-					L.append(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
-					console.write(lpsz, 2, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
+					console.writef(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
 				}
 
 				bPass = FALSE;

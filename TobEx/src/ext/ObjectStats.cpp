@@ -382,7 +382,7 @@ int DETOUR_CDerivedStats::DETOUR_GetStat(short nOpcode) {
 		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_GetStat(): nOpcode out of bounds (%d; expected 1-%d)\r\n";
 		L.timestamp();
 		L.append(lpsz);
-		console.write(lpsz, 2, nOpcode, pRuleEx->m_nStats);
+		console.writef(lpsz, nOpcode, pRuleEx->m_nStats);
 		return 0;
 	}
 }
@@ -411,8 +411,8 @@ void DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(CDerivedStatsTemplate& cdst,
 	/*if (nSize != g_nCDerivedStatsTemplateSize) {
 		LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_UnmarshalTemplate(): incorrect CDerivedStatsTemplate size 0x%X (expected 0x%X)\r\n";
 		L.timestamp();
-		L.append(lpsz, 2, nSize, g_nCDerivedStatsTemplateSize);
-		console.write(lpsz, 2, nSize, g_nCDerivedStatsTemplateSize);
+		L.appendf(lpsz, nSize, g_nCDerivedStatsTemplateSize);
+		console.writef(lpsz, nSize, g_nCDerivedStatsTemplateSize);
 	}*/
 
 	int* pStatsEx = NULL;
@@ -457,9 +457,9 @@ float CDerivedStats_NumAttacksShortToFloat(short s) {
 		} else {
 			if (pGameOptionsEx->bDebugVerbose) {
 				LPCTSTR lpsz = "CDerivedStats_NumAttacksShortToFloat(): Number of attacks out of range (%d)\r\n";
-				console.write(lpsz, 1, s);
+				console.writef(lpsz, s);
 				L.timestamp();
-				L.append(lpsz, 1, s);
+				L.appendf(lpsz, s);
 			}
 			f = 0.0;
 		}
@@ -494,9 +494,9 @@ short CDerivedStats_NumAttacksFloatToShort(float f) {
 			s = (short)(f + 5.5);
 		} else {
 			LPCTSTR lpsz = "CDerivedStats_NumAttacksFloatToShort(): I got a strange number of attacks value (%f)\r\n";
-			console.write(lpsz, 1, f);
+			console.writef(lpsz, f);
 			L.timestamp();
-			L.append(lpsz, 1, f);
+			L.appendf(lpsz, f);
 			s = 0;
 		}
 	}
@@ -560,16 +560,16 @@ void CDerivedStats_SetStat(CDerivedStats& cds, short nOpcode, int nValue) {
 	if (nOpcode < 202) {
 		LPCTSTR lpsz = "CDerivedStats_SetStat(): Tried to set a stat with index < 202 (expected 202-%d)\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, nSize);
-		console.write(lpsz, 1, nSize);
+		L.appendf(lpsz, nSize);
+		console.writef(lpsz, nSize);
 		return;
 	}
 
 	if (nOpcode > nSize) {
 		LPCTSTR lpsz = "CDerivedStats_SetStat(): nOpcode out of bounds (maximum %d)\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, nSize);
-		console.write(lpsz, 1, nSize);
+		L.appendf(lpsz, nSize);
+		console.writef(lpsz, nSize);
 		return;
 	}
 

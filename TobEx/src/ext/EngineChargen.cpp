@@ -77,9 +77,9 @@ void DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnLoad(CPanel& panel, CCreatureO
 
 	if (pGameOptionsEx->bDebugVerbose) {
 		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_MageBookPanelOnLoad(): nMageSpells(%d), nScrollValues(%d)\r\n";
-		console.write(lpsz, 2, MageBookSpells.GetCount(), max(scroll.nValues - scroll.nRows, 0));
+		console.writef(lpsz, MageBookSpells.GetCount(), max(scroll.nValues - scroll.nRows, 0));
 		L.timestamp();
-		L.append(lpsz, 2, MageBookSpells.GetCount(), scroll.nValues);
+		L.appendf(lpsz, MageBookSpells.GetCount(), scroll.nValues);
 	}
 
 	scroll.UpdateKnobPosition(scroll.nCurrentValue, scroll.nValues, scroll.nRows);
@@ -485,9 +485,9 @@ void DETOUR_CScreenCharGen::DETOUR_KitPanelOnUpdate(CPanel& panel, CCreatureObje
 	if (pGameOptionsEx->bDebugVerbose) {
 		
 		LPCTSTR lpsz = "DETOUR_CScreenCharGen::DETOUR_KitPanelOnUpdate(): nKits(%d), nScrollValues(%d), wKit(0x%X)\r\n";
-		console.write(lpsz, 3, Kit_Class_Race.nRows, max(scrollKit.nValues - scrollKit.nRows, 0), dwKit);
+		console.writef(lpsz, Kit_Class_Race.nRows, max(scrollKit.nValues - scrollKit.nRows, 0), dwKit);
 		L.timestamp();
-		L.append(lpsz, 3, Kit_Class_Race.nRows, scrollKit.nValues, dwKit);
+		L.appendf(lpsz, Kit_Class_Race.nRows, scrollKit.nValues, dwKit);
 	}
 
 	return;

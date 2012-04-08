@@ -68,7 +68,7 @@
 #define SIZE_CSCREENWORLD			0x124C
 
 void CheckSize(LPCTSTR lpszName, size_t nExpectedSize, size_t nActualSize) {
-	if (nActualSize != nExpectedSize) console.write("Debug(): %s has incorrect size 0x%X (expected 0x%X)\r\n", 3, lpszName, nActualSize, nExpectedSize);
+	if (nActualSize != nExpectedSize) console.writef("Debug(): %s has incorrect size 0x%X (expected 0x%X)\r\n", lpszName, nActualSize, nExpectedSize);
 	return;
 }
 

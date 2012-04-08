@@ -179,18 +179,18 @@ bool CheckPatch(Data& d) {
 		if (ReadProcessMemory(GetCurrentProcess(), address, szBuf, size, &sizeTemp)) {
 			if (memcmp(szSrc, szBuf, size)) {
 				LPCTSTR lpsz = "ApplyPatch(): source memory differs from source data at address 0x%x\r\n";
-				console.write(CONSOLEFORECOLOR_WARNING, lpsz, 1, address);
+				console.writef(CONSOLEFORECOLOR_WARNING, lpsz, address);
 				L.timestamp();
-				L.append(lpsz, 1, address);
+				L.appendf(lpsz, address);
 
 				b = false;
 			}
 		} else {
 			LPCTSTR lpsz = "ApplyPatch(): ReadProcessMemory failed, address: 0x%x, error code: %d\r\n";
 			DWORD dwError = GetLastError();
-			console.write(CONSOLEFORECOLOR_WARNING, lpsz, 2, address, dwError);
+			console.writef(CONSOLEFORECOLOR_WARNING, lpsz, address, dwError);
 			L.timestamp();
-			L.append(lpsz, 2, address, dwError);
+			L.appendf(lpsz, address, dwError);
 
 			b = false;
 		}
@@ -213,9 +213,9 @@ void ApplyPatch(Data& d) {
 	if ( !WriteProcessMemory(GetCurrentProcess(), address, d.GetBytes(), size, &sizeTemp) ) {
 		LPCTSTR lpsz = "ApplyPatch(): WriteProcessMemory failed, address: 0x%x, error code: %d\r\n";
 		DWORD dwError = GetLastError();
-		console.write(CONSOLEFORECOLOR_WARNING, lpsz, 2, address, dwError);
+		console.writef(CONSOLEFORECOLOR_WARNING, lpsz, address, dwError);
 		L.timestamp();
-		L.append(lpsz, 2, address, dwError);
+		L.appendf(lpsz, address, dwError);
 	}
 	VirtualProtect(address, size, oldProtect, &oldProtect);
 	return;
@@ -233,9 +233,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 		nErrorCode != ERROR_FILE_NOT_FOUND &&
 		nErrorCode != ERROR_PATH_NOT_FOUND) {
 		LPCTSTR lpsz = "InitUserPatches(): FindFirstFile() failed (error code %d)\r\n";
-		console.write(lpsz, 1, nErrorCode);
+		console.writef(lpsz, nErrorCode);
 		L.timestamp();
-		L.append(lpsz, 1, nErrorCode);
+		L.appendf(lpsz, nErrorCode);
 	} else {
 		do {
 			LPCSTR szDir = "./TobEx_ini/patch/";
@@ -251,9 +251,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 			nErrorCode = GetLastError();
 			if (nErrorCode) {
 				LPCTSTR lpsz = "InitUserPatches(): unable to open %s. Error code %d.\r\n";
-				console.write(lpsz, 2, w32fd.cFileName, nErrorCode);
+				console.writef(lpsz, w32fd.cFileName, nErrorCode);
 				L.timestamp();
-				L.append(lpsz, 2, w32fd.cFileName, nErrorCode);
+				L.appendf(lpsz, w32fd.cFileName, nErrorCode);
 			} else {
 				DWORD dwBytesRead;
 				if (w32fd.nFileSizeLow > 0) {
@@ -324,9 +324,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 								sLine = sLine.Right(sLine.GetLength() - 1);
 								if (sLine.Find(']') == -1) {
 									LPCTSTR lpsz = "%s,%d: missing ']' in patch name\r\n";
-									console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+									console.writef(lpsz, w32fd.cFileName, nLineNumber);
 									L.timestamp();
-									L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+									L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 
 									sName = sLine;
 								} else {
@@ -338,9 +338,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 									bInName = true;
 								} else {
 									LPCTSTR lpsz = "%s,%d: empty name in [], will ignore\r\n";
-									console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+									console.writef(lpsz, w32fd.cFileName, nLineNumber);
 									L.timestamp();
-									L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+									L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 								}
 								continue;
 							}
@@ -349,9 +349,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 							if (sLine.Find('=', 1) != -1) {
 								if (!bInName) {
 									LPCTSTR lpsz = "%s,%d: found field (expected name)\r\n";
-									console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+									console.writef(lpsz, w32fd.cFileName, nLineNumber);
 									L.timestamp();
-									L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+									L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 
 									continue;
 								}
@@ -371,9 +371,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 								if (sLeft.CompareNoCase("Address") == 0) {
 									if (bHasAddress) {
 										LPCTSTR lpsz = "%s,%d: address already specified, will overwrite\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 									}
 
 									if (sRight.GetAt(0) == 'v' ||
@@ -387,9 +387,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 										dwAddress = 0x400000;
 									} else {
 										LPCTSTR lpsz = "%s,%d: no address specifier\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 										continue;
 									}
 									sRight = sRight.Right(sRight.GetLength() - 1);
@@ -405,17 +405,17 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 								if (sLeft.CompareNoCase("Source") == 0) {
 									if (!bHasAddress) {
 										LPCTSTR lpsz = "%s,%d: found source (expected address)\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 										continue;
 									}
 									if (!bEnabled) continue;
 									if (ptrSource) {
 										LPCTSTR lpsz = "%s,%d: source already specified, will overwrite\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 
 										delete ptrSource;
 										ptrSource = NULL;
@@ -437,9 +437,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 										}
 									} else {
 										LPCTSTR lpsz = "%s,%d: source patch size is zero\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 									}
 									continue;
 								} //source
@@ -447,9 +447,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 								if (sLeft.CompareNoCase("Target") == 0) {
 									if (!bHasAddress) {
 										LPCTSTR lpsz = "%s,%d: found target (expected address)\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 										continue;
 									}
 									if (!bEnabled) {
@@ -466,17 +466,17 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 									}
 									/*if (ptrSource == NULL) {
 										LPCTSTR lpsz = "%s,%d: found target (expected source)\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 										continue;
 									}*/
 									if (ptrSource &&
 										dwPatchSize != sRight.GetLength() / 2) {
 										LPCTSTR lpsz = "%s,%d: target and source patch sizes do not match, will skip\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 
 										bHasAddress = false;
 										dwPatchSize = 0;
@@ -486,9 +486,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 									}
 									if (ptrTarget) {
 										LPCTSTR lpsz = "%s,%d: target already specified, will overwrite\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 
 										delete[] ptrTarget;
 										ptrTarget = NULL;
@@ -524,18 +524,18 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 
 									} else {
 										LPCTSTR lpsz = "%s,%d: target size is zero\r\n";
-										console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+										console.writef(lpsz, w32fd.cFileName, nLineNumber);
 										L.timestamp();
-										L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+										L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 									}
 									continue;
 								} //target
 							} //field
 
 							LPCTSTR lpsz = "%s,%d: unknown instruction\r\n";
-							console.write(lpsz, 2, w32fd.cFileName, nLineNumber);
+							console.writef(lpsz, w32fd.cFileName, nLineNumber);
 							L.timestamp();
-							L.append(lpsz, 2, w32fd.cFileName, nLineNumber);
+							L.appendf(lpsz, w32fd.cFileName, nLineNumber);
 						} //while
 
 						//clean up
@@ -546,30 +546,30 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 
 						if (bInComment) {
 							LPCTSTR lpsz = "%s: reached EOF (expected end of comment)\r\n";
-							console.write(lpsz, 1, w32fd.cFileName);
+							console.writef(lpsz, w32fd.cFileName);
 							L.timestamp();
-							L.append(lpsz, 1, w32fd.cFileName);
+							L.appendf(lpsz, w32fd.cFileName);
 						}
 						if (bHasAddress) {
 							LPCTSTR lpsz = "%s: reached EOF (expected source/target)\r\n";
-							console.write(lpsz, 1, w32fd.cFileName);
+							console.writef(lpsz, w32fd.cFileName);
 							L.timestamp();
-							L.append(lpsz, 1, w32fd.cFileName);
+							L.appendf(lpsz, w32fd.cFileName);
 						}
 						if (ptrSource) {
 							LPCTSTR lpsz = "%s: reached EOF (expected target)\r\n";
-							console.write(lpsz, 1, w32fd.cFileName);
+							console.writef(lpsz, w32fd.cFileName);
 							L.timestamp();
-							L.append(lpsz, 1, w32fd.cFileName);
+							L.appendf(lpsz, w32fd.cFileName);
 
 							delete[] ptrSource;
 							ptrSource = NULL;
 						}
 						if (ptrTarget) {
 							LPCTSTR lpsz = "%s: reached EOF (before target cleared)\r\n";
-							console.write(lpsz, 1, w32fd.cFileName);
+							console.writef(lpsz, w32fd.cFileName);
 							L.timestamp();
-							L.append(lpsz, 1, w32fd.cFileName);
+							L.appendf(lpsz, w32fd.cFileName);
 
 							delete[] ptrTarget;
 							ptrTarget = NULL;
@@ -577,9 +577,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 
 					} else {
 						LPCTSTR lpsz = "InitUserPatches(): could not read from %s (error code %d)\r\n";
-						console.write(lpsz, 2, w32fd.cFileName, GetLastError());
+						console.writef(lpsz, w32fd.cFileName, GetLastError());
 						L.timestamp();
-						L.append(lpsz, 2, w32fd.cFileName, GetLastError());
+						L.appendf(lpsz, w32fd.cFileName, GetLastError());
 					}
 
 					delete[] szBuf;
@@ -593,9 +593,9 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 
 		if (!FindClose(hFind)) {
 			LPCTSTR lpsz = "InitUserPatches(): FindClose() failed (error code %d)\r\n";
-			console.write(lpsz, 1, nErrorCode);
+			console.writef(lpsz, nErrorCode);
 			L.timestamp();
-			L.append(lpsz, 1, nErrorCode);
+			L.appendf(lpsz, nErrorCode);
 		}
 	}
 
@@ -2903,9 +2903,9 @@ void InitPatches() {
 			bApply = CheckPatch(vDataList[i]);
 			if (!bApply) {
 				LPCTSTR lpsz = "InitPatches(): patch '%s' not applied\r\n";
-				console.write(CONSOLEFORECOLOR_WARNING, lpsz, 1, vPatchItr->GetName());
+				console.writef(CONSOLEFORECOLOR_WARNING, lpsz, vPatchItr->GetName());
 				L.timestamp();
-				L.append(lpsz, 1, vPatchItr->GetName());
+				L.appendf(lpsz, vPatchItr->GetName());
 				break;
 			}
 		}

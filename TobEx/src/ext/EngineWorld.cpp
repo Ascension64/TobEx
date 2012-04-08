@@ -15,7 +15,7 @@ POSITION DETOUR_CScreenWorld::DETOUR_PrintToConsoleColor(IECString& sLeft, IECSt
 		} else {
 			buffer = "[%.8X] %s- %s\r\n";
 		}
-		LD.append(buffer, 3, g_pChitin->pGame->m_WorldTimer.nGameTime, (LPCTSTR)sLeft, (LPCTSTR)sRight);
+		LD.appendf(buffer, g_pChitin->pGame->m_WorldTimer.nGameTime, (LPCTSTR)sLeft, (LPCTSTR)sRight);
 	}
 	return (this->*Tramp_CScreenWorld_PrintToConsole_6)(sLeft, sRight, colLeft, colRight, nUserArg, bResetScrollbar);
 }
@@ -28,7 +28,7 @@ POSITION DETOUR_CScreenWorld::DETOUR_PrintToConsole(IECString& sLeft, IECString&
 		} else {
 			buffer = "[%.8X] %s- %s\r\n";
 		}
-		LD.append(buffer, 3, g_pChitin->pGame->m_WorldTimer.nGameTime, (LPCTSTR)sLeft, (LPCTSTR)sRight);
+		LD.appendf(buffer, g_pChitin->pGame->m_WorldTimer.nGameTime, (LPCTSTR)sLeft, (LPCTSTR)sRight);
 	}
 	return (this->*Tramp_CScreenWorld_PrintToConsole_4)(sLeft, sRight, nUserArg, bResetScrollbar);
 }

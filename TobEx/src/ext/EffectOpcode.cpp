@@ -179,9 +179,9 @@ BOOL DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(CCreatureObject& creTa
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectAttacksPerRoundMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -235,9 +235,9 @@ BOOL DETOUR_CEffectCharismaMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectCharisma::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -291,9 +291,9 @@ BOOL DETOUR_CEffectConstitutionMod::DETOUR_ApplyEffect(CCreatureObject& creTarge
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectConstitution::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -869,9 +869,9 @@ BOOL DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectDexterityMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -925,9 +925,9 @@ BOOL DETOUR_CEffectIntelligenceMod::DETOUR_ApplyEffect(CCreatureObject& creTarge
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectIntelligence::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -981,9 +981,9 @@ BOOL DETOUR_CEffectLoreMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectLore::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -1115,9 +1115,9 @@ BOOL DETOUR_CEffectPoison::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectPoison::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
-		console.write(lpsz, 1, wParam2Low);
+		console.writef(lpsz, wParam2Low);
 		L.timestamp();
-		L.append(lpsz, 1, wParam2Low);
+		L.appendf(lpsz, wParam2Low);
 		bPurge = TRUE;
 		break;
 	}
@@ -1616,9 +1616,9 @@ BOOL DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectStrengthMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -1672,9 +1672,9 @@ BOOL DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectWisdom::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -1820,9 +1820,9 @@ BOOL DETOUR_CEffectStealthMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectStealthMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -1995,9 +1995,9 @@ BOOL DETOUR_CEffectDisease::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectDisease::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
-		console.write(lpsz, 1, wParam2Low);
+		console.writef(lpsz, wParam2Low);
 		L.timestamp();
-		L.append(lpsz, 1, wParam2Low);
+		L.appendf(lpsz, wParam2Low);
 		bPurge = TRUE;
 		break;
 	}
@@ -2061,9 +2061,9 @@ BOOL DETOUR_CEffectOpenLocksMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectOpenLocksMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2128,9 +2128,9 @@ BOOL DETOUR_CEffectFindTrapsMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectFindTrapsMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2195,9 +2195,9 @@ BOOL DETOUR_CEffectPickPocketsMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectPickPocketsMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2251,9 +2251,9 @@ BOOL DETOUR_CEffectFatigueMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectFatigue::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2307,9 +2307,9 @@ BOOL DETOUR_CEffectIntoxicationMod::DETOUR_ApplyEffect(CCreatureObject& creTarge
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectIntoxication::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2371,9 +2371,9 @@ BOOL DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2427,9 +2427,9 @@ BOOL DETOUR_CEffectLevelMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectLevel::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2483,9 +2483,9 @@ BOOL DETOUR_CEffectStrengthExMod::DETOUR_ApplyEffect(CCreatureObject& creTarget)
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectStrengthEx::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2546,9 +2546,9 @@ BOOL DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectRegeneration::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
-		console.write(lpsz, 1, wParam2Low);
+		console.writef(lpsz, wParam2Low);
 		L.timestamp();
-		L.append(lpsz, 1, wParam2Low);
+		L.appendf(lpsz, wParam2Low);
 		bPurge = TRUE;
 		break;
 	}
@@ -2612,9 +2612,9 @@ BOOL DETOUR_CEffectMoraleBreakMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectMoraleBreakMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2676,9 +2676,9 @@ BOOL DETOUR_CEffectReputationMod::DETOUR_ApplyEffect(CCreatureObject& creTarget)
 		break;
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectReputationMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-		console.write(lpsz, 1, effect.nParam2);
+		console.writef(lpsz, effect.nParam2);
 		L.timestamp();
-		L.append(lpsz, 1, effect.nParam2);
+		L.appendf(lpsz, effect.nParam2);
 		bPurge = TRUE;
 		break;
 	}
@@ -2943,9 +2943,9 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 			break;
 		default:
 			LPCTSTR lpsz = "DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
-			console.write(lpsz, 1, effect.nParam2);
+			console.writef(lpsz, effect.nParam2);
 			L.timestamp();
-			L.append(lpsz, 1, effect.nParam2);
+			L.appendf(lpsz, effect.nParam2);
 			bPurge = TRUE;
 			break;
 	}
@@ -3628,9 +3628,9 @@ BOOL DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect(CCreatureObject& creTarget) 
 	case 1:
 	default:
 		LPCTSTR lpsz = "DETOUR_CEffectRepeatingEff::DETOUR_ApplyEffect(): invalid effect.nParam2 low word (%d)\r\n";
-		console.write(lpsz, 1, wParam2Low);
+		console.writef(lpsz, wParam2Low);
 		L.timestamp();
-		L.append(lpsz, 1, wParam2Low);
+		L.appendf(lpsz, wParam2Low);
 		bPurge = TRUE;
 		break;
 	}
@@ -3834,16 +3834,16 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 	if (nOpcode < 387) {
 		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to set a stat with index < 387 (expected 387-%d)\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, nSize);
-		console.write(lpsz, 1, nSize);
+		L.appendf(lpsz, nSize);
+		console.writef(lpsz, nSize);
 		return TRUE;
 	}
 
 	if (nOpcode > nSize) {
 		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): nOpcode out of bounds (expected maximum %d)\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, nSize);
-		console.write(lpsz, 1, nSize);
+		L.appendf(lpsz, nSize);
+		console.writef(lpsz, nSize);
 		return TRUE;
 	}
 
@@ -3876,8 +3876,8 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 		} else {
 			LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to divide by zero\r\n";
 			L.timestamp();
-			L.append(lpsz, 1, nSize);
-			console.write(lpsz, 1, nSize);
+			L.appendf(lpsz, nSize);
+			console.writef(lpsz, nSize);
 			return TRUE;
 		}
 		break;
@@ -3887,8 +3887,8 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 		} else {
 			LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): Tried to divide by zero\r\n";
 			L.timestamp();
-			L.append(lpsz, 1, nSize);
-			console.write(lpsz, 1, nSize);
+			L.appendf(lpsz, nSize);
+			console.writef(lpsz, nSize);
 			return TRUE;
 		}
 		break;
@@ -3910,8 +3910,8 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 	default:
 		LPCTSTR lpsz = "CEffectSetStat::ApplyEffect(): nModType %d invalid (expected 0-10)\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, nModType);
-		console.write(lpsz, 1, nModType);
+		L.appendf(lpsz, nModType);
+		console.writef(lpsz, nModType);
 		break;
 	}
 

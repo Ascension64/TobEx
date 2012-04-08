@@ -14,8 +14,8 @@ void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
 	if (crtResource.m_2da.bLoaded == FALSE) {
 		LPCTSTR lpsz = "CArea_RemoveAreaAirEffectSpecific(): %s.2da not found, using ClearAir.2da...\r\n";
 		L.timestamp();
-		L.append(lpsz, 1, rResource.GetBuffer());
-		console.write(lpsz, 1, rResource.GetBuffer());
+		L.appendf(lpsz, rResource.GetBuffer());
+		console.writef(lpsz, rResource.GetBuffer());
 		bUseResource = false;
 	}
 
@@ -57,7 +57,6 @@ void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
 					char szSmokeId[7] = {0};
 					sprintf_s(szSmokeId, "0x%.4X", wAnimId & 0xFF0F);
 					IECString sSmokeId(szSmokeId);
-					console.write("%s\r\n", 1, (LPCTSTR)sSmokeId);
 					POSITION posString;
 					bRemoveSmoke = crtResource.FindString(sSmokeId, &posString, FALSE);
 				}

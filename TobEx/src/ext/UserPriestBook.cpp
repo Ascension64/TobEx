@@ -47,9 +47,9 @@ void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
 		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
 		LPCTSTR lpsz = "CUIButtonPriestBookUp::OnLClicked(): GetGameObjectShare returned %d\r\n";
-		console.write(lpsz, 1, threadVal);
+		console.writef(lpsz, threadVal);
 		L.timestamp();
-		L.append(lpsz, 1, threadVal);
+		L.appendf(lpsz, threadVal);
 	}
 
 	return;
@@ -96,9 +96,9 @@ void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
 		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
 		LPCTSTR lpsz = "CUIButtonPriestBookDn::OnLClicked(): GetGameObjectShare returned %d\r\n";
-		console.write(lpsz, 1, threadVal);
+		console.writef(lpsz, threadVal);
 		L.timestamp();
-		L.append(lpsz, 1, threadVal);
+		L.appendf(lpsz, threadVal);
 	}
 
 	return;

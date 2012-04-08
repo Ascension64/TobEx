@@ -18,8 +18,8 @@ public:
     Console& write(ResRef& rText);
     Console& write(LPCTSTR lpsz);
 	Console& write(CString& s);
-	Console& write(LPCTSTR format, int n, ...);
-	Console& write(char color, LPCTSTR format, int n, ...);
+	Console& writef(LPCTSTR format, ...);
+	Console& writef(char color, LPCTSTR format, ...);
 
     BOOL bAlloc;
 protected:

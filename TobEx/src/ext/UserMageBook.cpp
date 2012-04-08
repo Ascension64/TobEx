@@ -58,9 +58,9 @@ void CUIButtonMageBookUp::OnLClicked(POINT pt) {
 		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
 		LPCTSTR lpsz = "CUIButtonMageBookUp::OnLClicked(): GetGameObjectShare returned %d\r\n";
-		console.write(lpsz, 1, threadVal);
+		console.writef(lpsz, threadVal);
 		L.timestamp();
-		L.append(lpsz, 1, threadVal);
+		L.appendf(lpsz, threadVal);
 	}
 
 	return;
@@ -107,9 +107,9 @@ void CUIButtonMageBookDn::OnLClicked(POINT pt) {
 		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
 		LPCTSTR lpsz = "CUIButtonMageBookDn::OnLClicked(): GetGameObjectShare returned %d\r\n";
-		console.write(lpsz, 1, threadVal);
+		console.writef(lpsz, threadVal);
 		L.timestamp();
-		L.append(lpsz, 1, threadVal);
+		L.appendf(lpsz, threadVal);
 	}
 
 	return;

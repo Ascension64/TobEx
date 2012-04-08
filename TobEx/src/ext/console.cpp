@@ -61,10 +61,10 @@ Console& Console::write(CString& s) {
 	return *this;
 }
 
-Console& Console::write(LPCTSTR format, int n, ...) {
+Console& Console::writef(LPCTSTR format, ...) {
 	CString s;
     va_list v;
-    va_start(v, n);
+    va_start(v, format);
 	s.FormatV(format, v);
 	DWORD size = s.GetLength();
 
@@ -75,10 +75,10 @@ Console& Console::write(LPCTSTR format, int n, ...) {
 	return *this;
 }
 
-Console& Console::write(char color, LPCTSTR format, int n, ...) {
+Console& Console::writef(char color, LPCTSTR format, ...) {
 	CString s;
     va_list v;
-    va_start(v, n);
+    va_start(v, format);
 	s.FormatV(format, v);
 	DWORD size = s.GetLength();
 

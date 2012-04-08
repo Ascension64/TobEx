@@ -6,7 +6,7 @@ void (CNetwork::*Tramp_CNetwork_PrintNetworkError)(HRESULT, LPCTSTR) =
 void DETOUR_CNetwork::DETOUR_PrintNetworkError(HRESULT hResult, LPCTSTR szMsg) {
 	LPCTSTR lpsz = "Network error: %s returned 0x%.8X\r\n";
 	L.timestamp();
-	L.append(lpsz, 2, szMsg, hResult);
-	console.write(lpsz, 2, szMsg);
+	L.appendf(lpsz, szMsg, hResult);
+	console.writef(lpsz, szMsg);
 	return;
 }

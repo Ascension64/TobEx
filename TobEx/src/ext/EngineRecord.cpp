@@ -192,9 +192,9 @@ void DETOUR_CScreenRecord::DETOUR_UpdateCharacter() {
 			pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(ePlayer1, THREAD_ASYNCH, INFINITE);
 		} else {
 			LPCTSTR lpsz = "DETOUR_UpdateCharacter(): FreeGameObjectDeny returned %d\r\n";
-			console.write(lpsz, 1, threadVal);
+			console.writef(lpsz, threadVal);
 			L.timestamp();
-			L.append(lpsz, 1, threadVal);
+			L.appendf(lpsz, threadVal);
 			return;
 		}
 

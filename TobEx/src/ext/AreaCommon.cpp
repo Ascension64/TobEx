@@ -25,10 +25,8 @@ void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
 		CGameObject* pObj;
 		if (g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pObj, -1) == OBJECT_SUCCESS) {
 			if (pObj->GetType() == CGAMEOBJECT_TYPE_PROJECTILE) {
-				//FIX_ME - do not use itoa
-				char szMissileId[6] = {0};
-				itoa(((CProjectile*)pObj)->nMissileId, szMissileId, 10);
-				IECString sMissileId(szMissileId);
+				IECString sMissileId;
+				sMissileId.Format("%d", ((CProjectile*)pObj)->nMissileId);
 
 				POSITION posString;
 				bool bFound = bUseResource

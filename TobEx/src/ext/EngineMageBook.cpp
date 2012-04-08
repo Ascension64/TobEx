@@ -211,10 +211,8 @@ void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 		spell2.SetSpell(m_rContSpell2);
 		spell3.SetSpell(m_rContSpell3);
 
-		//FIX_ME - do not use itoa
-		char szLevelNum[3] = {0};
-		itoa(m_nCurrContSpellLevel + 1, szLevelNum, 10);
-		IECString sLevelNum(szLevelNum);
+		IECString sLevelNum;
+		sLevelNum.Format("%d", m_nCurrContSpellLevel + 1);
 		IECString sLevel("LEVEL");
 		g_pChitin->m_TlkTbl.m_StringMap[(LPCTSTR)sLevel] = (LPCTSTR)sLevelNum;
 		FormatLabel(*this, panel, 0x1000001D, "%s", (void*)(LPCTSTR)GetTlkString(0x2F69));

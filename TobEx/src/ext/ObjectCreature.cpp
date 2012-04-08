@@ -1234,10 +1234,7 @@ void __stdcall CCreatureObject_UseItem_OverrideAnimation(CCreatureObject& creSou
 	IECString sColname = "SEQUENCE";
 	if (nCol &&
 		nCol < g_pChitin->pGame->ITEMANIM.nCols) {
-		//FIX_ME - do not use itoa
-		char szColname[3] = {0};
-		itoa(nCol, szColname, 10);
-		sColname = szColname;
+		sColname.Format("%d", nCol);
 	}
 
 	IECString sSeq = g_pChitin->pGame->ITEMANIM.GetValue(sColname, sRowname);

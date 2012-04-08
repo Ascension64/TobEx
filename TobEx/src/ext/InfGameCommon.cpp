@@ -51,10 +51,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 			IECString sNewBBLG;  
 			IECString sNewWeight;
 			for (char i = 0; i < 101; ++i) {
-				//FIX_ME - do not use itoa
-				char szIdx[4] = {0};
-				itoa(i, szIdx, 10);
-				sIdx = szIdx;
+				sIdx.Format("%d", i);
 				sNewToHit = rule.STRMODEX.GetValue(sToHit, sIdx);
 				sNewDamage = rule.STRMODEX.GetValue(sDamage, sIdx);
 				sNewBBLG = rule.STRMODEX.GetValue(sBBLG, sIdx);

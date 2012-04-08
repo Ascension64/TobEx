@@ -129,10 +129,8 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 	}
 
 	if (pGameOptionsEx->bEngineExternMageSpellsCap) {
-		//FIX_ME - do not use itoa
-		char szCol[2] = {0};
-		itoa(nSpellLevel, szCol, 10);
-		IECString sCol(szCol);
+		IECString sCol;
+		sCol.Format("%d", nSpellLevel);
 		IECString sRow("MAGE");
 		IECString sMax(g_pChitin->pGame->SPELLS.GetValue(sCol, sRow));
 

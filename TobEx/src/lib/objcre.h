@@ -438,7 +438,7 @@ public:
 	char m_bMakingAttack; //36d4h, statistical attack (i.e. rolling die to hit, applying damage/effects, depleting charges, etc.)
 	char u36d5;
 	BOOL m_bUsingLeftWeapon; //36d6h
-	short u36da;
+	short m_wHalveToHitRolls; //36dah, really a BOOL (not really used)
 	BOOL m_bResetAnimationColors; //36dch
 	BOOL m_bForceSetAnimColors; //36e0h, set to 1 when Set Item Color effect used or when applying petrify colouring but only if animation uses color ranges
 	BOOL u36e4; //assoc with items

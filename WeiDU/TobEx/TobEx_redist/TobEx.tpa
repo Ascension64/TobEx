@@ -1,5 +1,11 @@
 OUTER_SET tobex_redist_version = 24
 
+DEFINE_ACTION_FUNCTION tobex_copy STR_VAR file = "nul" BEGIN
+  ACTION_IF NOT FILE_EXISTS_IN_GAME "%file%" BEGIN
+    COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/override/%file%" "override/%file%"
+  END
+END
+
 ACTION_IF NOT (FILE_EXISTS "TobEx_ini/TobExVer.txt") BEGIN
 
   PRINT @-10000 //TobEx not installed

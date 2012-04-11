@@ -1,4 +1,4 @@
-//1480 This file contains descriptions for all the hack options found in TobEx .ini files
+//1510 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -781,6 +781,14 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1510 Polymorph Fix [F]
+Fixes a bug with param2=1 (Appearance only) where changes to the character's colour would either not work,
+or revert back to normal colours on refreshing the character
+
+Options:
+-0: disabled
+-1: enabled
+
 -----470 Priest Spell Slots Mod [M]
 Adds the Icewind Dale Type 512 Double Spells to the priest spell slots modifier effect opcode
 See the IWD:TotL description for this opcode in the IESDP for more information.
@@ -1026,6 +1034,14 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1500 Use EFF File Fix [F]
+Fixes a bug where child EFF file opcode implementations that store information in internal structures are not saved correctly
+For example:
+-this fixes a stutter issues associated with the Polymorph opcode when param2=1
+
+Options:
+-0: disabled
+-1: enabled
 
 -----1350 Wisdom Mod Fix [F]
 Fixes a bug so that a net negative wisdom value will limit to 0 rather than wrap to 25
@@ -1782,7 +1798,7 @@ Options:
 -0: disabled
 -1: enabled
 
------1480 PickpocketFailed Trigger Only [C, M, T]
+-----1490 PickpocketFailed Trigger Only [C, M, T]
 (Different implementation to, and overrides tob_hacks)
 When pickpocketing fails, a PickPocketFailed() trigger is sent instead of AttackedBy()
 Compare this behaviour with Enable PickpocketFailed Trigger, where both triggers are sent 

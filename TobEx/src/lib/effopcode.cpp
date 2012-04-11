@@ -595,6 +595,21 @@ CEffectMagicResistMod::~CEffectMagicResistMod()						{ (this->*CEffectMagicResis
 CEffect& CEffectMagicResistMod::Duplicate()							{ return (this->*CEffectMagicResistMod_Duplicate)(); }
 BOOL CEffectMagicResistMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectMagicResistMod_ApplyEffect)(creTarget); }
 
+//CEffectUseEFFFile
+void (CEffectUseEFFFile::*CEffectUseEFFFile_Deconstruct)() =
+	SetFP(static_cast<void (CEffectUseEFFFile::*)()>				(&CEffectUseEFFFile::Deconstruct),	0x559380);
+CEffect& (CEffectUseEFFFile::*CEffectUseEFFFile_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectUseEFFFile::*)()>			(&CEffectUseEFFFile::Duplicate),	0x559250);
+BOOL (CEffectUseEFFFile::*CEffectUseEFFFile_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectUseEFFFile::*)(CCreatureObject&)>(&CEffectUseEFFFile::ApplyEffect),	0x52FBAE);
+void (CEffectUseEFFFile::*CEffectUseEFFFile_OnRemove)(CCreatureObject&) =
+	SetFP(static_cast<void (CEffectUseEFFFile::*)(CCreatureObject&)>(&CEffectUseEFFFile::OnRemove),		0x52FACD);
+
+CEffectUseEFFFile::~CEffectUseEFFFile()							{ (this->*CEffectUseEFFFile_Deconstruct)(); }
+CEffect& CEffectUseEFFFile::Duplicate()							{ return (this->*CEffectUseEFFFile_Duplicate)(); }
+BOOL CEffectUseEFFFile::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectUseEFFFile_ApplyEffect)(creTarget); }
+void CEffectUseEFFFile::OnRemove(CCreatureObject& creTarget)	{ return (this->*CEffectUseEFFFile_OnRemove)(creTarget); }
+
 //CEffectCastSpellOnCondition
 void (CEffectCastSpellOnCondition::*CEffectCastSpellOnCondition_Deconstruct)() =
 	SetFP(static_cast<void (CEffectCastSpellOnCondition::*)()>					(&CEffectCastSpellOnCondition::Deconstruct),	0x55DCE0);

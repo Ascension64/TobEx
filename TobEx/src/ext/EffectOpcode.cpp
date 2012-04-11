@@ -102,6 +102,8 @@ BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&)
 	SetFP(static_cast<BOOL (CEffectLearnSpell::*)(CCreatureObject&)>		(&CEffectLearnSpell::ApplyEffect),			0x52C250);
 BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectMagicResistMod::*)(CCreatureObject&)>	(&CEffectMagicResistMod::ApplyEffect),		0x52EB97);
+BOOL (CEffectUseEFFFile::*Tramp_CEffectUseEFFFile_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectUseEFFFile::*)(CCreatureObject&)>		(&CEffectUseEFFFile::ApplyEffect),			0x52FBAE);
 BOOL (CEffectCastSpellOnCondition::*Tramp_CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectCastSpellOnCondition::*)(CCreatureObject&)>
 																			(&CEffectCastSpellOnCondition::ApplyEffect),0x53AFB7);
@@ -2952,6 +2954,111 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 	return TRUE;
 }
 
+BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect");
+
+	BOOL bValidTarget = FALSE;
+	Object oTarget = creTarget.GetCurrentObject();
+	Object oCriteria;
+	unsigned char cValue = effect.nParam1 & 0xFF;
+	int nIdsType = effect.nParam2;
+
+	switch (nIdsType) {
+	case 2: //EA
+		oCriteria.EnemyAlly = cValue;
+		if (oTarget.MatchCriteria(oCriteria, FALSE, FALSE, FALSE)) bValidTarget = TRUE;
+		break;
+	case 3: //GENERAL
+		if (oTarget.General == cValue || cValue == 0) bValidTarget = TRUE;
+		break;
+	case 4: //RACE
+		if (oTarget.Race == cValue || cValue == 0) bValidTarget = TRUE;
+		break;
+	case 5: //CLASS
+		{
+			unsigned char cClassOrg;
+			unsigned char cClassNew;
+			unsigned char cClass = oTarget.GetClass();
+			
+			oTarget.GetDualClasses(&cClassNew, &cClassOrg);
+			
+			if (cClassNew != cClassOrg &&
+				!oTarget.HasActiveSubclass(cClassOrg, TRUE)
+			) { //dual-class
+				cClass = cClassNew;
+			}
+
+			if (cClass == cValue || cValue == 0) bValidTarget = TRUE;
+		}
+		break;
+	case 6: //SPECIFIC
+		if (oTarget.Specific == cValue || cValue == 0) bValidTarget = TRUE;
+		break;
+	case 7: //GENDER
+		if (oTarget.Gender == cValue || cValue == 0) bValidTarget = TRUE;
+		break;
+	case 8: //ALIGN
+		if (oTarget.Alignment == cValue || cValue == ALIGN_ANY) bValidTarget = TRUE;
+		if (cValue == ALIGN_MASK_GOOD && oTarget.Alignment & 0xF == ALIGN_MASK_GOOD) bValidTarget = TRUE;
+		if (cValue == ALIGN_MASK_NEUTRAL && oTarget.Alignment & 0xF == ALIGN_MASK_NEUTRAL) bValidTarget = TRUE;
+		if (cValue == ALIGN_MASK_EVIL && oTarget.Alignment & 0xF == ALIGN_MASK_EVIL) bValidTarget = TRUE;
+		if (cValue == ALIGN_LAWFUL_MASK && oTarget.Alignment & 0xF == ALIGN_LAWFUL_MASK) bValidTarget = TRUE;
+		if (cValue == ALIGN_NEUTRAL_MASK && oTarget.Alignment & 0xF == ALIGN_NEUTRAL_MASK) bValidTarget = TRUE;
+		if (cValue == ALIGN_CHAOTIC_MASK && oTarget.Alignment & 0xF == ALIGN_CHAOTIC_MASK) bValidTarget = TRUE;
+		break;
+	default:
+		break;
+	}
+
+	if (bValidTarget) {
+		ResEffContainer rec(effect.rResource);
+		CEffect* pEff = &rec.CreateCEffect();
+		pEff->effect.ptSource = effect.ptSource;
+		pEff->enum2 = enum2;
+		pEff->eSource = eSource;
+		pEff->effect.ptDest = effect.ptDest;
+		pEff->effect.nDuration = effect.nDuration;
+		pEff->effect.nTiming = effect.nTiming;
+		pEff->effect.bDoSingleUse = effect.bDoSingleUse;
+
+		//new - restore child effect's parameters and resources from previous application
+		if (effect.nParam3) {
+			pEff->effect.nParam1 = effect.u64;
+			pEff->effect.nParam2 = effect.u68;
+			pEff->effect.nParam3 = *(int*)(&effect.rResource2);
+			pEff->effect.nParam4 = *((int*)(&effect.rResource2) + 1);
+		}
+
+		if (effect.nParam3 || //bSuccess
+			TryApplyEffect(
+				creTarget,
+				&creTarget.m_cRandSaveDeath,
+				&creTarget.m_cRandSaveWand,
+				&creTarget.m_cRandSavePolymorph,
+				&creTarget.m_cRandSaveBreath,
+				&creTarget.m_cRandSaveSpell,
+				&creTarget.m_cRandResistMagic,
+				&creTarget.m_cRandEffProb
+			)
+		) {
+			effect.nParam3 = TRUE;
+			pEff->ApplyEffect(creTarget);
+			if (pEff->bPurge) bPurge = TRUE;
+			effect.bDoSingleUse = pEff->effect.bDoSingleUse;
+
+			//new - store child effect's parameters and resources
+			effect.u64 = pEff->effect.nParam1;
+			effect.u68 = pEff->effect.nParam2;
+			*(int*)(&effect.rResource2) = pEff->effect.nParam3;
+			*((int*)(&effect.rResource2) + 1) = pEff->effect.nParam4;
+		} else bPurge = TRUE;
+
+		delete pEff;
+	} else bPurge = TRUE;
+
+	return TRUE;
+}
+
 BOOL DETOUR_CEffectCastSpellOnCondition::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CEffectCastSpellOnCondition::DETOUR_ApplyEffect");
 
@@ -3917,3 +4024,27 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 
 	return TRUE;
 }
+
+void __stdcall CEffectPolymorph_ApplyEffect_ReinitAnimation(CEffect& eff, CCreatureObject& creTarget, CCreatureObject& creNew) {
+	short wOrient = creTarget.wOrientInstant;
+	short wAnimId = eff.effect.nParam1;
+	AnimData* pAD = &creTarget.m_animation;
+	bool bAnimMatch = wAnimId == pAD->pAnimation->wAnimId;
+
+	if (!bAnimMatch) {
+		delete pAD->pAnimation;
+		pAD->pAnimation = NULL;
+		pAD->pAnimation = CAnimation::CreateAnimation(wAnimId, creNew.m_BaseStats.colors, wOrient);
+	}
+
+	for (int i = 0; i < 7; i++) {
+		ColorPal* pColor = IENew ColorPal();
+		pColor->m_cColorGroup = i;
+		pColor->m_cGroupRangeId = *((char*)&creNew.m_BaseStats.colors + i);
+		creTarget.cdsCurrent.ColorListPal.AddTail(pColor);
+		if (bAnimMatch) pAD->pAnimation->SetColorRange(pColor->m_cColorGroup, pColor->m_cGroupRangeId);
+	}
+
+	return;
+}
+

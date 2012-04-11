@@ -33,6 +33,9 @@ void (CEffect::*CEffect_PlaySound)(ResRef&, CCreatureObject&) =
 	SetFP(static_cast<void (CEffect::*)(ResRef&, CCreatureObject&)>									(&CEffect::PlaySound),			0x4FFCCF);
 BOOL (CEffect::*CEffect_IsExpired)() =
 	SetFP(static_cast<BOOL (CEffect::*)()>															(&CEffect::IsExpired),			0x500517);
+BOOL (CEffect::*CEffect_TryApplyEffect)(CCreatureObject&, char*, char*, char*, char*, char*, char*, char*) =
+	SetFP(static_cast<BOOL (CEffect::*)(CCreatureObject&, char*, char*, char*, char*, char*, char*, char*)>
+																									(&CEffect::TryApplyEffect),		0x5006AF);
 ITEM_EFFECT& (CEffect::*CEffect_ToItemEffect)() =
 	SetFP(static_cast<ITEM_EFFECT& (CEffect::*)()>													(&CEffect::ToItemEffect),		0x50270A);
 void (CEffect::*CEffect_Deconstruct)() =
@@ -71,6 +74,16 @@ CEffect& CEffect::CreateEffect(ITEM_EFFECT& data, POINT& ptSource, Enum eSource,
 void CEffect::CreateItemEffect(ITEM_EFFECT& ptr, int nOpcode) { return (*CEffect_CreateItemEffect)(ptr, nOpcode); }
 void CEffect::PlaySound(ResRef& rSound, CCreatureObject& cre) { return (this->*CEffect_PlaySound)(rSound, cre); }
 BOOL CEffect::IsExpired() { return (this->*CEffect_IsExpired)(); }
+BOOL CEffect::TryApplyEffect(
+	CCreatureObject& creTarget,
+	char* pcSaveDeath,
+	char* pcSaveWands,
+	char* pcSavePoly,
+	char* pcSaveBreath,
+	char* pcSaveSpells,
+	char* pcResistMagic,
+	char* pcEffProb
+) { return (this->*CEffect_TryApplyEffect)(creTarget, pcSaveDeath, pcSaveWands, pcSavePoly, pcSaveBreath, pcSaveSpells, pcResistMagic, pcEffProb); }
 ITEM_EFFECT& CEffect::ToItemEffect() {return (this->*CEffect_ToItemEffect)(); }
 CEffect::~CEffect() { (this->*CEffect_Deconstruct)(); }
 CEffect& CEffect::Duplicate() { return (this->*CEffect_Duplicate)(); }

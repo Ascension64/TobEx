@@ -63,6 +63,16 @@ public:
 
 	void PlaySound(ResRef& rSound, CCreatureObject& cre);
 	BOOL IsExpired();
+	BOOL TryApplyEffect(
+		CCreatureObject& creTarget,
+		char* pcSaveDeath,
+		char* pcSaveWands,
+		char* pcSavePoly,
+		char* pcSaveBreath,
+		char* pcSaveSpells,
+		char* pcResistMagic,
+		char* pcEffProb
+	);
 	ITEM_EFFECT& CEffect::ToItemEffect();
 
 	//AA6378
@@ -103,6 +113,7 @@ extern CEffect& (*CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum
 extern void (*CEffect_CreateItemEffect)(ITEM_EFFECT&, int);
 extern void (CEffect::*CEffect_PlaySound)(ResRef&, CCreatureObject&);
 extern BOOL (CEffect::*CEffect_IsExpired)();
+extern BOOL (CEffect::*CEffect_TryApplyEffect)(CCreatureObject&, char*, char*, char*, char*, char*, char*, char*);
 extern ITEM_EFFECT& (CEffect::*CEffect_ToItemEffect)();
 extern void (CEffect::*CEffect_Deconstruct)();
 extern CEffect& (CEffect::*CEffect_Duplicate)();

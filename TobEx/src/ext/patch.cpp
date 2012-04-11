@@ -10,6 +10,7 @@
 #include "log.h"
 #include "ChitinCore.h"
 #include "DialogCore.h"
+#include "EffectOpcode.h"
 #include "EngineChargen.h"
 #include "InfGameCommon.h"
 #include "InfGameCore.h"
@@ -975,6 +976,42 @@ void InitPatches() {
 		char bytes[] = {0x8B, 0x55, 0xD4, 0x8B, 0x4A, 0x48, 0x89, 0x48, 0x48, 0x83, 0xC0, 0x70, 0x83, 0xC2, 0x70, 0x8B, 0x4A, 0x54, 0x89, 0x48, 0x54, 0x8B, 0x4A, 0x5C, 0x89, 0x48, 0x5C, 0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x521184, 30, bytes) );
 	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bEffPolymorphFix) {
+	    //je less -> jmp more, skip early return
+		char bytes[] = {0xEB};
+		vDataList.push_back( Data(0x5288CB, 1, bytes) );
+
+		//mov eax,dword ptr ss:[ebp-34]
+		//push eax
+		//mov ecx,dword ptr ss:[ebp+8]
+		//push ecx
+		//mov edx,dword ptr ss:[ebp-1BC]
+		//push edx
+		//call
+		char bytes2[] = {0x8B, 0x45, 0xCC,
+						0x50,
+						0x8B, 0x4D, 0x08,
+						0x51, 0x8B, 0x95, 0x44, 0xFE, 0xFF, 0xFF,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x5296CB, 16, bytes2) );
+
+		//CALL address
+		void* ptr = (void*)CEffectPolymorph_ApplyEffect_ReinitAnimation;
+		DWORD address = (DWORD)ptr - 5  - 0x5296DA;
+		char* bytes3 = (char*)&address;
+		vDataList.push_back( Data(0x5296DB, 4, bytes3) );
+
+		//jmp 5297D7
+		//nop
+		char bytes4[] = {0xE9, 0xF3, 0x00, 0x00, 0x00,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x5296DF, 7, bytes4) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

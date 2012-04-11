@@ -27,6 +27,7 @@ public:
 	CAnimation(); //7F9211
 	CAnimation& Construct() { return *this; } //dummy
 	void PlayCurrentSequenceSound(CCreatureObject& cre);
+	static CAnimation* CreateAnimation(unsigned short wAnimId, ColorRangeValues& colors, unsigned short wOrient);
 
 	static BOOL IsPlayableAnimation(unsigned short wAnimId);
 
@@ -115,6 +116,7 @@ public:
 
 extern CAnimation& (CAnimation::*CAnimation_Construct)();
 extern void (CAnimation::*CAnimation_PlayCurrentSequenceSound)(CCreatureObject&);
+extern CAnimation* (*CAnimation_CreateAnimation)(unsigned short, ColorRangeValues&, unsigned short);
 extern BOOL (*CAnimation_IsPlayableAnimation)(unsigned short);
 extern LPCTSTR (CAnimation::*CAnimation_GetWalkingSound)(short);
 extern bool (CAnimation::*CAnimation_GetCurrentCycleAndFrame)(short&, short&);

@@ -457,15 +457,15 @@ public:
 	bool u3788;
 	char u3789; //padding?
 	CStrRef soundset[100]; //378ah
-	char rndEffSaveDeath; //6282h, 1D20
-	char rndEffSaveWand; //6283h, 1D20
-	char rndEffSavePolymorph; //6284h, 1D20
-	char rndEffSaveBreath; //6285h, 1D20
-	char rndEffSaveSpell; //6286h, 1D20
-	char rndEffResistMagic; //6287h, 1D100
-	char rndDoEff; //6288h, 1D100, test against effect prob1 and prob2
-	char rndWildMagicLevel; //6289h, 1D20, column of LVLMODWM.2DA
-	char rndDoWildMagic; //628Ah, 1D20, if 0, do wild magic
+	char m_cRandSaveDeath; //6282h, 1D20
+	char m_cRandSaveWand; //6283h, 1D20
+	char m_cRandSavePolymorph; //6284h, 1D20
+	char m_cRandSaveBreath; //6285h, 1D20
+	char m_cRandSaveSpell; //6286h, 1D20
+	char m_cRandResistMagic; //6287h, 1D100
+	char m_cRandEffProb; //6288h, 1D100, test against effect prob1 and prob2
+	char m_cRandWildMagicLevel; //6289h, 1D20, column of LVLMODWM.2DA
+	char m_cRandWildMagicProb; //628Ah, 1D20, if 0, do wild magic
 	char u628b; //padding?
 	long u628c[2];
 	int m_nLargestCurrentHP; //6294h, set to largest current HP value obtained

@@ -13,6 +13,8 @@ CAnimation& (CAnimation::*CAnimation_Construct)() =
 	SetFP(static_cast<CAnimation& (CAnimation::*)()>			(&CAnimation::Construct),					0x7F9211);
 void (CAnimation::*CAnimation_PlayCurrentSequenceSound)(CCreatureObject&) =
 	SetFP(static_cast<void (CAnimation::*)(CCreatureObject&)>	(&CAnimation::PlayCurrentSequenceSound),	0x7F9DF4);
+CAnimation* (*CAnimation_CreateAnimation)(unsigned short, ColorRangeValues&, unsigned short) =
+	reinterpret_cast<CAnimation* (*)(unsigned short, ColorRangeValues&, unsigned short)>					(0x7F9EBC);
 BOOL (*CAnimation_IsPlayableAnimation)(unsigned short) =
 	reinterpret_cast<BOOL (*)(unsigned short)>																(0x85F364);
 LPCTSTR (CAnimation::*CAnimation_GetWalkingSound)(short) =
@@ -22,6 +24,8 @@ bool (CAnimation::*CAnimation_GetCurrentCycleAndFrame)(short&, short&) =
 
 CAnimation::CAnimation()												{ (this->*CAnimation_Construct)(); }
 void CAnimation::PlayCurrentSequenceSound(CCreatureObject& cre)			{ return (this->*CAnimation_PlayCurrentSequenceSound)(cre); }
+CAnimation* CAnimation::CreateAnimation(unsigned short wAnimId, ColorRangeValues& colors, unsigned short wOrient)
+	{ return (*CAnimation_CreateAnimation)(wAnimId, colors, wOrient); }
 BOOL CAnimation::IsPlayableAnimation(unsigned short wAnimId)			{ return (*CAnimation_IsPlayableAnimation)(wAnimId); }
 LPCTSTR CAnimation::GetWalkingSound(short wTerrainCode)					{ return (this->*CAnimation_GetWalkingSound)(wTerrainCode); }
 bool CAnimation::GetCurrentCycleAndFrame(short& wCycle, short& wFrame)	{ return (this->*CAnimation_GetCurrentCycleAndFrame)(wCycle, wFrame); }

@@ -1,5 +1,9 @@
 Beta 0024
 ---------
+-Class/structure updates
+-Some changes to internal code
+-Added: Polymorph Fix
+-Added: Use EFF File Fix
 -Awaken On Damage: Fixed a bug where creatures hit unconscious by FIST/STUNNING damage would still be a target and would recover consciousness in the same around
 
 Beta 0023

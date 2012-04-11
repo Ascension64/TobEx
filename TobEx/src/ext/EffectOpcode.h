@@ -341,6 +341,14 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectUseEFFFile
+extern BOOL (CEffectUseEFFFile::*Tramp_CEffectUseEFFFile_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectUseEFFFile : public CEffectUseEFFFile {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectCastSpellOnCondition
 extern BOOL (CEffectCastSpellOnCondition::*Tramp_CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&);
 
@@ -423,5 +431,7 @@ public:
 	virtual CEffect& Duplicate(); //v4
 	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
 };
+
+void __stdcall CEffectPolymorph_ApplyEffect_ReinitAnimation(CEffect& eff, CCreatureObject& creTarget, CCreatureObject& creNew);
 
 #endif //EFFECTOPCODE_H

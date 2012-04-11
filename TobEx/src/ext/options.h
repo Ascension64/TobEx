@@ -70,6 +70,7 @@ struct CGameOptionsEx {
 	BOOL bEffOpenLocksModFix;
 	BOOL bEffPickPocketsModFix;
 	BOOL bEffPoisonFix;
+	BOOL bEffPolymorphFix;
 	BOOL bEffPriestMemSpellMod;
 	BOOL bEffProficiencyModMod;
 	BOOL bEffRegenerationFix;
@@ -86,6 +87,7 @@ struct CGameOptionsEx {
 	BOOL bEffStrengthMod;
 	BOOL bEffTrackingModFix;
 	BOOL bEffMirrorImageUseCastLevel;
+	BOOL bEffUseEFFFileFix;
 	BOOL bEffWisdomModFix;
 
 	BOOL bEnginePriestKnownSpellsExtend;

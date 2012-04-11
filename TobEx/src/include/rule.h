@@ -2,22 +2,22 @@
 #define RULE_H
 
 //ALIGN.IDS
-const char ALIGN_ANY				= 0x00;
-const char ALIGN_LAWFUL_GOOD		= 0x11;
-const char ALIGN_LAWFUL_NEUTRAL		= 0x12;
-const char ALIGN_LAWFUL_EVIL		= 0x13;
-const char ALIGN_NEUTRAL_GOOD		= 0x21;
-const char ALIGN_NEUTRAL			= 0x22;
-const char ALIGN_NEUTRAL_EVIL		= 0x23;
-const char ALIGN_CHAOTIC_GOOD		= 0x31;
-const char ALIGN_CHAOTIC_NEUTRAL	= 0x32;
-const char ALIGN_CHAOTIC_EVIL		= 0x33;
-const char ALIGN_MASK_GOOD			= 0x01;
-const char ALIGN_MASK_NEUTRAL		= 0x02;
-const char ALIGN_MASK_EVIL			= 0x03;
-const char ALIGN_LAWFUL_MASK		= 0x10;
-const char ALIGN_NEUTRAL_MASK		= 0x20;
-const char ALIGN_CHAOTIC_MASK		= 0x30;
+const unsigned char ALIGN_ANY				= 0x00;
+const unsigned char ALIGN_LAWFUL_GOOD		= 0x11;
+const unsigned char ALIGN_LAWFUL_NEUTRAL	= 0x12;
+const unsigned char ALIGN_LAWFUL_EVIL		= 0x13;
+const unsigned char ALIGN_NEUTRAL_GOOD		= 0x21;
+const unsigned char ALIGN_NEUTRAL			= 0x22;
+const unsigned char ALIGN_NEUTRAL_EVIL		= 0x23;
+const unsigned char ALIGN_CHAOTIC_GOOD		= 0x31;
+const unsigned char ALIGN_CHAOTIC_NEUTRAL	= 0x32;
+const unsigned char ALIGN_CHAOTIC_EVIL		= 0x33;
+const unsigned char ALIGN_MASK_GOOD			= 0x01;
+const unsigned char ALIGN_MASK_NEUTRAL		= 0x02;
+const unsigned char ALIGN_MASK_EVIL			= 0x03;
+const unsigned char ALIGN_LAWFUL_MASK		= 0x10;
+const unsigned char ALIGN_NEUTRAL_MASK		= 0x20;
+const unsigned char ALIGN_CHAOTIC_MASK		= 0x30;
 
 //ACTION.IDS
 const short ACTION_SET_GLOBAL				= 30;

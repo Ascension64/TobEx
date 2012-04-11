@@ -75,6 +75,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffOpenLocksModFix = FALSE;
 	bEffPickPocketsModFix = FALSE;
 	bEffPoisonFix = FALSE;
+	bEffPolymorphFix = FALSE;
 	bEffPriestMemSpellMod = FALSE;
 	bEffProficiencyModMod = FALSE;
 	bEffRegenerationFix = FALSE;
@@ -91,6 +92,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffStrengthMod = FALSE;
 	bEffTrackingModFix = FALSE;
 	bEffMirrorImageUseCastLevel = FALSE;
+	bEffUseEFFFileFix = FALSE;
 	bEffWisdomModFix = FALSE;
 
 	bEnginePriestKnownSpellsExtend = FALSE;
@@ -238,6 +240,7 @@ void CGameOptionsEx::Init() {
 	bEffOpenLocksModFix = GetCoreIniValue("Effect Opcodes", "Open Locks Mod Fix");
 	bEffPickPocketsModFix = GetCoreIniValue("Effect Opcodes", "Pick Pockets Mod Fix");
 	bEffPoisonFix = GetCoreIniValue("Effect Opcodes", "Poison Fix");
+	bEffPolymorphFix = GetCoreIniValue("Effect Opcodes", "Polymorph Fix");
 	bEffPriestMemSpellMod = GetCoreIniValue("Effect Opcodes", "Priest Spell Slots Mod");
 	bEffProficiencyModMod = GetCoreIniValue("Effect Opcodes", "Proficiency Modifier Mod");
 	bEffRegenerationFix = GetCoreIniValue("Effect Opcodes", "Regeneration Fix");
@@ -254,6 +257,7 @@ void CGameOptionsEx::Init() {
 	bEffStrengthMod = GetCoreIniValue("Effect Opcodes", "Strength Mod");
 	bEffTrackingModFix = GetCoreIniValue("Effect Opcodes", "Tracking Mod Fix");
 	bEffMirrorImageUseCastLevel = GetTweakIniValue("Tweak", "Effect Opcodes:Use Caster Level On Mirror Image");
+	bEffUseEFFFileFix = GetCoreIniValue("Effect Opcodes", "Use EFF File Fix");
 	bEffWisdomModFix = GetCoreIniValue("Effect Opcodes", "Wisdom Mod Fix");
 
 	bEnginePriestKnownSpellsExtend = GetCoreIniValue("Engine", "Allow 99 Priest Known Spells Per Level");

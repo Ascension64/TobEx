@@ -750,6 +750,23 @@ extern void (CEffectMagicResistMod::*CEffectMagicResistMod_Deconstruct)();
 extern CEffect& (CEffectMagicResistMod::*CEffectMagicResistMod_Duplicate)();
 extern BOOL (CEffectMagicResistMod::*CEffectMagicResistMod_ApplyEffect)(CCreatureObject&);
 
+//CEffectUseEFFFile
+class CEffectUseEFFFile : public CEffect { //opcode B1h
+public:
+	//AA7BD8
+	virtual ~CEffectUseEFFFile(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+	virtual void OnRemove(CCreatureObject& creTarget); //v24
+};
+
+extern void (CEffectUseEFFFile::*CEffectUseEFFFile_Deconstruct)();
+extern CEffect& (CEffectUseEFFFile::*CEffectUseEFFFile_Duplicate)();
+extern BOOL (CEffectUseEFFFile::*CEffectUseEFFFile_ApplyEffect)(CCreatureObject&);
+extern void (CEffectUseEFFFile::*CEffectUseEFFFile_OnRemove)(CCreatureObject&);
+
 //CEffectCastSpellOnCondition
 class CEffectCastSpellOnCondition : public CEffect { //opcode E8h
 public:

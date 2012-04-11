@@ -220,6 +220,9 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffTrackingModFix)
 		DetourMemberFunction(Tramp_CEffectTrackingMod_ApplyEffect, DETOUR_CEffectTrackingMod::DETOUR_ApplyEffect);
 
+	if (pGameOptionsEx->bEffUseEFFFileFix)
+		DetourMemberFunction(Tramp_CEffectUseEFFFile_ApplyEffect, DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect);
+
 	if (pGameOptionsEx->bEffWisdomModFix)
 		DetourMemberFunction(Tramp_CEffectWisdomMod_ApplyEffect, DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect);
 

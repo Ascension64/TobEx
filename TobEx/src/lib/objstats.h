@@ -58,6 +58,11 @@ public:
 
 extern void (CConditionalSpellList::*CConditionalSpellList_EvaluateTriggers)(CCreatureObject&);
 
+struct ColorPal { //Size 2h
+	char m_cColorGroup;
+	char m_cGroupRangeId;
+};
+
 struct COnEquipItem { //Size 10h
 	ResRef rItem; //0h
 	STRREF strrefMsg; //8h
@@ -548,8 +553,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 
 	SpellLevelDec SplTrapLvl[10]; //67ch
 	IECPtrList SplSequencer; //6cch, AA65AC
-	CColorPalList ColorListPal; //6e8h, item color objects of 0x2?
-	CColorRgbList ColorListRgb; //704h, size 0x8 objects (byte nColorGroup, byte nGroupRangeId, ARGB rgbColor, byte n, byte pad)
+	CColorPalList ColorListPal; //6e8h, size 0x2 objects (byte cColorGroup [location], byte cGroupRangeId [gradient])
+	CColorRgbList ColorListRgb; //704h, size 0x8 objects (byte cColorGroup, byte cGroupRangeId, ARGB rgbColor, byte n, byte pad)
 	CreFileMemSpellLevel MemInfoMage[9]; //720h
 	CreFileMemSpellLevel MemInfoPriest[7]; //7b0h
 

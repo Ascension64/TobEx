@@ -3022,11 +3022,18 @@ BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		pEff->effect.bDoSingleUse = effect.bDoSingleUse;
 
 		//new - restore child effect's parameters and resources from previous application
-		if (effect.nParam3) {
-			pEff->effect.nParam1 = effect.u64;
-			pEff->effect.nParam2 = effect.u68;
-			pEff->effect.nParam3 = *(int*)(&effect.rResource2);
-			pEff->effect.nParam4 = *((int*)(&effect.rResource2) + 1);
+		if (effect.nParam3) { //bSuccess
+			if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
+				pEff->effect.ud0[0] = effect.ud0[0];
+				pEff->effect.ud0[1] = effect.ud0[1];
+				pEff->effect.ud0[2] = effect.ud0[2];
+				pEff->effect.ud0[3] = effect.ud0[3];
+			} else {
+				pEff->effect.nParam1 = effect.ud0[0];
+				pEff->effect.nParam2 = effect.ud0[1];
+				pEff->effect.nParam3 = effect.ud0[2];
+				pEff->effect.nParam4 = effect.ud0[3];
+			}
 		}
 
 		if (effect.nParam3 || //bSuccess
@@ -3047,10 +3054,17 @@ BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			effect.bDoSingleUse = pEff->effect.bDoSingleUse;
 
 			//new - store child effect's parameters and resources
-			effect.u64 = pEff->effect.nParam1;
-			effect.u68 = pEff->effect.nParam2;
-			*(int*)(&effect.rResource2) = pEff->effect.nParam3;
-			*((int*)(&effect.rResource2) + 1) = pEff->effect.nParam4;
+			if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
+				effect.ud0[0] = pEff->effect.ud0[0];
+				effect.ud0[1] = pEff->effect.ud0[1];
+				effect.ud0[2] = pEff->effect.ud0[2];
+				effect.ud0[3] = pEff->effect.ud0[3];
+			} else {
+				effect.ud0[0] = pEff->effect.nParam1;
+				effect.ud0[1] = pEff->effect.nParam2;
+				effect.ud0[2] = pEff->effect.nParam3;
+				effect.ud0[3] = pEff->effect.nParam4;
+			}
 		} else bPurge = TRUE;
 
 		delete pEff;

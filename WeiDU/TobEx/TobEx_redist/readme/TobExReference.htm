@@ -1161,6 +1161,7 @@
             <li><a href="#effects-106">#106 (0x06A) Stat: Morale Break Modifier [106]</a></li>
             <li><a href="#effects-108">#108 (0x06C) Stat: Reputation [108]</a></li>
             <li><a href="#effects-119">#119 (0x077)  Spell Effect: Mirror Image [119]</a></li>
+            <li><a href="#effects-135">#135 (0x087) Graphics: Polymorph into Specific [135]</a></li>
             <li><a href="#effects-144">#144 (0x090)  Button: Disable Button [144]</a></li>
             <li><a href="#effects-147">#147 (0x093)  Spell: Learn Spell [147]</a></li>
             <li><a href="#effects-164">#164 (0x0A4)  Cure: Drunkeness [164]</a></li>
@@ -1521,6 +1522,9 @@
           <a name="effects-119" id="effects-119"></a><p><strong>#119 (0x077) Spell Effect: Mirror Image [119]</strong><br />
           <i><strong>Option:</strong> TobEx gives the option of modifying the mirror image effect opcode to keep caster level, so that dispel magic will work on it</i></p>
           <hr />
+          <a name="effects-135" id="effects-135"></a><p><strong>#135 (0x087) Graphics: Polymorph into Specific [135]</strong><br />
+          <i>TobEx fixes a bug with parameter 2 values of 1 (Appearance only) where changes to the character's colour would either not work, or revert back to normal colours on refreshing the character. The <a href="#effects-177">Use EFF File opcode</a> is fixed to prevent stuttering associated with using Polymorph opcode as a child effect.</i></p>
+          <hr />
           <a name="effects-144" id="effects-144"></a><p><strong>#144 (0x090)  Button: Disable Button [144]</strong><br />
           <i>TobEx adds parameter 2 values 10 and 14. The button disabled states are tied to new hard-coded STATS.IDS opcodes 308-322, inclusive. Also refer to the <a href="#stats">Scripting Stats</a> section.</i><br />
           Parameter #1: Irrelevant<br />
@@ -1583,7 +1587,8 @@
           <p>For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.</p>
           <hr />
           <a name="effects-177" id="effects-177"></a><p><strong>#177 (0x0B1)  Use EFF File [177]</strong><br />
-          <i>TobEx makes no direct changes to thie effect opcode, but it fixes memory deallocation issues associated with containers and doors that use this effect opcode in their trap scripts</i></p>
+          <i>TobEx fixes this effect opcode so that adjustments to child effect parameters 1 to 4 are saved in unused internal structures of this opcode and restored to the child effect on next application. This fixes stutter issues associated with the <a href="#effects-135">Polymorph</a> (parameter 2 value 1) opcode and is required for the changes to the <a href="#effects-15">Dexterity Modifier</a> (parameter 2 value 3), <a href="#effects-25">Poison</a>, <a href="#effects-44">Strength Modifier</a> (parameter 2 value 3), <a href="#effects-78">Disease</a>, <a href="#effects-98">Regeneration</a>, and <a href="#effects-272">Apply Repeating EFF</a> opcodes to work correctly when used as child effects of this effect.<br />
+          TobEx also fixes memory deallocation issues associated with containers and doors that use this effect opcode in their trap scripts</i></p>
           <hr />
           <a name="effects-181" id="effects-181"></a><p><strong>#181 (0x0B5)  Item: Can't Use Itemtype [181]</strong><br />
           <i>TobEx fixes this effect opcode so that it works correctly when parameter 2 is non-zero</i></p>

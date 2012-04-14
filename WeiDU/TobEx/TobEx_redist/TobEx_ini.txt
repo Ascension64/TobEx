@@ -1038,7 +1038,7 @@ Options:
 Fixes a bug where child EFF file opcode implementations that store information in internal structures are not saved correctly
 For example:
 -this fixes a stutter issues associated with the Polymorph opcode when param2=1
--this is required for Poison Fix, Disease Fix, Regeneration Fix, Repeating EFF Fix, Dexterity Mod, Strength Mod hacks to work correctly
+-this is required for Poison Fix, Disease Fix, Regeneration Fix, Repeating EFF Fix, Dexterity Mod, and Strength Mod hacks to work correctly
 
 Options:
 -0: disabled

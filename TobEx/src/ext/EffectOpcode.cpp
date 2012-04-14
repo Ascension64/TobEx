@@ -315,7 +315,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 	if (creTarget.m_bUnmarshalling) return TRUE;
 
-	creTarget.m_bResetAnimationColors = TRUE;
+	creTarget.m_bForceReinitAnimColors = TRUE;
 	int nPrevHP = creTarget.m_BaseStats.currentHP;
 	
 	CAnimation* pAnimation = creTarget.m_animation.pAnimation;
@@ -1755,9 +1755,9 @@ BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		creTarget.EquipAll(TRUE);
 	}
 
-	creTarget.m_bResetAnimationColors = TRUE;
-	creTarget.m_bForceSetAnimColors = TRUE;
-	creTarget.u36e4 = TRUE;
+	creTarget.m_bForceReinitAnimColors = TRUE;
+	creTarget.m_bForceResetAnimColors = TRUE;
+	creTarget.m_bForceMsgResetAnimColors = TRUE;
 
 	bRefreshStats = TRUE;
 	bPurge = TRUE;

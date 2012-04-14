@@ -73,28 +73,28 @@ struct CVariable { //Size 54h
 extern CVariable& (CVariable::*CVariable_Construct)();
 extern CVariable& (CVariable::*CVariable_OpAssign)(CVariable&);
 
-struct CVariableArray { //Size 8h
-	CVariableArray(int nSize);
-	CVariableArray& Construct(int nSize) { return *this; } //dummy
+struct CVariableMap { //Size 8h
+	CVariableMap(int nSize);
+	CVariableMap& Construct(int nSize) { return *this; } //dummy
 
-	~CVariableArray();
+	~CVariableMap();
 	void Deconstruct() {} //dummy
 
-	BOOL AddVariable(CVariable& var);
-	CVariable& GetVariable(IECString sVar);
-	int GetChecksum(IECString sVar);
-	void Clear();
+	BOOL Add(CVariable& var);
+	CVariable& Find(IECString sVar);
+	int GetHashValue(IECString sVar);
+	void Empty();
 
 	CVariable* pArray;
 	int nArraySize;
 };
 
-extern CVariableArray& (CVariableArray::*CVariableArray_Construct)(int);
-extern void (CVariableArray::*CVariableArray_Deconstruct)();
-extern BOOL (CVariableArray::*CVariableArray_AddVariable)(CVariable&);
-extern CVariable& (CVariableArray::*CVariableArray_GetVariable)(IECString);
-extern int (CVariableArray::*CVariableArray_GetChecksum)(IECString);
-extern void (CVariableArray::*CVariableArray_Clear)();
+extern CVariableMap& (CVariableMap::*CVariableMap_Construct)(int);
+extern void (CVariableMap::*CVariableMap_Deconstruct)();
+extern BOOL (CVariableMap::*CVariableMap_Add)(CVariable&);
+extern CVariable& (CVariableMap::*CVariableMap_Find)(IECString);
+extern int (CVariableMap::*CVariableMap_GetHashValue)(IECString);
+extern void (CVariableMap::*CVariableMap_Empty)();
 
 struct ObjectIds { //Size 5h
 	ObjectIds();

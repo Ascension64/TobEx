@@ -37,7 +37,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 	}
 
 	if (!sScope.Compare("GLOBAL")) {
-		CVariable& var = g_pChitin->pGame->m_GlobalVariables.GetVariable(sVariable);
+		CVariable& var = g_pChitin->pGame->m_GlobalVariables.Find(sVariable);
 		if (&var != NULL) {
 			var.value = bIncrement ? var.value + a.i : a.i;
 			nNewValue = var.value;
@@ -45,7 +45,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 			varNew.name = sVariable;
 			varNew.value = a.i;
 			nNewValue = varNew.value;
-			g_pChitin->pGame->m_GlobalVariables.AddVariable(varNew);
+			g_pChitin->pGame->m_GlobalVariables.Add(varNew);
 		}
 
 		CMessageModifyVariable* pMsg = IENew CMessageModifyVariable();
@@ -62,7 +62,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 
 	if (!sScope.Compare("LOCALS")) {
 		if (pTarget->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
-			CVariable& var = ((CCreatureObject*)pTarget)->m_pLocalVariables->GetVariable(sVariable);
+			CVariable& var = ((CCreatureObject*)pTarget)->m_pLocalVariables->Find(sVariable);
 			if (&var != NULL) {
 				var.value = bIncrement ? var.value + a.i : a.i;
 				nNewValue = var.value;
@@ -70,7 +70,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 				varNew.name = sVariable;
 				varNew.value = a.i;
 				nNewValue = varNew.value;
-				((CCreatureObject*)pTarget)->m_pLocalVariables->AddVariable(varNew); //64A2E8
+				((CCreatureObject*)pTarget)->m_pLocalVariables->Add(varNew); //64A2E8
 			}
 
 			CMessageModifyVariable* pMsg = IENew CMessageModifyVariable();
@@ -97,7 +97,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 	}
 	CArea& area = g_pChitin->pGame->GetLoadedArea(sScope);
 	if (&area != NULL) {
-		CVariable& var = area.m_AreaVariables.GetVariable(sVariable);
+		CVariable& var = area.m_AreaVariables.Find(sVariable);
 		if (&var != NULL) {
 			var.value = bIncrement ? var.value + a.i : a.i;
 			nNewValue = var.value;
@@ -105,7 +105,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 			varNew.name = sVariable;
 			varNew.value = a.i;
 			nNewValue = varNew.value;
-			area.m_AreaVariables.AddVariable(varNew);
+			area.m_AreaVariables.Add(varNew);
 		}
 
 		CMessageModifyVariable* pMsg = IENew CMessageModifyVariable();

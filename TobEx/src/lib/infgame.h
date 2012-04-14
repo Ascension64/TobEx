@@ -615,8 +615,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char m_Keymap[387]; //467ah
 	bool m_bCtrl[387]; //47fdh, for each array entry as above for keymap, is Ctrl- required?
 
-	CVariableArray m_GlobalVariables; //4980h
-	CVariableArray u4988; //4988h, global death variables?
+	CVariableMap m_GlobalVariables; //4980h
+	CVariableMap u4988; //4988h, global death variables?
 
 	struct u4990 {
 		IECString u0;
@@ -696,12 +696,18 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	CPartyLocationList cplStorePartyLoc; //4d84h, used in Store/RestorePartyLocations(), CPartyLocation0 (0x0 Resref areaname, 0x8 POINT)
 	CPartyLocationList cplPrePocketPlane; //4da0h, used in ExitPocketPlane() and Cutscene2 effect, CPartyLocation1 (0x0 Resref areaname, 0x8 POINT)
 
-	struct CVvcArray {
-	//Size: 0x8
+	struct CVvcMapEntry { //size 12h
+		ResRef r;
+		short u8;
+		int ua;
+		int ue;
+	};
+
+	struct CVvcMap { //size 8h
 	//Constructor: 0x64B3C1
-		int* pArray; //of VvcEntries (0x12 size objects - ResRef, w, dw, dw)
+		CVvcMapEntry* pArray; //VvcMapEntry
 		int nElements;
-	} m_CVvcArray; //4dbch
+	} m_CVvcMap; //4dbch
 
 	int u4dc4; //? compared with CVisualEffectVidCell.u39c*/
 };

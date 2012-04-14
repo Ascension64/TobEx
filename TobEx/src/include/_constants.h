@@ -250,6 +250,7 @@
 //! 0xAA6CE0 CMessageModifyVariable
 //0xAA6CFC, 22h, CString areaName, DW (Windowwidth / 2 + ScreenOffsetX), DW (Windowheight / 2 + ScreenOffsetY), DW x, DW y, unsigned char int, pad
 //0xAA6D18, 2ah, ResRef (visualeffectname), CString (areaname), POINT, Point2, W zPos (CMessageCreateVisualEffect)
+//0xAA6D50, eh, wAnimId (CMessageAnimationChange)
 //! 0xAA6D6C CMessageSetAnimationSequence
 //0xAA6D88, ch
 //0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
@@ -300,7 +301,7 @@
 //0xAAB6E8, eh, unsigned char, pad
 //0xAAB704, ch
 //0xAAB720, ch (CMessagePrepareDialogue)
-//0xAAB758, ch (CMessageSetAnimColorRange)
+//0xAAB758, ch (CMessageResetAnimColors)
 //0xAAB7C8, ch
 //0xAAB81C, 10h, DW
 //0xAAB838, 14h, ResRef 

@@ -21,26 +21,26 @@ CVariable& (CVariable::*CVariable_OpAssign)(CVariable&) =
 CVariable::CVariable() { (this->*CVariable_Construct)(); }
 CVariable& CVariable::operator=(CVariable& var) { return (this->*CVariable_OpAssign)(var); }
 
-//CVariableArray
-CVariableArray& (CVariableArray::*CVariableArray_Construct)(int) =
-	SetFP(static_cast<CVariableArray& (CVariableArray::*)(int)>	(&CVariableArray::Construct),	0x64A1E0);
-void (CVariableArray::*CVariableArray_Deconstruct)() =
-	SetFP(static_cast<void (CVariableArray::*)()>				(&CVariableArray::Deconstruct),	0x64A2C7);
-BOOL (CVariableArray::*CVariableArray_AddVariable)(CVariable&) =
-	SetFP(static_cast<BOOL (CVariableArray::*)(CVariable&)>		(&CVariableArray::AddVariable),	0x64A2E8);
-CVariable& (CVariableArray::*CVariableArray_GetVariable)(IECString) =
-	SetFP(static_cast<CVariable& (CVariableArray::*)(IECString)>(&CVariableArray::GetVariable),	0x64A709);
-int (CVariableArray::*CVariableArray_GetChecksum)(IECString) =
-	SetFP(static_cast<int (CVariableArray::*)(IECString)>		(&CVariableArray::GetChecksum),	0x64A96E);
-void (CVariableArray::*CVariableArray_Clear)() =
-	SetFP(static_cast<void (CVariableArray::*)()>				(&CVariableArray::Clear),		0x64AA27);
+//CVariableMap
+CVariableMap& (CVariableMap::*CVariableMap_Construct)(int) =
+	SetFP(static_cast<CVariableMap& (CVariableMap::*)(int)>		(&CVariableMap::Construct),		0x64A1E0);
+void (CVariableMap::*CVariableMap_Deconstruct)() =
+	SetFP(static_cast<void (CVariableMap::*)()>					(&CVariableMap::Deconstruct),	0x64A2C7);
+BOOL (CVariableMap::*CVariableMap_Add)(CVariable&) =
+	SetFP(static_cast<BOOL (CVariableMap::*)(CVariable&)>		(&CVariableMap::Add),			0x64A2E8);
+CVariable& (CVariableMap::*CVariableMap_Find)(IECString) =
+	SetFP(static_cast<CVariable& (CVariableMap::*)(IECString)>	(&CVariableMap::Find),			0x64A709);
+int (CVariableMap::*CVariableMap_GetHashValue)(IECString) =
+	SetFP(static_cast<int (CVariableMap::*)(IECString)>			(&CVariableMap::GetHashValue),	0x64A96E);
+void (CVariableMap::*CVariableMap_Empty)() =
+	SetFP(static_cast<void (CVariableMap::*)()>					(&CVariableMap::Empty),			0x64AA27);
 
-CVariableArray::CVariableArray(int nSize)				{ (this->*CVariableArray_Construct)(nSize); }
-CVariableArray::~CVariableArray()						{ (this->*CVariableArray_Deconstruct)(); }
-BOOL CVariableArray::AddVariable(CVariable& var)		{ return (this->*CVariableArray_AddVariable)(var); }
-CVariable& CVariableArray::GetVariable(IECString sVar)	{ return (this->*CVariableArray_GetVariable)(sVar); }
-int CVariableArray::GetChecksum(IECString sVar)			{ return (this->*CVariableArray_GetChecksum)(sVar); }
-void CVariableArray::Clear()							{ return (this->*CVariableArray_Clear)(); }
+CVariableMap::CVariableMap(int nSize)				{ (this->*CVariableMap_Construct)(nSize); }
+CVariableMap::~CVariableMap()						{ (this->*CVariableMap_Deconstruct)(); }
+BOOL CVariableMap::Add(CVariable& var)				{ return (this->*CVariableMap_Add)(var); }
+CVariable& CVariableMap::Find(IECString sVar)		{ return (this->*CVariableMap_Find)(sVar); }
+int CVariableMap::GetHashValue(IECString sVar)		{ return (this->*CVariableMap_GetHashValue)(sVar); }
+void CVariableMap::Empty()							{ return (this->*CVariableMap_Empty)(); }
 
 //ObjectIds
 ObjectIds::ObjectIds() {

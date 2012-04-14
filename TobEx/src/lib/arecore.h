@@ -340,8 +340,8 @@ public:
 	IECPtrList u9ca; //AA7014 - gets CDoorObject 438h objects
 	CEnumList m_ObjectsToMarshal; //9e6h, list of enums to save into the area when Marshal()
 	POINT ua02;
-	CVariableArray m_AreaVariables; //a0ah
-	CVariableArray ObjectNames; //a12h, contains all CGameObjects from ARE file (value is enum)
+	CVariableMap m_AreaVariables; //a0ah
+	CVariableMap m_ObjectNames; //a12h, contains all CGameObjects from ARE file (value is enum)
 	char ua1a;
 	char ua1b; //pad
 	short wCurrentSongType; //a1ch (day, night, battle, etc.)

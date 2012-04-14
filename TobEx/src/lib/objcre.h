@@ -439,9 +439,9 @@ public:
 	char u36d5;
 	BOOL m_bUsingLeftWeapon; //36d6h
 	short m_wHalveToHitRolls; //36dah, really a BOOL (not really used)
-	BOOL m_bResetAnimationColors; //36dch
-	BOOL m_bForceSetAnimColors; //36e0h, set to 1 when Set Item Color effect used or when applying petrify colouring but only if animation uses color ranges
-	BOOL u36e4; //assoc with items
+	BOOL m_bForceReinitAnimColors; //36dch, DeInitAllColors() then sends CMessageResetAnimColors during Refresh() 
+	BOOL m_bForceResetAnimColors; //36e0h, resets animation colours directly during Refresh() (e.g. Set Item Color opcode, petrify colouring)
+	BOOL m_bForceMsgResetAnimColors; //36e4h, sends CMessageResetAnimColors during Refresh() (e.g. Polymorph, Animation Change opcodes)
 	BOOL m_bRemoveFromArea; //36e8h
 	BOOL m_bForceResetAnimation; //36ech
 	CSelectionCircle cscSelf; //36f0h
@@ -512,7 +512,7 @@ public:
 	short u6416;
 	int u6418;
 	int u641c;
-	CVariableArray* m_pLocalVariables; //6420h
+	CVariableMap* m_pLocalVariables; //6420h
 	int m_bUnmarshalling; //6424h, 1 during Unmarshal, 0 when done
 	CProtectedSplList m_ProtectedSpls; //6428h, of CProtectedSpl objects
 	int u6444;

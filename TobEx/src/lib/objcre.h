@@ -435,10 +435,10 @@ public:
 	int u36c8; //assoc actions (idle time?), ++ with NoAction()
 	int u36cc;
 	BOOL m_bForceRefresh; //36d0h, Refresh() despite nTimeFree % 15 == e % 15
-	char m_bMakingAttack; //36d4h, statistical attack (i.e. rolling die to hit, applying damage/effects, depleting charges, etc.)
+	bool m_bStatisticalAttack; //36d4h, i.e. rolling die to hit, applying damage/effects, depleting charges, etc.
 	char u36d5;
 	BOOL m_bUsingLeftWeapon; //36d6h
-	short m_wHalveToHitRolls; //36dah, really a BOOL (not really used)
+	short m_wDoHalfAttack; //36dah, replaced by TobEx, originally m_wHalveToHitRolls that was not really used, really a BOOL
 	BOOL m_bForceReinitAnimColors; //36dch, DeInitAllColors() then sends CMessageResetAnimColors during Refresh() 
 	BOOL m_bForceResetAnimColors; //36e0h, resets animation colours directly during Refresh() (e.g. Set Item Color opcode, petrify colouring)
 	BOOL m_bForceMsgResetAnimColors; //36e4h, sends CMessageResetAnimColors during Refresh() (e.g. Polymorph, Animation Change opcodes)
@@ -470,7 +470,7 @@ public:
 	long u628c[2];
 	int m_nLargestCurrentHP; //6294h, set to largest current HP value obtained
 	BOOL m_bMoraleBroken; //6298h, contains char data
-	BOOL m_bInAttack; //629ch, in the middle of attack phase of a round
+	BOOL m_bIsAttacking; //629ch, in the middle of attack phase of a round
 	short u62a0; //assoc actions
 	int u62a2;
 	int m_nFaceTalkerTimer; //62a6h, countdown timer

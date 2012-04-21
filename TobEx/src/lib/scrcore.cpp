@@ -13,13 +13,19 @@ Identifiers::Identifiers(ResRef rFile)	{ (this->*Identifiers_Construct_1_ResRef)
 Identifiers::~Identifiers()				{ (this->*Identifiers_Deconstruct)(); }
 
 //CVariable
+void (CVariable::*CVariable_SetName)(IECString) =
+	SetFP(static_cast<void (CVariable::*)(IECString)>			(&CVariable::SetName),		0x45FD80);
 CVariable& (CVariable::*CVariable_Construct)() =
 	SetFP(static_cast<CVariable& (CVariable::*)()>				(&CVariable::Construct),	0x4B6850);
 CVariable& (CVariable::*CVariable_OpAssign)(CVariable&) =
 	SetFP(static_cast<CVariable& (CVariable::*)(CVariable&)>	(&CVariable::OpAssign),		0x4B68C0);
+IECString (CVariable::*CVariable_GetName)() =
+	SetFP(static_cast<IECString (CVariable::*)()>				(&CVariable::GetName),		0x54DE90);
 
+void CVariable::SetName(IECString s) { return (this->*CVariable_SetName)(s); }
 CVariable::CVariable() { (this->*CVariable_Construct)(); }
 CVariable& CVariable::operator=(CVariable& var) { return (this->*CVariable_OpAssign)(var); }
+IECString CVariable::GetName() { return (this->*CVariable_GetName)(); }
 
 //CVariableMap
 CVariableMap& (CVariableMap::*CVariableMap_Construct)(int) =
@@ -30,17 +36,20 @@ BOOL (CVariableMap::*CVariableMap_Add)(CVariable&) =
 	SetFP(static_cast<BOOL (CVariableMap::*)(CVariable&)>		(&CVariableMap::Add),			0x64A2E8);
 CVariable& (CVariableMap::*CVariableMap_Find)(IECString) =
 	SetFP(static_cast<CVariable& (CVariableMap::*)(IECString)>	(&CVariableMap::Find),			0x64A709);
-int (CVariableMap::*CVariableMap_GetHashValue)(IECString) =
-	SetFP(static_cast<int (CVariableMap::*)(IECString)>			(&CVariableMap::GetHashValue),	0x64A96E);
+unsigned int (CVariableMap::*CVariableMap_GetHash)(IECString) =
+	SetFP(static_cast<unsigned int (CVariableMap::*)(IECString)>(&CVariableMap::GetHash),		0x64A96E);
 void (CVariableMap::*CVariableMap_Empty)() =
 	SetFP(static_cast<void (CVariableMap::*)()>					(&CVariableMap::Empty),			0x64AA27);
+void (CVariableMap::*CVariableMap_SetSize)(int) =
+	SetFP(static_cast<void (CVariableMap::*)(int)>				(&CVariableMap::SetSize),		0x64B23D);
 
 CVariableMap::CVariableMap(int nSize)				{ (this->*CVariableMap_Construct)(nSize); }
 CVariableMap::~CVariableMap()						{ (this->*CVariableMap_Deconstruct)(); }
 BOOL CVariableMap::Add(CVariable& var)				{ return (this->*CVariableMap_Add)(var); }
 CVariable& CVariableMap::Find(IECString sVar)		{ return (this->*CVariableMap_Find)(sVar); }
-int CVariableMap::GetHashValue(IECString sVar)		{ return (this->*CVariableMap_GetHashValue)(sVar); }
+unsigned int CVariableMap::GetHash(IECString sVar)	{ return (this->*CVariableMap_GetHash)(sVar); }
 void CVariableMap::Empty()							{ return (this->*CVariableMap_Empty)(); }
+void CVariableMap::SetSize(int nSize)				{ return (this->*CVariableMap_SetSize)(nSize); }
 
 //ObjectIds
 ObjectIds::ObjectIds() {

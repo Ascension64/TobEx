@@ -12,6 +12,8 @@ CGameOptionsEx* pGameOptionsEx = NULL;
 
 CGameOptionsEx::CGameOptionsEx() {
 	bActionAddKitFix = FALSE;
+	bActionAttackOnceFix = FALSE;
+	bActionAttacksGenuine = FALSE;
 	bActionEquipRangedFix = FALSE;
 	bActionExpandedActions = FALSE;
 	bActionJoinPartyFix = FALSE;
@@ -117,6 +119,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExternStealSlots = FALSE;
 	bEngineFakeTalkFix = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
+	bEngineOptimiseVarCode = FALSE;
 	bEngineMoveAreasFix = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
 	bEngineSpellTurningFix = FALSE;
@@ -177,6 +180,8 @@ CGameOptionsEx::CGameOptionsEx() {
 
 void CGameOptionsEx::Init() {
 	bActionAddKitFix = GetCoreIniValue("Action", "AddKit Actions Fix");
+	bActionAttackOnceFix = GetCoreIniValue("Action", "AttackOnce Action Fix");
+	bActionAttacksGenuine = GetTweakIniValue("Tweak", "Action:Attacks Are All Genuine");
 	bActionEquipRangedFix = GetCoreIniValue("Action", "EquipRanged Action Fix");
 	bActionExpandedActions = GetCoreIniValue("Action", "Expanded Actions");
 	bActionJoinPartyFix = GetCoreIniValue("Action", "JoinParty Action Class Ability Refresh Fix");
@@ -282,6 +287,7 @@ void CGameOptionsEx::Init() {
 	bEngineExternStealSlots = GetCoreIniValue("Engine", "Externalise Stealable Item Slots");
 	bEngineFakeTalkFix = GetCoreIniValue("Engine", "Fake Talk Exploit Fix");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
+	bEngineOptimiseVarCode = GetCoreIniValue("Engine", "Optimise Variables Code");
 	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");
 	bEngineSpellTurningFix = GetCoreIniValue("Engine", "Spell Turning Fix");

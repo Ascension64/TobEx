@@ -350,3 +350,13 @@ BEGIN @123 DESIGNATED 123 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Enable Auto-Pause On All Screens=0~ ~Engine:Enable Auto-Pause On All Screens=1~
+
+BEGIN @124 DESIGNATED 124 GROUP @100
+REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+  REPLACE_TEXTUALLY ~Action:Attacks Are All Genuine=0~ ~Action:Attacks Are All Genuine=1~
+COPY "TobEx/TobEx_redist/override/rndbase1.bmp" "override/rndbase1.bmp"
+     "TobEx/TobEx_redist/override/rndbase2.bmp" "override/rndbase2.bmp"
+     "TobEx/TobEx_redist/override/rndbase3.bmp" "override/rndbase3.bmp"
+     "TobEx/TobEx_redist/override/rndbase4.bmp" "override/rndbase4.bmp"
+     "TobEx/TobEx_redist/override/rndbase5.bmp" "override/rndbase5.bmp"

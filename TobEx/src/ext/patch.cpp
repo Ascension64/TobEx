@@ -645,6 +645,110 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bActionAttackOnceFix ||
+		pGameOptionsEx->bActionAttacksGenuine) {
+		//mov edx,dword ptr ss:[ebp-BC]
+		//push edx
+		//mov ecx,dword ptr ss:[ebp-614]
+		//push ecx
+		//call ...
+		char bytes[] = {0x8B, 0x95, 0x44, 0xFF, 0xFF, 0xFF,
+						0x52,
+						0x8B, 0x8D, 0xEC, 0xF9, 0xFF, 0xFF,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x909528, 15, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_AttackOnce_DoHalfAttack;
+		DWORD address = (DWORD)ptr - 5  - 0x909536;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x909537, 4, bytes2) );
+
+		if (pGameOptionsEx->bActionAttacksGenuine) {
+			//test eax,eax
+			//jnz 90979C - do animation
+			//jmp 9099BF - skip animation
+			//nop
+			char bytes3[] = {0x85, 0xC0,
+							0x0F, 0x85, 0x59, 0x02, 0x00, 0x00,
+							0xE9, 0x77, 0x04, 0x00, 0x00,
+							0x90, 0x90, 0x90, 0x90, 0x90};
+			vDataList.push_back( Data(0x90953B, 18, bytes3) );
+
+			//LIGHT_GREY pixel: disable melee attack animation if no statistical attack
+			//mov al,byte ptr ds:[ecx+36D4]
+			//test al,al
+			//je 00906578
+			//mov edx,dword ptr ss:[ebp-B8]
+			//mov al,byte ptr ds:[edx]
+			//cmp al,2
+			char bytes5[] = {0x8A, 0x81, 0xD4, 0x36, 0x00, 0x00,
+							0x84, 0xC0,
+							0x0F, 0x84, 0xFC, 0x01, 0x00, 0x00,
+							0x8B, 0x95, 0x48, 0xFF, 0xFF, 0xFF,
+							0x8A, 0x02,
+							0x3C, 0x02};
+			vDataList.push_back( Data(0x90636E, 24, bytes5) );
+
+			//RED pixel: disable melee attack animation if no statistical attack
+			//mov dl,byte ptr ss:[ebp-AC]
+			//cmp dl,0
+			//je 9073E1
+			//mov eax,dword ptr ss:[ebp-614]
+			//mov cl,byte ptr ds:[eax+36D4]
+			//test cl,cl
+			//je 9073E1
+			//push 0E
+			//call A50608
+			//add esp,4
+			//mov dword ptr ss:[ebp-270],eax
+			//cmp dword ptr ss:[ebp-270],0
+			//je short 9073A5
+			//mov ecx,dword ptr ss:[ebp-614]
+			//mov edx,dword ptr ds:[ecx+30]
+			//mov dword ptr ss:[ebp-4BC],edx
+			//mov dword ptr ss:[ebp-4B8],edx
+			//mov dl,0
+			char bytes6[] = {0x8A, 0x95, 0x54, 0xFF, 0xFF, 0xFF,
+							0x80, 0xFA, 0x00,
+							0x0F, 0x84, 0xD9, 0x00, 0x00, 0x00,
+							0x8B, 0x85, 0xEC, 0xF9, 0xFF, 0xFF,
+							0x8A, 0x88, 0xD4, 0x36, 0x00, 0x00,
+							0x84, 0xC9,
+							0x0F, 0x84, 0xC5, 0x00, 0x00, 0x00,
+							0x6A, 0x0E,
+							0xE8, 0xE5, 0x92, 0x14, 0x00,
+							0x83, 0xC4, 0x04,
+							0x89, 0x85, 0x90, 0xFD, 0xFF, 0xFF,
+							0x83, 0xBD, 0x90, 0xFD, 0xFF, 0xFF, 0x00,
+							0x74, 0x70,
+							0x8B, 0x8D, 0xEC, 0xF9, 0xFF, 0xFF,
+							0x8B, 0x51, 0x30,
+							0x89, 0x95, 0x44, 0xFB, 0xFF, 0xFF,
+							0x89, 0x95, 0x48, 0xFB, 0xFF, 0xFF,
+							0xB2, 0x00};
+			vDataList.push_back( Data(0x9072F9, 83, bytes6) );
+		} else {
+			//jmp 90979C - do animation
+			//nop
+			char bytes3[] = {0xE9, 0x5C, 0x02, 0x00, 0x00,
+							0x90};
+			vDataList.push_back( Data(0x90953B, 6, bytes3) );
+		}
+
+		if (pGameOptionsEx->bActionAttackOnceFix) {
+			//disable use of CCreatureObject.36dah in TryHit() - unused anyway
+			//normally would halve the to hit roll
+			//je -> jmp
+			char bytes4[] = {0xEB};
+			vDataList.push_back( Data(0x90BC3D, 1, bytes4) );
+		}
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bActionEquipRangedFix) {
 		//mov al,byte ptr ds:[edx]
 		//cmp al,2 (TYPE_RANGED)
@@ -675,7 +779,7 @@ void InitPatches() {
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
-	
+
 	if (pGameOptionsEx->bActionExpandedActions) {
 		//push eax
 		//mov edx,dword ptr ss:[ebp-1BC]

@@ -36,10 +36,10 @@ public:
 	virtual void GetCurrentFrameDimensions(RECT* pFrame, POINT* pCentre, int zPos) {} //v4
 	virtual void v8() {} //? void GetBoundsRect(RECT* pBounds, POINT* ppt1, POINT* ppt2, zPos, width, height)
 	virtual BOOL SetOrientation(short wOrient) { return TRUE; } //vc
-	virtual void SetArmorLevel(char szArmorLevel, ColorRangeValues& colors) {} //v10
-	virtual void v14() {} //void LoadAnimGroup3?(IECString& suffix, ColorRangeValues& colors)
-	virtual void v18() {} //void LoadAnimGroup2[Shield]?(IECString& suffix, ColorRangeValues& colors)
-	virtual void v1c() {} //void LoadAnimGroup1[twohanded]?(IECString& suffix, ColorRangeValues& colors, nItemFlags, pAttackProb)
+	virtual void SetArmor(char cArmorLevel, ColorRangeValues& colors) {} //v10
+	virtual void SetHelmet(IECString& sItemAnim, ColorRangeValues& colors) {} //v14
+	virtual void SetShield(IECString& sItemAnim, ColorRangeValues& colors) {} //v18
+	virtual void SetWeapon(IECString& sItemAnim, ColorRangeValues& colors, unsigned int nItemFlags, void* pAttackProb) {} //v1c
 	virtual void v20() {} //VidPal& GetAnimGroupVidPal(nGroupId) (ids use second lowest digit i.e. 0xX0)
 	virtual void GetAnimGroupPaperdollName(IECString* ptr, int nGroupId) {} //v24, ids use as above
 	virtual bool CanUseMiddleVertList() { return false; } //v28

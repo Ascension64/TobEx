@@ -273,6 +273,12 @@ void InitHooks() {
 	if (pGameOptionsEx->bEngineFakeTalkFix)
 		DetourMemberFunction(Tramp_CCreatureObject_UpdateFaceTalkerTimer, DETOUR_CCreatureObject::DETOUR_UpdateFaceTalkerTimer);
 
+	if (pGameOptionsEx->bEngineOptimiseVarCode) {
+		DetourMemberFunction(Tramp_CVariableMap_Add, DETOUR_CVariableMap::DETOUR_Add);
+		DetourMemberFunction(Tramp_CVariableMap_Find, DETOUR_CVariableMap::DETOUR_Find);
+		DetourMemberFunction(Tramp_CVariableMap_GetHash, DETOUR_CVariableMap::DETOUR_GetHash);
+	}
+
 	if (pGameOptionsEx->bEngineMoveAreasFix)
 		DetourMemberFunction(Tramp_CMoveAreasList_MoveAllTo, DETOUR_CMoveAreasList::DETOUR_MoveAllTo);
 

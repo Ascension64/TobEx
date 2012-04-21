@@ -39,12 +39,12 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 	if (!sScope.Compare("GLOBAL")) {
 		CVariable& var = g_pChitin->pGame->m_GlobalVariables.Find(sVariable);
 		if (&var != NULL) {
-			var.value = bIncrement ? var.value + a.i : a.i;
-			nNewValue = var.value;
+			var.nValue = bIncrement ? var.nValue + a.i : a.i;
+			nNewValue = var.nValue;
 		} else {
-			varNew.name = sVariable;
-			varNew.value = a.i;
-			nNewValue = varNew.value;
+			varNew.SetName(sVariable);
+			varNew.nValue = a.i;
+			nNewValue = varNew.nValue;
 			g_pChitin->pGame->m_GlobalVariables.Add(varNew);
 		}
 
@@ -64,12 +64,12 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 		if (pTarget->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
 			CVariable& var = ((CCreatureObject*)pTarget)->m_pLocalVariables->Find(sVariable);
 			if (&var != NULL) {
-				var.value = bIncrement ? var.value + a.i : a.i;
-				nNewValue = var.value;
+				var.nValue = bIncrement ? var.nValue + a.i : a.i;
+				nNewValue = var.nValue;
 			} else {
-				varNew.name = sVariable;
-				varNew.value = a.i;
-				nNewValue = varNew.value;
+				varNew.SetName(sVariable);
+				varNew.nValue = a.i;
+				nNewValue = varNew.nValue;
 				((CCreatureObject*)pTarget)->m_pLocalVariables->Add(varNew); //64A2E8
 			}
 
@@ -99,12 +99,12 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 	if (&area != NULL) {
 		CVariable& var = area.m_AreaVariables.Find(sVariable);
 		if (&var != NULL) {
-			var.value = bIncrement ? var.value + a.i : a.i;
-			nNewValue = var.value;
+			var.nValue = bIncrement ? var.nValue + a.i : a.i;
+			nNewValue = var.nValue;
 		} else {
-			varNew.name = sVariable;
-			varNew.value = a.i;
-			nNewValue = varNew.value;
+			varNew.SetName(sVariable);
+			varNew.nValue = a.i;
+			nNewValue = varNew.nValue;
 			area.m_AreaVariables.Add(varNew);
 		}
 

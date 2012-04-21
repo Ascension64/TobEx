@@ -616,7 +616,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	bool m_bCtrl[387]; //47fdh, for each array entry as above for keymap, is Ctrl- required?
 
 	CVariableMap m_GlobalVariables; //4980h
-	CVariableMap u4988; //4988h, global death variables?
+	CVariableMap m_GlobalNPCScriptNames; //4988h, values are enums
 
 	struct u4990 {
 		IECString u0;

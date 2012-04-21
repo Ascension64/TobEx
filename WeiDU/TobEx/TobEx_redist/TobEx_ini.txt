@@ -1,4 +1,4 @@
-//1510 This file contains descriptions for all the hack options found in TobEx .ini files
+//1540 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -27,6 +27,23 @@ Hack flags:
 -----820 AddKit Actions Fix [F]
 Fixes the AddKit() and AddSuperKit() actions to store the entire kit DWORD instead of just the low WORD
 This allows setting BARBARIAN (0x40000000) and WILDMAGE (0x80000000) kits specifically
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1520 AttackOnce Action Fix [F]
+Makes the following fixes to the standard attack action:
+1. With X/2 attacks, the attack that occurs once every two rounds now always occurs every two rounds (rather than a random probability of the attack taking place every single round)
+2. With 3/2 attacks, the attack that occurs once every two rounds now always uses the offhand if an offhand weapon is present (rather than the offhand never being used)
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1530 Attacks Are All Genuine [T, X]
+The LIGHT_GREEN, YELLOW, BLUE, FUCHSIA, LIGHT_BLUE, LIGHT_GREY and RED pixels only play the melee attack animation if a statistical attack takes place
+To make all animations attacks statistical attacks, the RNDBASE files need to be modified
 
 Options:
 -0: disabled
@@ -1354,6 +1371,13 @@ Options:
 (Different implentation to, and clashes with tob_hacks)
 Enables proficiency restrictions at level one as described by the FIRST_LEVEL column of PROFSMAX.2DA
 This applies to both character generation and dual classing
+
+Options:
+-0: disabled
+-1: enabled
+
+----1540 Optimise Variables Code [F]
+Improves and find and add code for variables
 
 Options:
 -0: disabled

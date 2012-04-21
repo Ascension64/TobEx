@@ -7,6 +7,8 @@ struct CGameOptionsEx {
 	CGameOptionsEx();
 
 	BOOL bActionAddKitFix;
+	BOOL bActionAttackOnceFix;
+	BOOL bActionAttacksGenuine;
 	BOOL bActionEquipRangedFix;
 	BOOL bActionExpandedActions;
 	BOOL bActionJoinPartyFix;
@@ -113,6 +115,7 @@ struct CGameOptionsEx {
 	BOOL bEngineExternStealSlots;
 	BOOL bEngineFakeTalkFix;
 	BOOL bEngineProficiencyRestrictions;
+	BOOL bEngineOptimiseVarCode;
 	BOOL bEngineMoveAreasFix;
 	BOOL bEngineRestSpawnsAdvanceTime;
 	BOOL bEngineSpellTurningFix;

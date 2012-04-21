@@ -1252,3 +1252,61 @@ void __stdcall CCreatureObject_UseItem_OverrideAnimation(CCreatureObject& creSou
 
 	return;
 }
+
+BOOL __stdcall CCreatureObject_AttackOnce_DoHalfAttack(CCreatureObject& creSource, char cInRoundIdx) {
+	if (0) IECString("CCreatureObject_AttackOnce_DoHalfAttack");
+
+	const char cInRoundOffset = 9;
+	int nthAttack = cInRoundIdx - 9;
+	CDerivedStats* pcds = &creSource.GetDerivedStats();
+	int nAttacks = pcds->numAttacks - 5;
+
+	if (nthAttack < nAttacks) { //full attack
+		creSource.m_bIsAttacking = TRUE;
+		creSource.m_bStatisticalAttack = true;
+		if (!pGameOptionsEx->bActionAttackOnceFix) creSource.m_wDoHalfAttack = 0; //original code
+		
+		if (nthAttack == nAttacks - 1) { //last full attack
+			creSource.m_bUsingLeftWeapon = TRUE;
+		}
+		if (nAttacks == 2) creSource.m_bUsingLeftWeapon = FALSE;
+	} else {
+		if (nthAttack == nAttacks) { //half attack
+			if (!pGameOptionsEx->bActionAttackOnceFix) { //original code
+				creSource.m_bIsAttacking = TRUE;
+				creSource.m_bStatisticalAttack = true;
+				creSource.m_bUsingLeftWeapon = FALSE;
+				creSource.m_wDoHalfAttack = 1;
+				if (IERand(2) == 0) {
+					creSource.m_bStatisticalAttack = TRUE;
+					creSource.m_bUsingLeftWeapon = FALSE;
+					creSource.m_wDoHalfAttack = 0;
+				} else {
+					creSource.m_bStatisticalAttack = false;
+					creSource.m_bUsingLeftWeapon = FALSE;
+					creSource.m_wDoHalfAttack = 0;
+				}
+			} else { //fixed code
+				if (creSource.m_wDoHalfAttack == 1) { //do half attack
+					creSource.m_bIsAttacking = TRUE;
+					creSource.m_bStatisticalAttack = true;
+					creSource.m_bUsingLeftWeapon = FALSE;
+					if (nAttacks == 2) creSource.m_bUsingLeftWeapon = TRUE;
+
+					creSource.m_wDoHalfAttack = 0;
+				} else { //don't do half attack
+					creSource.m_bStatisticalAttack = false;
+					creSource.m_bUsingLeftWeapon = FALSE;
+
+					creSource.m_wDoHalfAttack = 1;
+				}
+			}
+		} else { //nthAttack > nAttacks
+			creSource.m_bStatisticalAttack = FALSE;
+			creSource.m_bUsingLeftWeapon = FALSE;
+			if (!pGameOptionsEx->bActionAttackOnceFix) creSource.m_wDoHalfAttack = 0; //original code
+		}
+	}
+
+	return creSource.m_bStatisticalAttack;
+}

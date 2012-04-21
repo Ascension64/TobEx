@@ -265,30 +265,32 @@ public:
 	IECString u6e0; //WQ* (single weapon prefix?)
 	IECString u6e4; //WQ*
 	IECString u6e8; //WQ*
-	char charCurrentArmorLevel; //6ech, suffix - main
-	char charMaxArmorLevel; //6edh, suffix
+	char cArmorLevelCurr; //6ech, suffix - main
+	char cArmorLevelMax; //6edh, suffix
 
-	CVidCell* m_pCurrentVidCell; //6eeh
-	CVidCell* m_pCurrentVidCellBase; //6f2h
-
-	CVidCell m_G1xVidCell; //6f6h
-	CVidCell m_CAxVidCell; //7cch
-	CVidCell m_A1xVidCell; //8a2h
-	CVidCell m_A3xVidCell; //978h
-	CVidCell m_A5xVidCell; //a4eh
+	//main creature
+	CVidCell* m_pvcMainCurrent; //6eeh
+	CVidCell* m_pvcMain; //6f2h
+	CVidCell m_vcMainGen; //6f6h, G1
+	CVidCell m_vcMainCast; //7cch
+	CVidCell m_vcMainAttack1; //8a2h, A1/A2/A7 [1H/2H/dual-wield]
+	CVidCell m_vcMainAttack2; //978h, A3/A4/A8
+	CVidCell m_vcMainAttack3; //a4eh, A5/A6/A9
 	VidPal ub24;
 	
-	IECString ub48;
+	//weapon
+	IECString sWeaponPrefix; //b48h
 	CVidCell* ub4c;
 	CVidCell* ub50;
-	CVidCell ub54;
-	CVidCell uc2a;
-	CVidCell ud00;
-	CVidCell udd6;	
+	CVidCell ub54; //G1
+	CVidCell uc2a; //A1
+	CVidCell ud00; //A3
+	CVidCell udd6; //A5
 	VidPal ueac;
 	
-	IECString ued0;
-	CVidCell* m_pCurrentVidCellShield; //ed4h
+	//shield
+	IECString sShieldPrefix; //ed0h
+	CVidCell* m_pvcShieldCurrent; //ed4h
 	CVidCell* ued8;	
 	CVidCell uedc;
 	CVidCell ufb2;
@@ -296,7 +298,8 @@ public:
 	CVidCell u115e;	
 	VidPal u1234;
 
-	IECString u1258;
+	//helm
+	IECString sHelmPrefix; //1258h
 	CVidCell* u125c;
 	CVidCell* u1260;	
 	CVidCell u1264;
@@ -311,11 +314,18 @@ public:
 	BOOL bUseAuxiliaryVidCells; //16bah, group indices 1 and 2
 	BOOL bUseAuxiliaryVidCells2; //16beh, group index 3
 	BOOL u16c2;
-	int u16c6;
+	BOOL u16c6; //set to 1 when ITEMFLAG_BOW is set
 	BOOL bUseColorRange; //16cah, for first group of VidCells, other groups automatically use VidPals
 	
-	//bit4: MELEE_1HLR_MASK (16)
-	char m_weaponCode; //16ceh //4, 5, 16, 1, 2, 3, controls which animations to load up into first group
+	//1: bow/arrow
+	//2: xbow/bolt
+	//3: sling/bullet
+	//4: main weapon or no weapon
+	//5: 2-handed weapon
+	//11h: offhand only
+	//13h: dual-wield
+	//10h (bit4): MELEE_1HLR_MASK (16)
+	char m_cWeaponCode; //16ceh, controls which animations to load up into first group
 	char nOrientations; //16cfh
 	char u16d0;
 	bool m_bImmuneToDamage; //16d1h
@@ -341,117 +351,124 @@ public:
 	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
-	IECString sPrefix; //6d8h, C<RACE><SEX>C - main
-	IECString u6dc; //CSHD
-	IECString u6e0; //WP*
-	IECString u6e4; //WP*
+	IECString sMainPrefix; //6d8h, C<RACE><SEX>C, group1
+	IECString sShadowPrefix; //u6dc, CSHD, group5
+	IECString u6e0; //WP*, WPL, group2 group3
+	IECString u6e4; //WP*, WPL, group4?
 	char u6e8; //'1' - main
 	char u6e9; //'4'
 
-	CVidCell* m_pCurrentVidCell; //6eah
-	CVidCell* m_pCurrentVidCellBase; //6eeh
-	CVidCell* m_pCurrentVidCellExtend; //6f2h
+	//main creature animation (main prefix)
+	CVidCell* m_pvcMainCurrent; //6eah
+	CVidCell* m_pvcMainBase; //6eeh
+	CVidCell* m_pvcMainExtend; //6f2h
+	CVidCell m_vcMainGenBase; //6f6h, G1
+	CVidCell m_vcMainGenExtend; //7cch
+	CVidCell m_vcMainWalkBase; //8a2h, W2
+	CVidCell m_vcMainWalkExtend; //978h
+	CVidCell m_vcMainCastBase; //a4eh
+	CVidCell m_vcMainCastExtend; //b24h
+	CVidCell m_vcMainAttack1Base; //bfah, A1 (overhand)
+	CVidCell m_vcMainAttack1Extend; //cd0h
+	CVidCell m_vcMainAttack2Base; //da6h, A3 (backhand)
+	CVidCell m_vcMainAttack2Extend; //e7ch
+	CVidCell m_vcMainAttack3Base; //f52h, A5 (thrust)
+	CVidCell m_vcMainAttack3Extend; //1028h
+	VidPal m_vpMainColorRanges; //10feh
 
-	//main
-	CVidCell m_G1xVidCellBase; //6f6h
-	CVidCell m_G1xVidCellExtend; //7cch
-	CVidCell m_W2xVidCellBase; //8a2h
-	CVidCell m_W2xVidCellExtend; //978h
-	CVidCell m_CAxVidCellBase; //a4eh
-	CVidCell m_CAxVidCellExtend; //b24h
-	CVidCell m_A1xVidCellBase; //bfah
-	CVidCell m_A1xVidCellExtend; //cd0h
-	CVidCell m_A3xVidCellBase; //da6h
-	CVidCell m_A3xVidCellExtend; //e7ch
-	CVidCell m_A5xVidCellBase; //f52h
-	CVidCell m_A5xVidCellExtend; //1028h
-	VidPal vpColorRangeBase; //10feh
+	//common to all weapons, uses 6e0 prefix, WP*<itemanim>[O]... (O if offhand)
+	IECString sWeaponPrefix; //1122h
+	CVidCell* m_pvcWeaponCurrent; //1126h
+	CVidCell* m_pvcWeaponBase; //112ah
+	CVidCell* m_pvcWeaponExtend; //112eh
+	CVidCell m_vcWeaponGenBase; //1132h
+	CVidCell m_vcWeaponGenExtend; //1208h
+	CVidCell m_vcWeaponWalkBase; //12deh
+	CVidCell m_vcWeaponWalkExtend; //13b4h
+	CVidCell m_vcWeaponAttack1Base; //148ah
+	CVidCell m_vcWeaponAttack1Extend; //1560h
+	CVidCell m_vcWeaponAttack2Base; //1636h
+	CVidCell m_vcWeaponAttack2Extend; //170ch
+	CVidCell m_vcWeaponAttack3Base; //17e2h
+	CVidCell m_vcWeaponAttack3Extend; //18b8h
+	VidPal m_vpWeaponColorRanges; //198eh
 
-	IECString u1122;
-	CVidCell* u1126;
-	CVidCell* u112a;
-	CVidCell* u112e;
-	CVidCell u1132;
-	CVidCell u1208;
-	CVidCell u12de;
-	CVidCell u13b4;
-	CVidCell u148a;
-	CVidCell u1560;
-	CVidCell u1636;
-	CVidCell u170c;
-	CVidCell u17e2;
-	CVidCell u18b8;
-	VidPal u198e;
+	//shield, uses 6e0 prefix
+	IECString sShieldPrefix; //19b2h
+	CVidCell* m_pvcShieldCurrent; //19b6h
+	CVidCell* m_pvcShieldBase; //19bah
+	CVidCell* m_pvcShieldExtend; //19beh
+	CVidCell m_vcShieldGenBase; //19c2h
+	CVidCell m_vcShieldGenExtend; //1a98h
+	CVidCell m_vcShieldWalkBase; //1b6eh
+	CVidCell m_vcShieldWalkExtend; //1c44h
+	CVidCell m_vcShieldAttack1Base; //1d1ah
+	CVidCell m_vcShieldAttack1Extend; //1df0h
+	CVidCell m_vcShieldAttack2Base; //1ec6h
+	CVidCell m_vcShieldAttack2Extend; //1f9ch
+	CVidCell m_vcShieldAttack3Base; //1ec6h
+	CVidCell m_vcShieldAttack3Extend; //2148h
+	VidPal m_vpShieldColorRanges; //221eh
 
-	IECString u19b2;
-	CVidCell* u19b6;
-	CVidCell* u19ba;
-	CVidCell* u19be;
-	CVidCell u19c2;
-	CVidCell u1a98;
-	CVidCell u1b6e;
-	CVidCell u1c44;
-	CVidCell u1d1a;
-	CVidCell u1df0;
-	CVidCell u1ec6;
-	CVidCell u1f9c;
-	CVidCell u2072;
-	CVidCell u2148;
-	VidPal u221e;
+	//helmet, uses 6e4 prefix
+	IECString sHelmPrefix; //u2242
+	CVidCell* m_pvcHelmCurrent; //u2246
+	CVidCell* m_pvcHelmBase; //u224a
+	CVidCell* m_pvcHelmExtend; //u224e
+	CVidCell m_vcHelmGenBase; //u2252
+	CVidCell m_vcHelmGenExtend; //u2328
+	CVidCell m_vcHelmWalkBase; //u23fe
+	CVidCell m_vcHelmWalkExtend; //u24d4
+	CVidCell m_vcHelmCastBase; //u25aa
+	CVidCell m_vcHelmCastExtend; //u2680
+	CVidCell m_vcHelmAttack1Base; //u2756
+	CVidCell m_vcHelmAttack1Extend; //u282c
+	CVidCell m_vcHelmAttack2Base; //u2902
+	CVidCell m_vcHelmAttack2Extend; //u29d8
+	CVidCell m_vcHelmAttack3Base; //u2aae
+	CVidCell m_vcHelmAttack3Extend; //u2b84
+	VidPal m_vpHelmColorRanges; //u2c5a
 
-	IECString u2242;
-	CVidCell* u2246;
-	CVidCell* u224a;
-	CVidCell* u224e;
-	CVidCell u2252;
-	CVidCell u2328;
-	CVidCell u23fe;
-	CVidCell u24d4;
-	CVidCell u25aa;
-	CVidCell u2680;
-	CVidCell u2756;
-	CVidCell u282c;
-	CVidCell u2902;
-	CVidCell u29d8;
-	CVidCell u2aae;
-	CVidCell u2b84;
-	VidPal u2c5a;
+	//CSHD Shadow (if sprite mirror, Extends get X suffix)
+	CVidCell* m_pvcShadowCurrent; //2c7eh
+	CVidCell* m_pvcShadowBase; //2c82h
+	CVidCell* m_pvcShadowExtend; //2c86h
+	CVidCell m_vcShadowGenBase; //2c8ah
+	CVidCell m_vcShadowGenExtend; //2d60h
+	CVidCell m_vcShadowWalkBase; //2e36h
+	CVidCell m_vcShadowWalkExtend; //2f0ch
+	CVidCell m_vcShadowCastBase; //2fe2h
+	CVidCell m_vcShadowCastExtend; //30b8h
+	CVidCell m_vcShadowAttack1Base; //318eh
+	CVidCell m_vcShadowAttack1Extend; //3264h
+	CVidCell m_vcShadowAttack2Base; //333ah
+	CVidCell m_vcShadowAttack2Extend; //3410h
+	CVidCell m_vcShadowAttack3Base; //34e6h
+	CVidCell m_vcShadowAttack3Extend; //35bch
 
-	//CSHD (if sprite mirror, Extends get X suffix)
-	CVidCell* m_pCurrentXVidCell; //2c7eh
-	CVidCell* m_pCurrentXVidCellBase; //2c82h
-	CVidCell* m_pCurrentXVidCellExtend; //2c86h
-	CVidCell m_G1VidCellBase; //2c8ah
-	CVidCell m_G1VidCellExtend; //2d60h
-	CVidCell m_W2VidCellBase; //2e36h
-	CVidCell m_W2VidCellExtend; //2f0ch
-	CVidCell m_CAVidCellBase; //2fe2h
-	CVidCell m_CAVidCellExtend; //30b8h
-	CVidCell m_A1VidCellBase; //318eh
-	CVidCell m_A1VidCellExtend; //3264h
-	CVidCell m_A3VidCellBase; //333ah
-	CVidCell m_A3VidCellExtend; //3410h
-	CVidCell m_A5VidCellBase; //34e6h
-	CVidCell m_A5VidCellExtend; //35bch
-
-	short wCurrentAnimation; //3692h
-	short wCurrentOrientation; //3694h
+	short m_wCurrentAnimation; //3692h
+	short m_wCurrentOrientation; //3694h
 	int u3696;
 	int u369a;
 	int u369e;
-	int u36a2;
-	BOOL bUseColorRange; //36a6h (toggle for first set only, others are always on)
+	BOOL u36a2; //set when ITEMFLAG_BOW is set
+	BOOL m_bUseColorRange; //36a6h (toggle for first set only, others are always on)
 	
-	//bit0+1: load A1
-	//bit0 only: load SA into A1 slot
-	//bit1 only: load SX into A1 slot
-	//bit2: load A1
-	//bit3: load A3
-	//bit4: load A5
-	//bit5: load A2 into A1 slot
-	//bit6: load A4 into A2 slot
-	//bit7: load A6 into A5 slot
-	char nFlags; //36aah
+	//local attack prob (size 3)
+	//0: 1 = overhand, bow/arrow, xbow/bolt, sling/bullet
+	//1: 1 = backhand
+	//2: 1 = thrust
+
+	//bit0+1: load A1 (sling/bullet)
+	//bit0 only: load SA into A1 slot (bow/arrow)
+	//bit1 only: load SX into A1 slot (xbow/bolt)
+	//bit2: load A1 (one hand overhand)
+	//bit3: load A3 (one hand backhand)
+	//bit4: load A5 (one hand thrust)
+	//bit5: load A2 into A1 slot (two hand overhand)
+	//bit6: load A4 into A2 slot (two hand backhand)
+	//bit7: load A6 into A5 slot (two hand thrust)
+	char m_cWeaponCode; //36aah
 	char nOrientations; //36abh
 	char u36ac;
 	char u36ad;

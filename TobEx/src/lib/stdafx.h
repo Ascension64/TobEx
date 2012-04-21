@@ -11,7 +11,6 @@
 #include "cptrlistex.h"
 #include "cmapstrstrex.h"
 #include "resref.h"
-#include "varname.h"
 
 #include "globals.h"
 

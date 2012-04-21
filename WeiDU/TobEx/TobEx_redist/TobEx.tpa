@@ -197,3 +197,8 @@ ACTION_IF (%tobex_installed_version% < 23) BEGIN
     APPEND_FILE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0023t.txt"
   BUT_ONLY_IF_IT_CHANGES
 END
+
+ACTION_IF (%tobex_installed_version% < 24) BEGIN
+  COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
+    APPEND_FILE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0024t.txt"
+END

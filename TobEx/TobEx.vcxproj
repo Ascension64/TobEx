@@ -175,7 +175,6 @@
     <ClCompile Include="src\lib\uicore.cpp" />
     <ClCompile Include="src\lib\uiscroll.cpp" />
     <ClCompile Include="src\lib\uitext.cpp" />
-    <ClCompile Include="src\lib\varname.cpp" />
     <ClCompile Include="src\TobEx.cpp" />
     <ClCompile Include="src\lib\animcore.cpp" />
     <ClCompile Include="src\lib\arecore.cpp" />
@@ -280,7 +279,6 @@
     <ClInclude Include="src\lib\uibutton.h" />
     <ClInclude Include="src\lib\uiscroll.h" />
     <ClInclude Include="src\lib\uitext.h" />
-    <ClInclude Include="src\lib\varname.h" />
     <ClInclude Include="src\lib\win32def.h" />
     <ClInclude Include="src\template.h" />
     <ClInclude Include="src\TobEx.h" />

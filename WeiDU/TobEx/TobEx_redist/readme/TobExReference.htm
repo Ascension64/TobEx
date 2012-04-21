@@ -352,6 +352,7 @@
           <p>The following core engine changes are discussed:</p>
           <ul>
             <li><a href="#engine-arenas">Arenas Game Type</a></li>
+            <li><a href="#engine-attacking">Attacking</a></li>
             <li><a href="#engine-auto-pause">Auto-pause</a></li>
             <li><a href="#engine-casting">Casting Graphics and Sounds</a></li>
             <li><a href="#engine-creatures-moving-areas">Creatures Moving Between Areas</a></li>
@@ -373,6 +374,7 @@
             <li><a href="#engine-starting-xp">Starting Experience</a></li>
             <li><a href="#engine-summon-limit-bug">Summon Limit Bug</a></li>
             <li><a href="#engine-talking-to-charmed">Talking to Charmed Creatures</a></li>
+            <li><a href="#engine-variables">Variables</a></li>
           </ul>
           <hr />
           <a name="engine-arenas" id="engine-arenas"></a><h3>Arenas Game Type</h3>
@@ -405,6 +407,14 @@
             <li>When outside visibility range, clicking on an opposing player's portrait allows the player to locate their opponents</li>
             <li>Summoned creatures turn enemy when hit by opposing players</li>
           </ul>
+          <hr />
+          <a name="engine-attacking" id="engine-attacking"></a><h3>Attacking</h3>
+          <p>TobEx makes the following changes to the standard attack action:</p>
+          <ul>
+            <li>With X/2 attacks, the attack that occurs once every two rounds now always occurs every two rounds (rather than a random probability of the attack taking place every single round)</li>
+            <li>With 3/2 attacks, the attack that occurs once every two rounds now always uses the offhand if an offhand weapon is present (rather than the offhand never being used)</li>
+          </ul>
+          <p><strong>Option:</strong> TobEx gives the option of making all attack animations genuine statistical attacks..</p>
           <hr />
           <a name="engine-auto-pause" id="engine-auto-pause"></a><h3>Auto-pause</h3>
           <p><strong>Option:</strong> TobEx gives the option of allowing auto-pause to work on any screen in single player. The behavior mimics that of multiplayer. The original behaviour is that auto-pause only works in the main game screen when in single player.</p>
@@ -471,6 +481,9 @@
           <hr />
           <a name="engine-talking-to-charmed" id="engine-talking-to-charmed"></a><h3>Talking to Charmed Creatures</h3>
           <p><strong>Option:</strong> TobEx gives the option of allowing the player to talk to charmed or dominated creatures and preventing charmed and dominated creatures from losing their soundset.</p>
+          <hr />
+          <a name="engine-variables" id="engine-variables"></a><h3>Variables</h3>
+          <p>TobEx optimises the code used for setting and finding variables. The variable map hash function uses the djb2 algorithm.</p>
           <address>
             <span class="footer">TobEx &gt; Engine</span> &#8226;<a href="#top">BACK TO TOP</a>
           </address>

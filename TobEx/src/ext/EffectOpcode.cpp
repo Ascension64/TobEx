@@ -2999,12 +2999,12 @@ BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 		break;
 	case 8: //ALIGN
 		if (oTarget.Alignment == cValue || cValue == ALIGN_ANY) bValidTarget = TRUE;
-		if (cValue == ALIGN_MASK_GOOD && oTarget.Alignment & 0xF == ALIGN_MASK_GOOD) bValidTarget = TRUE;
-		if (cValue == ALIGN_MASK_NEUTRAL && oTarget.Alignment & 0xF == ALIGN_MASK_NEUTRAL) bValidTarget = TRUE;
-		if (cValue == ALIGN_MASK_EVIL && oTarget.Alignment & 0xF == ALIGN_MASK_EVIL) bValidTarget = TRUE;
-		if (cValue == ALIGN_LAWFUL_MASK && oTarget.Alignment & 0xF == ALIGN_LAWFUL_MASK) bValidTarget = TRUE;
-		if (cValue == ALIGN_NEUTRAL_MASK && oTarget.Alignment & 0xF == ALIGN_NEUTRAL_MASK) bValidTarget = TRUE;
-		if (cValue == ALIGN_CHAOTIC_MASK && oTarget.Alignment & 0xF == ALIGN_CHAOTIC_MASK) bValidTarget = TRUE;
+		if (cValue == ALIGN_MASK_GOOD && (oTarget.Alignment & 0xF) == ALIGN_MASK_GOOD) bValidTarget = TRUE;
+		if (cValue == ALIGN_MASK_NEUTRAL && (oTarget.Alignment & 0xF) == ALIGN_MASK_NEUTRAL) bValidTarget = TRUE;
+		if (cValue == ALIGN_MASK_EVIL && (oTarget.Alignment & 0xF) == ALIGN_MASK_EVIL) bValidTarget = TRUE;
+		if (cValue == ALIGN_LAWFUL_MASK && (oTarget.Alignment & 0xF) == ALIGN_LAWFUL_MASK) bValidTarget = TRUE;
+		if (cValue == ALIGN_NEUTRAL_MASK && (oTarget.Alignment & 0xF) == ALIGN_NEUTRAL_MASK) bValidTarget = TRUE;
+		if (cValue == ALIGN_CHAOTIC_MASK && (oTarget.Alignment & 0xF) == ALIGN_CHAOTIC_MASK) bValidTarget = TRUE;
 		break;
 	default:
 		break;

@@ -90,3 +90,4 @@ choisir un parmi :"
 @121 = ~Faire tomber l'inventaire au sol en cas de mort due au froid~
 @122 = ~Faire tomber l'inventaire au sol en cas de petrification~
 @123 = ~Activer la pause automatique sur tous les ecrans~
+@124 = ~Restreindre les animations d'attaque aux veritables attaques~

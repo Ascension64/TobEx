@@ -318,9 +318,12 @@
           <p>Scripting: <a href="#triggers">Triggers</a> &middot;
           <a href="#actions">Actions</a> &middot;
           <a href="#stats">Scripting Stats</a></p>
-          <p><a href="#effects">Effects</a> &middot;
-          <a href="#audio">Audio</a> &middot;
-          <a href="#animations">Animations and Graphics</a>
+          <p><a href="#audio">Audio</a> &middot;
+          <a href="#animations">Animations and Graphics</a> &middot;
+          <a href="#effects">Effects</a> &middot;
+          <a href="#items">Items</a> &middot;
+          <a href="#spells">Spells</a> &middot;
+          <a href="#stores">Stores</a>
         </p>
       </div>
       <div id="maindiv">
@@ -362,7 +365,7 @@
             <li><a href="#engine-fake-talk-exploit">Fake Talk Exploit</a></li>
             <li><a href="#engine-gaining-xp">Gaining Experience</a></li>
             <li><a href="#engine-inventory-pause">Inventory Screen Pausing</a></li>
-            <li><a href="#engine-item_recharge-exploit">Item Recharge Exploit</a></li>
+            <li><a href="#engine-item_recharge">Item Recharge in Bags and Stores</a></li>
             <li><a href="#engine-kit-support">Kit Support</a></li>
             <li><a href="#engine-launchers">Launchers with No Ammo</a></li>
             <li><a href="#engine-music">Music Song List</a></li>
@@ -448,8 +451,15 @@
           <a name="engine-kit-support" id="engine-kit-support"></a><h3>Kit Support</h3>
           <p>Normally, Throne of Bhaal limits the total number of kits available to 256 before overflow occurs. TobEx expands this limit to 1280. Additionally, TobEx enables scrolling of the kit selection menu, such that each class is no longer limited to 10 kits.</p>
           <hr />
-          <a name="engine-item_recharge-exploit" id="engine-item_recharge-exploit"></a><h3>Item Recharge Exploit</h3>
+          <a name="engine-item_recharge" id="engine-item_recharge"></a><h3>Item Recharge in Bags and Stores</h3>
           <p>TobEx fixes an exploit where players could instantly restore the charges of rechargeable items by putting them in a bag and then taking them out again.</p>
+          <p>From the technical perspective, TobEx modifies usages for non-stackable items with charges such that:</p>
+          <ul>
+            <li>Items in a store with usages of 0 are no longer loaded with usages of 1</li>
+            <li>Putting items in bags no longer recharges the items, unless bit 14 of STO V1.0 Header offset 0x10 (Flags) is set, see below.</li>
+            <li>TobEx adds functionality to bit 14 (Toggle Recharge) of STO V1.0 Header offset 0x10 (Flags). For bags, setting this bit will allow items to be recharged when placed in the bag. For stores, setting this bit will prevent items from recharging when sold to the store.</li>
+            <li>The buy and sell prices of items that recharge now take into account the fact that they recharge.</li>
+          </ul>
           <hr />
           <a name="engine-launchers" id="engine-launchers"></a><h3>Launchers with No Ammo</h3>
           <p>TobEx fixes an exploit where launcher weapons grant the damage and strength bonuses of non-launcher (4)-type abilities. This corrects the issue with non-ammo-requiring launcher weapons (using ranged (2) ability) granting extra damage when ammo is equipped. If this is enabled, damage bonuses of launcher abilities are only given for the first launcher (4)-type ability of the launcher weapon.</p>
@@ -672,7 +682,7 @@
           <p>TobEx allows modmakers to create magical weapons that do not get dispelled in the magical weapon slot. Also refer to the <a href="#effects-58">Dispel Magic effect</a> section.</p>
           <hr />
           <a name="ruleset-mirror-images" id="ruleset-mirror-images"></a><h3>Mirror Images</h3>
-          <p>TobEx allows modmakers to create effects that bypass mirror images. Also refer to the <a href="#effects-119">Mirror Image effect</a> section.</p>
+          <p>TobEx allows modmakers to create effects that bypass mirror images. Also refer to the <a href="#effects-12">Damage effect</a> section.</p>
           <hr />
           <a name="ruleset-pickpocketing" id="ruleset-pickpocketing"></a><h3>Pickpocketing</h3>
           <p>TobEx allows modmakers to customise which item slots are amenable to pickpocketing, and the minimum skill level required to steal an item from each slot. This behaviour is governed by SLTSTEAL.2DA.</p>
@@ -1130,11 +1140,165 @@
           </address>
         </div>
 
+        <!-- ================== A u d i o ================== -->
+        <a name="audio" id="audio"></a>
+        <div class="content">
+          <h2>Audio</h2>
+          <p>The following changes to audio are discussed:</p>
+          <ul>
+            <li><a href="#audio-animation-soundsets">Animation and Creature Soundsets</a></li>
+            <li><a href="#audio-animation-walking">Animation Walking Sounds</a></li>
+            <li><a href="#audio-dialogue-greeting">Dialogue Greeting Subtitles</a></li>
+            <li><a href="#audio-soundset-subtitles">Soundset Subtitles</a></li>
+          </ul>
+          <hr />
+          <a name="audio-animation-soundsets" id="audio-animation-soundsets"></a><h3>Animation and Creature Soundsets</h3>
+          <p>TobEx fixes a bug that prevented the sounds in the middle of animation soundset 2DA files from playing. TobEx also fixes a bug where PICKED_POCKET sounds were played when EXISTANCE sounds were called for in the creature soundset. This was corrected to EXISTANCE5.</p>
+          <p><strong>Option:</strong> TobEx gives the option to enable the use of SLASH, BACKSLASH, and JAB sounds in animation soundset 2DA files. These sounds play when the appropriate attack animation is played. They are played in addition to the ATTACK sound.</p>
+          <hr />
+          <a name="audio-animation-walking" id="audio-animation-walking"></a><h3>Animation Walking Sounds</h3>
+          <p>TobEx externalises all animation walking sounds to ANIWKSND.2DA, which allows modmakers to specify custom walking sounds by each animation ID. This is particularly useful for new animations introduced by Infinity Animations.</p>
+          <div class="important">
+            <p>ANIWKSND.2DA<br />
+            <br />
+            [ROWNAME]: animation ID<br />
+            ANIMATION: the name of the animation for your reference (from ANIMATE.IDS)<br />
+            WALK_SOUND: 6-character string specifying the root name of the walking sound. Longer strings are read truncated. Shorter strings cause havoc! A value of '*' is equivalent to no walking sound.<br />
+            WALK_NUM: integer specifying the number of walking sounds available for the root name.<br />
+            <br />
+            As per engine behaviour, a sound file will be loaded with name &lt;WALK_SOUND&gt;&lt;random&gt;, where &lt;random&gt; is mapped 0 -> a, 1 -> b, 2 -> c, ..., (WALK_NUM - 1) -> nul.<br />
+            <br />
+            Example</p>
+            <table class="important">
+              <tr>
+                <td></td>
+                <td>WALK_SOUND</td>
+                <td>WALK_NUM</td>
+              </tr>
+              <tr>
+                <td>0x1234</td>
+                <td>WAL_20</td>
+                <td>4</td>
+              </tr>
+            </table>
+            <p>Walking sound for animation ID 0x1234 loads one of the following sounds:<br />
+            WAL_20a [0]<br />
+            WAL_20b [1]<br />
+            WAL_20c [2]<br />
+            WAL_20  [3]<br />
+            <br />
+            If WALK_SOUND is set to 'TERRAIN' and WALK_NUM is set to '*', ANITNSND.2DA is used to determine the walking sound.</p>
+            <p>ANITNSND.2DA<br />
+            <br />
+            [ROWNAME]: terrain code, based on search map pixel<br />
+            WALK_SOUND: as ANIWKSND.2DA above<br />
+            WALK_NUM: as per ANIWKSND.2DA above</p>
+          </div>
+          <hr />
+          <a name="audio-dialogue-greeting" id="audio-dialogue-greeting"></a><h3>Dialogue Greeting Subtitles</h3>
+          <p><strong>Option:</strong> TobEx gives the option of displaying the greeting string reference in the dialogue bar when initiating dialogue, similar to Baldur's Gate I behaviour. However, the string is displayed after the first line of dialogue rather than before.</p>
+          <hr />
+          <a name="audio-soundset-subtitles" id="audio-soundset-subtitles"></a><h3>Soundset Subtitles</h3>
+          <p>TobEx enables the display of subtitles for custom soundsets in the dialogue bar. This is achieved by appending by column to CSOUND.2DA. This is vanilla-compatible: if no column is present in CSOUND.2DA, no subtitles are used. To use this hack, use APPEND_COL on CSOUND.2DA. The column header should contain the prefix of the soundset (e.g. FEMALE1). The values for each sound should point to the string reference to display for the sound with suffix designated by the existing LETTER column. Please note the LETTER values in rows labelled with the numbers 30, 31, 39, 63, and 64 are incorrect in vanilla Throne of Bhaal and should be corrected to "x, y, *, _, *", respectively.</p>
+          <address>
+            <span class="footer">TobEx &gt; Audio</span> &#8226;<a href="#top">BACK TO TOP</a>
+          </address>
+        </div>
+
+        <!-- ================== A n i m a t i o n s ================== -->
+        <a name="animations" id="animations"></a>
+        <div class="content">
+          <h2>Animations and Graphics</h2>
+          <p>The following animation changes are discussed:</p>
+          <ul>
+            <li><a href="#animations-using-items">Animation Sequences when Using Items</a></li>
+            <li><a href="#animations-iwd">Icewind Dale-style Animations</a></li>
+            <li><a href="#animations-paper-dolls">Paper Dolls</a></li>
+            <li><a href="#animations-spell-turning">Spell Turning Animations</a></li>
+            <li><a href="#animations-throwing-weapons">Throwing Weapon Animations</a></li>
+            <li><a href="#animations-tooltip">Tooltip Scroll</a></li>
+            <li><a href="#animations-vvc">Visual Effect Video Cells (VVCs)</a></li>
+          </ul>
+          <hr />
+          <a name="animations-using-items" id="animations-using-items"></a><h3>Animation Sequences when Using Items</h3>
+          <p>TobEx expands the use of custom animation sequences when using different abilities of the same item in the setting of the UseItem() and UseItemPoint() actions, or equivalent thereof (i.e. used as quick item). This is achieved by expanding ITEMANIM.2DA. Modmakers can therefore assign custom animation sequences to the use of specific item abilities.</p>
+          <div class="important">
+            <p>ITEMANIM.2DA<br />
+            This file lists the character animation sequence to be played when an item ability is used. This only applies to items that are used in UseItem() and UseItemPoint() actions, or equivalent thereof (i.e. used as quick item).<br />
+            <br />
+            [ROWNAME]: Item ResRef<br />
+            SEQUENCE: The animation sequence to play for the first ability of the specified item (from seq.ids). If there are no other columns, this is the animation sequence to play for all abilities.<br />
+            &lt;subsequent columns&gt;: The animation sequence to play for the (n+1)th ability of the specified item (from seq.ids), where n is the name of the column.</p>
+            <p>Example<br />
+            WAND05.ITM has two abilities</p>
+            <table class="important">
+              <tr>
+                <td>2DA V1.0</td>
+              </tr>
+              <tr>
+                <td>-1</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>SEQUENCE</td>
+                <td>1</td>
+              </tr>
+              <tr>
+                <td>WAND05</td>
+                <td>-1</td>
+                <td>12</td>
+              </tr>
+            </table>
+            <p>Using the first ability plays no animation sequence (-1). Using the second ability plays animation sequence 12 (SEQ_ATTACK_BACKSLASH).</p>
+          </div>
+          <hr />
+          <a name="animations-iwd" id="animations-iwd"></a><h3>Icewind Dale-style Animations</h3>
+          <p>TobEx fixed Icewind Dale-style animations (of IDs 0xE***) that use the 3rd attack animation (A3). These would otherwise have display the 2nd attack animation in northeast and east orientations if 'Sprite Mirror' is disabled in baldur.ini.</p>
+          <hr />
+          <a name="animations-paper-dolls" id="animations-paper-dolls"></a><h3>Paper Dolls</h3>
+          <p>TobEx enables paperdolls to be shown in the inventory and character customisation screens for animation IDs 0x12XX, 0x2XXX, 0x3XXX, and modification-added 0x7XXX (except 0x73XX, which is already shown in vanilla), which would otherwise not show at all. Note that paperdolls for the 0x7XXX group of animation must have to be named &lt;prefix&gt;INV.BAM.</p>
+          <hr />
+          <a name="animations-spell-turning" id="animations-spell-turning"></a><h3>Spell Turning Animation</h3>
+          <p>TobEx fixes a bug introduced somewhere between builds 22941 and 23037 of Shadows of Amn, whereby SPSTURNI.VVC was no longer played each time a spell is bounced off a creature who had spell turning.</p>
+          <hr />
+          <a name="animations-throwing-weapons" id="animations-throwing-weapons"></a><h3>Throwing Weapon Animations</h3>
+          <p><strong>Option:</strong> TobEx gives the option of enabling the use of item ability slash %, backslash %, and jab % fields for ranged weapons equipped in a weapon slot that do not require a launcher. Because this hack makes the creature use of the SEQ_ATTACK_[] animations instead of SEQ_SHOOT, attacks play the SEQ_ATTACK and SEQ_ATTACK_[] animation sounds instead of the SEQ_SHOOT animation sound. These percentages will only affect creatures with animation IDs in the 0x5000-0x53FF group with animation prefix starting with C, and 0x6*** groups to maintain vanilla behaviour and Infinity Animations compatibility.</p>
+          <hr />
+          <a name="animations-tooltip" id="animations-tooltip"></a><h3>Tooltip Scroll</h3>
+          <p>TobEx enlarges the tooltip scroll so that it can fit more text.</p>
+          <hr />
+          <a name="animations-vvc" id="animations-vvc"></a><h3>Visual Effect Video Cells (VVCs)</h3>
+          <p>TobEx fixes a few issues with the VVC file format.</p>
+          <p>The Display Flag (0x0018) bit 2 (Translucent shadow) has been fixed to use the Shadow Animation ResRef (0x0010) instead of duplicating the use of the Primary Animation ResRef (0x0008).</p>
+          <p>The Alpha Blending Animation ResRef (0x0088) has been fixed to allow its use without summarily causing an assertion failure.</p>
+          <address>
+            <span class="footer">TobEx &gt; Animations and Graphics</span> &#8226;<a href="#top">BACK TO TOP</a>
+          </address>
+        </div>
+
 
         <!-- ================== E f f e c t s ================== -->
         <a name="effects" id="effects"></a>
         <div class="content">
           <h2>Effects</h2>
+          <p>TobEx makes the following changes to the EFF V2.0 file format.</p>
+          <h3>Body</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0040 (dword)</td>
+              <td>
+                <p>Saving throw type</p>
+                <ul>
+                  <li>bit 24: <a href="#effects-12">bypass mirror images</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+          <hr />
           <p>TobEx makes changes to the following effect opcodes:</p>
           <ul>
             <li><a href="#effects-1">#1 (0x001)  Stat: Attacks Per Round Modifier [1]</a></li>
@@ -1993,140 +2157,124 @@
           </address>
         </div>
 
-        <!-- ================== A u d i o ================== -->
-        <a name="audio" id="audio"></a>
+        <!-- ================== I t e m s ================== -->
+        <a name="items" id="items"></a>
         <div class="content">
-          <h2>Audio</h2>
-          <p>The following changes to audio are discussed:</p>
-          <ul>
-            <li><a href="#audio-animation-soundsets">Animation and Creature Soundsets</a></li>
-            <li><a href="#audio-animation-walking">Animation Walking Sounds</a></li>
-            <li><a href="#audio-dialogue-greeting">Dialogue Greeting Subtitles</a></li>
-            <li><a href="#audio-soundset-subtitles">Soundset Subtitles</a></li>
-          </ul>
-          <hr />
-          <a name="audio-animation-soundsets" id="audio-animation-soundsets"></a><h3>Animation and Creature Soundsets</h3>
-          <p>TobEx fixes a bug that prevented the sounds in the middle of animation soundset 2DA files from playing. TobEx also fixes a bug where PICKED_POCKET sounds were played when EXISTANCE sounds were called for in the creature soundset. This was corrected to EXISTANCE5.</p>
-          <p><strong>Option:</strong> TobEx gives the option to enable the use of SLASH, BACKSLASH, and JAB sounds in animation soundset 2DA files. These sounds play when the appropriate attack animation is played. They are played in addition to the ATTACK sound.</p>
-          <hr />
-          <a name="audio-animation-walking" id="audio-animation-walking"></a><h3>Animation Walking Sounds</h3>
-          <p>TobEx externalises all animation walking sounds to ANIWKSND.2DA, which allows modmakers to specify custom walking sounds by each animation ID. This is particularly useful for new animations introduced by Infinity Animations.</p>
-          <div class="important">
-            <p>ANIWKSND.2DA<br />
-            <br />
-            [ROWNAME]: animation ID<br />
-            ANIMATION: the name of the animation for your reference (from ANIMATE.IDS)<br />
-            WALK_SOUND: 6-character string specifying the root name of the walking sound. Longer strings are read truncated. Shorter strings cause havoc! A value of '*' is equivalent to no walking sound.<br />
-            WALK_NUM: integer specifying the number of walking sounds available for the root name.<br />
-            <br />
-            As per engine behaviour, a sound file will be loaded with name &lt;WALK_SOUND&gt;&lt;random&gt;, where &lt;random&gt; is mapped 0 -> a, 1 -> b, 2 -> c, ..., (WALK_NUM - 1) -> nul.<br />
-            <br />
-            Example</p>
-            <table class="important">
-              <tr>
-                <td></td>
-                <td>WALK_SOUND</td>
-                <td>WALK_NUM</td>
-              </tr>
-              <tr>
-                <td>0x1234</td>
-                <td>WAL_20</td>
-                <td>4</td>
-              </tr>
-            </table>
-            <p>Walking sound for animation ID 0x1234 loads one of the following sounds:<br />
-            WAL_20a [0]<br />
-            WAL_20b [1]<br />
-            WAL_20c [2]<br />
-            WAL_20  [3]<br />
-            <br />
-            If WALK_SOUND is set to 'TERRAIN' and WALK_NUM is set to '*', ANITNSND.2DA is used to determine the walking sound.</p>
-            <p>ANITNSND.2DA<br />
-            <br />
-            [ROWNAME]: terrain code, based on search map pixel<br />
-            WALK_SOUND: as ANIWKSND.2DA above<br />
-            WALK_NUM: as per ANIWKSND.2DA above</p>
-          </div>
-          <hr />
-          <a name="audio-dialogue-greeting" id="audio-dialogue-greeting"></a><h3>Dialogue Greeting Subtitles</h3>
-          <p><strong>Option:</strong> TobEx gives the option of displaying the greeting string reference in the dialogue bar when initiating dialogue, similar to Baldur's Gate I behaviour. However, the string is displayed after the first line of dialogue rather than before.</p>
-          <hr />
-          <a name="audio-soundset-subtitles" id="audio-soundset-subtitles"></a><h3>Soundset Subtitles</h3>
-          <p>TobEx enables the display of subtitles for custom soundsets in the dialogue bar. This is achieved by appending by column to CSOUND.2DA. This is vanilla-compatible: if no column is present in CSOUND.2DA, no subtitles are used. To use this hack, use APPEND_COL on CSOUND.2DA. The column header should contain the prefix of the soundset (e.g. FEMALE1). The values for each sound should point to the string reference to display for the sound with suffix designated by the existing LETTER column. Please note the LETTER values in rows labelled with the numbers 30, 31, 39, 63, and 64 are incorrect in vanilla Throne of Bhaal and should be corrected to "x, y, *, _, *", respectively.</p>
-          <address>
-            <span class="footer">TobEx &gt; Audio</span> &#8226;<a href="#top">BACK TO TOP</a>
-          </address>
+          <h2>Items</h2>
+          <p>TobEx makes the following changes to the ITM V1.0 file format.</p>
+          <h3>Header</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0018 (dword)</td>
+              <td>
+                <p>Flags</p>
+                <ul>
+                  <li>bit 24: <a href="#effects-58">not dispellable in magical weapon slot</a></li>
+                  <li>bit 25: <a href="#ruleset-critical-hits">toggle critical hit aversion</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+          <h3>Extended Header (Ability)</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0026 (dword)</td>
+              <td>
+                <p>Flags</p>
+                <ul>
+                  <li>bit 25: <a href="#ruleset-backstabbing">toggle backstab restrictions</a></li>
+                  <li>bit 26: <a href="#ruleset-targetting-invisible">cannot target invisible</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+          <h3>Feature Block (Effect)</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0024 (dword)</td>
+              <td>
+                <p>Flags</p>
+                <ul>
+                  <li>bit 24: <a href="#effects-12">bypass mirror images</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
         </div>
 
-        <!-- ================== A n i m a t i o n s ================== -->
-        <a name="animations" id="animations"></a>
+        <!-- ================== S p e l l s ================== -->
+        <a name="spells" id="spells"></a>
         <div class="content">
-          <h2>Animations and Graphics</h2>
-          <p>The following animation changes are discussed:</p>
-          <ul>
-            <li><a href="#animations-using-items">Animation Sequences when Using Items</a></li>
-            <li><a href="#animations-iwd">Icewind Dale-style Animations</a></li>
-            <li><a href="#animations-paper-dolls">Paper Dolls</a></li>
-            <li><a href="#animations-spell-turning">Spell Turning Animations</a></li>
-            <li><a href="#animations-throwing-weapons">Throwing Weapon Animations</a></li>
-            <li><a href="#animations-tooltip">Tooltip Scroll</a></li>
-            <li><a href="#animations-vvc">Visual Effect Video Cells (VVCs)</a></li>
-          </ul>
-          <hr />
-          <a name="animations-using-items" id="animations-using-items"></a><h3>Animation Sequences when Using Items</h3>
-          <p>TobEx expands the use of custom animation sequences when using different abilities of the same item in the setting of the UseItem() and UseItemPoint() actions, or equivalent thereof (i.e. used as quick item). This is achieved by expanding ITEMANIM.2DA. Modmakers can therefore assign custom animation sequences to the use of specific item abilities.</p>
-          <div class="important">
-            <p>ITEMANIM.2DA<br />
-            This file lists the character animation sequence to be played when an item ability is used. This only applies to items that are used in UseItem() and UseItemPoint() actions, or equivalent thereof (i.e. used as quick item).<br />
-            <br />
-            [ROWNAME]: Item ResRef<br />
-            SEQUENCE: The animation sequence to play for the first ability of the specified item (from seq.ids). If there are no other columns, this is the animation sequence to play for all abilities.<br />
-            &lt;subsequent columns&gt;: The animation sequence to play for the (n+1)th ability of the specified item (from seq.ids), where n is the name of the column.</p>
-            <p>Example<br />
-            WAND05.ITM has two abilities</p>
-            <table class="important">
-              <tr>
-                <td>2DA V1.0</td>
-              </tr>
-              <tr>
-                <td>-1</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>SEQUENCE</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>WAND05</td>
-                <td>-1</td>
-                <td>12</td>
-              </tr>
-            </table>
-            <p>Using the first ability plays no animation sequence (-1). Using the second ability plays animation sequence 12 (SEQ_ATTACK_BACKSLASH).</p>
-          </div>
-          <hr />
-          <a name="animations-iwd" id="animations-iwd"></a><h3>Icewind Dale-style Animations</h3>
-          <p>TobEx fixed Icewind Dale-style animations (of IDs 0xE***) that use the 3rd attack animation (A3). These would otherwise have display the 2nd attack animation in northeast and east orientations if 'Sprite Mirror' is disabled in baldur.ini.</p>
-          <hr />
-          <a name="animations-paper-dolls" id="animations-paper-dolls"></a><h3>Paper Dolls</h3>
-          <p>TobEx enables paperdolls to be shown in the inventory and character customisation screens for animation IDs 0x12XX, 0x2XXX, 0x3XXX, and modification-added 0x7XXX (except 0x73XX, which is already shown in vanilla), which would otherwise not show at all. Note that paperdolls for the 0x7XXX group of animation must have to be named &lt;prefix&gt;INV.BAM.</p>
-          <hr />
-          <a name="animations-spell-turning" id="animations-spell-turning"></a><h3>Spell Turning Animation</h3>
-          <p>TobEx fixes a bug introduced somewhere between builds 22941 and 23037 of Shadows of Amn, whereby SPSTURNI.VVC was no longer played each time a spell is bounced off a creature who had spell turning.</p>
-          <hr />
-          <a name="animations-throwing-weapons" id="animations-throwing-weapons"></a><h3>Throwing Weapon Animations</h3>
-          <p><strong>Option:</strong> TobEx gives the option of enabling the use of item ability slash %, backslash %, and jab % fields for ranged weapons equipped in a weapon slot that do not require a launcher. Because this hack makes the creature use of the SEQ_ATTACK_[] animations instead of SEQ_SHOOT, attacks play the SEQ_ATTACK and SEQ_ATTACK_[] animation sounds instead of the SEQ_SHOOT animation sound. These percentages will only affect creatures with animation IDs in the 0x5000-0x53FF group with animation prefix starting with C, and 0x6*** groups to maintain vanilla behaviour and Infinity Animations compatibility.</p>
-          <hr />
-          <a name="animations-tooltip" id="animations-tooltip"></a><h3>Tooltip Scroll</h3>
-          <p>TobEx enlarges the tooltip scroll so that it can fit more text.</p>
-          <hr />
-          <a name="animations-vvc" id="animations-vvc"></a><h3>Visual Effect Video Cells (VVCs)</h3>
-          <p>TobEx fixes a few issues with the VVC file format.</p>
-          <p>The Display Flag (0x0018) bit 2 (Translucent shadow) has been fixed to use the Shadow Animation ResRef (0x0010) instead of duplicating the use of the Primary Animation ResRef (0x0008).</p>
-          <p>The Alpha Blending Animation ResRef (0x0088) has been fixed to allow its use without summarily causing an assertion failure.</p>
-          <address>
-            <span class="footer">TobEx &gt; Animations and Graphics</span> &#8226;<a href="#top">BACK TO TOP</a>
-          </address>
+          <h2>Spells</h2>
+          <p>TobEx makes the following changes to the SPL V1.0 file format.</p>
+          <h3>Header</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0018 (dword)</td>
+              <td>
+                <p>Flags</p>
+                <ul>
+                  <li>bit 24: <a href="#ruleset-targetting-invisible">can target invisible</a></li>
+                  <li>bit 25: <a href="#ruleset-casting-silence">can be cast when silenced</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+          <h3>Feature Block (Effect)</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0024 (dword)</td>
+              <td>
+                <p>Flags</p>
+                <ul>
+                  <li>bit 24: <a href="#effects-12">bypass mirror images</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- ================== S t o r e s ================== -->
+        <a name="stores" id="stores"></a>
+        <div class="content">
+          <h2>Stores</h2>
+          <p>TobEx makes the following changes to the STO V1.0 file format.</p>
+          <h3>Header</h3>
+          <table class="important" border="1">
+            <tr>
+              <td>Offset</td>
+              <td>Description</td>
+            </tr>
+            <tr>
+              <td>0x0010 (dword)</td>
+              <td>
+                <p>Flags</p>
+                <ul>
+                  <li>bit 14: <a href="#engine-item_recharge">toggle recharge</a></li>
+                </ul>
+              </td>
+            </tr>
+          </table>
         </div>
 
       </div>

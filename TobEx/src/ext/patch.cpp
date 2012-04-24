@@ -2648,38 +2648,101 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	if (pGameOptionsEx->bStoreItemRechargeFix) {
-		//push edx
+	if (pGameOptionsEx->bStoreItemRechargeMod) {
+		//1. CStore::UnmarshalItem(): fix so items with usages of 0 do not unmarshal with usages of 1
+		//2. CStore::AddItem: fix so a non-zero charge item will not stack onto an identical but zero charge item in the bag
+		//1 -> 0
+		char bytes[] = {0x00};
+		vDataList.push_back( Data(0x645AF8, 1, bytes) );
+		vDataList.push_back( Data(0x645E34, 1, bytes) );
+
+		//3. CStore::AddItem()
+		//mov ecx,dword ptr ss:[ebp-20]
+		//push ecx
+		//mov ecx,dword ptr ss:[ebp+8]
+		//push ecx
+		//mov eax,dword ptr ss:[ebp-6C]
 		//push eax
-		//mov ecx,dword ptr ss:[ebp+C]
-		//push ecx
-		//mov ecx,dword ptr ss:[ebp-64]
-		//push ecx
 		//call ...
-		char bytes[] = {0x52,
+		char bytes2[] = {0x8B, 0x4D, 0xE0,
+						0x51,
+						0x8B, 0x4D, 0x08,
+						0x51,
+						0x8B, 0x45, 0x94,
 						0x50,
-						0x8B, 0x4D, 0x0C,
-						0x51,
-						0x8B, 0x4D, 0x9C,
-						0x51,
 						0xE8};
-		vDataList.push_back( Data(0x645AE6, 11, bytes) );
+		vDataList.push_back( Data(0x645FA6, 13, bytes2) );
 
 		//CALL address
-		void* ptr = (void*)CStore_UnmarshalItem_SetUsages;
-		DWORD address = (DWORD)ptr - 5  - 0x645AF0;
-		char* bytes2 = (char*)&address;
-		vDataList.push_back( Data(0x645AF1, 4, bytes2) );
+		void* ptr = (void*)CStore_AddItem_SetUsages;
+		DWORD address = (DWORD)ptr - 5  - 0x645FB2;
+		char* bytes3 = (char*)&address;
+		vDataList.push_back( Data(0x645FB3, 4, bytes3) );
 
 		//jmp
-		char bytes3[] = {0xEB, 0xDA,
-						0x90, 0x90, 0x90, 0x90, 0x90};
-		vDataList.push_back( Data(0x645AF5, 7, bytes3) );
+		char bytes4[] = {0xEB, 0x3D,
+						0x90};
+		vDataList.push_back( Data(0x645FB7, 3, bytes4) );
 
-		//fix so a non-zero charge item will not stack onto an identical but zero charge item in the bag
-		//1 -> 0
-		char bytes4[] = {0x00};
-		vDataList.push_back( Data(0x645E34, 1, bytes4) );
+		//4. CStore::GetBuyPrice(): fix so host item price takes into account if item recharges
+		//push ecx
+		//lea eax,dword ptr ss:[ebp-20]
+		//push eax
+		//lea edx,dword ptr ss:[ebp-C]
+		//push edx
+		//mov eax,dword ptr ss:[ebp-28]
+		//push eax
+		//call ...
+		char bytes5[] = {0x51,
+						0x8D, 0x45, 0xE0,
+						0x50,
+						0x8D, 0x55, 0xF4,
+						0x52,
+						0x8B, 0x45, 0xD8,
+						0x50,
+						0xE8};
+		vDataList.push_back( Data(0x645671, 14, bytes5) );
+
+		//CALL address
+		ptr = (void*)CStore_GetBuyPrice_GetChargePercent;
+		address = (DWORD)ptr - 5  - 0x64567E;
+		char* bytes6 = (char*)&address;
+		vDataList.push_back( Data(0x64567F, 4, bytes6) );
+
+		//jmp
+		char bytes7[] = {0xEB, 0x21,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x645683, 4, bytes7) );
+
+		//5. CStore::GetSellPrice(): fix so customer item price takes into account if item recharges
+		//push ecx
+		//lea edx,dword ptr ss:[ebp-38]
+		//push edx
+		//lea ecx,dword ptr ss:[ebp-14]
+		//push ecx
+		//mov edx,dword ptr ss:[ebp-58]
+		//push edx
+		//call ...
+		char bytes8[] = {0x51,
+						0x8D, 0x55, 0xC8,
+						0x52,
+						0x8D, 0x4D, 0xEC,
+						0x51,
+						0x8B, 0x55, 0xA8,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x6454D2, 14, bytes8) );
+
+		//CALL address
+		ptr = (void*)CStore_GetSellPrice_GetChargePercent;
+		address = (DWORD)ptr - 5  - 0x6454DF;
+		char* bytes9 = (char*)&address;
+		vDataList.push_back( Data(0x6454E0, 4, bytes9) );
+
+		//jmp
+		char bytes10[] = {0xEB, 0x21,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x6454E4, 4, bytes10) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

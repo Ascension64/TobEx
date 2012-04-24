@@ -31,6 +31,7 @@ public:
 	BOOL Release();
 	void LoadResource(ResRef& res, BOOL bAddToHandler);
 	int GetNumAbilities();
+	short GetNumUsage(int nUsageIdx);
 	short GetNumCharges(int nAbilityIdx);
 	void SetNumUsage(int nUsageIdx, short wValue);
 	void Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotApplyEffects);
@@ -73,6 +74,7 @@ extern BOOL (CItem::*CItem_Demand)();
 extern BOOL (CItem::*CItem_Release)();
 extern void (CItem::*CItem_LoadResource)(ResRef&, BOOL);
 extern int (CItem::*CItem_GetNumAbilities)();
+extern short (CItem::*CItem_GetNumUsage)(int);
 extern short (CItem::*CItem_GetNumCharges)(int);
 extern void (CItem::*CItem_SetNumUsage)(int, short);
 extern void (CItem::*CItem_Equip)(CCreatureObject&, int, BOOL);

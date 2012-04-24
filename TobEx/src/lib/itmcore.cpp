@@ -16,6 +16,8 @@ void (CItem::*CItem_LoadResource)(ResRef&, BOOL) =
 	SetFP(static_cast<void (CItem::*)(ResRef&, BOOL)>				(&CItem::LoadResource),			0x5AA0A7);
 int (CItem::*CItem_GetNumAbilities)() =
 	SetFP(static_cast<int (CItem::*)()>								(&CItem::GetNumAbilities),		0x5AA1D6);
+short (CItem::*CItem_GetNumUsage)(int) =
+	SetFP(static_cast< short (CItem::*)(int)>						(&CItem::GetNumUsage),			0x5AA258);
 short (CItem::*CItem_GetNumCharges)(int) =
 	SetFP(static_cast<short (CItem::*)(int)>						(&CItem::GetNumCharges),		0x5AA2EF);
 void (CItem::*CItem_SetNumUsage)(int, short) =
@@ -43,6 +45,7 @@ BOOL CItem::Demand()														{ return (this->*CItem_Demand)(); }
 BOOL CItem::Release()														{ return (this->*CItem_Release)(); }
 void CItem::LoadResource(ResRef& res, BOOL bAddToHandler)					{ return (this->*CItem_LoadResource)(res, bAddToHandler); }
 int CItem::GetNumAbilities()												{ return (this->*CItem_GetNumAbilities)(); }
+short CItem::GetNumUsage(int nUsageIdx)										{ return (this->*CItem_GetNumUsage)(nUsageIdx); }
 short CItem::GetNumCharges(int nAbilityIdx)									{ return (this->*CItem_GetNumCharges)(nAbilityIdx); }
 void CItem::SetNumUsage(int nUsageIdx, short wValue)						{ return (this->*CItem_SetNumUsage)(nUsageIdx, wValue); }
 void CItem::Equip(CCreatureObject& cre, int nSlot, BOOL bDoNotApplyEffects)	{ return (this->*CItem_Equip)(cre, nSlot, bDoNotApplyEffects); }

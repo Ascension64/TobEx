@@ -1725,8 +1725,12 @@ Options:
 
 /////////////////////////////////////// STORE
 
------1470 Item Recharge in Bag Fix [F]
-Fixes an exploit where depleted items can be recharged by putting them in a bag and taking it out again
+-----1470 Item Recharge Mod [F, M]
+Modifies the following in relation to usages for non-stackable items with charges:
+1. Items in a store with usages of 0 are no longer loaded with usages of 1
+2. Putting items in bags no longer recharges the items (unless bit 14 of the store flags is set, see below)
+3. Adds bit 14 (toggle recharge) to store flags. For bags, setting this bit will allow items to be recharged when placed in the bag. For stores, setting this bit will prevent items from recharging when sold to the store.
+4. The buy and sell prices of items that recharge now take into account the fact that they recharge (hence, depleted rechargable items no longer buy/sell with a price of 1)
 
 Options:
 -0: disabled

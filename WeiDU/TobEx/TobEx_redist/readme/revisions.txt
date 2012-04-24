@@ -7,6 +7,7 @@ Beta 0024
 -Added: Optimise Variables Code
 -Added: Polymorph Fix
 -Added: Use EFF File Fix
+-Modified and Renamed: Item Recharge in Bag Fix->Item Recharge Mod
 -Awaken On Damage: Fixed a bug where creatures hit unconscious by FIST/STUNNING damage would still be a target and would recover consciousness in the same around
 
 Beta 0023

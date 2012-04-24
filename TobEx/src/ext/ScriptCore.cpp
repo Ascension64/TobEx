@@ -23,8 +23,8 @@ BOOL DETOUR_CVariableMap::DETOUR_Add(CVariable& var) {
 	sName.MakeUpper();
 	var.SetName(sName);
 
-	int nHash = GetHash(sName);
-	int nHashEnd = (nHash + nArraySize / 10 - 1) % nArraySize;
+	unsigned int nHash = GetHash(sName);
+	unsigned int nHashEnd = (nHash + nArraySize / 10 - 1) % nArraySize;
 
 	if (!var.GetName().IsEmpty()) {
 		while (!bSuccess && !bFail) {
@@ -68,8 +68,8 @@ CVariable& DETOUR_CVariableMap::DETOUR_Find(IECString sVar) {
 	sName.Remove(' ');
 	sName.MakeUpper();
 
-	int nHash = GetHash(sName);
-	int nHashEnd = (nHash + nArraySize / 10 - 1) % nArraySize;
+	unsigned int nHash = GetHash(sName);
+	unsigned int nHashEnd = (nHash + nArraySize / 10 - 1) % nArraySize;
 
 	while (!bSuccess && !bFail) {
 		IECString sBucket = pArray[nHash].GetName();

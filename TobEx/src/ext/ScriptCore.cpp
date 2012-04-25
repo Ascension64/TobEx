@@ -2,6 +2,7 @@
 
 #include "chitin.h"
 #include "objcore.h"
+#include "ScriptCommon.h"
 
 //CVariableMap
 BOOL (CVariableMap::*Tramp_CVariableMap_Add)(CVariable&) =
@@ -104,49 +105,322 @@ BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& s
 
 	BOOL bResult = FALSE;
 	int nOr = 0;
+	
 	BOOL bOverrideObject = FALSE;
 	Object oOverride;
 	CGameSprite* pOverrideSprite = NULL;
+
+	IECPtrList cplOp1;
+	IECPtrList cplOp2;
+	IECString sEval1;
+	IECString sEval2;
 
 	POSITION pos = m_triggers.GetHeadPosition();
 	if (pos == NULL) return TRUE;
 
 	while (pos != NULL) {
-		if (nOr <= 0) bResult = FALSE;
+		if (nOr <= 0) bResult = FALSE; //AND
 		Trigger* pt = (Trigger*)m_triggers.GetNext(pos);
+		Trigger tCopy = *pt;
 		
-		if (pt->opcode == TRIGGER_OR) {
-			nOr = pt->i;
-		} else {
-			if (pt->opcode != TRIGGER_NEXT_TRIGGER_OBJECT) {
-				nOr--;
-			}
-		}
-
-		if (bOverrideObject) {
-			if (pOverrideSprite) {
-				bResult |= EvaluateTrigger(*pt, triggers, *pOverrideSprite);
-				g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pOverrideSprite->GetEnum(), THREAD_ASYNCH, INFINITE);
-			} else {
-				bResult |= FALSE;
-			}
-			bOverrideObject = FALSE;
-			pOverrideSprite = NULL;
-		} else {
-			bResult |= EvaluateTrigger(*pt, triggers, sprite);
-		}
-
-		if (pt->opcode == TRIGGER_NEXT_TRIGGER_OBJECT) {
-			oOverride = pt->o;
+		switch (tCopy.opcode) {
+		case TRIGGER_NEXT_TRIGGER_OBJECT:
+			oOverride = tCopy.o;
 			oOverride.DecodeIdentifiers(sprite);
 			pOverrideSprite = (CGameSprite*)&oOverride.FindTargetOfType((CGameObject&)sprite, CGAMEOBJECT_TYPE_SPRITE, FALSE);
 			bOverrideObject = TRUE;
-		}
+			break;
 
-		if (bResult == FALSE && nOr <= 0 &&
-			pt->opcode != TRIGGER_NEXT_TRIGGER_OBJECT)
-			return FALSE;
-	}
+		case TRIGGER_EVAL1:
+		case TRIGGER_EVAL2:
+		{
+			unsigned int nType = (unsigned int)tCopy.i3 & 0xFFFF;
+			unsigned int nMode = (unsigned int)tCopy.i3 >> 16;
+
+			switch (nType) {
+			case EVALUATE_TYPE_INT:
+				if (tCopy.opcode == TRIGGER_EVAL1) {
+					cplOp1.AddHead(new EvalOp(tCopy.i, nMode));
+				} else if (tCopy.opcode == TRIGGER_EVAL2) {
+					cplOp2.AddHead(new EvalOp(tCopy.i, nMode));
+				}
+				break;
+			case EVALUATE_TYPE_VAR:
+			{
+				IECString sArg = tCopy.GetSName1();
+				sArg.MakeUpper();
+				IECString sScope = sArg.Left(6);
+				IECString sVariable = sArg.Right(sArg.GetLength() - 6);
+				CVariable* pVar = NULL;
+
+				if (!sScope.Compare("GLOBAL")) {
+					pVar = &g_pChitin->pGame->m_GlobalVariables.Find(sVariable);
+				} else if (!sScope.Compare("LOCALS")) {
+					if (bOverrideObject) {
+						if (pOverrideSprite &&
+							pOverrideSprite->GetType() == CGAMEOBJECT_TYPE_CREATURE)
+							pVar = &((CCreatureObject*)pOverrideSprite)->m_pLocalVariables->Find(sVariable);
+					} else if (sprite.GetType() == CGAMEOBJECT_TYPE_CREATURE)
+						pVar = &((CCreatureObject*)&sprite)->m_pLocalVariables->Find(sVariable);
+				} else {
+					if (!sScope.Compare("MYAREA")) sScope = sprite.pArea->rAreaName.FormatToString();
+					CArea& area = g_pChitin->pGame->GetLoadedArea(sScope);
+					if (&area != NULL)
+						pVar = &area.m_AreaVariables.Find(sVariable);
+				}
+
+				if (tCopy.opcode == TRIGGER_EVAL1) {
+					cplOp1.AddHead(new EvalOp(pVar ? pVar->nValue : 0, nMode));
+				} else if (tCopy.opcode == TRIGGER_EVAL2) {
+					cplOp2.AddHead(new EvalOp(pVar ? pVar->nValue : 0, nMode));
+				}
+				break;
+			}
+			case EVALUATE_TYPE_STAT:
+			{
+				IECString sStat = tCopy.GetSName1();
+				sStat.MakeUpper();
+				Identifiers ids(ResRef("STATS"));
+				IdsEntry* pIE = ids.FindByValue(sStat, FALSE);
+				int nStat = pIE ? pIE->nOpcode : 0;
+				if (nStat) {
+					int nValue = 0;
+					bool bFound = false;
+					if (bOverrideObject) {
+						if (pOverrideSprite &&
+							pOverrideSprite->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
+							nValue = ((CCreatureObject*)pOverrideSprite)->GetDerivedStats().GetStat(nStat);
+							bFound = true;
+						}
+					} else if (sprite.GetType() == CGAMEOBJECT_TYPE_CREATURE) {
+						nValue = ((CCreatureObject*)&sprite)->GetDerivedStats().GetStat(nStat);
+						bFound = true;
+					}
+
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						cplOp1.AddHead(new EvalOp(bFound ? nValue : 0, nMode));
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						cplOp2.AddHead(new EvalOp(bFound ? nValue : 0, nMode));
+					}
+				}
+				break;
+			}
+
+			/*case EVALUATE_TYPE_2DA_INT:
+			{
+				IECString sTemp = tCopy.GetSName1();
+				sTemp.Delete(' ');
+				sTemp.MakeUpper();
+				IECString sTable = sTemp.SpanExcluding(".");
+				sTemp = sTemp.Right(sTemp.GetLength() - sTable.GetLength() - 1);
+				IECString sCol = sTemp.SpanExcluding(".");
+				sTemp = sTemp.Right(sTemp.GetLength() - sCol.GetLength() - 1);
+				IECString sRow = sTemp;
+
+				CRuleTable rule;
+				rule.LoadTable(ResRef((LPCTSTR)sTable));
+				if (rule.m_2da.bLoaded) {
+					IECString sValue = rule.GetValue(sCol, sRow);
+					int nValue = atoi((LPCTSTR)sValue);
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						cplOp1.AddHead(new EvalOp(nValue, nMode));
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						cplOp2.AddHead(new EvalOp(nValue, nMode));
+					}
+				} else {
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						cplOp1.AddHead(new EvalOp(0, nMode));
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						cplOp2.AddHead(new EvalOp(0, nMode));
+					}
+				}
+				break;
+			}*/
+
+			case EVALUATE_TYPE_2DA_INT:
+			{
+				//unwind the operator ptr lists
+				while (!cplOp1.IsEmpty()) {
+					EvalOp* pOp = (EvalOp*)cplOp1.RemoveHead();
+					tCopy.i = EvalOp::Operate(tCopy.i, *pOp);
+					delete pOp;
+					pOp = NULL;
+				}
+				while (!cplOp2.IsEmpty()) {
+					EvalOp* pOp = (EvalOp*)cplOp2.RemoveHead();
+					tCopy.i2 = EvalOp::Operate(tCopy.i2, *pOp);
+					delete pOp;
+					pOp = NULL;
+				}
+				POINT pt = {tCopy.i, tCopy.i2};
+				//replace the strings if present
+				if (!sEval1.IsEmpty() && sEval1.Compare("*")) tCopy.sName1 = sEval1;
+				if (!sEval2.IsEmpty() && sEval2.Compare("*")) tCopy.sName2 = sEval2;
+				sEval1.Empty();
+				sEval2.Empty();
+
+				IECString sTable = tCopy.GetSName1();
+				sTable.Delete(' ');
+				sTable.MakeUpper();
+
+				CRuleTable rule;
+				rule.LoadTable(ResRef((LPCTSTR)sTable));
+				if (rule.m_2da.bLoaded) {
+					IECString sValue = rule.GetValue(pt);
+					int nValue = atoi((LPCTSTR)sValue);
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						cplOp1.AddHead(new EvalOp(nValue, nMode));
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						cplOp2.AddHead(new EvalOp(nValue, nMode));
+					}
+				} else {
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						cplOp1.AddHead(new EvalOp(0, nMode));
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						cplOp2.AddHead(new EvalOp(0, nMode));
+					}
+				}
+				break;
+			}
+
+			case EVALUATE_TYPE_STR:
+				if (tCopy.opcode == TRIGGER_EVAL1) {
+					sEval1 = tCopy.sName1;
+				} else if (tCopy.opcode == TRIGGER_EVAL2) {
+					sEval2 = tCopy.sName1;
+				}
+				break;
+
+			/*case EVALUATE_TYPE_2DA_STR:
+			{
+				IECString sTemp = tCopy.GetSName1();
+				sTemp.Delete(' ');
+				sTemp.MakeUpper();
+				IECString sTable = sTemp.SpanExcluding(".");
+				sTemp = sTemp.Right(sTemp.GetLength() - sTable.GetLength() - 1);
+				IECString sCol = sTemp.SpanExcluding(".");
+				sTemp = sTemp.Right(sTemp.GetLength() - sCol.GetLength() - 1);
+				IECString sRow = sTemp;
+
+				CRuleTable rule;
+				rule.LoadTable(ResRef((LPCTSTR)sTable));
+				if (rule.m_2da.bLoaded) {
+					IECString sValue = rule.GetValue(sCol, sRow);
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						sEval1 = sValue;
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						sEval2 = sValue;
+					}
+				} else {
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						sEval1.Empty();
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						sEval2.Empty();
+					}
+				}
+				break;
+			}*/
+
+			case EVALUATE_TYPE_2DA_STR:
+			{
+				IECString sTable = tCopy.GetSName1();
+				sTable.Delete(' ');
+				sTable.MakeUpper();
+
+				//unwind the operator ptr lists
+				while (!cplOp1.IsEmpty()) {
+					EvalOp* pOp = (EvalOp*)cplOp1.RemoveHead();
+					tCopy.i = EvalOp::Operate(tCopy.i, *pOp);
+					delete pOp;
+					pOp = NULL;
+				}
+				while (!cplOp2.IsEmpty()) {
+					EvalOp* pOp = (EvalOp*)cplOp2.RemoveHead();
+					tCopy.i2 = EvalOp::Operate(tCopy.i2, *pOp);
+					delete pOp;
+					pOp = NULL;
+				}
+				POINT pt = {tCopy.i, tCopy.i2};
+				//replace the strings if present
+				if (!sEval1.IsEmpty() && sEval1.Compare("*")) tCopy.sName1 = sEval1;
+				if (!sEval2.IsEmpty() && sEval2.Compare("*")) tCopy.sName2 = sEval2;
+				sEval1.Empty();
+				sEval2.Empty();
+
+				CRuleTable rule;
+				rule.LoadTable(ResRef((LPCTSTR)sTable));
+				if (rule.m_2da.bLoaded) {
+					IECString sValue = rule.GetValue(pt);
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						sEval1 = sValue;
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						sEval2 = sValue;
+					}
+				} else {
+					if (tCopy.opcode == TRIGGER_EVAL1) {
+						sEval1.Empty();
+					} else if (tCopy.opcode == TRIGGER_EVAL2) {
+						sEval2.Empty();
+					}
+				}
+				break;
+			}
+
+			default:
+				break;
+			} // switch(i)
+
+			//clean up
+			bOverrideObject = FALSE;
+			pOverrideSprite = NULL;
+			break;
+
+		} //TRIGGER_EVAL
+
+		default:
+			//set OR value
+			if (tCopy.opcode == TRIGGER_OR) {
+				nOr = tCopy.i;
+			} else nOr--;
+
+			//unwind the operator ptr lists
+			while (!cplOp1.IsEmpty()) {
+				EvalOp* pOp = (EvalOp*)cplOp1.RemoveHead();
+				tCopy.i = EvalOp::Operate(tCopy.i, *pOp);
+				delete pOp;
+				pOp = NULL;
+			}
+			while (!cplOp2.IsEmpty()) {
+				EvalOp* pOp = (EvalOp*)cplOp2.RemoveHead();
+				tCopy.i2 = EvalOp::Operate(tCopy.i2, *pOp);
+				delete pOp;
+				pOp = NULL;
+			}
+
+			//replace the strings if present
+			if (!sEval1.IsEmpty() && sEval1.Compare("*")) tCopy.sName1 = sEval1;
+			if (!sEval2.IsEmpty() && sEval2.Compare("*")) tCopy.sName2 = sEval2;
+			sEval1.Empty();
+			sEval2.Empty();
+
+			//evaluate trigger depending on override object
+			if (bOverrideObject) {
+				if (pOverrideSprite) {
+					bResult |= EvaluateTrigger(tCopy, triggers, *pOverrideSprite);
+					g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pOverrideSprite->GetEnum(), THREAD_ASYNCH, INFINITE);
+				} else bResult |= FALSE;
+			} else bResult |= EvaluateTrigger(tCopy, triggers, sprite);
+
+			//terminate if not in OR
+			if (bResult == FALSE &&	nOr <= 0)
+				return FALSE;
+
+			//clean up
+			bOverrideObject = FALSE;
+			pOverrideSprite = NULL;
+			break;
+		} // switch(tCopy.opcode)
+	} //while (pos != NULL)
 
 	return bResult;
 }

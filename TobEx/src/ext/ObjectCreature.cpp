@@ -530,13 +530,13 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ExecuteAction() {
 	if (0) IECString("DETOUR_CCreatureObject::DETOUR_ExecuteAction");
 
 	bExecutingAction = TRUE;
-	ACTIONRESULT ar = ACTIONRESULT_NOACTIONTAKEN;
+	ACTIONRESULT ar = ACTIONRESULT_NONE;
 
 	if (aCurrent.opcode == ACTION_BREAK_INSTANTS) SetCurrentAction(GetTopAction(g_pActionTemp));
 
 	switch (aCurrent.opcode) {
 	case ACTION_BREAK_INSTANTS:
-		ar = ACTIONRESULT_NOACTIONTAKEN; //re-implement here to prevent weird behaviour for double BreakInstants()
+		ar = ACTIONRESULT_NONE; //re-implement here to prevent weird behaviour for double BreakInstants()
 		break;
 	default:
 		return (this->*Tramp_CCreatureObject_ExecuteAction)();
@@ -585,7 +585,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		this->pArea->CheckPointsAccessible(creTarget.m_currentLoc, this->m_currentLoc, this->tt2, FALSE, this->GetSightRadius()) == FALSE
 	) {
 		ACTIONRESULT ar = this->ActionMoveToObject(creTarget);
-		if (ar == ACTIONRESULT_NOACTIONTAKEN) ar = ACTIONRESULT_SUCCESS;
+		if (ar == ACTIONRESULT_NONE) ar = ACTIONRESULT_SUCCESS;
 		return ar;
 	}
 
@@ -671,7 +671,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 			}
 		}
 
-		return ACTIONRESULT_NOACTIONTAKEN;
+		return ACTIONRESULT_NONE;
 	}
 
 	BOOL bNotStealableArray[39]; //FIX_ME, should use a global variable
@@ -745,7 +745,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 
 		if (nSlotToSteal == nSlotToStealFirst) {
 			PrintEventMessage(EVENTMESSAGE_PICKPOCKET_NO_ITEMS, 0, 0, 0, -1, 0, IECString(""));
-			return ACTIONRESULT_NOACTIONTAKEN;
+			return ACTIONRESULT_NONE;
 		}
 	}
 
@@ -761,7 +761,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		g_pChitin->messages.Send(*pMsgMPG, FALSE);
 
 		PrintEventMessage(EVENTMESSAGE_PICKPOCKET_SUCCESS, 0, 0, 0, -1, 0, IECString(""));
-		return ACTIONRESULT_NOACTIONTAKEN;
+		return ACTIONRESULT_NONE;
 	}
 
 	CItem* pItemToSteal = creTarget.m_Inventory.items[nSlotToSteal];
@@ -779,7 +779,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 				g_pChitin->messages.Send(*pMsgRI, FALSE);
 
 				PrintEventMessage(EVENTMESSAGE_PICKPOCKET_SUCCESS, 0, 0, 0, -1, 0, IECString(""));
-				return ACTIONRESULT_NOACTIONTAKEN;
+				return ACTIONRESULT_NONE;
 			}
 		}
 
@@ -800,7 +800,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 				g_pChitin->messages.Send(*pMsgRI, FALSE);
 
 				PrintEventMessage(EVENTMESSAGE_PICKPOCKET_SUCCESS, 0, 0, 0, -1, 0, IECString(""));
-				return ACTIONRESULT_NOACTIONTAKEN;
+				return ACTIONRESULT_NONE;
 			}
 		}
 

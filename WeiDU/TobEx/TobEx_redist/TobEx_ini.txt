@@ -1749,11 +1749,18 @@ Options:
 
 -----1000 Expanded Triggers [M]
 Enables the use of new triggers
+Expands trigger constructions to make use of the following parameter combinations:
+-(S,I,I)
+-(S,I,I,I)
+-(S,O,I,I)
+-(S,O,I,I,I)
+-(S,S,O)
 
-Descriptions
+New Trigger Descriptions
 0x4100 NextTriggerObject(O:Object*)
 Defines the object that the next trigger will be evaluated in reference to
-The trigger itself does not evaluate and does not count as a trigger in an OR() block
+This trigger itself does not evaluate and does not count as a trigger in an OR() block
+This trigger does not count as a trigger modified by Eval*()
 If the object cannot be found, the next trigger will evaluate to false
 
 0x4101 MovementRate(O:Object*,I:Value*)
@@ -1806,6 +1813,52 @@ Returns true if the target creature specified by Object is dual-classed and the 
 0x4118 HPLostGT(O:Object*,I:Hit Points*)
 0x4119 HPLostLT(O:Object*,I:Hit Points*)
 Compares the absolute number of hit points short of maximum hit points on the target creature specified by Object to Amount.
+
+0x411A Eval1(S:Name*,S:Scope*,I:Num1*,I:Num2*,I:Mode*Evaluate)
+0x411B Eval2(S:Name*,S:Scope*,I:Num1*,I:Num2*,I:Mode*Evaluate)
+Modifies a value in the next trigger depending on the Mode specified based on EVALUATE.IDS
+This trigger does not evaluate and does not count as a trigger in an OR() block
+This trigger does not count as a trigger modified by Eval*() unless one of the 2DA_* modes is used
+Use NextTriggerObject() to modify the target to derive the value from
+
+EVALUATE.IDS
+Specifies the possible types and modes for the Eval*() triggers
+Opcodes are separated into the upper word (Type) and lower word (Mode)
+
+Types
+0x0000 *_SET
+0x0001 *_ADD
+0x0002 *_MUL
+0x0004 *_DIV
+0x0008 *_MOD
+0x0010 *_PC
+
+Modes
+1 INT_*
+Modify target value with a constant integer "Num1"
+
+2 VAR_*
+Modify target value with the value of a variable named "Name" of scope "Scope"
+
+3 STAT_*
+Modify target value with the value of the stat specified in "Name"
+
+4 2DA_INT_*
+Modify target value with the integer value located at column index "Num1", row index "Num2" of the 2DA file specified in "Name"
+"Name", "Num1" and "Num2" can be modified by previous Eval*() triggers
+
+5 STR_SET
+Modify target value with a constant string "Name"
+
+6 2DA_STR_SET
+Modify target value with the string value located at column index "Num1", row index "Num2" of the 2DA file specified in "Name"
+"Name", "Num1" and "Num2" can be modified by previous Eval*() triggers
+
+0x411C E(I:Num1*,I:Num2*)
+0x411D GT(I:Num1*,I:Num2*)
+0x411E LT(I:Num1*,I:Num2*)
+Compares Num1 to Num2, where E is equals, GT is greater than, and LT is less than.
+To make use of these triggers, Eval*() triggers should be used prior to this trigger
 
 Options:
 -0: disabled

@@ -188,8 +188,9 @@ void DETOUR_CEffectList::DETOUR_TryDispel(
 		if (bCheckProbability) {
 			nDispelChance = 50;
 			if (pEff->effect.nSourceCreLevel > cDispelLevel) {
+				//original code without proper brackets
 				//nDispelChance += pEff->effect.nSourceCreLevel * 10 - nDispelLevel;
-				nDispelChance += (pEff->effect.nSourceCreLevel - cDispelLevel) * 10; //original code without proper brackets
+				nDispelChance += (pEff->effect.nSourceCreLevel - cDispelLevel) * 10;
 			} else {
 				nDispelChance -= (cDispelLevel - pEff->effect.nSourceCreLevel) * 5;
 			}

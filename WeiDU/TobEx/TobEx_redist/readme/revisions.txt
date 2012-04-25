@@ -9,6 +9,7 @@ Beta 0024
 -Added: Use EFF File Fix
 -Modified and Renamed: Item Recharge in Bag Fix->Item Recharge Mod
 -Awaken On Damage: Fixed a bug where creatures hit unconscious by FIST/STUNNING damage would still be a target and would recover consciousness in the same around
+-Expanded Triggers: Internal script compiler (for dialogues) now recognises more trigger parameter combinations
 
 Beta 0023
 ---------

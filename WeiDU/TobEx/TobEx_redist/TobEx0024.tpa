@@ -1,0 +1,10 @@
+//Incremental update for TobEx beta 0024
+
+//Expanded Triggers
+APPEND "trigger.ids" "0x411A Eval1(S:Name*,S:Scope*,I:Num1*,I:Num2*,I:Mode*Evaluate)" UNLESS "0x411A Eval1(S:Name*,S:Scope*,I:Num1*,I:Num1*,I:Mode*Evaluate)"
+APPEND "trigger.ids" "0x411B Eval2(S:Name*,S:Scope*,I:Num1*,I:Num2*,I:Mode*Evaluate)" UNLESS "0x411B Eval2(S:Name*,S:Scope*,I:Num2*,I:Num2*,I:Mode*Evaluate)"
+APPEND "trigger.ids" "0x411C E(I:Num1*,I:Num2*)" UNLESS "0x411C E(I:Num1*,I:Num2*)"
+APPEND "trigger.ids" "0x411D GT(I:Num1*,I:Num2*)" UNLESS "0x411D GT(I:Num1*,I:Num2*)"
+APPEND "trigger.ids" "0x411E LT(I:Num1*,I:Num2*)" UNLESS "0x411E LT(I:Num1*,I:Num2*)"
+
+LAF tobex_copy STR_VAR file = "evaluate.ids" END

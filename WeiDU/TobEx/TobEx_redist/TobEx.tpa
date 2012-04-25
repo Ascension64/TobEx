@@ -199,6 +199,8 @@ ACTION_IF (%tobex_installed_version% < 23) BEGIN
 END
 
 ACTION_IF (%tobex_installed_version% < 24) BEGIN
+  INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0024.tpa"
+
   COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
     APPEND_FILE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0024t.txt"
 END

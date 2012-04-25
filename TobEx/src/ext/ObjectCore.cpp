@@ -275,6 +275,15 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		bResult = nHurtAmount < tTemp.i;
 		}
 		break;
+	case TRIGGER_EQUALS:
+		bResult = tTemp.i == tTemp.i2;
+		break;
+	case TRIGGER_GT:
+		bResult = tTemp.i > tTemp.i2;
+		break;
+	case TRIGGER_LT:
+		bResult = tTemp.i < tTemp.i2;
+		break;
 	default:
 		bResult = (this->*Tramp_CGameSprite_EvaluateTrigger)(t);
 		break;
@@ -302,11 +311,11 @@ ACTIONRESULT DETOUR_CGameSprite::DETOUR_ExecuteAction() {
 
 	switch (aCurrent.opcode) {
 	case ACTION_BREAK_INSTANTS:
-		ar = ACTIONRESULT_NOACTIONTAKEN; //re-implement here to prevent weird behaviour for double BreakInstants()
+		ar = ACTIONRESULT_NONE; //re-implement here to prevent weird behaviour for double BreakInstants()
 		break;
 	case ACTION_LOSE_GAME:
 		g_pChitin->pGame->SetLoseCutscene();
-		ar = ACTIONRESULT_NOACTIONTAKEN;
+		ar = ACTIONRESULT_NONE;
 		break;
 	case ACTION_DIALOG_SET_GLOBAL:
 		aCurrent.opcode = ACTION_SET_GLOBAL;

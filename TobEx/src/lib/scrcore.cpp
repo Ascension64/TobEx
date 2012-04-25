@@ -2,15 +2,18 @@
 
 //Identifiers
 Identifiers& (Identifiers::*Identifiers_Construct_0)() =
-	SetFP(static_cast<Identifiers& (Identifiers::*)()>			(&Identifiers::Construct),		0x40FB70);
+	SetFP(static_cast<Identifiers& (Identifiers::*)()>				(&Identifiers::Construct),	0x40FB70);
 Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef) =
-	SetFP(static_cast<Identifiers& (Identifiers::*)(ResRef)>	(&Identifiers::Construct),		0x40FC37);
+	SetFP(static_cast<Identifiers& (Identifiers::*)(ResRef)>		(&Identifiers::Construct),	0x40FC37);
 void (Identifiers::*Identifiers_Deconstruct)() =
-	SetFP(static_cast<void (Identifiers::*)()>					(&Identifiers::Deconstruct),	0x40FE31);
+	SetFP(static_cast<void (Identifiers::*)()>						(&Identifiers::Deconstruct),0x40FE31);
+IdsEntry* (Identifiers::*Identifiers_FindByValue)(IECString, BOOL) =
+	SetFP(static_cast<IdsEntry* (Identifiers::*)(IECString, BOOL)>	(&Identifiers::FindByValue),0x410502);
 
-Identifiers::Identifiers()				{ (this->*Identifiers_Construct_0)(); }
-Identifiers::Identifiers(ResRef rFile)	{ (this->*Identifiers_Construct_1_ResRef)(rFile); }
-Identifiers::~Identifiers()				{ (this->*Identifiers_Deconstruct)(); }
+Identifiers::Identifiers() { (this->*Identifiers_Construct_0)(); }
+Identifiers::Identifiers(ResRef rFile) { (this->*Identifiers_Construct_1_ResRef)(rFile); }
+Identifiers::~Identifiers() { (this->*Identifiers_Deconstruct)(); }
+IdsEntry* Identifiers::FindByValue(IECString sValue, BOOL bCaseSensitive) { return (this->*Identifiers_FindByValue)(sValue, bCaseSensitive); }
 
 //CVariable
 void (CVariable::*CVariable_SetName)(IECString) =
@@ -152,10 +155,10 @@ int (Trigger::*Trigger_GetI)() =
 	SetFP(static_cast<int (Trigger::*)()>							(&Trigger::GetI),				0x4943F0);
 int (Trigger::*Trigger_GetI2)() =
 	SetFP(static_cast<int (Trigger::*)()>							(&Trigger::GetI2),				0x494410);
-IECString* (Trigger::*Trigger_GetSName1)() =
-	SetFP(static_cast<IECString* (Trigger::*)()>					(&Trigger::GetSName1),			0x494430);
-IECString* (Trigger::*Trigger_GetSName2)() =
-	SetFP(static_cast<IECString* (Trigger::*)()>					(&Trigger::GetSName2),			0x494450);
+IECString& (Trigger::*Trigger_GetSName1)() =
+	SetFP(static_cast<IECString& (Trigger::*)()>					(&Trigger::GetSName1),			0x494430);
+IECString& (Trigger::*Trigger_GetSName2)() =
+	SetFP(static_cast<IECString& (Trigger::*)()>					(&Trigger::GetSName2),			0x494450);
 
 Trigger::Trigger()									{ (this->*Trigger_Construct_2)(TRIGGER_NONE, 0); }
 Trigger::Trigger(short wOpcode, Object& o, int i)	{ (this->*Trigger_Construct_3)(wOpcode, o, i); }
@@ -165,8 +168,8 @@ short Trigger::GetOpcode()							{ return (this->*Trigger_GetOpcode)(); }
 void Trigger::DecodeIdentifiers(CGameSprite& sprite){ return (this->*Trigger_DecodeIdentifiers)(sprite); }
 int Trigger::GetI()									{ return (this->*Trigger_GetI)(); }
 int Trigger::GetI2()								{ return (this->*Trigger_GetI2)(); }
-IECString* Trigger::GetSName1()						{ return (this->*Trigger_GetSName1)(); }
-IECString* Trigger::GetSName2()						{ return (this->*Trigger_GetSName2)(); }
+IECString& Trigger::GetSName1()						{ return (this->*Trigger_GetSName1)(); }
+IECString& Trigger::GetSName2()						{ return (this->*Trigger_GetSName2)(); }
 
 //Action
 Action& (Action::*Action_Construct_0)() =
@@ -187,3 +190,33 @@ BOOL (CScriptBlock::*CScriptBlock_EvaluateTrigger)(Trigger&, CTriggerList&, CGam
 
 BOOL CScriptBlock::Evaluate(CTriggerList& triggers, CGameSprite& sprite)					{ return (this->*CScriptBlock_Evaluate)(triggers, sprite); }
 BOOL CScriptBlock::EvaluateTrigger(Trigger& t, CTriggerList& triggers, CGameSprite& sprite)	{ return (this->*CScriptBlock_EvaluateTrigger)(t, triggers, sprite); }
+
+//CScriptParser
+short (CScriptParser::*CScriptParser_GetTriggerOpcode)(IECString) =
+	SetFP(static_cast<short (CScriptParser::*)(IECString)>						(&CScriptParser::GetTriggerOpcode),	0x428829);
+int (CScriptParser::*CScriptParser_GetOpcode)(IECString, IECString) =
+	SetFP(static_cast<int (CScriptParser::*)(IECString, IECString)>				(&CScriptParser::GetOpcode),		0x428EB0);
+void (CScriptParser::*CScriptParser_SetError)(IECString) =
+	SetFP(static_cast<void (CScriptParser::*)(IECString)>						(&CScriptParser::SetError),			0x428F9E);
+Object (CScriptParser::*CScriptParser_ParseObject)(IECString&) =
+	SetFP(static_cast<Object (CScriptParser::*)(IECString&)>					(&CScriptParser::ParseObject),		0x429035);
+IECString (CScriptParser::*CScriptParser_SpanBefore)(IECString, char) =
+	SetFP(static_cast<IECString (CScriptParser::*)(IECString, char)>			(&CScriptParser::SpanBefore),		0x429A23);
+IECString (CScriptParser::*CScriptParser_SpanAfter)(IECString, char) =
+	SetFP(static_cast<IECString (CScriptParser::*)(IECString, char)>			(&CScriptParser::SpanAfter),		0x429B24);
+IECString (CScriptParser::*CScriptParser_GetArgText)(int, IECString) =
+	SetFP(static_cast<IECString (CScriptParser::*)(int, IECString)>				(&CScriptParser::GetArgText),		0x42FB7A);
+IECString (CScriptParser::*CScriptParser_GetIdsValue)(Identifiers&, IECString&) =
+	SetFP(static_cast<IECString (CScriptParser::*)(Identifiers&, IECString&)>	(&CScriptParser::GetIdsValue),		0x430430);
+IECString (CScriptParser::*CScriptParser_GetArgTextIdsName)(IECString) =
+	SetFP(static_cast<IECString (CScriptParser::*)(IECString)>					(&CScriptParser::GetArgTextIdsName),0x430620);
+
+short CScriptParser::GetTriggerOpcode(IECString sName) { return (this->*CScriptParser_GetTriggerOpcode)(sName); }
+void CScriptParser::SetError(IECString s) { return (this->*CScriptParser_SetError)(s); }
+Object CScriptParser::ParseObject(IECString& sArg) { return (this->*CScriptParser_ParseObject)(sArg); }
+IECString CScriptParser::SpanBefore(IECString s, char c) { return (this->*CScriptParser_SpanBefore)(s, c); }
+IECString CScriptParser::SpanAfter(IECString s, char c) { return (this->*CScriptParser_SpanAfter)(s, c); }
+IECString CScriptParser::GetArgText(int nArgIdx, IECString sFuncDesc) { return (this->*CScriptParser_GetArgText)(nArgIdx, sFuncDesc); }
+IECString CScriptParser::GetIdsValue(Identifiers& ids, IECString& sName) { return (this->*CScriptParser_GetIdsValue)(ids, sName); }
+int CScriptParser::GetOpcode(IECString sValue, IECString sIdsName) { return (this->*CScriptParser_GetOpcode)(sValue, sIdsName); }
+IECString CScriptParser::GetArgTextIdsName(IECString sArgText) { return (this->*CScriptParser_GetArgTextIdsName)(sArgText); }

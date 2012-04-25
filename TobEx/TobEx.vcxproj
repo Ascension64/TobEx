@@ -136,7 +136,9 @@
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
     <ClCompile Include="src\ext\ObjectStats.cpp" />
     <ClCompile Include="src\ext\options.cpp" />
+    <ClCompile Include="src\ext\ScriptCommon.cpp" />
     <ClCompile Include="src\ext\ScriptCore.cpp" />
+    <ClCompile Include="src\ext\ScriptParser.cpp" />
     <ClCompile Include="src\ext\ScriptTrigger.cpp" />
     <ClCompile Include="src\ext\SpellCore.cpp" />
     <ClCompile Include="src\ext\StoreCore.cpp" />
@@ -248,7 +250,9 @@
     <ClInclude Include="src\ext\ObjectCreature.h" />
     <ClInclude Include="src\ext\ObjectStats.h" />
     <ClInclude Include="src\ext\options.h" />
+    <ClInclude Include="src\ext\ScriptCommon.h" />
     <ClInclude Include="src\ext\ScriptCore.h" />
+    <ClInclude Include="src\ext\ScriptParser.h" />
     <ClInclude Include="src\ext\ScriptTrigger.h" />
     <ClInclude Include="src\ext\SpellCore.h" />
     <ClInclude Include="src\ext\StoreCore.h" />

@@ -17,11 +17,14 @@ typedef IECPtrList CScriptBlockList; //AA5E50
 static Action* g_pActionTemp = reinterpret_cast<Action*>(0xB79300);
 
 //ACTIONRESULT
-//-3
-const ACTIONRESULT ACTIONRESULT_FAILED			= -2; //purges the action
-const ACTIONRESULT ACTIONRESULT_NOACTIONTAKEN	= -1; //action did not do anything
-const ACTIONRESULT ACTIONRESULT_CONTINUE		= 0; //keeps the action, halt scripts
-const ACTIONRESULT ACTIONRESULT_SUCCESS			= 1; //purges the action
+const ACTIONRESULT ACTIONRESULT_NEG3			= -3; //-3, loads next action
+const ACTIONRESULT ACTIONRESULT_FAILED			= -2; //loads next action
+const ACTIONRESULT ACTIONRESULT_NONE			= -1; //default, resets the script indices, loads next action, ignore post-action stuff
+const ACTIONRESULT ACTIONRESULT_CONTINUE		= 0; //continue current action, increment action ticks elapsed, terminates instant action loop, halts script processing
+const ACTIONRESULT ACTIONRESULT_SUCCESS			= 1; //stop walking, loads next action, increment action ticks elapsed, terminates instant action loop
+const ACTIONRESULT ACTIONRESULT_2				= 2; //2, adds to action ticks elapsed
+
+struct IdsEntry;
 
 struct ResIdsContainer { //Size 10h
 	BOOL bLoaded; //0h
@@ -42,6 +45,8 @@ public:
 	virtual ~Identifiers();
 	void Deconstruct() { return; } //dummy
 
+	IdsEntry* FindByValue(IECString sValue, BOOL bCaseSensitive);
+
 	ResIdsContainer m_ids; //4h
 	IECString u14; //14h
 	IECPtrList entries; //18h, contain IdsEntry objects
@@ -53,6 +58,7 @@ public:
 extern Identifiers& (Identifiers::*Identifiers_Construct_0)();
 extern Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef);
 extern void (Identifiers::*Identifiers_Deconstruct)();
+extern IdsEntry* (Identifiers::*Identifiers_FindByValue)(IECString, BOOL);
 
 struct CVariable { //Size 54h
 	CVariable();
@@ -193,8 +199,8 @@ struct Trigger { //Size 2Eh
 	void DecodeIdentifiers(CGameSprite& sprite);
 	int GetI();
 	int GetI2();
-	IECString* GetSName1();
-	IECString* GetSName2();
+	IECString& GetSName1();
+	IECString& GetSName2();
 
 	short opcode; //0h
 	int i; //2h, gets Arg1 (I)
@@ -205,9 +211,9 @@ struct Trigger { //Size 2Eh
 	//bit2: TRIGGER_UPDATED_SPRITE (added internally on add or purge)
 
 	int i2; //1eh (I)
-	int u22; //22h (unknown usage, i3?)
+	int i3; //22h (unknown usage, I3?)
 	IECString sName1; //26h, (S), first global, the global name is appended to the global type e.g. "LOCALSDead", "GLOBALTest"
-	IECString sName2; //2ah, (S), second global
+	IECString sName2; //2ah, (S), (unknown usage, second global)
 };
 
 extern Trigger& (Trigger::*Trigger_Construct_3)(short, Object&, int);
@@ -217,8 +223,8 @@ extern short (Trigger::*Trigger_GetOpcode)();
 extern void (Trigger::*Trigger_DecodeIdentifiers)(CGameSprite&);
 extern int (Trigger::*Trigger_GetI)();
 extern int (Trigger::*Trigger_GetI2)();
-extern IECString* (Trigger::*Trigger_GetSName1)();
-extern IECString* (Trigger::*Trigger_GetSName2)();
+extern IECString& (Trigger::*Trigger_GetSName1)();
+extern IECString& (Trigger::*Trigger_GetSName2)();
 
 struct Action { //Size 5Eh
 //Constructor: 0x405820
@@ -288,6 +294,16 @@ struct CScript { //Size 28h
 
 struct CScriptParser { //Size EEh
 //Constructor: 0x41926B
+	short GetTriggerOpcode(IECString sName);
+	int GetOpcode(IECString sValue, IECString sIdsName);
+	void SetError(IECString s);
+	Object ParseObject(IECString& sArg);
+	IECString SpanBefore(IECString s, char c);
+	IECString SpanAfter(IECString s, char c);
+	IECString GetArgText(int nArgIdx, IECString sFuncDesc);
+	IECString GetIdsValue(Identifiers& ids, IECString& sName);
+	IECString GetArgTextIdsName(IECString sArgText);
+
 	short mode; //0h, 0 = outside IF...END, 1 = in Trigger, 2 = in Action
 	int lineNumber;
 	int* u6; //0x28 size, 0x0 ResRef, 0x8 int, 0xc CPtrListAA5E50
@@ -301,5 +317,15 @@ struct CScriptParser { //Size EEh
 	Identifiers TRIGGER; //6eh
 	Identifiers OBJECT; //aeh
 };
+
+extern short (CScriptParser::*CScriptParser_GetTriggerOpcode)(IECString);
+extern int (CScriptParser::*CScriptParser_GetOpcode)(IECString, IECString);
+extern void (CScriptParser::*CScriptParser_SetError)(IECString);
+extern Object (CScriptParser::*CScriptParser_ParseObject)(IECString&);
+extern IECString (CScriptParser::*CScriptParser_SpanBefore)(IECString, char);
+extern IECString (CScriptParser::*CScriptParser_SpanAfter)(IECString, char);
+extern IECString (CScriptParser::*CScriptParser_GetArgText)(int, IECString);
+extern IECString (CScriptParser::*CScriptParser_GetIdsValue)(Identifiers&, IECString&);
+extern IECString (CScriptParser::*CScriptParser_GetArgTextIdsName)(IECString);
 
 #endif //SCRCORE_H

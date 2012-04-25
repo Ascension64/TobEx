@@ -259,7 +259,7 @@ public:
 	short nCurrResponseIdx; //2b2h, gets Response.u2
 	short nCurrScriptBlockIdx; //2b4h, gets Response.u4
 	short nCurrScriptIdx; //2b6h, gets Response.u6
-	BOOL bUseCurrIdx; //2b8h, use above three values?
+	BOOL bUseCurrScriptIdx; //2b8h, use above three values?
 	short wActionTicksElapsed; //2bch, how many updates has the current action been running for
 	Action aCurrent; //2beh
 	int u31c; //used with Delay() trigger

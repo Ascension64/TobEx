@@ -16,6 +16,7 @@
 #include "InfGameCore.h"
 #include "ItemCommon.h"
 #include "ScriptAction.h"
+#include "ScriptParser.h"
 #include "ScriptTrigger.h"
 #include "StoreCore.h"
 #include "UserCommon.h"
@@ -2743,6 +2744,51 @@ void InitPatches() {
 		char bytes10[] = {0xEB, 0x21,
 						0x90, 0x90};
 		vDataList.push_back( Data(0x6454E4, 4, bytes10) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bTriggerExpandedTriggers) {
+		//lea edx,dword ptr ss:[ebp-68]
+		//push edx
+		//lea edx,dword ptr ss:[ebp-2C]
+		//push edx
+		//lea edx,dword ptr ss:[ebp-28]
+		//push edx
+		//lea edx,dword ptr ss:[ebp-60]
+		//push edx
+		//lea edx,dword ptr ss:[ebp-24]
+		//push edx
+		//lea edx,dword ptr ss:[ebp+8]
+		//push edx
+		//movsx edx,dword ptr ss:[ebp-74]
+		//push edx
+		//nop
+		//call ...
+		char bytes[] = {0x8D, 0x55, 0x98,
+						0x52,
+						0x8D, 0x55, 0xD4,
+						0x52,
+						0x8D, 0x55, 0xD8,
+						0x52,
+						0x8D, 0x55, 0xA0,
+						0x52,
+						0x8D, 0x55, 0xDC,
+						0x52,
+						0x8D, 0x55, 0x08,
+						0x52,
+						0x0F, 0xBF, 0x55, 0x8C,
+						0x52,
+						0x90, 0x90,
+						0xE8};
+		vDataList.push_back( Data(0x41DF3B, 32, bytes) );
+
+		//CALL address
+		void* ptr = (void*)ScriptParser_CreateTrigger_ParseStatementIdx;
+		DWORD address = (DWORD)ptr - 5  - 0x41DF5A;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x41DF5B, 4, bytes2) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

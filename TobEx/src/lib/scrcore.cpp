@@ -136,8 +136,8 @@ BOOL inline Object::operator==(Object& o) {
 
 BOOL Object::IsAnything()	{ return operator==(*poAnything); }
 BOOL Object::IsNonScript()	{ return operator==(*poNonScript); }
-BOOL Object::IsNothing()		{ return operator==(*poNothing); }
-BOOL Object::IsAny()			{ return operator==(*poAny); }
+BOOL Object::IsNothing()	{ return operator==(*poNothing); }
+BOOL Object::IsAny()		{ return operator==(*poAny); }
 BOOL Object::IsMyself()		{ return operator==(*poMyself); }
 
 //Trigger
@@ -181,6 +181,31 @@ void* Action::operator new(size_t size) { return ::operator new(size, 0); }
 void Action::operator delete(void* mem) { return ::operator delete(mem, 0); } 
 Action::Action() { (this->*Action_Construct_0)(); }
 IECString Action::GetSName1() { return (this->*Action_GetSName1)(); }
+
+void Action::operator=(Action& a) {
+	this->opcode = a.opcode;
+	this->oOverride = a.oOverride;
+	this->oObject = a.oObject;
+	this->oTarget = a.oTarget;
+	this->i = a.i;
+	this->i2 = a.i2;
+	this->i3 = a.i3;
+	this->sName1 = a.sName1;
+	this->sName2 = a.sName2;
+	this->pt.x = a.pt.x;
+	this->pt.y = a.pt.y;
+	this->dwFlags = a.dwFlags;
+	return;
+}
+
+//Response
+Response& (Response::*Response_Construct_0)() =
+	SetFP(static_cast<Response& (Response::*)()>	(&Response::Construct),	0x416130);
+void (Response::*Response_OpEq)(Response&) =
+	SetFP(static_cast<void (Response::*)(Response&)>(&Response::OpEq),		0x4162A9);
+
+Response::Response() { (this->*Response_Construct_0)(); }
+void Response::operator=(Response& r) { (this->*Response_OpEq)(r); }
 
 //CScriptBlock
 BOOL (CScriptBlock::*CScriptBlock_Evaluate)(CTriggerList&, CGameSprite&) =

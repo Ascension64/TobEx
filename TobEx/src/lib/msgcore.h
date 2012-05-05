@@ -469,6 +469,34 @@ extern void (CMessagePlaySoundset::*CMessagePlaySoundset_Marshal)(void*, int*);
 extern BOOL (CMessagePlaySoundset::*CMessagePlaySoundset_Unmarshal)(void*, int*);
 extern void (CMessagePlaySoundset::*CMessagePlaySoundset_DoMessage)(void);
 
+class CMessageQueueActions : public CMessage { //Size 38h
+public:
+	//AA6DC0
+	CMessageQueueActions();
+
+	virtual ~CMessageQueueActions(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual short GetMsgType(void); //v4
+	virtual char GetNetworkType1(void); //v8
+	virtual char GetNetworkType2(void); //vc
+	virtual void Marshal(void* pData, int* dwSize); //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize); //v14
+	virtual void DoMessage(void); //v18
+
+	Response r; //ch
+	BOOL bSkipIfAlreadyQueued; //30h
+	BOOL bClearActionQueue; //34h
+};
+
+extern void (CMessageQueueActions::*CMessageQueueActions_Deconstruct)();
+extern short (CMessageQueueActions::*CMessageQueueActions_GetMsgType)(void);
+extern char (CMessageQueueActions::*CMessageQueueActions_GetNetworkType1)(void);
+extern char (CMessageQueueActions::*CMessageQueueActions_GetNetworkType2)(void);
+extern void (CMessageQueueActions::*CMessageQueueActions_Marshal)(void*, int*);
+extern BOOL (CMessageQueueActions::*CMessageQueueActions_Unmarshal)(void*, int*);
+extern void (CMessageQueueActions::*CMessageQueueActions_DoMessage)(void);
+
 class CMessageRemoveAreaAirEffects : public CMessage { //Size 14h
 public:
 	//AA727C
@@ -562,6 +590,21 @@ public:
 	virtual void DoMessage(void) {return;} //v18
 
 	Trigger t; //ch
+};
+
+class CMessageSetTriggerRemovalTimer : public CMessage { //Size Eh
+public:
+	//AA7458
+	CMessageSetTriggerRemovalTimer();
+	virtual ~CMessageSetTriggerRemovalTimer() {} //v0
+	virtual short GetMsgType(void) {return 0;} //v4, ?
+	virtual char GetNetworkType1(void) {return 0;} //v8, ?
+	virtual char GetNetworkType2(void) {return 0;} //vc, ?
+	virtual void Marshal(void* pData, int* dwSize) {return;} //v10
+	virtual BOOL Unmarshal(void* pData, int* dwSize) {return FALSE;} //v14
+	virtual void DoMessage(void) {return;} //v18
+
+	short wTicks; //ch
 };
 
 class CMessageSpriteUpdate : public CMessage { //Size 58h

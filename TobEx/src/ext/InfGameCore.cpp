@@ -29,6 +29,8 @@ ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(char, char) =
 void (CMoveAreasList::*Tramp_CMoveAreasList_MoveAllTo)(CArea&) =
 	SetFP(static_cast<void (CMoveAreasList::*)(CArea&)>	(&CMoveAreasList::MoveAllTo),	0x5EFA6D);
 
+void (CInfGame::*Tramp_CInfGame_InitGame)(int, int) =
+	SetFP(static_cast<void (CInfGame::*)(int, int)>					(&CInfGame::InitGame),				0x67C6C5);
 int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL) =
 	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),		0x68F35C);
 void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)() =
@@ -297,6 +299,17 @@ void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) {
 }
 
 //CInfGame
+void DETOUR_CInfGame::DETOUR_InitGame(int nUnused, int nUnused2) {
+	std::map<Enum, CBlockVariables*>::iterator it;
+	for (it = pRuleEx->m_MapActionVars.begin(); it != pRuleEx->m_MapActionVars.end(); it++) {
+		delete it->second;
+		it->second = NULL;
+	}
+	pRuleEx->m_MapActionVars.clear();
+
+	return (this->*Tramp_CInfGame_InitGame)(nUnused, nUnused2);
+}
+
 int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly) {
 	if (0) IECString("DETOUR_CInfGame::DETOUR_GetNumOfItemInBag");
 

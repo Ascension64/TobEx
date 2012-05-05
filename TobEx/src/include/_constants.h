@@ -254,7 +254,7 @@
 //! 0xAA6D6C CMessageSetAnimationSequence
 //0xAA6D88, ch
 //0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
-//0xAA6DC0 38h, Response, DW, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue (CMessageInsertResponse)
+//! 0xAA6DC0, CMessageQueueActions
 //0xAA6DDC, ch (CMessageClearAllActions)
 //! 0xAA6E14 CMessageRemoveItem
 //! 0xAA6E4C CMessageModifyPartyGold
@@ -280,7 +280,7 @@
 //0xAA73F8, 1Ah, DW nStatedIdx, BYTE, pad, DW (CGameDialog 5ch), DW (CGameDialog 60h) (CMessageShowDialogueState)
 //0xAA7420, 1ch, CString, DW, DW, DW
 //! 0xAA743C, CMessageFaceTalker
-//0xAA7458, eh, wTicks (CMessageSetTriggerRemovalTimer)
+//! 0xAA7458, CMessageSetTriggerRemovalTimer
 
 //! 0xAA9758, CMessageInterruptDialogue
 //0xAA9774, 24h, CMessageStatic

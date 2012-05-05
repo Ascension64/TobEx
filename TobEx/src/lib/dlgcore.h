@@ -43,13 +43,15 @@ struct CDlgNext { //Size Ch
 struct CDlgResponse { //Size 76h
 //constructor: see 0x4E477E
 //as in code
+	CDlgResponse::CDlgResponse();
+
 	CDlgNext& Execute(CCreatureObject& cre);
 
 	unsigned int dwFlags; //0h
 	STRREF rText; //4h
 	STRREF rTextJournal; //8h
 	CTriggerList m_conditions; //ch
-	Response m_responseActive; //28h
+	Response m_response; //28h
 	ResRef rNextDlgName; //4ch
 	int nNextDlgState; //54h
 	int* u58;
@@ -60,7 +62,7 @@ struct CDlgResponse { //Size 76h
 	BOOL bUseTextualTrigger; //66h
 	IECString sActionText; //6ah, for unencoded action text (e.g. dlg)
 	BOOL bUseTextualAction; //6eh
-	BOOL bAddedSetInterrupts; //72h, set to TRUE when SetInterrupts added to head and tail of response actions
+	BOOL bAddedInterrupts; //72h, set to TRUE when SetInterrupts added to head and tail of response actions
 };
 
 extern CDlgNext& (CDlgResponse::*CDlgResponse_Execute)(CCreatureObject&);

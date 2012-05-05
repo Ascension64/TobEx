@@ -10,18 +10,24 @@ Enum CGameObject::GetEnum()	{ return (this->*CGameObject_GetEnum)(); }
 
 //CGameSprite
 BOOL (CGameSprite::*CGameSprite_EvaluateTrigger)(Trigger&) =
-	SetFP(static_cast<BOOL (CGameSprite::*)(Trigger&)>	(&CGameSprite::EvaluateTrigger),	0x47F4F2);
+	SetFP(static_cast<BOOL (CGameSprite::*)(Trigger&)>				(&CGameSprite::EvaluateTrigger),	0x47F4F2);
+void (CGameSprite::*CGameSprite_ClearAllActions)(BOOL) =
+	SetFP(static_cast<void (CGameSprite::*)(BOOL)>					(&CGameSprite::ClearAllActions),	0x47838F);
 ACTIONRESULT (CGameSprite::*CGameSprite_ExecuteAction)() =
-	SetFP(static_cast<ACTIONRESULT (CGameSprite::*)()>	(&CGameSprite::ExecuteAction),		0x47891B);
+	SetFP(static_cast<ACTIONRESULT (CGameSprite::*)()>				(&CGameSprite::ExecuteAction),		0x47891B);
 void (CGameSprite::*CGameSprite_SetCurrentAction)(Action&) =
-	SetFP(static_cast<void (CGameSprite::*)(Action&)>	(&CGameSprite::SetCurrentAction),	0x48F85F);
+	SetFP(static_cast<void (CGameSprite::*)(Action&)>				(&CGameSprite::SetCurrentAction),	0x48F85F);
 Action& (CGameSprite::*CGameSprite_GetTopAction)(Action*) =
-	SetFP(static_cast<Action& (CGameSprite::*)(Action*)>		(&CGameSprite::GetTopAction),		0x48CC65);
+	SetFP(static_cast<Action& (CGameSprite::*)(Action*)>			(&CGameSprite::GetTopAction),		0x48CC65);
+void (CGameSprite::*CGameSprite_QueueActions)(Response&, BOOL, BOOL) =
+	SetFP(static_cast<void (CGameSprite::*)(Response&, BOOL, BOOL)>	(&CGameSprite::QueueActions),		0x48DA78);
 
 BOOL CGameSprite::EvaluateTrigger(Trigger& t)		{ return (this->*CGameSprite_EvaluateTrigger)(t); }
+void CGameSprite::ClearAllActions(BOOL bSkipFlagged){ return (this->*CGameSprite_ClearAllActions)(bSkipFlagged); }
 ACTIONRESULT CGameSprite::ExecuteAction()			{ return (this->*CGameSprite_ExecuteAction)(); }
 void CGameSprite::SetCurrentAction(Action& a)		{ return (this->*CGameSprite_SetCurrentAction)(a); }
 Action& CGameSprite::GetTopAction(Action* pAction)	{ return (this->*CGameSprite_GetTopAction)(pAction); }
+void CGameSprite::QueueActions(Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue) { return (this->*CGameSprite_QueueActions)(r, bSkipIfAlreadyQueued, bClearActionQueue); }
 
 //CGameObjectArrayHandler
 char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, char, void*, int) =

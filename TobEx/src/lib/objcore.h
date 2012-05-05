@@ -172,7 +172,7 @@ public:
 	virtual ~CGameSprite() {} //v0
 
 	virtual BOOL EvaluateTrigger(Trigger& t); //v60
-	virtual void v64() {} //v64, void ClearAllActions(BOOL bExceptFlagged)
+	virtual void ClearAllActions(BOOL bSkipFlagged); //v64
 	virtual void v68() {} //v68, void SetTarget(creTarget)
 	virtual void AddActionHead(Action& a) {} //v6c
 	virtual void ApplyEffect(CEffect& eff, bool bCheckEffectListType, BOOL bDelayFinished, BOOL bUpdateCre) {} //v70
@@ -191,6 +191,7 @@ public:
 	virtual void ExecuteTriggers() {} //va4
 
 	Action& GetTopAction(Action* pAction);
+	void QueueActions(Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue);
 		
 	//va8, void SetAutoPauseInfo(int type)
 	/* type
@@ -283,9 +284,11 @@ public:
 };
 
 extern BOOL (CGameSprite::*CGameSprite_EvaluateTrigger)(Trigger&);
+extern void (CGameSprite::*CGameSprite_ClearAllActions)(BOOL);
 extern ACTIONRESULT (CGameSprite::*CGameSprite_ExecuteAction)();
 extern void (CGameSprite::*CGameSprite_SetCurrentAction)(Action&);
 extern Action& (CGameSprite::*CGameSprite_GetTopAction)(Action*);
+extern void (CGameSprite::*CGameSprite_QueueActions)(Response&, BOOL, BOOL);
 
 struct CGameObjectEntry { //Size Ch
 public:

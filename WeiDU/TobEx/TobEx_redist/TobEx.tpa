@@ -19,7 +19,8 @@ ACTION_IF NOT (FILE_EXISTS "TobEx_ini/TobExVer.txt") BEGIN
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/default_tweak.ini" "TobEx_ini/TobExTweak.ini"
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx_ini.txt" "TobEx_ini/TobEx_ini.txt"
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobExVer.txt" "TobEx_ini/TobExVer.txt"
-  
+  COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/AsmJit.dll" "AsmJit.dll"
+
   MKDIR "TobEx_ini/patch"
   COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/patch" "TobEx_ini/patch"
 
@@ -199,6 +200,8 @@ ACTION_IF (%tobex_installed_version% < 23) BEGIN
 END
 
 ACTION_IF (%tobex_installed_version% < 24) BEGIN
+  COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/AsmJit.dll" "AsmJit.dll"
+
   INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0024.tpa"
 
   COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"

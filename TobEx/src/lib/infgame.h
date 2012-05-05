@@ -330,6 +330,7 @@ extern void (CMoveAreasList::*CMoveAreasList_MoveAllTo)(CArea&);
 
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
+	void InitGame(int nUnused, int nUnused2);
 	int GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly);
 	void DemandServerStore(ResRef& rName, BOOL bAlsoUpdateTemp);
 	void ReleaseServerStore(ResRef& rName);
@@ -712,6 +713,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4dc4; //? compared with CVisualEffectVidCell.u39c*/
 };
 
+extern void (CInfGame::*CInfGame_InitGame)(int, int);
 extern int (CInfGame::*CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL);
 extern void (CInfGame::*CInfGame_DemandServerStore)(ResRef&, BOOL);
 extern void (CInfGame::*CInfGame_ReleaseServerStore)(ResRef&);

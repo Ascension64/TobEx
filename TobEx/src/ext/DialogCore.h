@@ -4,6 +4,6 @@
 #include "dlgcore.h"
 #include "objcre.h"
 
-void __stdcall CDlgResponse_ExecuteSetVariables(CDlgResponse& cdResponse, CCreatureObject& cre);
+void __stdcall CDlgResponse_QueueActions(CDlgResponse& cdResponse, CCreatureObject& cre);
 
 #endif //DIALOGCORE_H

@@ -142,6 +142,8 @@ void (CMoveAreasList::*CMoveAreasList_MoveAllTo)(CArea&) =
 void CMoveAreasList::MoveAllTo(CArea& area) { return (this->*CMoveAreasList_MoveAllTo)(area); }
 
 //CInfGame
+void (CInfGame::*CInfGame_InitGame)(int, int) =
+	SetFP(static_cast<void (CInfGame::*)(int, int)>					(&CInfGame::InitGame),					0x67C6C5);
 int (CInfGame::*CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL) =
 	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),			0x68F35C);
 void (CInfGame::*CInfGame_DemandServerStore)(ResRef&, BOOL) =
@@ -161,6 +163,7 @@ void (CInfGame::*CInfGame_StorePartyLocations)(BOOL) =
 int (CInfGame::*CInfGame_GetNumControlledSummons)() =
 	SetFP(static_cast<int (CInfGame::*)()>							(&CInfGame::GetNumControlledSummons),	0x6B934A);
 
+void CInfGame::InitGame(int nUnused, int nUnused2)						{ return (this->*CInfGame_InitGame)(nUnused, nUnused2); }
 int CInfGame::GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly)
 	{ return (this->*CInfGame_GetNumOfItemInBag)(rBag, rItem, bIdentifiedOnly); }
 void CInfGame::DemandServerStore(ResRef& rName, BOOL bAlsoUpdateTemp)	{ return (this->*CInfGame_DemandServerStore)(rName, bAlsoUpdateTemp); }

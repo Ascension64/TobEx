@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "utils.h"
+#include "MathPresso.h"
 
 #include "cstringex.h"
 #include "cptrlistex.h"

@@ -51,6 +51,9 @@ void InitHooks() {
 	DetourMemberFunction(Tramp_CRuleTables_Deconstruct, DETOUR_CRuleTables::DETOUR_Deconstruct);
 
 	if (pGameOptionsEx->bActionExpandedActions) {
+		DetourMemberFunction(Tramp_CInfGame_InitGame, DETOUR_CInfGame::DETOUR_InitGame);
+		DetourMemberFunction(Tramp_CGameSprite_QueueActions, DETOUR_CGameSprite::DETOUR_QueueActions);
+		DetourMemberFunction(Tramp_CGameSprite_ClearAllActions, DETOUR_CGameSprite::DETOUR_ClearAllActions);
 		DetourMemberFunction(Tramp_CGameSprite_ExecuteAction, DETOUR_CGameSprite::DETOUR_ExecuteAction);
 		DetourMemberFunction(Tramp_CCreatureObject_ExecuteAction, DETOUR_CCreatureObject::DETOUR_ExecuteAction);
 	}

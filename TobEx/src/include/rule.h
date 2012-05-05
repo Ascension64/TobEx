@@ -22,6 +22,7 @@ const unsigned char ALIGN_CHAOTIC_MASK		= 0x30;
 //ACTION.IDS
 const short ACTION_SET_GLOBAL				= 30;
 const short ACTION_SPELL					= 31;
+const short ACTION_SET_INTERRUPT			= 86;
 const short ACTION_SPELL_POINT				= 95;
 const short ACTION_INCREMENT_GLOBAL			= 109;
 const short ACTION_BREAK_INSTANTS			= 178;
@@ -32,6 +33,9 @@ const short ACTION_LOSE_GAME				= 352; //new in TobEx
 const short ACTION_DIALOG_SET_GLOBAL		= 353; //new in TobEx
 const short ACTION_DIALOG_INCREMENT_GLOBAL	= 354; //new in TobEx
 const short ACTION_DIALOG_SG				= 355; //new in TobEx
+const short ACTION_ASSIGN					= 356; //new in TobEx
+const short ACTION_EVAL						= 357; //new in TobEx
+const short ACTION_CLEAR_BLOCK_VARIABLES	= 358; //new in TobEx
 
 //CLASS.IDS
 const unsigned char CLASS_ANY					= 0;
@@ -55,6 +59,10 @@ const unsigned char CLASS_FIGHTER_MAGE_CLERIC	= 17;
 const unsigned char CLASS_CLERIC_RANGER			= 18;
 const unsigned char CLASS_SORCERER				= 19;
 const unsigned char CLASS_MONK					= 20;
+
+//ARGTYPE.IDS - new in TobEx
+const unsigned short ARGTYPE_INT = 1;
+const unsigned short ARGTYPE_STR = 2;
 
 //DMGTYPE.IDS
 const unsigned int DAMAGETYPE_CRUSHING		= 0x00000000;
@@ -356,21 +364,6 @@ const unsigned short  STATS_EXTRAPROFICIENCY18					=  132;
 const unsigned short  STATS_EXTRAPROFICIENCY19					=  133;
 const unsigned short  STATS_EXTRAPROFICIENCY20					=  134;
 
-//EVALUATE.IDS - new in TobEx
-const unsigned short EVALUATE_TYPE_INT			= 1;
-const unsigned short EVALUATE_TYPE_VAR			= 2;
-const unsigned short EVALUATE_TYPE_STAT			= 3;
-const unsigned short EVALUATE_TYPE_2DA_INT		= 4;
-const unsigned short EVALUATE_TYPE_STR			= 5;
-const unsigned short EVALUATE_TYPE_2DA_STR		= 6;
-
-const unsigned short EVALUATE_MODE_SET	= 0x0000;
-const unsigned short EVALUATE_MODE_ADD	= 0x0001;
-const unsigned short EVALUATE_MODE_MUL	= 0x0002;
-const unsigned short EVALUATE_MODE_DIV	= 0x0004;
-const unsigned short EVALUATE_MODE_MOD	= 0x0008;
-const unsigned short EVALUATE_MODE_PC	= 0x0010;
-
 //TRIGGER.IDS
 const short TRIGGER_NONE						= 0x0000;
 const short TRIGGER_ATTACKED_BY					= 0x0002;
@@ -408,8 +401,8 @@ const short TRIGGER_ORIGINAL_CLASS				= 0x4116; //new in TobEx
 const short TRIGGER_HP_LOST						= 0x4117; //new in TobEx
 const short TRIGGER_HP_LOST_GT					= 0x4118; //new in TobEx
 const short TRIGGER_HP_LOST_LT					= 0x4119; //new in TobEx
-const short TRIGGER_EVAL1						= 0x411A; //new in TobEx
-const short TRIGGER_EVAL2						= 0x411B; //new in TobEx
+const short TRIGGER_ASSIGN						= 0x411A; //new in TobEx
+const short TRIGGER_EVAL						= 0x411B; //new in TobEx
 const short TRIGGER_EQUALS						= 0x411C; //new in TobEx
 const short TRIGGER_GT							= 0x411D; //new in TobEx
 const short TRIGGER_LT							= 0x411E; //new in TobEx

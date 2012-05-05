@@ -333,6 +333,36 @@ void CMessagePlaySoundset::Marshal(void* pData, int* dwSize)	{ return (this->*CM
 BOOL CMessagePlaySoundset::Unmarshal(void* pData, int* dwSize)	{ return (this->*CMessagePlaySoundset_Unmarshal)(pData, dwSize); }
 void CMessagePlaySoundset::DoMessage()							{ return (this->*CMessagePlaySoundset_DoMessage)(); }
 
+//CMessageQueueActions
+void (CMessageQueueActions::*CMessageQueueActions_Deconstruct)() =
+	SetFP(static_cast<void (CMessageQueueActions::*)()>				(&CMessageQueueActions::Deconstruct),		0x4B6ED0);
+short (CMessageQueueActions::*CMessageQueueActions_GetMsgType)() =
+	SetFP(static_cast<short (CMessageQueueActions::*)()>			(&CMessageQueueActions::GetMsgType),		0x4B6E60);
+char (CMessageQueueActions::*CMessageQueueActions_GetNetworkType1)() =
+	SetFP(static_cast<char (CMessageQueueActions::*)()>				(&CMessageQueueActions::GetNetworkType1),	0x4B6E80);
+char (CMessageQueueActions::*CMessageQueueActions_GetNetworkType2)() =
+	SetFP(static_cast<char (CMessageQueueActions::*)()>				(&CMessageQueueActions::GetNetworkType2),	0x4B6E90);
+void (CMessageQueueActions::*CMessageQueueActions_Marshal)(void*, int*) =
+	SetFP(static_cast<void (CMessageQueueActions::*)(void*, int*)>	(&CMessageQueueActions::Marshal),			0x5C8FF6);
+BOOL (CMessageQueueActions::*CMessageQueueActions_Unmarshal)(void*, int*) =
+	SetFP(static_cast<BOOL (CMessageQueueActions::*)(void*, int*)>	(&CMessageQueueActions::Unmarshal),			0x5C9EF2);
+void (CMessageQueueActions::*CMessageQueueActions_DoMessage)() =
+	SetFP(static_cast<void (CMessageQueueActions::*)()>				(&CMessageQueueActions::DoMessage),			0x5CA80B);
+
+CMessageQueueActions::CMessageQueueActions() {
+	SetVT(this, 0xAA6DC0);
+	bSkipIfAlreadyQueued = FALSE;
+	bClearActionQueue = FALSE;
+}
+
+CMessageQueueActions::~CMessageQueueActions()					{ (this->*CMessageQueueActions_Deconstruct)(); }
+short CMessageQueueActions::GetMsgType()						{ return (this->*CMessageQueueActions_GetMsgType)(); }
+char CMessageQueueActions::GetNetworkType1()					{ return (this->*CMessageQueueActions_GetNetworkType1)(); }
+char CMessageQueueActions::GetNetworkType2()					{ return (this->*CMessageQueueActions_GetNetworkType2)(); }
+void CMessageQueueActions::Marshal(void* pData, int* dwSize)	{ return (this->*CMessageQueueActions_Marshal)(pData, dwSize); }
+BOOL CMessageQueueActions::Unmarshal(void* pData, int* dwSize)	{ return (this->*CMessageQueueActions_Unmarshal)(pData, dwSize); }
+void CMessageQueueActions::DoMessage()							{ return (this->*CMessageQueueActions_DoMessage)(); }
+
 //CMessageRemoveAreaAirEffects
 void (CMessageRemoveAreaAirEffects::*CMessageRemoveAreaAirEffects_Deconstruct)() =
 	SetFP(static_cast<void (CMessageRemoveAreaAirEffects::*)()>				(&CMessageRemoveAreaAirEffects::Deconstruct),		0x4E2930);
@@ -417,6 +447,11 @@ BOOL CMessageSetAnimationSequence::Unmarshal(void* pData, int* dwSize)	{ return 
 void CMessageSetAnimationSequence::DoMessage()							{ return (this->*CMessageSetAnimationSequence_DoMessage)(); }
 
 CMessageSetTrigger::CMessageSetTrigger() { SetVT(this, 0xAA5C84); }
+
+CMessageSetTriggerRemovalTimer::CMessageSetTriggerRemovalTimer() {
+	SetVT(this, 0xAA7458);
+	wTicks = 0;
+}
 
 CMessageSpriteUpdate* (CMessageSpriteUpdate::*CMessageSpriteUpdate_Construct)(CCreatureObject*, Enum, Enum) =
 	SetFP(static_cast<CMessageSpriteUpdate* (CMessageSpriteUpdate::*)(CCreatureObject*, Enum, Enum)>	(&CMessageSpriteUpdate::Construct),	0x5D8B73);

@@ -237,6 +237,8 @@ public:
 	Action();
 	Action& Construct(void) {return *this;} //dummy
 
+	void operator=(Action& a);
+
 	//~Action(); //0x405930
 
 	IECString GetSName1();
@@ -259,12 +261,21 @@ extern IECString (Action::*Action_GetSName1)();
 
 struct Response { //Size 24h
 //Constructor: 0x416130
+	Response::Response();
+	Response& Construct(void) {return *this;} //dummy
+
+	void operator=(Response& r);
+	void OpEq(Response& r) {} //dummy
+
 	short probability; //0h
 	short nResponseIdx; //2h, if chosen, gets response block # in the response list
 	short nScriptBlockIdx; //4h, if chosen, gets script block # in the script
 	short nScriptIdx; //6h, if chosen, gets script # in the script group (i.e. Override, Race, General, etc.), however this is always 0
 	CActionList m_actions; //8h
 };
+
+extern Response& (Response::*Response_Construct_0)(void);
+extern void (Response::*Response_OpEq)(Response&);
 
 class CResponseList : public IECPtrList { //Size 20h
 public:

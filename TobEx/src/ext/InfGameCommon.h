@@ -1,6 +1,8 @@
 #ifndef INFGAMECOMMON_H
 #define INFGAMECOMMON_H
 
+#include <map>
+
 #include "infgame.h"
 
 //m_ItemCreExclude column names
@@ -22,6 +24,24 @@ const int ITEM_USE_FLAG_NO_PICKUP_E = 0x08;
 const int ITEM_USE_FLAG_NO_PICKUP_I = 0x10;
 const int ITEM_USE_FLAG_NO_DROP_E = 0x20;
 const int ITEM_USE_FLAG_NO_DROP_I = 0x40;
+
+//block variable array sizes
+const int BLOCK_VAR_ARRAY_SIZE = 25;
+
+//CBlockVariables
+class CBlockVariables {
+public:
+	CBlockVariables();
+	void Empty();
+	int GetInt(unsigned int index);
+	IECString GetStr(unsigned int index);
+	void SetInt(unsigned int index, int value);
+	void SetStr(unsigned int index, IECString value);
+
+protected:
+	int m_Ints[BLOCK_VAR_ARRAY_SIZE];
+	IECString m_Strs[BLOCK_VAR_ARRAY_SIZE];
+};
 
 //CRuleTablesEx
 class CRuleTablesEx {
@@ -48,6 +68,9 @@ public:
 	CRuleTable m_HPClass;
 	CRuleTable m_HPBarbarian;
 	CRuleTable m_StealSlots;
+	MathPresso::Context m_mpContext;
+	CBlockVariables m_TriggerVars;
+	std::map<Enum, CBlockVariables*> m_MapActionVars; //stores action block variables for each Enum as required
 
 protected:
 	void Init(CRuleTables& rule);

@@ -47,7 +47,7 @@
     </Midl>
     <ClCompile>
       <AdditionalOptions>/Zp %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;.\MathPresso</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -59,8 +59,8 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>detours.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours.lib; asmjit.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB;.\AsmJit</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>
@@ -79,7 +79,7 @@
     </Midl>
     <ClCompile>
       <AdditionalOptions>/wd 4430 /Zp %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;.\MathPresso</AdditionalIncludeDirectories>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -91,14 +91,23 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>detours.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB</AdditionalLibraryDirectories>
+      <AdditionalDependencies>detours.lib; asmjit.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB;.\AsmJit</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MathPresso\MathPresso.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_AST.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_Context.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_DOT.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_JIT.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_Optimizer.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_Parser.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_Tokenizer.cpp" />
+    <ClCompile Include="MathPresso\MathPresso_Util.cpp" />
     <ClCompile Include="src\ext\Animation1000.cpp" />
     <ClCompile Include="src\ext\Animation1200.cpp" />
     <ClCompile Include="src\ext\Animation1300.cpp" />
@@ -211,6 +220,15 @@
     <ClCompile Include="src\ext\VideoCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MathPresso\MathPresso.h" />
+    <ClInclude Include="MathPresso\MathPresso_AST_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_Context_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_DOT_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_JIT_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_Optimizer_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_Parser_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_Tokenizer_p.h" />
+    <ClInclude Include="MathPresso\MathPresso_Util_p.h" />
     <ClInclude Include="src\ext\Animation1000.h" />
     <ClInclude Include="src\ext\Animation1200.h" />
     <ClInclude Include="src\ext\Animation1300.h" />

@@ -1,8 +1,10 @@
 debug/*
 ipch/*
 src_dist/*
+TobEx/AsmJit/*
 TobEx/Debug/*
 TobEx/detours/*
+TobEx/MathPresso/AsmJit/*
 TobEx/MFC42/*
 TobEx/Release/*
 TobEx/TobEx.vcxproj.filters

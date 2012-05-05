@@ -2,11 +2,16 @@
 
 #include "chitin.h"
 #include "objcre.h"
+#include "ScriptAction.h"
 
 BOOL (CGameSprite::*Tramp_CGameSprite_EvaluateTrigger)(Trigger&) =
 	SetFP(static_cast<BOOL (CGameSprite::*)(Trigger&)>	(&CGameSprite::EvaluateTrigger),	0x47F4F2);
+void (CGameSprite::*Tramp_CGameSprite_ClearAllActions)(BOOL) =
+	SetFP(static_cast<void (CGameSprite::*)(BOOL)>					(&CGameSprite::ClearAllActions),	0x47838F);
 ACTIONRESULT (CGameSprite::*Tramp_CGameSprite_ExecuteAction)() =
 	SetFP(static_cast<ACTIONRESULT (CGameSprite::*)()>	(&CGameSprite::ExecuteAction),		0x47891B);
+void (CGameSprite::*Tramp_CGameSprite_QueueActions)(Response&, BOOL, BOOL) =
+	SetFP(static_cast<void (CGameSprite::*)(Response&, BOOL, BOOL)>	(&CGameSprite::QueueActions),		0x48DA78);
 
 BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 	if (0) IECString("DETOUR_CGameSprite::DETOUR_EvaluateTrigger");
@@ -301,6 +306,38 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 
 }
 
+void DETOUR_CGameSprite::DETOUR_ClearAllActions(BOOL bSkipFlagged) {
+	POSITION pos = actions.GetHeadPosition();
+	if (bSkipFlagged) {
+		POSITION posTarget = pos;
+		while (posTarget = pos) {
+			Action* pA = (Action*)actions.GetNext(pos);
+			if (pA->dwFlags & 1 == 0) {
+				//BioWare forgets to delete the action here
+				delete pA;
+				pA = NULL;
+
+				actions.RemoveAt(posTarget);
+			}
+		}
+	} else {
+		while (pos) {
+			Action* pA = (Action*)actions.GetNext(pos);
+			delete pA;
+			pA = NULL;
+		}
+		actions.RemoveAll();
+	}
+
+	//new - forcibly clear all action block variables
+	CGameSprite_ActionClearBlockVars(*this);
+
+	nCurrResponseIdx = -1;
+	nCurrScriptBlockIdx = -1;
+	nCurrScriptIdx = -1;
+	return;
+}
+
 ACTIONRESULT DETOUR_CGameSprite::DETOUR_ExecuteAction() {
 	if (0) IECString("DETOUR_CGameSprite::DETOUR_ExecuteAction");
 
@@ -329,6 +366,15 @@ ACTIONRESULT DETOUR_CGameSprite::DETOUR_ExecuteAction() {
 		aCurrent.opcode = ACTION_SG;
 		return (this->*Tramp_CGameSprite_ExecuteAction)();
 		break;
+	case ACTION_ASSIGN:
+		ar = CGameSprite_ActionAssign(*this, this->aCurrent);
+		break;
+	case ACTION_EVAL:
+		ar = CGameSprite_ActionEval(*this, this->aCurrent);
+		break;
+	case ACTION_CLEAR_BLOCK_VARIABLES:
+		ar = CGameSprite_ActionClearBlockVars(*this);
+		break;
 	default:
 		return (this->*Tramp_CGameSprite_ExecuteAction)();
 		break;
@@ -340,4 +386,48 @@ ACTIONRESULT DETOUR_CGameSprite::DETOUR_ExecuteAction() {
 	return ar;
 
 	return (this->*Tramp_CGameSprite_ExecuteAction)();
+}
+
+void DETOUR_CGameSprite::DETOUR_QueueActions(Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue) {
+	if (bSkipIfAlreadyQueued &&
+		this->nCurrScriptBlockIdx >= 0 &&
+		this->nCurrScriptIdx >= 0 &&
+		this->nCurrScriptBlockIdx == r.nScriptBlockIdx &&
+		this->nCurrScriptIdx == r.nScriptIdx) {
+		return;
+	}
+
+	if (bClearActionQueue) ClearAllActions(FALSE);
+
+	this->nCurrResponseIdx = r.nResponseIdx;
+	this->nCurrScriptBlockIdx = r.nScriptBlockIdx;
+	this->nCurrScriptIdx = r.nScriptIdx;
+	this->bUseCurrScriptIdx = TRUE;
+
+	if (this->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
+		Action* pAInterruptFalse = new Action();
+		pAInterruptFalse->opcode = ACTION_SET_INTERRUPT;
+		pAInterruptFalse->i = 0;
+		this->actions.AddTail(pAInterruptFalse);
+	}
+
+	POSITION pos = r.m_actions.GetHeadPosition();
+	while (pos) {
+		Action* aTemp = (Action*)r.m_actions.GetNext(pos);
+		Action* pANew = new Action();
+		*pANew = *aTemp;
+		this->actions.AddTail(pANew);
+	}
+
+	//new - add ClearVariables
+	Action* pAClearBlockVars = new Action();
+	pAClearBlockVars->opcode = ACTION_CLEAR_BLOCK_VARIABLES;
+	this->actions.AddTail(pAClearBlockVars);
+
+	if (this->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
+		Action* pAInterruptTrue = new Action();
+		pAInterruptTrue->opcode = ACTION_SET_INTERRUPT;
+		pAInterruptTrue->i = 1;
+		this->actions.AddTail(pAInterruptTrue);
+	}
 }

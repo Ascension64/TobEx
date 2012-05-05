@@ -768,6 +768,11 @@
             <li><a href="#triggers-4117">0x4117 HPLost(O:Object*,I:Hit Points*)</a></li>
             <li><a href="#triggers-4117">0x4118 HPLostGT(O:Object*,I:Hit Points*)</a></li>
             <li><a href="#triggers-4117">0x4119 HPLostLT(O:Object*,I:Hit Points*)</a></li>
+            <li><a href="#triggers-411a">0x411A Assign(S:Statement*,I:Type*ArgType,I:Local*)</a></li>
+            <li><a href="#triggers-411b">0x411B Eval(S:Expression*,I:Type*ArgType,I:Loc*)</a></li>
+            <li><a href="#triggers-411c">0x411C E(I:Num1*,I:Num2*)</a></li>
+            <li><a href="#triggers-411c">0x411D GT(I:Num1*,I:Num2*)</a></li>
+            <li><a href="#triggers-411c">0x411E LT(I:Num1*,I:Num2*)</a></li>
           </ul>
           <hr />
           <a name="triggers-4042" id="triggers-4042"></a><p><strong>0x4042 PartyHasItem(S:Item*)</strong><br />
@@ -793,7 +798,7 @@
           <hr />
            <a name="triggers-4100" id="triggers-4100"></a><p><strong>0x4100 NextTriggerObject(O:Object*)</strong><br />
           <i>New</i><br />
-          Defines the object that the next trigger will be evaluated in reference to. The trigger itself does not evaluate and does not count as a trigger in an OR() block. If the object cannot be found, the next trigger will evaluate to false.</p>
+          Defines the object that the next trigger will be evaluated in reference to. This trigger does not evaluate and does not count as a trigger in an OR() block. This trigger ignores the Eval() trigger when finding the next trigger to evaluate the object for. If the object cannot be found, the next trigger will evaluate to false.</p>
           <hr />
           <a name="triggers-4101" id="triggers-4101"></a><p><strong>0x4101 MovementRate(O:Object*,I:Value*)<br />
           0x4102 MovementRateGT(O:Object*,I:Value*)<br />
@@ -853,6 +858,86 @@
           0x4119 HPLostLT(O:Object*,I:Hit Points*)</strong><br />
           <i>New</i><br />
           Compares the absolute number of hit points short of maximum hit points on the target creature specified by Object to Amount.</p>
+          <hr />
+          <a name="triggers-411a" id="triggers-411a"></a><p><strong>0x411A Assign(S:Statement*,I:Type*ArgType,I:Local*)</strong><br />
+          <i>New</i><br />
+          Assigns a value determined by Statement of the type Type from ARGTYPE.IDS (INT integer, or STR string) to a local trigger block variable. The general form of Statement is "prefix[params]". This trigger does not evaluate and does not count as a trigger in an OR() block.</p>
+          <ul>
+            <li>"prefix" can be:</li>
+            <table class="important">
+              <tr>
+                <td><strong>prefix</strong></td>
+                <td><strong>description</strong></td>
+                <td><strong>params type</strong></td>
+                <td><strong>examples</strong></td>
+              </tr>
+              <tr>
+                <td>c</td>
+                <td>assigns a constant value</td>
+                <td>integer or string</td>
+                <td>c[1], c[FOO]</td>
+              </tr>
+              <tr>
+                <td>e</td>
+                <td>assigns the value of an expression</td>
+                <td>expression (see trigger <a href="#triggers-411b">0x411B Eval()</a> for format)</td>
+                <td>e[6 + 7]</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>assigns the index of a IDS file value</td>
+                <td>file.value</td>
+                <td>id[EA.CHARMED]</td>
+              </tr>
+              <tr>
+                <td>s</td>
+                <td>assigns the value of the stat specified of the current object</td>
+                <td>STATS.IDS name</td>
+                <td>s[LEVEL]</td>
+              </tr>
+              <tr>
+                <td>tn</td>
+                <td>assigns the value of a 2DA file value by coordinates</td>
+                <td>file.x.y</td>
+                <td>tn[IMPORT01.0.0]</td>
+              </tr>
+              <tr>
+                <td>ts</td>
+                <td>assigns the value of a 2DA file value by column and row name</td>
+                <td>file.column.row</td>
+                <td>tn[IMPORT01.ITEMS.1]</td>
+              </tr>
+              <tr>
+                <td>v</td>
+                <td>assigns the value of a variable</td>
+                <td>name.scope</td>
+                <td>v[foo.GLOBAL]</td>
+              </tr>
+            </table>
+            <li>"params" values containing #&ltnum&gt and @&ltnum&gt are replaced by the integer and string values, respectively, stored in local trigger block variables of index "num". Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.</li>
+          </ul>
+          <hr />
+          <a name="triggers-411b" id="triggers-411b"></a><p><strong>0x411B Eval(S:Expression*,I:Type*ArgType,I:Loc*)</strong><br />
+          <i>New</i><br />
+          Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next trigger with the value returned by Expression. This trigger does not evaluate and does not count as a trigger in an OR() block. This trigger does not overwrite values of the Assign(), NextTriggerObject() and OR() triggers. The NextTriggerObject() trigger ignores this trigger.</p>
+          <ul>
+            <li>Expression is a math expression that can use the following symbols:</li>
+              <p>=+-*/%^()</p>
+              <p>min(x, y), max(x, y), avg(x, y)</p>
+              <p>ceil(x), floor(x), round(x)</p>
+              <p>abs(x)</p>
+              <p>reciprocal(x)</p>
+              <p>sqrt(x), pow(x, y)</p>
+              <p>log(x), log10(x)</p>
+              <p>sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)</p>
+            <li>Any text in Expression of form #&ltnum&gt and @&ltnum&gt is replaced by the integer and string values, respectively, stored in local trigger block variables of index "num". Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.</li>
+          </ul>
+          <hr />
+          <a name="triggers-411c" id="triggers-411c"></a><p><strong>0x411C E(I:Num1*,I:Num2*)<br />
+          0x411D GT(I:Num1*,I:Num2*)<br />
+          0x411E LT(I:Num1*,I:Num2*)</strong><br />
+          <i>New</i><br />
+          Compares "Num1" to "Num2", where E is equals, GT is greater than, and LT is less than. To make use of these triggers, the <a href="#triggers-411b">0x411B Eval()</a> trigger should be used prior to this trigger.</p>
           <address>
             <span class="footer">TobEx &gt; Triggers</span> &#8226;<a href="#top">BACK TO TOP</a>
           </address>
@@ -879,6 +964,10 @@
             <li><a href="#actions-353">353 DialogueSetGlobal(S:Name*,S:Area*,I:Value*)</a></li>
             <li><a href="#actions-354">354 DialogueIncrementGlobal(S:Name*,S:Area*,I:Value*)</a></li>
             <li><a href="#actions-355">355 DialogueSG(S:Name*,I:Num*)</a></li>
+            <li><a href="#actions-356">356 Assign(S:Statement*,I:Type*ArgType,I:Local*)</a></li>
+            <li><a href="#actions-356">356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)</a></li>
+            <li><a href="#actions-357">357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)</a></li>
+            <li><a href="#actions-358">358 ClearBlockVariables()</a></li>
           </ul>
           <hr />
           <a name="actions-19" id="actions-19"></a><p><strong>19 JoinParty()</strong><br />
@@ -928,6 +1017,85 @@
           Sets the global variable 'Name' to 'Num' immediately instead of being added through the dialogue owner's action queue. This allows variables to be set instantaneously and checked immediately afterwards in the same dialogue. ActionOverride() is supported. If used outside dialogue, this action behaves exactly as SG().<br />
           <br />
           Limitations: Variables become set asynchronously to the order in which the action is present on the script block. This can cause issues when an action is purposely sandwiched between two modifications of the same variable.</p>
+          <hr />
+          <a name="actions-356" id="actions-356"></a><p><strong>356 Assign(S:Statement*,I:Type*ArgType,I:Local*)<br />
+          356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)</strong><br />
+          <i>New</i><br />
+          Assigns a value determined by Statement of the type Type from ARGTYPE.IDS (INT integer, or STR string) to a local action block variable. The general form of Statement is "prefix[params]". If Object is specified, the value of Statement is determined relative to Object instead of the object that owns the script. This action is ignored by prior Eval() actions.</p>
+          <ul>
+            <li>"prefix" can be:</li>
+            <table class="important">
+              <tr>
+                <td><strong>prefix</strong></td>
+                <td><strong>description</strong></td>
+                <td><strong>params type</strong></td>
+                <td><strong>examples</strong></td>
+              </tr>
+              <tr>
+                <td>c</td>
+                <td>assigns a constant value</td>
+                <td>integer or string</td>
+                <td>c[1], c[FOO]</td>
+              </tr>
+              <tr>
+                <td>e</td>
+                <td>assigns the value of an expression</td>
+                <td>expression (see action <a href="#actions-357">0x411B Eval()</a> for format)</td>
+                <td>e[6 + 7]</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>assigns the index of a IDS file value</td>
+                <td>file.value</td>
+                <td>id[EA.CHARMED]</td>
+              </tr>
+              <tr>
+                <td>s</td>
+                <td>assigns the value of the stat specified of the current object</td>
+                <td>STATS.IDS name</td>
+                <td>s[LEVEL]</td>
+              </tr>
+              <tr>
+                <td>tn</td>
+                <td>assigns the value of a 2DA file value by coordinates</td>
+                <td>file.x.y</td>
+                <td>tn[IMPORT01.0.0]</td>
+              </tr>
+              <tr>
+                <td>ts</td>
+                <td>assigns the value of a 2DA file value by column and row name</td>
+                <td>file.column.row</td>
+                <td>tn[IMPORT01.ITEMS.1]</td>
+              </tr>
+              <tr>
+                <td>v</td>
+                <td>assigns the value of a variable</td>
+                <td>name.scope</td>
+                <td>v[foo.GLOBAL]</td>
+              </tr>
+            </table>
+            <li>"params" values containing #&ltnum&gt and @&ltnum&gt are replaced by the integer and string values, respectively, stored in local action block variables of index "num". Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.</li>
+          </ul>
+          <hr />
+          <a name="actions-357" id="actions-357"></a><p><strong>357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)</strong><br />
+          <i>New</i><br />
+          Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next action with the value returned by Expression. To replace point X and point Y, use a Loc value of 4 and 5, respectively. This action skips subsequent Assign() and Eval() actions when determining in which action to overwrite a value. This action does not overwrite values of actions beyond ClearBlockVariables() actions.</p>
+          <ul>
+            <li>Expression is a math expression that can use the following symbols:</li>
+              <p>=+-*/%^()</p>
+              <p>min(x, y), max(x, y), avg(x, y)</p>
+              <p>ceil(x), floor(x), round(x)</p>
+              <p>abs(x)</p>
+              <p>reciprocal(x)</p>
+              <p>sqrt(x), pow(x, y)</p>
+              <p>log(x), log10(x)</p>
+              <p>sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)</p>
+            <li>Any text in Expression of form #&ltnum&gt and @&ltnum&gt is replaced by the integer and string values, respectively, stored in local action block variables of index "num". Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.</li>
+          </ul>
+          <hr />
+          <a name="actions-358" id="actions-358"></a><p><strong>358 ClearBlockVariables()</strong><br />
+          <i>New</i><br />
+          Sets all action block integer variables to 0 and empties all actions block string variables.</p>
           <address>
             <span class="footer">TobEx &gt; Actions</span> &#8226;<a href="#top">BACK TO TOP</a>
           </address>

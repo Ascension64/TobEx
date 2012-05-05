@@ -782,40 +782,29 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bActionExpandedActions) {
+		//mov eax,dword ptr ss:[ebp+8]
 		//push eax
-		//mov edx,dword ptr ss:[ebp-1BC]
-		//push edx
+		//mov ecx,dword ptr ss:[ebp-1BC]
+		//push ecx
 		//call ...
-		char bytes[] = {0x50,
-						0x8B, 0x95, 0x44, 0xFE, 0xFF, 0xFF,
-						0x52,
+		char bytes[] = {0x8B, 0x45, 0x08,
+						0x50,
+						0x8B, 0x8D, 0x44, 0xFE, 0xFF, 0xFF,
+						0x51,
 						0xE8};
-		vDataList.push_back( Data(0x4E8BB2, 9, bytes) );
+		vDataList.push_back( Data(0x4E885C, 12, bytes) );
 
 		//CALL address
-		void* ptr = (void*)CDlgResponse_ExecuteSetVariables;
-		DWORD address = (DWORD)ptr - 5  - 0x4E8BBA;
+		void* ptr = (void*)CDlgResponse_QueueActions;
+		DWORD address = (DWORD)ptr - 5  - 0x4E8867;
 		char* bytes2 = (char*)&address;
-		vDataList.push_back( Data(0x4E8BBB, 4, bytes2) );
+		vDataList.push_back( Data(0x4E8868, 4, bytes2) );
 
+		//jmp 4E8D57
 		//nop
-		//mov edx,dword ptr ss:[ebp+8]
-		//mov eax,dword ptr ss:[edx+30]
-		//mov dword ptr ss:[ebp-194],eax
-		//mov edx,dword ptr ss:[ebp-144]
-		//mov dword ptr ds:[edx],offset BGMain.vtCMessage
-		//nop
-		char bytes3[] = {0x8B, 0x55, 0x08,
-						0x36, 0x8B, 0x42, 0x30,
-						0x89, 0x85, 0x6C, 0xFE, 0xFF, 0xFF,
-						0x8B, 0x95, 0xBC, 0xFE, 0xFF, 0xFF,
-						0xC7, 0x02, 0x10, 0x5C, 0xAA ,0x00,
-						0x90};
-		vDataList.push_back( Data(0x4E8BBF, 26, bytes3) );
-
-		//ebp-190 -> ebp-194
-		char bytes4[] = {0x6C};
-		vDataList.push_back( Data(0x4E8BEA, 1, bytes4) );
+		char bytes3[] = {0xE9, 0xE6, 0x04, 0x00, 0x00,
+						0x90, 0x90};
+		vDataList.push_back( Data(0x4E886C, 7, bytes3) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

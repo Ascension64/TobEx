@@ -10,6 +10,7 @@
 //CRuleTables
 extern CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)();
 extern void (CRuleTables::*Tramp_CRuleTables_Deconstruct)();
+extern void (CInfGame::*Tramp_CInfGame_InitGame)(int, int);
 extern int (CRuleTables::*Tramp_CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int);
 extern ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRef)(int, int);
 extern int (CRuleTables::*Tramp_CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int);
@@ -47,6 +48,7 @@ extern void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)();
 
 class DETOUR_CInfGame : public CInfGame {
 public:
+	void DETOUR_InitGame(int nUnused, int nUnused2);
 	int DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly);
 	void DETOUR_SetLoseCutscene();
 };

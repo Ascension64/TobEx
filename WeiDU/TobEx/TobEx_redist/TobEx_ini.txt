@@ -75,6 +75,44 @@ Limitations: Variables become set asynchronously to the order in which the actio
 Sets the global variable 'Name' to 'Num' immediately instead of being added through the dialogue owner's action queue. This allows variables to be set instantaneously and checked immediately afterwards in the same dialogue. ActionOverride() is supported. If used outside dialogue, this action behaves exactly as SG().
 Limitations: Variables become set asynchronously to the order in which the action is present on the script block. This can cause issues when an action is purposely sandwiched between two modifications of the same variable.
 
+356 Assign(S:Statement*,I:Type*ArgType,I:Local*)
+356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)
+Assigns a value determined by Statement of the type Type from ARGTYPE.IDS (INT integer, or STR string) to a local action block variable.
+The general form of Statement is "prefix[params]".
+If Object is specified, the value of Statement is determined relative to Object instead of the object that owns the script.
+This action is ignored by prior Eval() actions.
+The general form of Statement is "prefix[params]"
+-"prefix" can be:
+* 'c' - assigns a constant value; params is a number, e.g. c[1], or string, e.g. c[FOO]
+* 'e' - assigns the value of an expression; params is an expression, e.g. e[6 + 7]; see 0x411B Eval() for the format of Expression
+* 'id' - assigns the index of a IDS file value; params is file.value, e.g. id[EA.CHARMED]
+* 's' - assigns the value of the stat specified of the current object; params is the stat name, e.g. s[LEVEL]
+* 'tn' - assigns the value of a 2DA file value by coordinates; params is file.x.y, e.g. tn[IMPORT01.0.0]
+* 'ts' - assigns the value of a 2DA file value by column and row name; params is file.column.row, e.g. tn[IMPORT01.ITEMS.1]
+* 'v' - assigns the value of a variable; params is name.scope, e.g. [foo.GLOBAL]
+-"params" values containing #<num> and @<num> are replaced by the integer and string values, respectively, stored in local action block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
+
+357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)
+Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next action with the value returned by Expression.
+To replace point X and point Y, use a Loc value of 4 and 5, respectively.
+This action skips subsequent Assign() and Eval() actions when determining in which action to overwrite a value.
+This action does not overwrite values of actions beyond ClearBlockVariables() actions.
+-Expression is a math expression that can use the following symbols:
+=+-*/%^()
+min(x, y), max(x, y), avg(x, y)
+ceil(x), floor(x), round(x)
+abs(x)
+reciprocal(x)
+sqrt(x), pow(x, y)
+log(x), log10(x)
+sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)
+-Any text in Expression of form #<num> and @<num> is replaced by the integer and string values, respectively, stored in local action block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
+
+358 ClearBlockVariables()
+Sets all action block integer variables to 0 and empties all actions block string variables.
+
 Options:
 -0: disabled
 -1: enabled
@@ -1750,11 +1788,7 @@ Options:
 -----1000 Expanded Triggers [M]
 Enables the use of new triggers
 Expands trigger constructions to make use of the following parameter combinations:
--(S,I,I)
--(S,I,I,I)
--(S,O,I,I)
--(S,O,I,I,I)
--(S,S,O)
+(S,I,I) (S,I,I,I) (S,O,I,I) (S,O,I,I,I) (S,S,O)
 
 New Trigger Descriptions
 0x4100 NextTriggerObject(O:Object*)
@@ -1814,51 +1848,43 @@ Returns true if the target creature specified by Object is dual-classed and the 
 0x4119 HPLostLT(O:Object*,I:Hit Points*)
 Compares the absolute number of hit points short of maximum hit points on the target creature specified by Object to Amount.
 
-0x411A Eval1(S:Name*,S:Scope*,I:Num1*,I:Num2*,I:Mode*Evaluate)
-0x411B Eval2(S:Name*,S:Scope*,I:Num1*,I:Num2*,I:Mode*Evaluate)
-Modifies a value in the next trigger depending on the Mode specified based on EVALUATE.IDS
-This trigger does not evaluate and does not count as a trigger in an OR() block
-This trigger does not count as a trigger modified by Eval*() unless one of the 2DA_* modes is used
-Use NextTriggerObject() to modify the target to derive the value from
+0x411A Assign(S:Statement*,I:Type*ArgType,I:Local*)
+Assigns a value determined by Statement of the type Type from ARGTYPE.IDS (INT integer, or STR string) to a local trigger block variable.
+The general form of Statement is "prefix[params]".
+This trigger does not evaluate and does not count as a trigger in an OR() block.
+-"prefix" can be:
+* 'c' - assigns a constant value; params is a number, e.g. c[1], or string, e.g. c[FOO]
+* 'e' - assigns the value of an expression; params is an expression, e.g. e[6 + 7]; see 0x411B Eval() for the format of Expression
+* 'id' - assigns the index of a IDS file value; params is file.value, e.g. id[EA.CHARMED]
+* 's' - assigns the value of the stat specified of the current object; params is the stat name, e.g. s[LEVEL]
+* 'tn' - assigns the value of a 2DA file value by coordinates; params is file.x.y, e.g. tn[IMPORT01.0.0]
+* 'ts' - assigns the value of a 2DA file value by column and row name; params is file.column.row, e.g. tn[IMPORT01.ITEMS.1]
+* 'v' - assigns the value of a variable; params is name.scope, e.g. [foo.GLOBAL]
+-"params" values containing #<num> and @<num> are replaced by the integer and string values, respectively, stored in local trigger block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
 
-EVALUATE.IDS
-Specifies the possible types and modes for the Eval*() triggers
-Opcodes are separated into the upper word (Type) and lower word (Mode)
-
-Types
-0x0000 *_SET
-0x0001 *_ADD
-0x0002 *_MUL
-0x0004 *_DIV
-0x0008 *_MOD
-0x0010 *_PC
-
-Modes
-1 INT_*
-Modify target value with a constant integer "Num1"
-
-2 VAR_*
-Modify target value with the value of a variable named "Name" of scope "Scope"
-
-3 STAT_*
-Modify target value with the value of the stat specified in "Name"
-
-4 2DA_INT_*
-Modify target value with the integer value located at column index "Num1", row index "Num2" of the 2DA file specified in "Name"
-"Name", "Num1" and "Num2" can be modified by previous Eval*() triggers
-
-5 STR_SET
-Modify target value with a constant string "Name"
-
-6 2DA_STR_SET
-Modify target value with the string value located at column index "Num1", row index "Num2" of the 2DA file specified in "Name"
-"Name", "Num1" and "Num2" can be modified by previous Eval*() triggers
+0x411B Eval(S:Expression*,I:Type*ArgType,I:Loc*)
+Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next trigger with the value returned by Expression.
+This trigger does not evaluate and does not count as a trigger in an OR() block.
+This trigger does not overwrite values of the Assign(), NextTriggerObject() and OR() triggers.
+The NextTriggerObject() trigger ignores this trigger.
+-Expression is a math expression that can use the following symbols:
+=+-*/%^()
+min(x, y), max(x, y), avg(x, y)
+ceil(x), floor(x), round(x)
+abs(x)
+reciprocal(x)
+sqrt(x), pow(x, y)
+log(x), log10(x)
+sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)
+-Any text in Expression of form #<num> and @<num> is replaced by the integer and string values, respectively, stored in local trigger block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
 
 0x411C E(I:Num1*,I:Num2*)
 0x411D GT(I:Num1*,I:Num2*)
 0x411E LT(I:Num1*,I:Num2*)
-Compares Num1 to Num2, where E is equals, GT is greater than, and LT is less than.
-To make use of these triggers, Eval*() triggers should be used prior to this trigger
+Compares "Num1" to "Num2", where E is equals, GT is greater than, and LT is less than.
+To make use of these triggers, the 0x411B Eval() trigger should be used prior to this trigger.
 
 Options:
 -0: disabled

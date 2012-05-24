@@ -597,7 +597,7 @@ BOOL DETOUR_CEffectDamage::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 
 	if (g_pChitin->pCursor->nCurrentCursorIdx == CURSOR_TOOLTIP_SCROLL &&
 		creTarget.pArea != NULL &&
-		creTarget.pArea->eDamageLocatorTarget == creTarget.e &&
+		creTarget.pArea->eCursorTarget == creTarget.e &&
 		g_pChitin->pGame->GetPartyMemberSlot(creTarget.e) != -1) {
 		creTarget.UpdateHPStatusTooltip(*g_pChitin->pCursor->pCtrlTarget);
 	}

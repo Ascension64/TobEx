@@ -138,6 +138,7 @@
     <ClCompile Include="src\ext\ItemCommon.cpp" />
     <ClCompile Include="src\ext\ItemCore.cpp" />
     <ClCompile Include="src\ext\LogCommon.cpp" />
+    <ClCompile Include="src\ext\LuaCommon.cpp" />
     <ClCompile Include="src\ext\MessageExt.cpp" />
     <ClCompile Include="src\ext\NetworkCore.cpp" />
     <ClCompile Include="src\ext\ObjectCommon.cpp" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\lib\infbtarr.cpp" />
     <ClCompile Include="src\lib\infgame.cpp" />
     <ClCompile Include="src\lib\itmcore.cpp" />
+    <ClCompile Include="src\lib\lua.cpp" />
     <ClCompile Include="src\lib\network.cpp" />
     <ClCompile Include="src\lib\objcore.cpp" />
     <ClCompile Include="src\lib\objcre.cpp" />
@@ -261,6 +263,7 @@
     <ClInclude Include="src\ext\ItemCommon.h" />
     <ClInclude Include="src\ext\ItemCore.h" />
     <ClInclude Include="src\ext\LogCommon.h" />
+    <ClInclude Include="src\ext\LuaCommon.h" />
     <ClInclude Include="src\ext\MessageExt.h" />
     <ClInclude Include="src\ext\NetworkCore.h" />
     <ClInclude Include="src\ext\ObjectCommon.h" />
@@ -292,6 +295,7 @@
     <ClInclude Include="src\lib\engworld.h" />
     <ClInclude Include="src\lib\infbtarr.h" />
     <ClInclude Include="src\lib\infcursor.h" />
+    <ClInclude Include="src\lib\lua.h" />
     <ClInclude Include="src\lib\objare.h" />
     <ClInclude Include="src\lib\objstats.h" />
     <ClInclude Include="src\lib\objtext.h" />

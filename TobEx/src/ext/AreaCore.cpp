@@ -104,34 +104,34 @@ int DETOUR_CArea::DETOUR_GetSong(short wType) {
 	if (dwSong == -1) { //Continue Outside Music
 		switch (wType) {
 			case 0:
-				dwSong = g_pChitin->pGame->pMasterArea->nSongDay;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSongDay;
 				break;
 			case 1:
-				dwSong = g_pChitin->pGame->pMasterArea->nSongNight;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSongNight;
 				break;
 			case 2:
-				dwSong = g_pChitin->pGame->pMasterArea->nSongVictory;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSongVictory;
 				break;
 			case 3:
-				dwSong = g_pChitin->pGame->pMasterArea->nSongBattle;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSongBattle;
 				break;
 			case 4:
-				dwSong = g_pChitin->pGame->pMasterArea->nSongDefeat;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSongDefeat;
 				break;
 			case 5:
-				dwSong = g_pChitin->pGame->pMasterArea->nSong5;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSong5;
 				break;
 			case 6:
-				dwSong = g_pChitin->pGame->pMasterArea->nSong6;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSong6;
 				break;
 			case 7:
-				dwSong = g_pChitin->pGame->pMasterArea->nSong7;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSong7;
 				break;
 			case 8:
-				dwSong = g_pChitin->pGame->pMasterArea->nSong8;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSong8;
 				break;
 			case 9:
-				dwSong = g_pChitin->pGame->pMasterArea->nSong9;
+				dwSong = g_pChitin->pGame->m_pMasterArea->nSong9;
 				break;
 			case 0x100:
 				BOOL bIsDay;
@@ -143,7 +143,7 @@ int DETOUR_CArea::DETOUR_GetSong(short wType) {
 				}
 
 				if (bIsDay) {
-					dwSong = g_pChitin->pGame->pMasterArea->nSongDay;
+					dwSong = g_pChitin->pGame->m_pMasterArea->nSongDay;
 				} else {
 					BOOL  bIsDusk;
 					if ((g_pChitin->pGame->m_WorldTimer.nGameTime % ONE_DAY >= TWENTYONE_HOURS) &&
@@ -154,9 +154,9 @@ int DETOUR_CArea::DETOUR_GetSong(short wType) {
 					}
 
 					if (bIsDusk) {
-						dwSong = g_pChitin->pGame->pMasterArea->nSongDay;
+						dwSong = g_pChitin->pGame->m_pMasterArea->nSongDay;
 					} else {
-						dwSong = g_pChitin->pGame->pMasterArea->nSongNight;
+						dwSong = g_pChitin->pGame->m_pMasterArea->nSongNight;
 					}
 				}
 				break;

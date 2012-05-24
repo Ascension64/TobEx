@@ -117,7 +117,7 @@ public:
 	virtual BOOL NeedsRedraw(); //v58
 
 	void SetTextColors(ABGR colText, ABGR colGreyed); //v5c
-	void ClearText(IECString& s); //v60
+	void Execute(IECString& s); //v60
 	IECString GetText(); //v64
 	void SetText(IECString& s); //v68
 	void UpdateDisplayArea(); //v6c
@@ -169,9 +169,69 @@ extern void (CUITextField::*CUITextField_SetRedraw)();
 extern BOOL (CUITextField::*CUITextField_Redraw)(BOOL);
 extern BOOL (CUITextField::*CUITextField_NeedsRedraw)();
 extern void (CUITextField::*CUITextField_SetTextColors)(ABGR, ABGR);
-extern void (CUITextField::*CUITextField_ClearText)(IECString&);
+extern void (CUITextField::*CUITextField_Execute)(IECString&);
 extern IECString (CUITextField::*CUITextField_GetText)();
 extern void (CUITextField::*CUITextField_SetText)(IECString&);
 extern void (CUITextField::*CUITextField_UpdateDisplayArea)();
+
+class CUITextBar : public CUIControl { //size 886h
+//Similar to CUITextField except it only supports a single row
+//Constructor: 0x58931D
+public:
+	//AAAF80
+	virtual ~CUITextBar(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual void SetEnabled(bool b); //v4
+	virtual void OnLoseFocus(); //vc
+	virtual void OnGetFocus(); //v10
+	virtual BOOL OnLMouseBtDn(POINT pt); //v18
+	virtual BOOL OnRMouseBtDn(POINT pt); //v24
+	virtual void OnKeyPress(short wChar); //v2c
+	virtual void SetRedraw(); //v48
+	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
+	virtual BOOL NeedsRedraw(); //v58
+
+	void Execute(IECString& s); //v5c
+	IECString GetText(); //v60
+	void SetText(IECString& s); //v64
+
+	CVidMosaic u4a;
+	CVidMosaic ufa;
+	CVidMosaic u1aa;
+	CVidCell cvcCursor; //25ah
+	POINT ptXY; //330h, from controlInfo (32h, 34h)
+	POINT pt; //338h, from controlInfo (36h, 38h)
+	CVidFont font; //340h
+	short m_wMaxInputLength; //83ch, from controlInfo 64h
+	short m_wTextCase; //83eh, from controlInfo 66h
+	short m_wTextMode; //840h, 2 = ignore space and letters
+	short m_wTextLength;
+	int u844;
+	IECString sText; //848h, from controlInfo 44h (initial text)
+	IECString sTextPrevious; //84ch, for when user cancels
+	short m_wCaretPosition; //850h
+	int m_nScrollPosition; //852h, first index when text scrolled right
+	char m_nBufferIdx; //856h
+	char m_nBuffers; //857h
+	IECString m_sBuffers[10]; //858h
+	int u880;
+	char u884;
+	char u885; //pad
+};
+
+class CUITextBarWorldChat : public CUITextBar { //size 88Ch
+//Constructor: 0x97B131
+public:
+	//AB7AA0
+	virtual ~CUITextBarWorldChat(); //v0
+	void Deconstruct() {} //dummy
+
+	void Execute(IECString& s); //v5c
+
+	Enum m_eDebug; //886h, the enum to debug dump on
+	bool m_bDebugState; //88ah, true = do debug dump
+	char u88b; //pad
+};
 
 #endif //UITEXT_H

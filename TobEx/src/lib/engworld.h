@@ -52,7 +52,7 @@ public:
 	RECT rDlgGameArea; //f26h
 	int uf36;
 	char uf3a;
-	char uf3b;
+	bool m_bChatBarState; //f3bh
 	IECString uf3c;
 	int uf40;
 	int uf44;

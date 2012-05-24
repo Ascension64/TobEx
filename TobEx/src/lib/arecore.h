@@ -276,7 +276,7 @@ public:
 	char u23c;
 	char u23d;
 	Enum u23e;
-	Enum eDamageLocatorTarget; //242h
+	Enum eCursorTarget; //242h, eDamageLocatorTarget
 	Enum u246;
 	int u24a;
 	int u24e;

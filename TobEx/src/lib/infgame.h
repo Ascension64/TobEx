@@ -433,8 +433,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	CGameRemoteObjectArrayHandler m_GameRemoteObjectArrayHandler; //3824h
 	char m_VisibleAreaIdx; //38b4h, index to loaded area array of the currently visible area
 	char u38b5; //pad
-	CArea* pLoadedAreas[12]; //38b6h
-	CArea* pMasterArea; //38e6h
+	CArea* m_pLoadedAreas[12]; //38b6h
+	CArea* m_pMasterArea; //38e6h
 	Enum ePlayersJoinOrder[6]; //38eah
 	Enum ePlayersPartyOrder[6]; //3902h, 0: leader
 	short numInParty; //391ah

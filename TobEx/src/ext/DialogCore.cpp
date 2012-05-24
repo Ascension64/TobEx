@@ -18,7 +18,7 @@ void __stdcall CDlgResponse_QueueActions(CDlgResponse& cdResponse, CCreatureObje
 			Action* pAInterruptTrue = new Action();
 			pAInterruptTrue->opcode = ACTION_SET_INTERRUPT;
 			pAInterruptTrue->i = 1;
-			cdResponse.m_response.m_actions.AddHead(pAInterruptTrue);
+			cdResponse.m_response.m_actions.AddTail(pAInterruptTrue);
 		}
 
 		//new - atomic set global

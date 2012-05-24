@@ -404,7 +404,7 @@ void DETOUR_CGameSprite::DETOUR_QueueActions(Response& r, BOOL bSkipIfAlreadyQue
 	this->nCurrScriptIdx = r.nScriptIdx;
 	this->bUseCurrScriptIdx = TRUE;
 
-	if (this->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
+	if (this->GetType() != CGAMEOBJECT_TYPE_CREATURE) {
 		Action* pAInterruptFalse = new Action();
 		pAInterruptFalse->opcode = ACTION_SET_INTERRUPT;
 		pAInterruptFalse->i = 0;
@@ -424,7 +424,7 @@ void DETOUR_CGameSprite::DETOUR_QueueActions(Response& r, BOOL bSkipIfAlreadyQue
 	pAClearBlockVars->opcode = ACTION_CLEAR_BLOCK_VARIABLES;
 	this->actions.AddTail(pAClearBlockVars);
 
-	if (this->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
+	if (this->GetType() != CGAMEOBJECT_TYPE_CREATURE) {
 		Action* pAInterruptTrue = new Action();
 		pAInterruptTrue->opcode = ACTION_SET_INTERRUPT;
 		pAInterruptTrue->i = 1;

@@ -53,6 +53,8 @@ int (__cdecl *lua_dostring)(char*) =
 	reinterpret_cast<int (__cdecl *)(char*)>	(0xA25490);
 lua_Object (__cdecl *lua_pop)() =
 	reinterpret_cast<lua_Object (__cdecl *)()>	(0xA25D50);
+lua_Object (__cdecl *lua_rawgettable)() =
+	reinterpret_cast<lua_Object (__cdecl *)()>	(0xA25F10);
 void (__cdecl *lua_error)(char*) =
 	reinterpret_cast<void (__cdecl *)(char*)>	(0xA25FB0);
 int (__cdecl *lua_callfunction)(lua_Object) =

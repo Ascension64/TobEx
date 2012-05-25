@@ -45,7 +45,7 @@ public:
 	virtual ~Identifiers();
 	void Deconstruct() { return; } //dummy
 
-	IdsEntry* FindByValue(IECString sValue, BOOL bCaseSensitive);
+	IdsEntry* FindByHead(IECString sValue, BOOL bCaseSensitive);
 
 	ResIdsContainer m_ids; //4h
 	IECString u14; //14h
@@ -58,7 +58,7 @@ public:
 extern Identifiers& (Identifiers::*Identifiers_Construct_0)();
 extern Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef);
 extern void (Identifiers::*Identifiers_Deconstruct)();
-extern IdsEntry* (Identifiers::*Identifiers_FindByValue)(IECString, BOOL);
+extern IdsEntry* (Identifiers::*Identifiers_FindByHead)(IECString, BOOL);
 
 struct CVariable { //Size 54h
 	CVariable();
@@ -111,12 +111,14 @@ extern void (CVariableMap::*CVariableMap_SetSize)(int);
 struct ObjectIds { //Size 5h
 	ObjectIds();
 
+	char operator[](unsigned int n);
+
 	//OBJECT.IDS indices
-	char id1;
-	char id2;
-	char id3;
-	char id4;
-	char id5;
+	unsigned char id1;
+	unsigned char id2;
+	unsigned char id3;
+	unsigned char id4;
+	unsigned char id5;
 };
 
 class Object { //Size 14h

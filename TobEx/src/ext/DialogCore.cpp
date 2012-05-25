@@ -10,6 +10,11 @@ void __stdcall CDlgResponse_QueueActions(CDlgResponse& cdResponse, CCreatureObje
 		if (!cdResponse.bAddedInterrupts) {
 			cdResponse.bAddedInterrupts = TRUE;
 
+			//new - add ClearVariables
+			Action* pAClearBlockVars = new Action();
+			pAClearBlockVars->opcode = ACTION_CLEAR_BLOCK_VARIABLES;
+			cdResponse.m_response.m_actions.AddHead(pAClearBlockVars);
+
 			Action* pAInterruptFalse = new Action();
 			pAInterruptFalse->opcode = ACTION_SET_INTERRUPT;
 			pAInterruptFalse->i = 0;

@@ -8,7 +8,7 @@ CBaldurChitin& (CBaldurChitin::*Tramp_CBaldurChitin_Construct)(void) =
 
 CBaldurChitin& DETOUR_CBaldurChitin::DETOUR_Construct() {
 	//if (pGameOptionsEx->bDebugExpandLUAConsole)
-	//	LUA_InitExt();
+	//	LUA_Init();
 
 	CBaldurChitin& chitin = (this->*Tramp_CBaldurChitin_Construct)();
 	g_pChitin = &chitin;

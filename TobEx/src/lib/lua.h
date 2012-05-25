@@ -21,6 +21,16 @@ static const IETag& g_IETagCLUAConsole = (const IETag&)(*(IETag*)0xB8C448);
 static const IETag& g_IETagCLUACheats = (const IETag&)(*(IETag*)0xB8C020);
 static const IETag& g_IETagCTimerWorld = (const IETag&)(*(IETag*)0xB8C444);
 
+//IElua table refs
+static const int& g_tableref_toLua_tag = (const int&)(*(int*)0xB8C4DC);
+static const int& g_tableref_toLua_name = (const int&)(*(int*)0xB8C4F0);
+static const int& g_tableref_toLua_parent = (const int&)(*(int*)0xB8C4BC);
+static const int& g_tableref_test_cast = (const int&)(*(int*)0xB8C4B8);
+static const int& g_tableref_test_alloc = (const int&)(*(int*)0xB8C4EC);
+static const int& g_tableref_test_getref = (const int&)(*(int*)0xBDD67C);
+static const int& g_tableref_test_setref = (const int&)(*(int*)0xB8C4CC);
+static const int& g_tableref_toLua_mate = (const int&)(*(int*)0xB8C4D4);
+
 static char* g_szIEluaError = (char*)0xB8C454;
 static size_t g_szIEluaErrorSize = 100;
 
@@ -153,6 +163,7 @@ extern void (__cdecl *IElua_createtagsetmethod)(char* event, void* u);
 extern int (__cdecl *lua_dofile)(char* filename);
 extern int (__cdecl *lua_dostring)(char* str);
 extern lua_Object (__cdecl *lua_pop)();
+extern lua_Object (__cdecl *lua_rawgettable)();
 extern void (__cdecl *lua_error)(char* message);
 extern int (__cdecl *lua_callfunction)(lua_Object function);
 extern lua_Object (__cdecl *lua_gettagmethod)(int tag, char* event);

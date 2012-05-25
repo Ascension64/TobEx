@@ -7,13 +7,13 @@ Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef) =
 	SetFP(static_cast<Identifiers& (Identifiers::*)(ResRef)>		(&Identifiers::Construct),	0x40FC37);
 void (Identifiers::*Identifiers_Deconstruct)() =
 	SetFP(static_cast<void (Identifiers::*)()>						(&Identifiers::Deconstruct),0x40FE31);
-IdsEntry* (Identifiers::*Identifiers_FindByValue)(IECString, BOOL) =
-	SetFP(static_cast<IdsEntry* (Identifiers::*)(IECString, BOOL)>	(&Identifiers::FindByValue),0x410502);
+IdsEntry* (Identifiers::*Identifiers_FindByHead)(IECString, BOOL) =
+	SetFP(static_cast<IdsEntry* (Identifiers::*)(IECString, BOOL)>	(&Identifiers::FindByHead),0x410502);
 
 Identifiers::Identifiers() { (this->*Identifiers_Construct_0)(); }
 Identifiers::Identifiers(ResRef rFile) { (this->*Identifiers_Construct_1_ResRef)(rFile); }
 Identifiers::~Identifiers() { (this->*Identifiers_Deconstruct)(); }
-IdsEntry* Identifiers::FindByValue(IECString sValue, BOOL bCaseSensitive) { return (this->*Identifiers_FindByValue)(sValue, bCaseSensitive); }
+IdsEntry* Identifiers::FindByHead(IECString sValue, BOOL bCaseSensitive) { return (this->*Identifiers_FindByHead)(sValue, bCaseSensitive); }
 
 //CVariable
 void (CVariable::*CVariable_SetName)(IECString) =
@@ -62,6 +62,11 @@ ObjectIds::ObjectIds() {
 	id4 = OBJECT_NOTHING;
 	id5 = OBJECT_NOTHING;
 }
+
+char ObjectIds::operator[](unsigned int n) {
+	return n < 5 ? *((unsigned char*)this + n) : 0;
+}
+
 
 //Object
 static Object* poAnything = reinterpret_cast<Object*>(0xB75AA0); //unused

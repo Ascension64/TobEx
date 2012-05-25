@@ -411,6 +411,11 @@ void DETOUR_CGameSprite::DETOUR_QueueActions(Response& r, BOOL bSkipIfAlreadyQue
 		this->actions.AddTail(pAInterruptFalse);
 	}
 
+	//new - add ClearVariables
+	Action* pAClearBlockVars = new Action();
+	pAClearBlockVars->opcode = ACTION_CLEAR_BLOCK_VARIABLES;
+	this->actions.AddTail(pAClearBlockVars);
+
 	POSITION pos = r.m_actions.GetHeadPosition();
 	while (pos) {
 		Action* aTemp = (Action*)r.m_actions.GetNext(pos);
@@ -418,11 +423,6 @@ void DETOUR_CGameSprite::DETOUR_QueueActions(Response& r, BOOL bSkipIfAlreadyQue
 		*pANew = *aTemp;
 		this->actions.AddTail(pANew);
 	}
-
-	//new - add ClearVariables
-	Action* pAClearBlockVars = new Action();
-	pAClearBlockVars->opcode = ACTION_CLEAR_BLOCK_VARIABLES;
-	this->actions.AddTail(pAClearBlockVars);
 
 	if (this->GetType() != CGAMEOBJECT_TYPE_CREATURE) {
 		Action* pAInterruptTrue = new Action();

@@ -230,7 +230,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			sValue.MakeUpper();
 
 			Identifiers ids(ResRef((LPCTSTR)sIdsName));
-			IdsEntry* pIE = ids.FindByValue(sValue, FALSE);
+			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
 			int nValue = pIE ? pIE->nOpcode : 0;
 			vars.SetInt(nIndex, nValue);
 
@@ -257,7 +257,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			sValue.MakeUpper();
 
 			Identifiers ids(ResRef("STATS"));
-			IdsEntry* pIE = ids.FindByValue(sValue, FALSE);
+			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
 			int nStat = pIE ? pIE->nOpcode : 0;
 			int nValue = 0;
 			if (nStat) nValue = ((CCreatureObject&)sprite).GetDerivedStats().GetStat(nStat);

@@ -4,6 +4,7 @@
 #include "win32def.h"
 
 #include <cassert>
+#include <map>
 
 #include "utils.h"
 #include "MathPresso.h"

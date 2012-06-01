@@ -1,4 +1,4 @@
-//1540 This file contains descriptions for all the hack options found in TobEx .ini files
+//1550 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -173,6 +173,13 @@ Options:
 -----190 Critical Error Message Box Fix [F]
 Fixes an issue where the critical error message box during a crash does not always display
 This is because the window thread that the message box is sent to is suspended
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1550 Expanded LUA Console [D]
+Greatly expands the in-game LUA console to provide more debugging features
 
 Options:
 -0: disabled

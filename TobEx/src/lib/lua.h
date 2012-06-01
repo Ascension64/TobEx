@@ -35,6 +35,8 @@ static char* g_szIEluaError = (char*)0xB8C454;
 static size_t g_szIEluaErrorSize = 100;
 
 //IELua functions
+extern int (__stdcall *IElua_init)();
+extern int (__stdcall *IElua_deinit)();
 
 /*error_badself
 -prints an error message that the function funcname has inappropriate self*/

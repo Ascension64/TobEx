@@ -17,6 +17,7 @@ struct CGameOptionsEx {
 	BOOL bArenasEnable;
 	
 	BOOL bDebugCriticalMsgBoxFix;
+	BOOL bDebugExpandedLUAConsole;
 	BOOL bDebugExternalLogging;
 	BOOL bDebugLogDialogueBar;
 	BOOL bDebugLogFailures;

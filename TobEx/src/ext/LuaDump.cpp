@@ -14,9 +14,8 @@ std::map<char*, LUA_DumpFunc, cmp_str> g_DumpFunctions;
 void LUADump_Init() {
 	g_DumpFunctions["notype"] = LUADump_notype;
 	g_DumpFunctions["action"] = LUADump_action;
-	g_DumpFunctions["creature"] = LUADump_creature;
 	g_DumpFunctions["object"] = LUADump_object;
-	g_DumpFunctions["string"] = LUADump_string;
+	g_DumpFunctions["trigger"] = LUADump_trigger;
 	return;
 }
 
@@ -83,15 +82,16 @@ IECString LUADump_action(void* p) {
 				Identifiers ids(ResRef((LPCTSTR)sIds));
 				if (ids.m_ids.bLoaded) {
 					POSITION pos2 = ids.entries.GetHeadPosition();
+					POSITION posTarget = pos2;
 					IdsEntry* pIdsEntry = NULL;
-					while (pos2) {
+					while (posTarget = pos2) {
 						pIdsEntry = (IdsEntry*)ids.entries.GetNext(pos2);
 						if (pIdsEntry->nOpcode == nValue) {
 							sInt = pIdsEntry->head;
 							break;
 						}
 					}
-					sInt.Format("%d", nValue);
+					if (posTarget == NULL) sInt.Format("%d", nValue);
 				} else {
 					sInt.Format("%d", nValue);
 				}
@@ -104,13 +104,6 @@ IECString LUADump_action(void* p) {
 		s.Format("%d %s", pEntry->nOpcode, (LPCTSTR)sValue);
 	}
 
-	return s;
-}
-
-IECString LUADump_creature(void* p) {
-	CCreatureObject* pCre = (CCreatureObject*)p;
-	IECString s;
-	s.Format("%s", (LPCTSTR)s, pCre->name);
 	return s;
 }
 
@@ -210,20 +203,24 @@ IECString LUADump_object(void* p) {
 
 			CScriptParser& parser = *g_pChitin->pGame->m_pScriptParser; 
 			for (int i = 0; i < 5; i++) {
+				if (pO->oids[i] == 0) continue;
 				POSITION pos = parser.OBJECT.entries.GetHeadPosition();
 				while (pos) {
 					IdsEntry* pEntry = (IdsEntry*)parser.OBJECT.entries.GetNext(pos);
 					if (pEntry->nOpcode == pO->oids[i]) {
-						s.Format("%s(%s)", (LPCTSTR)pEntry->head, (LPCSTR)s);
+						IECString sTemp = s;
+						s.Format("%s(%s)", (LPCTSTR)pEntry->head, (LPCSTR)sTemp);
+						break;
 					}
 				}
 			}
 		}
 
-		if (bUseTypes) {
+		if (bUseTypes &&
+			!pO->IsNothing()) {
 			CScriptParser& parser = *g_pChitin->pGame->m_pScriptParser; 
 			ResRef files[] = {"EA", "GENERAL", "RACE", "CLASS", "SPECIFIC", "GENDER", "ALIGN"};
-			unsigned char values[] = {0, 0, 0, 0, 0, 0, 0};
+			unsigned char values[7];
 			values[0] = pO->EnemyAlly;
 			values[1] = pO->General;
 			values[2] = pO->Race;
@@ -232,37 +229,115 @@ IECString LUADump_object(void* p) {
 			values[5] = pO->Gender;
 			values[6] = pO->Alignment;
 			int nNumToDump = 7;
-			for (nNumToDump; nNumToDump > 0; nNumToDump--) {
-				if (values[nNumToDump - 1]) break;
+			while (nNumToDump > 0) {
+				if (values[nNumToDump - 1] != 0xFF &&
+					values[nNumToDump - 1] != 0) break;
+				nNumToDump--;
 			}
-			if (nNumToDump) {
+			if (nNumToDump > 0) {
 				for (int i = 0; i < nNumToDump; i++) {
 					if (i == 0) s += '[';
 
 					Identifiers ids(files[i]);
 					if (ids.m_ids.bLoaded) {
 						POSITION pos = ids.entries.GetHeadPosition();
-						while (pos) {
+						POSITION posTarget = NULL;
+						while (posTarget = pos) {
 							IdsEntry* pEntry = (IdsEntry*)ids.entries.GetNext(pos);
 							if (pEntry->nOpcode == values[i]) {
 								s += pEntry->head;
+								break;
 							}
 						}
-					}
-					if (i != nNumToDump - 1) {
-						s += '.';
+						if (posTarget == NULL) s += '0';
 					} else {
-						s += ']';
+						s += '0';
 					}
+
+					s += (i == nNumToDump - 1) ? ']' : '.';
 				}
 			}
 		}
-
 	}
 
 	return s;
 }
 
-IECString LUADump_string(void* p) {
-	return IECString((LPCTSTR)p);
+IECString LUADump_trigger(void* p) {
+	Trigger* pTrigger = (Trigger*)p;
+	IECString s = "error";
+	CScriptParser& parser = *g_pChitin->pGame->m_pScriptParser;
+	Identifiers& idTrigger = g_pChitin->pGame->m_pScriptParser->TRIGGER;
+
+	POSITION pos = idTrigger.entries.GetHeadPosition();
+	IdsEntry* pEntry = NULL;
+	while (pos) {
+		pEntry = (IdsEntry*)idTrigger.entries.GetNext(pos);
+		if (pEntry->nOpcode == pTrigger->opcode) break;
+	}
+
+	if (pEntry) {
+		IECString sValue = pEntry->value;
+		IECString sTemp = parser.SpanAfter(sValue, '(');
+		sTemp = parser.SpanBefore(sTemp, ')');
+		while (!sTemp.IsEmpty()) {
+			int nInt = 0;
+			int nStr = 0;
+
+			IECString sArg = parser.SpanBefore(sTemp, ',');
+			IECString sType = parser.SpanBefore(sArg, ':');
+			IECString sNameIds = parser.SpanAfter(sArg, ':');
+			IECString sName = parser.SpanBefore(sNameIds, '*');
+			IECString sIds = parser.SpanAfter(sNameIds, '*');
+
+			if (!sType.CompareNoCase("S")) {
+				IECString sStr;
+				sStr.Format("\"%s\"", nStr == 0 ? pTrigger->sName1 : pTrigger->sName2);
+				sValue.Replace((LPCTSTR)sArg, (LPCTSTR)sStr);
+				nStr++;
+			} else if (!sType.CompareNoCase("O")) {
+				IECString sObj = LUADump_object(&pTrigger->o);
+				sValue.Replace((LPCTSTR)sArg, (LPCTSTR)sObj);
+			} else if (!sType.CompareNoCase("I")) {
+				IECString sInt;
+				int nValue = 0;
+				switch (nInt) {
+				case 1:
+					nValue = pTrigger->i2;
+					break;
+				case 2:
+					nValue = pTrigger->i3;
+					break;
+				case 0:
+				default:
+					nValue = pTrigger->i;
+					break;
+				}
+
+				Identifiers ids(ResRef((LPCTSTR)sIds));
+				if (ids.m_ids.bLoaded) {
+					POSITION pos2 = ids.entries.GetHeadPosition();
+					POSITION posTarget = pos2;
+					IdsEntry* pIdsEntry = NULL;
+					while (posTarget = pos2) {
+						pIdsEntry = (IdsEntry*)ids.entries.GetNext(pos2);
+						if (pIdsEntry->nOpcode == nValue) {
+							sInt = pIdsEntry->head;
+							break;
+						}
+					}
+					if (posTarget == NULL) sInt.Format("%d", nValue);
+				} else {
+					sInt.Format("%d", nValue);
+				}
+				sValue.Replace((LPCTSTR)sArg, (LPCTSTR)sInt);
+				nInt++;
+			}
+
+			sTemp = parser.SpanAfter(sTemp, ',');
+		}
+		s.Format("%X %s", pEntry->nOpcode, (LPCTSTR)sValue);
+	}
+
+	return s;
 }

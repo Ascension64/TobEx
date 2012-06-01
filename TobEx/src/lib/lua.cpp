@@ -1,5 +1,10 @@
 #include "lua.h"
 
+int (__stdcall *IElua_init)() =
+	reinterpret_cast<int (__stdcall *)()>	(0x5ADD86);
+int (__stdcall *IElua_deinit)() =
+	reinterpret_cast<int (__stdcall *)()>	(0x5AE158);
+
 void (__cdecl *IElua_error_badself)(char*) =
 	reinterpret_cast<void (__cdecl *)(char*)>	(0x9864E0);
 void (__cdecl *IElua_error_badarg)(char*, int, char*) =

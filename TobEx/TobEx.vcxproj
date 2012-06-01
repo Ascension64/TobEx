@@ -139,6 +139,7 @@
     <ClCompile Include="src\ext\ItemCore.cpp" />
     <ClCompile Include="src\ext\LogCommon.cpp" />
     <ClCompile Include="src\ext\LuaCommon.cpp" />
+    <ClCompile Include="src\ext\LuaCore.cpp" />
     <ClCompile Include="src\ext\LuaDump.cpp" />
     <ClCompile Include="src\ext\MessageExt.cpp" />
     <ClCompile Include="src\ext\NetworkCore.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="src\ext\ItemCore.h" />
     <ClInclude Include="src\ext\LogCommon.h" />
     <ClInclude Include="src\ext\LuaCommon.h" />
+    <ClInclude Include="src\ext\LuaCore.h" />
     <ClInclude Include="src\ext\LuaDump.h" />
     <ClInclude Include="src\ext\MessageExt.h" />
     <ClInclude Include="src\ext\NetworkCore.h" />

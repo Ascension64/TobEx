@@ -15,8 +15,7 @@ void LUADump_Init();
 
 IECString LUADump_notype(void* p);
 IECString LUADump_action(void* p);
-IECString LUADump_creature(void* p);
 IECString LUADump_object(void* p);
-IECString LUADump_string(void* p);
+IECString LUADump_trigger(void* p);
 
 #endif //LUADUMP_H

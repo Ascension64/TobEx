@@ -22,6 +22,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bArenasEnable = FALSE;
 
 	bDebugCriticalMsgBoxFix = FALSE;
+	bDebugExpandedLUAConsole = FALSE;
 	bDebugExternalLogging = FALSE;
 	bDebugLogDialogueBar = FALSE;
 	bDebugLogFailures = FALSE;
@@ -190,6 +191,7 @@ void CGameOptionsEx::Init() {
 	bArenasEnable = GetCoreIniValue("Arenas", "Enable Arenas Game Type");
 
 	bDebugCriticalMsgBoxFix = GetCoreIniValue("Debug", "Critical Error Message Box Fix");
+	bDebugExpandedLUAConsole = GetCoreIniValue("Debug", "Expanded LUA Console");
 	bDebugExternalLogging = GetCoreIniValue("Debug", "Externalise Logging");
 	bDebugLogDialogueBar = GetCoreIniValue("Debug", "Log Dialogue Bar");
 	bDebugLogFailures = GetCoreIniValue("Debug", "Log Assertion Failures");

@@ -33,6 +33,7 @@
 #include "InfGameCore.h"
 #include "ItemCore.h"
 #include "LogCore.h"
+#include "LuaCore.h"
 #include "NetworkCore.h"
 #include "ObjectCore.h"
 #include "ObjectCreature.h"
@@ -59,6 +60,9 @@ void InitHooks() {
 	}
 
 	DetourFunction(Tramp_CloseLogAndErr, DETOUR_CloseLogAndErr);
+
+	if (pGameOptionsEx->bDebugExpandedLUAConsole)
+		DetourFunction(Tramp_IElua_init, DETOUR_IElua_init);
 
 	if (pGameOptionsEx->bDebugExternalLogging)
 		DetourFunction(Tramp_WriteToFile, DETOUR_WriteToFile);

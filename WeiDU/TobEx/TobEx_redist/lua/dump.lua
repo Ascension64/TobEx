@@ -5,15 +5,10 @@ function dump_table(t, name)
   index = nil
   repeat
     index, value = next(t, index)
-    if
-      not (type(index) == "nil")
-    then
-      CLUAConsole:DisplayText(name .. "->" .. tostring(index) .. ": " .. tostring(value))
+    if type(index) ~= "nil" then
+      p(tostring(name) .. "->" .. tostring(index) .. ": " .. tostring(value))
     end
-
-    if
-      type(value) == "table"
-    then
+    if type(value) == "table" then
       dump_table(value, "--subtable")
     end
   until
@@ -25,15 +20,10 @@ function dump()
   name = nil
   repeat
     name, value = nextvar(name)
-    if
-      not (type(name) == "nil")
-    then
-      CLUAConsole:DisplayText(tostring(name) .. "->" .. tostring(value))
+    if type(name) ~= "nil" then
+      p(tostring(name) .. "->" .. tostring(value))
     end
-
-    if
-      type(value) == "table"
-    then
+    if type(value) == "table" then
       dump_table(value, "-table")
     end
   until

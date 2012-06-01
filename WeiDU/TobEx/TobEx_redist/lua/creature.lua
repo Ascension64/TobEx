@@ -27,7 +27,7 @@ function creature_listtriggers(_cre)
       local _trigger
       if (_value ~= nil) then
         _trigger = createobject(_value, "trigger")
-        _trigger:print()
+        _trigger:print(1)
       end
     until _index == nil
   end
@@ -38,10 +38,9 @@ function creature_listactions(_cre)
     error("expected a creature object (1)")
   end
 
-  p("--Actions")
+  p("--Actions (top action running for " .. tostring(_cre:getword("0x2bc")) .. " ticks]")
   local _action_c = createobject(_cre:getaddress("0x2be"), "action")
-  p("* " .. _action_c:print(0) ..
-    " [for " .. tostring(_cre:getword("0x2bc")) .. " ticks]")
+  _action_c:print(1)
 
   local _list = _cre:getlist("0x256")
   if (_list ~= nil) then
@@ -51,7 +50,7 @@ function creature_listactions(_cre)
       local _action_l
       if (_value ~= nil) then
         _action_l = createobject(_value, "action")
-        _action_l:print()
+        _action_l:print(1)
       end
     until _index == nil
   end

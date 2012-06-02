@@ -7,6 +7,12 @@
 extern int g_TagObjects;
 
 //general functions
+void LUA_Pow();
+void LUA_Mod();
+void LUA_BAnd();
+void LUA_BOr();
+void LUA_Dec2Hex();
+void LUA_Hex2Dec();
 void LUA_PushUserdata();
 void LUA_U2N();
 void LUA_PushFunction();

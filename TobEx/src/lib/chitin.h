@@ -219,8 +219,8 @@ public:
 	HANDLE m_hThreadWindow; //3b8h
 	BOOL m_bTerminateWindowThread; //3bch
 	CEngine* pEngineActive; //3c0h
-	CSoundMixer mixer; //3c4h
-	CResHandler ResHandler; //2c9eh
+	CSoundMixer m_mixer; //3c4h
+	CResHandler m_ResHandler; //2c9eh
 	CVideo cVideo; //2f46h
 	CNetwork cNetwork; //30aeh
 

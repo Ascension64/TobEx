@@ -7,7 +7,11 @@
 #include "objcont.h"
 #include "objcre.h"
 #include "objdoor.h"
+#include "objsound.h"
 #include "objspawn.h"
+#include "objstatic.h"
+#include "objtile.h"
+#include "objtrig.h"
 
 std::map<char*, LUA_DumpFunc, cmp_str> g_DumpFunctions;
 
@@ -15,6 +19,26 @@ void LUADump_Init() {
 	g_DumpFunctions["notype"] = LUADump_notype;
 	g_DumpFunctions["action"] = LUADump_action;
 	g_DumpFunctions["object"] = LUADump_object;
+	g_DumpFunctions["sprite"] = LUADump_sprite;
+	g_DumpFunctions["sprite_area"] = LUADump_sprite_area;
+	g_DumpFunctions["sprite_baldur"] = LUADump_sprite_baldur;
+	g_DumpFunctions["sprite_castglow"] = LUADump_sprite;
+	g_DumpFunctions["sprite_chunks"] = LUADump_sprite;
+	g_DumpFunctions["sprite_container"] = LUADump_sprite_container;
+	g_DumpFunctions["sprite_creature"] = LUADump_sprite_creature;
+	g_DumpFunctions["sprite_door"] = LUADump_sprite_door;
+	g_DumpFunctions["sprite_objmarker"] = LUADump_sprite;
+	g_DumpFunctions["sprite_projbam"] = LUADump_sprite;
+	g_DumpFunctions["sprite_projectile"] = LUADump_sprite_projectile;
+	g_DumpFunctions["sprite_smoke"] = LUADump_sprite;
+	g_DumpFunctions["sprite_sound"] = LUADump_sprite_sound;
+	g_DumpFunctions["sprite_spawn"] = LUADump_sprite_spawn;
+	g_DumpFunctions["sprite_spellhit"] = LUADump_sprite;
+	g_DumpFunctions["sprite_static"] = LUADump_sprite_static;
+	g_DumpFunctions["sprite_tile"] = LUADump_sprite_tile;
+	g_DumpFunctions["sprite_trigger"] = LUADump_sprite_trigger;
+	g_DumpFunctions["sprite_vef"] = LUADump_sprite;
+	g_DumpFunctions["sprite_vvc"] = LUADump_sprite;
 	g_DumpFunctions["trigger"] = LUADump_trigger;
 	return;
 }
@@ -120,68 +144,64 @@ IECString LUADump_object(void* p) {
 		if (nReturnVal == OBJECT_SUCCESS) {
 			switch (pObject->GetType()) {
 			case CGAMEOBJECT_TYPE_OBJECT:
-				s.Format("<GEN %08X>", pObject->e);
+				s.Format("<GEN %X>", pObject->e);
 				break;
 			case CGAMEOBJECT_TYPE_SPRITE:
-				s.Format("<SPRITE %08X> %s", ((CGameSprite*)pObject)->e, ((CGameSprite*)pObject)->name);
+				s.Format("<SPRITE %X> \"%.32s\"", pObject->e, ((CGameSprite*)pObject)->szScriptName);
 				break;
 			case CGAMEOBJECT_TYPE_SOUND:
-				//s.Format("<sprite-%X> %s", ((CSoundObject*)pObject)->e, ((CSoundObject*)pObject)->name);
-				s.Format("<SND %08X>", pObject->e);
+				s.Format("<SND %X> \"%.32s\"", pObject->e, ((CSoundObject*)pObject)->szAmbientName);
 				break;
 			case CGAMEOBJECT_TYPE_CONTAINER:
-				s.Format("<CONT %08X> %s", ((CContainerObject*)pObject)->e, ((CContainerObject*)pObject)->name);
+				s.Format("<CONT %X> \"%.32s\"", pObject->e, ((CContainerObject*)pObject)->szContainerName);
 				break;
 			case CGAMEOBJECT_TYPE_SPAWNING:
-				s.Format("<SPAWN %08X> %s", ((CSpawningObject*)pObject)->e, ((CSpawningObject*)pObject)->name);
+				s.Format("<SPAWN %X> \"%.32s\"", pObject->e, ((CSpawningObject*)pObject)->szSpawnName);
 				break;
 			case CGAMEOBJECT_TYPE_DOOR:
-				s.Format("<DOOR %08X> %s", ((CDoorObject*)pObject)->e, ((CDoorObject*)pObject)->name);
+				s.Format("<DOOR %X> \"%.32s\"", pObject->e, ((CDoorObject*)pObject)->szDoorName);
 				break;
 			case CGAMEOBJECT_TYPE_STATIC:
-				//s.Format("<static-%X> %s", ((CStaticObject*)pObject)->e, ((CStaticObject*)pObject)->name);
-				s.Format("<STATIC %08X>", pObject->e);
+				s.Format("<ANIM %X> \"%.32s\"", pObject->e, ((CStaticObject*)pObject)->szStaticName);
 				break;
 			case CGAMEOBJECT_TYPE_CREATURE:
 			{
 				IECString sName;
 				if (
-					!stricmp(((CCreatureObject*)pObject)->name, "None") ||
-					((CCreatureObject*)pObject)->name[0] == 0
+					!stricmp(((CCreatureObject*)pObject)->szScriptName, "None") ||
+					((CCreatureObject*)pObject)->szScriptName[0] == 0
 				) {
 					sName.Format("%c%s", ((CCreatureObject*)pObject)->u6752, (LPCTSTR)((CCreatureObject*)pObject)->rSaveName);
 					sName.Remove('*');
 				} else {
-					sName.Format("\"%.32s\"", ((CCreatureObject*)pObject)->name);
+					sName.Format("\"%.32s\"", ((CCreatureObject*)pObject)->szScriptName);
 				}
-				s.Format("<CRE %08X> %s", ((CCreatureObject*)pObject)->e, (LPCTSTR)sName);
+				s.Format("<CRE %X> %s", ((CCreatureObject*)pObject)->e, (LPCTSTR)sName);
 				break;
 			}
 			case CGAMEOBJECT_TYPE_OBJECTMARKER:
-				s.Format("<MARK %08X>", pObject->e);
+				s.Format("<MARK %X>", pObject->e);
 				break;
 			case CGAMEOBJECT_TYPE_TRIGGER:
-				//s.Format("<trigger-%X> %s", ((CTriggerObject*)pObject)->e, ((CTriggerObject*)pObject)->name);
-				s.Format("<TRIG %08X>", pObject->e);
+				s.Format("<TRIG %X> \"%.32s\"", pObject->e, ((CTriggerObject*)pObject)->szTriggerName);
 				break;
 			case CGAMEOBJECT_TYPE_PROJECTILE:
-				s.Format("<PROJ %08X> id=%d", ((CProjectile*)pObject)->e, ((CProjectile*)pObject)->nMissileId);
+				s.Format("<PROJ %X> \"%.8s\"", pObject->e, ((CProjectileArea*)pObject)->rProjectileName);
 				break;
 			case CGAMEOBJECT_TYPE_TILE:
-				//s.Format("<tile-%X> id=%d", ((CTiledObject*)pObject)->e, ((CTiledObject*)pObject)->name);
-				s.Format("<TILE %08X>", pObject->e);
+				s.Format("<TILE %X> \"%.32s\"", pObject->e, ((CTiledObject*)pObject)->szTileName);
 				break;
 			case CGAMEOBJECT_TYPE_SMOKE:
-				s.Format("<SMOKE %08X>", pObject->e);
+				s.Format("<SMOKE %X>", pObject->e);
 				break;
 			case CGAMEOBJECT_TYPE_AREA:
-				s.Format("<AREA %08X>", pObject->e);
+				s.Format("<AREA %X> \"%.32s\"", pObject->e, ((CAreaObject*)pObject)->szScriptName);
 				break;
 			case CGAMEOBJECT_TYPE_BALDUR:
-				s.Format("<BALDUR %08X>", pObject->e);
+				s.Format("<BALDUR %X>", pObject->e);
 				break;
 			default:
-				s.Format("<UNK %08X>", pObject->e);
+				s.Format("<UNK %X>", pObject->e);
 				break;
 			}
 
@@ -260,6 +280,103 @@ IECString LUADump_object(void* p) {
 		}
 	}
 
+	return s;
+}
+
+IECString LUADump_sprite(void* p) {
+	CGameSprite* pObject = (CGameSprite*)p;
+	IECString s = "error";
+	s.Format("%X", pObject->e);
+	return s;
+}
+
+IECString LUADump_sprite_area(void* p) {
+	CAreaObject* pObject = (CAreaObject*)p;
+	IECString s = "error";
+	s.Format("%X", pObject->e);
+	return s;
+}
+
+IECString LUADump_sprite_baldur(void* p) {
+	CBaldurObject* pObject = (CBaldurObject*)p;
+	IECString s = "error";
+	s.Format("%X", pObject->e);
+	return s;
+}
+
+IECString LUADump_sprite_container(void* p) {
+	CContainerObject* pObject = (CContainerObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szContainerName);
+	return s;
+}
+
+IECString LUADump_sprite_creature(void* p) {
+	CCreatureObject* pObject = (CCreatureObject*)p;
+	IECString s = "error";
+	IECString sName;
+
+	if (
+		!stricmp(pObject->szScriptName, "None") ||
+		pObject->szScriptName[0] == 0
+	) {
+		sName.Format("%c%s", pObject->u6752, (LPCTSTR)pObject->rSaveName);
+		sName.Remove('*');
+	} else {
+		sName.Format("\"%.32s\"", pObject->szScriptName);
+	}
+
+	s.Format("%X %s", pObject->e, sName);
+
+	return s;
+}
+
+IECString LUADump_sprite_door(void* p) {
+	CDoorObject* pObject = (CDoorObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szDoorName);
+	return s;
+}
+
+IECString LUADump_sprite_projectile(void* p) {
+	CProjectileArea* pObject = (CProjectileArea*)p;
+	IECString s = "error";
+	s.Format("%X \"%.8s\"", pObject->e, pObject->rProjectileName);
+	return s;
+}
+
+IECString LUADump_sprite_sound(void* p) {
+	CSoundObject* pObject = (CSoundObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szAmbientName);
+	return s;
+}
+
+IECString LUADump_sprite_spawn(void* p) {
+	CSpawningObject* pObject = (CSpawningObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szSpawnName);
+	return s;
+}
+
+IECString LUADump_sprite_static(void* p) {
+	CStaticObject* pObject = (CStaticObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szStaticName);
+	return s;
+}
+
+IECString LUADump_sprite_tile(void* p) {
+	CTiledObject* pObject = (CTiledObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szTileName);
+	return s;
+}
+
+IECString LUADump_sprite_trigger(void* p) {
+	CTriggerObject* pObject = (CTriggerObject*)p;
+	IECString s = "error";
+	s.Format("%X \"%.32s\"", pObject->e, pObject->szTriggerName);
 	return s;
 }
 

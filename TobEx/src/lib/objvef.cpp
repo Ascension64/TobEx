@@ -22,7 +22,7 @@ ResVvcContainer::~ResVvcContainer() {
 			m_pRes->RemoveFromHandler();
 			m_bLoaded = FALSE;
 		}
-		g_pChitin->ResHandler.Free(*m_pRes);
+		g_pChitin->m_ResHandler.Free(*m_pRes);
 		m_pRes = NULL;
 	}
 }

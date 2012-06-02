@@ -1,6 +1,8 @@
 #ifndef LUA_H
 #define LUA_H
 
+#include "stdafx.h"
+
 //Lua 3.0 typedefs
 typedef unsigned int lua_Object;
 typedef float real;
@@ -33,6 +35,18 @@ static const int& g_tableref_toLua_mate = (const int&)(*(int*)0xB8C4D4);
 
 static char* g_szIEluaError = (char*)0xB8C454;
 static size_t g_szIEluaErrorSize = 100;
+
+//CLUA functions
+class CLUAConsole { //size 1h
+public:
+	void DisplayText(IECString s);
+	void StartStore(char* sz);
+protected:
+	char u0;
+};
+
+extern void (CLUAConsole::*CLUAConsole_DisplayText)(IECString);
+extern void (CLUAConsole::*CLUAConsole_StartStore)(char*);
 
 //IELua functions
 extern int (__stdcall *IElua_init)();
@@ -167,6 +181,7 @@ extern int (__cdecl *lua_dostring)(char* str);
 extern lua_Object (__cdecl *lua_pop)();
 extern lua_Object (__cdecl *lua_rawgettable)();
 extern void (__cdecl *lua_error)(char* message);
+extern lua_Object (__cdecl *lua_seterrormethod)();
 extern int (__cdecl *lua_callfunction)(lua_Object function);
 extern lua_Object (__cdecl *lua_gettagmethod)(int tag, char* event);
 extern lua_Object (__cdecl *lua_settagmethod)(int tag, char* event);

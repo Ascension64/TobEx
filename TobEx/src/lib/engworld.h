@@ -10,6 +10,7 @@ class CScreenWorld : public CEngine { //Size 124Ch
 //Constructor: 0x7C3EE0
 public:
 	//AB5768
+	void StartStore(Object& oHost, Object& oCustomer, ResRef rStore, BOOL bCheckMP, BOOL bCheckMPSettings, BOOL bCheckPermissions);
 	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int nUserArg, bool bResetScrollbar);
 	POSITION PrintToConsole(IECString& sLeft, IECString& sRight, int nUserArg, bool bResetScrollbar);
 
@@ -214,6 +215,7 @@ public:
 	int u1248;
 };
 
+extern void (CScreenWorld::*CScreenWorld_StartStore)(Object&, Object&, ResRef, BOOL, BOOL, BOOL);
 extern POSITION (CScreenWorld::*CScreenWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, bool);
 extern POSITION (CScreenWorld::*CScreenWorld_PrintToConsole_4)(IECString&, IECString&, int, bool);
 

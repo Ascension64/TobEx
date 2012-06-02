@@ -180,6 +180,7 @@ Options:
 
 -----1550 Expanded LUA Console [D]
 Greatly expands the in-game LUA console to provide more debugging features
+Restores the function of CLUAConsole:StartStore(), which originally crashed the game
 
 Options:
 -0: disabled

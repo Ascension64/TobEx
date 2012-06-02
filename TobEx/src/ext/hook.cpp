@@ -61,8 +61,11 @@ void InitHooks() {
 
 	DetourFunction(Tramp_CloseLogAndErr, DETOUR_CloseLogAndErr);
 
-	if (pGameOptionsEx->bDebugExpandedLUAConsole)
+	if (pGameOptionsEx->bDebugExpandedLUAConsole) {
 		DetourFunction(Tramp_IElua_init, DETOUR_IElua_init);
+		DetourMemberFunction(Tramp_CLUAConsole_StartStore, DETOUR_CLUAConsole::DETOUR_StartStore);
+
+	}
 
 	if (pGameOptionsEx->bDebugExternalLogging)
 		DetourFunction(Tramp_WriteToFile, DETOUR_WriteToFile);

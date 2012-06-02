@@ -1,7 +1,7 @@
 -- creature.lua
 
 function creature_getstat(_cre, _n)
-  if _cre.type ~= "creature" then
+  if _cre.type ~= "sprite_creature" then
     error("expected a creature object (1)")
   end
   if _n == nil then
@@ -13,8 +13,115 @@ function creature_getstat(_cre, _n)
   p(_cds:stdcall(_f, _n))
 end
 
+function creature_liststates(_cre)
+  if _cre.type ~= "sprite_creature" then
+    error("expected a creature object (1)")
+  end
+  
+  local _state = _cre:getdword("0xb0a")
+  if (_state ~= 0) then
+    p("--State: (" .. dec2hex(_state) .. ")")
+    if band(_state, "0x1") ~= 0 then
+      p("STATE_SLEEPING")
+    end
+    if band(_state, "0x2") ~= 0 then
+      p("STATE_BERSERK")
+    end
+    if band(_state, "0x4") ~= 0 then
+      p("STATE_PANIC")
+    end
+    if band(_state, "0x8") ~= 0 then
+      p("STATE_STUNNED")
+    end
+    if band(_state, "0x10") ~= 0 then
+      p("STATE_INVISIBLE")
+    end
+    if band(_state, "0x20") ~= 0 then
+      p("STATE_HELPLESS")
+    end
+    if band(_state, "0x40") ~= 0 then
+      p("STATE_FROZEN_DEATH")
+    end
+    if band(_state, "0x80") ~= 0 then
+      p("STATE_STONE_DEATH")
+    end
+    if band(_state, "0x100") ~= 0 then
+      p("STATE_EXPLODING_DEATH")
+    end
+    if band(_state, "0x200") ~= 0 then
+      p("STATE_FLAME_DEATH")
+    end
+    if band(_state, "0x400") ~= 0 then
+      p("STATE_ACID_DEATH")
+    end
+    if band(_state, "0x800") ~= 0 then
+      p("STATE_DEAD")
+    end
+    if band(_state, "0x1000") ~= 0 then
+      p("STATE_SILENCED")
+    end
+    if band(_state, "0x2000") ~= 0 then
+      p("STATE_CHARMED")
+    end
+    if band(_state, "0x4000") ~= 0 then
+      p("STATE_POISONED")
+    end
+    if band(_state, "0x8000") ~= 0 then
+      p("STATE_HASTED")
+    end
+    if band(_state, "0x10000") ~= 0 then
+      p("STATE_SLOWED")
+    end
+    if band(_state, "0x20000") ~= 0 then
+      p("STATE_INFRAVISION")
+    end
+    if band(_state, "0x40000") ~= 0 then
+      p("STATE_BLIND")
+    end
+    if band(_state, "0x80000") ~= 0 then
+      p("STATE_DISEASED")
+    end
+    if band(_state, "0x100000") ~= 0 then
+      p("STATE_FEEBLEMINDED")
+    end
+    if band(_state, "0x200000") ~= 0 then
+      p("STATE_NONDETECTION")
+    end
+    if band(_state, "0x400000") ~= 0 then
+      p("STATE_IMPROVEDINVISIBILITY")
+    end
+    if band(_state, "0x800000") ~= 0 then
+      p("STATE_BLESS")
+    end
+    if band(_state, "0x1000000") ~= 0 then
+      p("STATE_CHANT")
+    end
+    if band(_state, "0x2000000") ~= 0 then
+      p("STATE_DRAWUPONHOLYMIGHT")
+    end
+    if band(_state, "0x4000000") ~= 0 then
+      p("STATE_LUCK")
+    end
+    if band(_state, "0x8000000") ~= 0 then
+      p("STATE_AID")
+    end
+    if band(_state, "0x10000000") ~= 0 then
+      p("STATE_CHANTBAD")
+    end
+    if band(_state, "0x20000000") ~= 0 then
+      p("STATE_BLUR")
+    end
+    if band(_state, "0x40000000") ~= 0 then
+      p("STATE_MIRRORIMAGE")
+    end
+    if band(_state, "0x80000000") ~= 0 then
+      p("STATE_CONFUSED")
+    end
+  end
+end
+
 function creature_listtriggers(_cre)
-  if _cre.type ~= "creature" then
+  if _cre.type ~= "sprite_creature" then
     error("expected a creature object (1)")
   end
 
@@ -34,7 +141,7 @@ function creature_listtriggers(_cre)
 end
 
 function creature_listactions(_cre)
-  if _cre.type ~= "creature" then
+  if _cre.type ~= "sprite_creature" then
     error("expected a creature object (1)")
   end
 
@@ -57,7 +164,7 @@ function creature_listactions(_cre)
 end
 
 function creature_listtriggerobjects(_cre)
-  if _cre.type ~= "creature" then
+  if _cre.type ~= "sprite_creature" then
     error("expected a creature object (1)")
   end
 
@@ -165,7 +272,7 @@ function creature_listtriggerobjects(_cre)
 end
 
 function creature_listscripts(_cre)
-  if _cre.type ~= "creature" then
+  if _cre.type ~= "sprite_creature" then
     error("expected a creature object (1)")
   end
 

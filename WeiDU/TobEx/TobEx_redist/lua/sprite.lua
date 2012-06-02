@@ -18,33 +18,33 @@ function sprite_gettype(_obj)
 
   local _type = _obj:getbyte(4)
   if _type == 0 then
-     return "visualeffect"
+     return "sprite_vef"
   elseif _type == 1 then
      return "sprite"
   elseif _type == 16 then -- 0x10
-     return "sound"
+     return "sprite_sound"
   elseif _type == 17 then -- 0x11
-     return "container"
+     return "sprite_container"
   elseif _type == 32 then -- 0x20
-     return "spawn"
+     return "sprite_spawn"
   elseif _type == 33 then -- 0x21
-     return "door"
+     return "sprite_door"
   elseif _type == 48 then -- 0x30
-     return "static"
+     return "sprite_static"
   elseif _type == 49 then -- 0x31
-     return "creature"
+     return "sprite_creature"
   elseif _type == 64 then -- 0x40
-     return "objmarker"
+     return "sprite_objmarker"
   elseif _type == 65 then -- 0x41
-     return "trigobj"
+     return "sprite_trigger"
   elseif _type == 81 then -- 0x51
-     return "tile"
+     return "sprite_tile"
   elseif _type == 96 then -- 0x60
-     return "smoke"
+     return "sprite_smoke"
   elseif _type == 97 then -- 0x61
-     return "area"
+     return "sprite_area"
   elseif _type == 113 then -- 0x71
-     return "baldur"
+     return "sprite_baldur"
   else
     return "notype"
   end

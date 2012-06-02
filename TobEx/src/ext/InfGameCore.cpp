@@ -516,7 +516,7 @@ STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
 
 BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef) {
 	BOOL bPass = TRUE;
-	IECString sCreName(cre.name);
+	IECString sCreName(cre.szScriptName);
 	POINT loc = {0, 0};
 	ResRef rSlotItm = cre.m_Inventory.items[wSlot] ? cre.m_Inventory.items[wSlot]->m_itm.name : "";
 	ResRef rGrabItm = &itmGrabbed ? itmGrabbed.m_itm.name : "";
@@ -598,7 +598,7 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 
 		}
 	} else {
-		IECString sName(cre.name);
+		IECString sName(cre.szScriptName);
 
 		if (cre.m_Inventory.items[wSlot] != NULL) {
 			//fail if target slot has cre-specific item
@@ -648,7 +648,7 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 
 BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef) {
 	BOOL bPass = TRUE;
-	IECString sCreName(cre.name);
+	IECString sCreName(cre.szScriptName);
 	POINT loc = {0, 0};
 	ResRef rSlotItm = cre.m_Inventory.items[wSlot] ? cre.m_Inventory.items[wSlot]->m_itm.name : "";
 	ResRef rGrabItm = &itmGrabbed ? itmGrabbed.m_itm.name : "";
@@ -711,7 +711,7 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 
 		}
 	} else {
-		IECString sName(cre.name);
+		IECString sName(cre.szScriptName);
 
 		if (cre.m_Inventory.items[wSlot] != NULL) {
 			//fail if target slot has cre-specific item

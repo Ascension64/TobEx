@@ -3,7 +3,13 @@
 
 #include "objcore.h"
 
+class CAreaObject : public CGameSprite { //Size 3D8h
+public:
+	int u3d4;
+};
+
 class CAreaObjectEnumList : public IECPtrList { //Size 1Ch
+public:
 	//AB7654, has own procs
 };
 

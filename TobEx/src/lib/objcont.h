@@ -19,7 +19,7 @@ public:
 	char nNumGroundIcons; //696h, for piles
 	char u697;
 	ResRef rTrapScript; //698h
-	char name[32]; //6a0h
+	char szContainerName[32]; //6a0h
 	short wLockDifficulty; //6c0h
 
 	//bit0: locked

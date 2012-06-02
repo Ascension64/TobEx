@@ -5,6 +5,7 @@
 #include "datatypes.h"
 
 //file types
+typedef const int CRES_TYPE;
 const int CRES_TYPE_BMP = 0x001;
 const int CRES_TYPE_WAV = 0x004;
 const int CRES_TYPE_WFX = 0x005;
@@ -239,6 +240,29 @@ public:
 	char u39; //pad
 };
 
+struct CBiffKey { //Size Ch
+	int m_filesize; //0h
+	int offset; //4h, pBiffs + offset = char* biffshortpath
+	short u8; //flags
+	short ua;
+};
+
+struct KeyTable { //Size 24h
+	KeyTableEntry& FindKey(ResRef& rName, CRES_TYPE nResType, BOOL bLogError);
+
+	int u0; //isLoaded or bEnabled?
+	CBiffKey* pBiffKeyArray; //4h - help to find name of biff
+	int nBiffs; //8h
+	int uc; //nKeys
+	KeyTableEntry* keys; //10h
+	int u14;
+	int u18;
+	int u1c;
+	int u20;
+};
+
+extern KeyTableEntry& (KeyTable::*KeyTable_FindKey)(ResRef&, CRES_TYPE, BOOL);
+
 struct CResHandler { //Size 2A8h
 //Constructor: 0x98CB00
 	void Free(Res& res);
@@ -281,25 +305,7 @@ struct CResHandler { //Size 2A8h
 		CRITICAL_SECTION u144; //access to IECPtrList u128
 	} m_cache; //f0h
 		
-	struct KeyTable { //Size 24h
-		int u0; //isLoaded or bEnabled?
-
-		int* pBiffKeyArray; //4h - help to find name of biff
-		//CBiffKey
-		//Size: Ch
-		//int m_filesize; //0h
-		//int offset; //4h, pBiffs + offset = char* biffshortpath
-		//short u8; //flags
-		//short ua;
-
-		int nBiffs; //8h
-		int uc; //nKeys
-		KeyTableEntry* keys; //10h
-		int u14;
-		int u18;
-		int u1c;
-		int u20;
-	} m_KeyTable; //0x24c
+	KeyTable m_KeyTable; //0x24c
 	Res* pResTemp; //270h, CRITICAL_SECTION required to access (see CBaldurChitin)
 	int u274;
 	IECPtrList directories; //278h, AB8E7C, of CStrings (full path directories, e.g. override, cache)

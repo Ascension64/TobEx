@@ -18,6 +18,12 @@ int (ResItm::*ResItm_Release)() =
 void* ResItm::Demand()	{ return (this->*ResItm_Demand)(); }
 int ResItm::Release()	{ return (this->*ResItm_Release)(); }
 
+//KeyTable
+KeyTableEntry& (KeyTable::*KeyTable_FindKey)(ResRef&, CRES_TYPE, BOOL) =
+	SetFP(static_cast<KeyTableEntry& (KeyTable::*)(ResRef&, CRES_TYPE, BOOL)>	(&KeyTable::FindKey),	0x99B009);
+
+KeyTableEntry& KeyTable::FindKey(ResRef& rName, CRES_TYPE nResType, BOOL bLogError) { return (this->*KeyTable_FindKey)(rName, nResType, bLogError); }
+
 //CResHandler
 void (CResHandler::*CResHandler_Free)(Res&) =
 	SetFP(static_cast<void (CResHandler::*)(Res&)>	(&CResHandler::Free),	0x99555F);

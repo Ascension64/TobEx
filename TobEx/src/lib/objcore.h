@@ -266,7 +266,7 @@ public:
 	int u31c; //used with Delay() trigger
 	short u320; //random number, 0-15, used with Delay() trigger
 	short u322;
-	char name[32]; //324h, script name/death var
+	char szScriptName[32]; //324h, script name/death var
 	BOOL u344; //bEmptyActionList?
 	int u348;
 	int u34c;

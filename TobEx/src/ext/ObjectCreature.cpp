@@ -722,7 +722,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		if (nSlotEquippedLauncher != -1) bNotStealableArray[nSlotEquippedLauncher] = 1;
 	}
 
-	IECString sNameTarget(creTarget.name);
+	IECString sNameTarget(creTarget.szScriptName);
 	short nSlotToStealFirst = IERand(*g_pInventorySlots);
 	short nSlotToSteal = nSlotToStealFirst;
 	while (bNotStealableArray[nSlotToSteal] ||

@@ -1,5 +1,16 @@
 #include "lua.h"
 
+#include "stdafx.h"
+
+//CLUAConsole
+void (CLUAConsole::*CLUAConsole_DisplayText)(IECString) =
+	SetFP(static_cast<void (CLUAConsole::*)(IECString)>	(&CLUAConsole::DisplayText),	0x5ACD00);
+void (CLUAConsole::*CLUAConsole_StartStore)(char*) =
+	SetFP(static_cast<void (CLUAConsole::*)(char*)>		(&CLUAConsole::StartStore),		0x5ACF2E);
+
+void CLUAConsole::DisplayText(IECString s) { return (this->*CLUAConsole_DisplayText)(s); }
+void CLUAConsole::StartStore(char* sz) { return (this->*CLUAConsole_StartStore)(sz); }
+
 int (__stdcall *IElua_init)() =
 	reinterpret_cast<int (__stdcall *)()>	(0x5ADD86);
 int (__stdcall *IElua_deinit)() =
@@ -62,6 +73,8 @@ lua_Object (__cdecl *lua_rawgettable)() =
 	reinterpret_cast<lua_Object (__cdecl *)()>	(0xA25F10);
 void (__cdecl *lua_error)(char*) =
 	reinterpret_cast<void (__cdecl *)(char*)>	(0xA25FB0);
+lua_Object (__cdecl *lua_seterrormethod)() =
+	reinterpret_cast<lua_Object (__cdecl *)()>	(0xA26860);
 int (__cdecl *lua_callfunction)(lua_Object) =
 	reinterpret_cast<int (__cdecl *)(lua_Object)>	(0xA266D0);
 lua_Object (__cdecl *lua_gettagmethod)(int, char*) =

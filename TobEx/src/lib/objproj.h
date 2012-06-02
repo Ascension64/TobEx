@@ -150,7 +150,7 @@ public:
 	//v8c, void CProjectile::SetDisplayFlags()
 	//v90, ? void CProjectileBAM::UpdatePosition(x, y)
 
-	ResRef ProjectileName; //2b2h
+	ResRef rProjectileName; //2b2h
 	short nEffectRadius; //2bah, the size of the effect
 	short nTriggerRadius; //2bch, the size of the trigger
 		

@@ -8,7 +8,7 @@
 class CSpawningObject : public CGameObject { //Size 12Eh
 public:
 	//AAAA8C
-	char name[32]; //42h
+	char szSpawnName[32]; //42h
 	short x; //62h
 	short y; //64h
 	ResRef rSpawnTypes[10]; //66h

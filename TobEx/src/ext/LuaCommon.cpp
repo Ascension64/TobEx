@@ -2,8 +2,216 @@
 #include "LuaDump.h"
 
 #include "chitin.h"
+#include <math.h>
 
 int g_TagObjects;
+
+/* pow(x, y)
+Global function
+Executes a pow operation on two numbers and pushes the result onto the Lua stack
+The values can be decimal numbers, or string hexadecimal numbers starting with "0x" */
+void LUA_Pow() {
+	real x;
+	real y;
+
+	lua_Object arg1 = lua_lua2C(1);
+	if (lua_isnil(arg1)) {
+		lua_error("bad argument for ^ operator");
+		return;
+	} else if (lua_isnumber(arg1)) {
+		x = lua_getnumber(arg1);
+	} else if (lua_isstring(arg1)) {
+		sscanf_s(lua_getstring(arg1), "%d", &x);
+	} else {
+		IElua_error_badarg("pow", 1, "number or string");
+		return;
+	}
+
+	lua_Object arg2 = lua_lua2C(2);
+	if (lua_isnil(arg2)) {
+		lua_error("bad argument for ^ operator");
+		return;
+	} else if (lua_isnumber(arg2)) {
+		y = lua_getnumber(arg2);
+	} else if (lua_isstring(arg2)) {
+		sscanf_s(lua_getstring(arg2), "%d", &y);
+	} else {
+		IElua_error_badarg("pow", 2, "number or string");
+		return;
+	}
+
+	lua_pushnumber(pow(x, y));
+	return;
+}
+
+/* mod(x, y)
+Global function
+Executes a mod operation on two numbers and pushes the result onto the Lua stack
+The values can be decimal numbers, or string hexadecimal numbers starting with "0x" */
+void LUA_Mod() {
+	unsigned int x;
+	unsigned int y;
+
+	lua_Object arg1 = lua_lua2C(1);
+	if (lua_isnil(arg1)) {
+		lua_error("bad argument for mod");
+		return;
+	} else if (lua_isnumber(arg1)) {
+		x = (unsigned int)lua_getnumber(arg1);
+	} else if (lua_isstring(arg1)) {
+		sscanf_s(lua_getstring(arg1), "0x%x", &x);
+	} else {
+		IElua_error_badarg("mod", 1, "number or string");
+		return;
+	}
+
+	lua_Object arg2 = lua_lua2C(2);
+	if (lua_isnil(arg2)) {
+		lua_error("bad argument for mod");
+		return;
+	} else if (lua_isnumber(arg2)) {
+		y = (unsigned int)lua_getnumber(arg2);
+	} else if (lua_isstring(arg2)) {
+		sscanf_s(lua_getstring(arg2), "0x%x", &y);
+	} else {
+		IElua_error_badarg("mod", 2, "number or string");
+		return;
+	}
+
+	if (y <= 0) {
+		lua_error("division by zero");
+		return;
+	}
+
+	lua_pushnumber((real)(x % y));
+	return;
+}
+
+/* band(x, y)
+Global function
+Executes a bitwise and operation on two numbers and pushes the result onto the Lua stack
+The values can be decimal numbers, or string hexadecimal numbers starting with "0x" */
+void LUA_BAnd() {
+	unsigned int x;
+	unsigned int y;
+
+	lua_Object arg1 = lua_lua2C(1);
+	if (lua_isnil(arg1)) {
+		lua_error("bad argument for band");
+		return;
+	} else if (lua_isnumber(arg1)) {
+		x = (unsigned int)lua_getnumber(arg1);
+	} else if (lua_isstring(arg1)) {
+		sscanf_s(lua_getstring(arg1), "0x%x", &x);
+	} else {
+		IElua_error_badarg("band", 1, "number or string");
+		return;
+	}
+
+	lua_Object arg2 = lua_lua2C(2);
+	if (lua_isnil(arg2)) {
+		lua_error("bad argument for band");
+		return;
+	} else if (lua_isnumber(arg2)) {
+		y = (unsigned int)lua_getnumber(arg2);
+	} else if (lua_isstring(arg2)) {
+		sscanf_s(lua_getstring(arg2), "0x%x", &y);
+	} else {
+		IElua_error_badarg("band", 2, "number or string");
+		return;
+	}
+
+	lua_pushnumber((real)(x & y));
+	return;
+}
+
+/* bor(x, y)
+Global function
+Executes a bitwise or operation on two numbers and pushes the result onto the Lua stack
+The values can be decimal numbers, or string hexadecimal numbers starting with "0x" */
+void LUA_BOr() {
+	unsigned int x;
+	unsigned int y;
+
+	lua_Object arg1 = lua_lua2C(1);
+	if (lua_isnil(arg1)) {
+		lua_error("bad argument for bor");
+		return;
+	} else if (lua_isnumber(arg1)) {
+		x = (unsigned int)lua_getnumber(arg1);
+	} else if (lua_isstring(arg1)) {
+		sscanf_s(lua_getstring(arg1), "0x%x", &x);
+	} else {
+		IElua_error_badarg("bor", 1, "number or string");
+		return;
+	}
+
+	lua_Object arg2 = lua_lua2C(2);
+	if (lua_isnil(arg2)) {
+		lua_error("bad argument for bor");
+		return;
+	} else if (lua_isnumber(arg2)) {
+		y = (unsigned int)lua_getnumber(arg2);
+	} else if (lua_isstring(arg2)) {
+		sscanf_s(lua_getstring(arg2), "0x%x", &y);
+	} else {
+		IElua_error_badarg("bor", 2, "number or string");
+		return;
+	}
+
+	lua_pushnumber((real)(x | y));
+	return;
+}
+
+/* dec2hex(number)
+Global function
+Converts a decimal number to a string hexadecimal number starting with "0x" and pushes it onto the Lua stack */
+void LUA_Dec2Hex() {
+	int n;
+	IECString s;
+
+	lua_Object arg1 = lua_lua2C(1);
+	if (IElua_getparam(1, g_IETagNumber)) {
+		n = (int)IElua_getnumber(arg1);
+	} else {
+		IElua_error_badarg("dec2hex", 1, "number");
+		return;
+	}
+
+	if (lua_lua2C(2)) {
+		IElua_error_toomanyargs("dec2hex");
+		return;
+	}
+
+	s.Format("0x%x", n);
+	lua_pushstring(s.GetBuffer(0));
+	return;
+}
+
+/* hex2dec(string)
+Global function
+Converts a string hexadecimal number starting with "0x" into a decimal number and pushes it onto the Lua stack */
+void LUA_Hex2Dec() {
+	int n;
+	IECString s;
+
+	lua_Object arg1 = lua_lua2C(1);
+	if (IElua_getparam(1, g_IETagString)) {
+		s = IElua_getstring(arg1);
+	} else {
+		IElua_error_badarg("hex2dec", 1, "string");
+		return;
+	}
+
+	if (lua_lua2C(2)) {
+		IElua_error_toomanyargs("hex2dec");
+		return;
+	}
+
+	sscanf_s((LPCTSTR)s, "0x%x", &n);
+	lua_pushnumber(n);
+	return;
+}
 
 /* pushuserdata(number)
 Global function
@@ -104,7 +312,7 @@ void LUA_GetSprite() {
 	}
 
 	if (lua_lua2C(2)) {
-		IElua_error_toomanyargs("getobject");
+		IElua_error_toomanyargs("getsprite");
 		return;
 	}
 

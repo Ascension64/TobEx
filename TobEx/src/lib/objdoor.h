@@ -11,7 +11,7 @@ class CDoorObject : public CGameSprite { //Size 544h
 public:
 	//AA7478
 	int u3d4; //unused?
-	ResRef doorId; //3d8h
+	ResRef rDoorId; //3d8h
 	RECT BoundsOpen; //3e0h
 	RECT BoundsClosed; //3f0h
 	int nCursorIdx; //400h
@@ -38,8 +38,8 @@ public:
 		POSITION* uc; //of owning list CArea::IECPtrList u9ca
 		ResRef u10; //doorId
 	} u438;
-	char doorName[32]; //450h
-	char triggerPointName[32]; //470h
+	char szDoorName[32]; //450h
+	char szTriggerPointName[32]; //470h
 	short u490; //if unk54h in door is 0, then = 20, otherwsie = unk54h
 	short u492; //unk56h in door
 	ResRef doorOpenSound; //494h

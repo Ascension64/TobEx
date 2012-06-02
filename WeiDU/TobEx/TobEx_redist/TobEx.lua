@@ -10,6 +10,8 @@ function p(text)
   CLUAConsole:DisplayText(tostring(text))
 end
 
+settagmethod(tag(0), "pow", pow)
+
 --dump functions
 dofile("TobEx_ini/lua/dump.lua")
 dofile("TobEx_ini/lua/area.lua")

@@ -94,6 +94,8 @@ char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef) =
 	SetFP(static_cast<char (CCreatureObject::*)(int, ResRef)>				(&CCreatureObject::GetNumUniqueMemSpellMage),0x8DAE88);
 BOOL (CCreatureObject::*CCreatureObject_InDialogAction)() =
 	SetFP(static_cast<BOOL (CCreatureObject::*)()>							(&CCreatureObject::InDialogAction),			0x8DE5F5);
+void (CCreatureObject::*CCreatureObject_SetSaveName)(ResRef&) =
+	SetFP(static_cast<void (CCreatureObject::*)(ResRef&)>					(&CCreatureObject::SetSaveName),			0x8DF047);
 unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 	SetFP(static_cast<unsigned int (CCreatureObject::*)()>					(&CCreatureObject::GetKitUnusableFlag),		0x8E066B);
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
@@ -165,6 +167,7 @@ void CCreatureObject::SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bSt
 void CCreatureObject::ValidateAttackSequence(char* pSeq)						{ return (this->*CCreatureObject_ValidateAttackSequence)(pSeq); }
 char CCreatureObject::GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp)		{ return (this->*CCreatureObject_GetNumUniqueMemSpellMage)(nLevel, rTemp); }
 BOOL CCreatureObject::InDialogAction()											{ return (this->*CCreatureObject_InDialogAction)(); }
+void CCreatureObject::SetSaveName(ResRef& rName)								{ return (this->*CCreatureObject_SetSaveName)(rName); }
 unsigned int CCreatureObject::GetKitUnusableFlag()								{ return (this->*CCreatureObject_GetKitUnusableFlag)(); }
 void CCreatureObject::PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6) {
 	return (this->*CCreatureObject_PrintEventMessage)(wEventId, nParam1, nParam2, nParam3, strrefParam4, bParam5, sParam6);

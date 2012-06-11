@@ -149,6 +149,7 @@ public:
 	void ValidateAttackSequence(char* pSeq);
 	char GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp);
 	BOOL InDialogAction();
+	void SetSaveName(ResRef& rName);
 	unsigned int GetKitUnusableFlag();
 	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
 	ACTIONRESULT ActionMoveToObject(CGameObject& cgoTarget);
@@ -393,7 +394,7 @@ public:
 	short u3556; //assoc actions
 	short m_wMoveToFrontDelay; //3558h, countdown to move to front vertical list on resurrect?
 	short m_wMoveToMiddleDelay; //355ah, countdown to move to middle vertical list on death?
-	BOOL m_bDead; //355ch, set by CEffectInstandDeath
+	BOOL m_bDead; //355ch, set by CEffectInstantDeath
 	BOOL m_bResurrect; //3560h, set by CEffectResurrect
 	CEffectList m_EffectsEquipped; //3564h, for while equipped effects
 	CEffectList m_EffectsMain; //3590h, for all other effects
@@ -619,6 +620,7 @@ extern void (CCreatureObject::*CCreatureObject_SetSpellMemorizedState)(ResSplCon
 extern void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*);
 extern char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef);
 extern BOOL (CCreatureObject::*CCreatureObject_InDialogAction)();
+extern void (CCreatureObject::*CCreatureObject_SetSaveName)(ResRef&);
 extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
 extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
 extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionMoveToObject)(CGameObject&);

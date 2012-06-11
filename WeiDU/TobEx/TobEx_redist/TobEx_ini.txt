@@ -1,4 +1,4 @@
-//1550 This file contains descriptions for all the hack options found in TobEx .ini files
+//1560 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -48,6 +48,14 @@ To make all animations attacks statistical attacks, the RNDBASE files need to be
 Options:
 -0: disabled
 -1: enabled
+
+-----1560 ChangeAnimation Action Fix [F]
+Corrects an error where state flags are not inherited by the creature replacing the old creature
+
+Options:
+-0: disabled
+-1: enabled
+
 
 -----770 EquipRanged Action Fix [F]
 Corrects an error in the EquipRanged() action where an equipped shield would prevent one-handed ranged weapons in the weapon slot to be equipped

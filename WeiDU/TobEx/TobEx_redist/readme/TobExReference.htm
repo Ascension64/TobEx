@@ -954,6 +954,8 @@
             <li><a href="#actions-34">34 UseItem(S:Object*,O:Target*)</a></li>
             <li><a href="#actions-97">97 UseItemPoint(S:Item,P:Target*,I:Ability*)</a></li>
             <li><a href="#actions-174">174 EquipRanged()</a></li>
+            <li><a href="#actions-194">194 ChangeAnimation(S:ResRef*)</a></li>
+            <li><a href="#actions-219">219 ChangeAnimationNoEffect(S:ResRef*)</a></li>
             <li><a href="#actions-274">274 AddKit(I:Kit*KIT)</a></li>
             <li><a href="#actions-289">289 AddSuperKit(I:Kit*KIT)</a></li>
             <li><a href="#actions-317">317 PlaySong(I:Song*)</a></li>
@@ -986,6 +988,12 @@
           <hr />
           <a name="actions-174" id="actions-174"></a><p><strong>174 EquipRanged()</strong><br />
           <i>TobEx fixes this action opcode so that one-handed ranged weapons are equipped with this action when a shield is currently equipped</i></p>
+          <hr />
+          <a name="actions-194" id="actions-194"></a><p><strong>194 ChangeAnimation(S:ResRef*)</strong><br />
+          <i>TobEx fixes a bug with this action opcode where a creature killed during this action does not die correctly, resulting in an invincible creature with zero hit points.</i></p>
+          <hr />
+          <a name="actions-219" id="actions-219"></a><p><strong>219 ChangeAnimationNoEffect(S:ResRef*)</strong><br />
+          <i>TobEx fixes a bug with this action opcode where a creature killed during this action does not die correctly, resulting in an invincible creature with zero hit points.</i></p>
           <hr />
           <a name="actions-274" id="actions-274"></a><p><strong>274 AddKit(I:Kit*KIT)</strong><br />
           <i>Fixed so the full dword of I:Kit is saved into the creature rather than the low word. This specifically allows setting BARBARIAN (0x40000000) and WILDMAGE (0x80000000) kits.</i></p>

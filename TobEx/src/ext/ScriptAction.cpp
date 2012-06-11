@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "effcore.h"
 #include "msgcore.h"
+#include "objcre.h"
 #include "chitin.h"
 #include "InfGameCommon.h"
 #include "ScriptCommon.h"
@@ -237,4 +238,10 @@ ACTIONRESULT CGameSprite_ActionClearBlockVars(CGameSprite& sprite) {
 	}
 
 	return ACTIONRESULT_NONE;
+}
+
+void CCreatureObject_ActionChangeAnimation_CopyState(CCreatureObject& creOld, CCreatureObject& creNew) {
+	creNew.SetSaveName(ResRef(creOld.aCurrent.GetSName1()));
+	if (creOld.m_BaseStats.currentHP <= 0) creNew.m_BaseStats.stateFlags |= STATE_DEAD;
+	return;
 }

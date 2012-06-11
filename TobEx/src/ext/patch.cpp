@@ -750,6 +750,35 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bActionChangeAnimFix) {
+		//mov ecx,dword ptr ss:[ebp-98]
+		//push ecx
+		//mov ecx,dword ptr ss:[ebp-178]
+		//push ecx
+		//call
+		char bytes[] = {0x8B, 0x8D, 0x68, 0xFF, 0xFF, 0xFF,
+						0x51,
+						0x8B, 0x8D, 0x88, 0xFE, 0xFF, 0xFF,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x951C10, 15, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_ActionChangeAnimation_CopyState;
+		DWORD address = (DWORD)ptr - 5  - 0x951C1E;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x951C1F, 4, bytes2) );
+
+		//jmp 951C34
+		//nop
+		char bytes3[] = {0xEB, 0x0F,
+						0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x951C23, 5, bytes3) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+	
 	if (pGameOptionsEx->bActionEquipRangedFix) {
 		//mov al,byte ptr ds:[edx]
 		//cmp al,2 (TYPE_RANGED)
@@ -947,6 +976,15 @@ void InitPatches() {
 		char bytes8[] = {0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x90DE7A, 10, bytes8) );
 
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	//CEffect::Unmarshal() copies the unused fields over
+	//important say for Use EFF File saving child effects properly
+	{
+		char bytes[] = {0x1A};
+		vDataList.push_back( Data(0x4F3E35, 1, bytes) );
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

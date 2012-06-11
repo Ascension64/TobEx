@@ -95,7 +95,7 @@ public:
 	//AA6844
 	virtual ~CGameObject() {} //v0
 	virtual char GetType() { return 0; } //v4
-	virtual void v8() {} //AddToArea(pArea, POINT, zPos, type)
+	virtual void AddToArea(CArea& area, POINT& pt, int zPos, char cVertListType) {} //v8
 	virtual void AIUpdate() {} //vc
 	virtual Object& GetCurrentObject() { return o; } //return a value
 	virtual void v14() {} //v14 (dw 3738h) - get some enum?

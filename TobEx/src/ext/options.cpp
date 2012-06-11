@@ -14,6 +14,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bActionAddKitFix = FALSE;
 	bActionAttackOnceFix = FALSE;
 	bActionAttacksGenuine = FALSE;
+	bActionChangeAnimFix = FALSE;
 	bActionEquipRangedFix = FALSE;
 	bActionExpandedActions = FALSE;
 	bActionJoinPartyFix = FALSE;
@@ -183,6 +184,7 @@ void CGameOptionsEx::Init() {
 	bActionAddKitFix = GetCoreIniValue("Action", "AddKit Actions Fix");
 	bActionAttackOnceFix = GetCoreIniValue("Action", "AttackOnce Action Fix");
 	bActionAttacksGenuine = GetTweakIniValue("Tweak", "Action:Attacks Are All Genuine");
+	bActionChangeAnimFix = GetCoreIniValue("Action", "ChangeAnimation Action Fix");
 	bActionEquipRangedFix = GetCoreIniValue("Action", "EquipRanged Action Fix");
 	bActionExpandedActions = GetCoreIniValue("Action", "Expanded Actions");
 	bActionJoinPartyFix = GetCoreIniValue("Action", "JoinParty Action Class Ability Refresh Fix");

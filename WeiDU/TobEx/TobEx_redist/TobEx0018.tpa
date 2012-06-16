@@ -133,7 +133,7 @@ COPY_EXISTING "guicg.chu" "override/guicg.chu"
 LAF tobex_copy STR_VAR file = "racetext.2da" END
 
 //Enlarge Tooltip Scroll
-LAF tobex_copy STR_VAR file = "toolscrl.bam" END
+COPY "%TOBEX_MOD_DIRECTORY%/TobEx_redist/override/toolscrl.bam" "override/toolscrl.bam"
 
 //Scrollable Mage Spellbook
 COPY_EXISTING "guimg.chu" "override/guimg.chu"

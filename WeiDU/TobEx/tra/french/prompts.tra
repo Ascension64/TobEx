@@ -13,9 +13,9 @@ Les [R]einstaller, les s[U]pprimer, les [S]auter, dem[A]nder pour chacun ? "
 
 @-1006= "Installer le composant ["
 @-1007= "] ?
-[R]einstaller, co[N]server ou s[U]pprimer ou [Q]uitter ? "
+[R]einstaller, co[N]server, s[U]pprimer ou [Q]uitter ? "
 @-1008= "] ?
-[I]nstaller, ou [N]e pas installer ou [Q]uitter ? "
+[I]nstaller, [N]e pas installer ou [Q]uitter ? "
 
 @-1009= "Entrez une partie du nom du module : "
 
@@ -30,7 +30,7 @@ Les [R]einstaller, les s[U]pprimer, les [S]auter, dem[A]nder pour chacun ? "
 @-1016= "Installation en cours"
 @-1017= "ERREUR pendant l'installation de ["
 @-1018= "], retour a l'etat anterieur"
-@-1019= "INSTALLATION REUSSIE"
+@-1019= "INSTALLATION REUSSIE                  "
 @-1020= "Saute"
 @-1021= "Suppression de ["
 @-1022= "] (composant #"
@@ -52,7 +52,7 @@ choisir un parmi :"
 @-1031= "] ?
 [R]einstaller, co[N]server, [Q]uitter ou choisir un parmi :"
 @-1032= "INSTALLATION ECHOUEE A CAUSE D'ERREURS"
-@-1033= "INSTALLATION AVEC DES ALERTES"
+@-1033= "INSTALLATION AVEC DES ALERTES         "
 @-1034= "Souhaitez-vous afficher les instructions (ReadMe) ? [Y]Oui [N]on"
 @-1035= "Dans la langue"
 

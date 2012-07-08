@@ -3013,61 +3013,64 @@ BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (bValidTarget) {
 		ResEffContainer rec(effect.rResource);
 		CEffect* pEff = &rec.CreateCEffect();
-		pEff->effect.ptSource = effect.ptSource;
-		pEff->enum2 = enum2;
-		pEff->eSource = eSource;
-		pEff->effect.ptDest = effect.ptDest;
-		pEff->effect.nDuration = effect.nDuration;
-		pEff->effect.nTiming = effect.nTiming;
-		pEff->effect.bDoSingleUse = effect.bDoSingleUse;
+		if (pEff) {
+			pEff->effect.ptSource = effect.ptSource;
+			pEff->enum2 = enum2;
+			pEff->eSource = eSource;
+			pEff->effect.ptDest = effect.ptDest;
+			pEff->effect.nDuration = effect.nDuration;
+			pEff->effect.nTiming = effect.nTiming;
+			pEff->effect.bDoSingleUse = effect.bDoSingleUse;
 
-		//new - restore child effect's parameters and resources from previous application
-		if (effect.nParam3) { //bSuccess
-			if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
-				pEff->effect.ud0[0] = effect.ud0[0];
-				pEff->effect.ud0[1] = effect.ud0[1];
-				pEff->effect.ud0[2] = effect.ud0[2];
-				pEff->effect.ud0[3] = effect.ud0[3];
-			} else {
-				pEff->effect.nParam1 = effect.ud0[0];
-				pEff->effect.nParam2 = effect.ud0[1];
-				pEff->effect.nParam3 = effect.ud0[2];
-				pEff->effect.nParam4 = effect.ud0[3];
+			//new - restore child effect's parameters and resources from previous application
+			if (effect.nParam3) { //bSuccess
+				if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
+					pEff->effect.ud0[0] = effect.ud0[0];
+					pEff->effect.ud0[1] = effect.ud0[1];
+					pEff->effect.ud0[2] = effect.ud0[2];
+					pEff->effect.ud0[3] = effect.ud0[3];
+				} else {
+					pEff->effect.nParam1 = effect.ud0[0];
+					pEff->effect.nParam2 = effect.ud0[1];
+					pEff->effect.nParam3 = effect.ud0[2];
+					pEff->effect.nParam4 = effect.ud0[3];
+				}
 			}
+
+			if (effect.nParam3 || //bSuccess
+				TryApplyEffect(
+					creTarget,
+					&creTarget.m_cRandSaveDeath,
+					&creTarget.m_cRandSaveWand,
+					&creTarget.m_cRandSavePolymorph,
+					&creTarget.m_cRandSaveBreath,
+					&creTarget.m_cRandSaveSpell,
+					&creTarget.m_cRandResistMagic,
+					&creTarget.m_cRandEffProb
+				)
+			) {
+				effect.nParam3 = TRUE;
+				pEff->ApplyEffect(creTarget);
+				if (pEff->bPurge) bPurge = TRUE;
+				effect.bDoSingleUse = pEff->effect.bDoSingleUse;
+
+				//new - store child effect's parameters and resources
+				if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
+					effect.ud0[0] = pEff->effect.ud0[0];
+					effect.ud0[1] = pEff->effect.ud0[1];
+					effect.ud0[2] = pEff->effect.ud0[2];
+					effect.ud0[3] = pEff->effect.ud0[3];
+				} else {
+					effect.ud0[0] = pEff->effect.nParam1;
+					effect.ud0[1] = pEff->effect.nParam2;
+					effect.ud0[2] = pEff->effect.nParam3;
+					effect.ud0[3] = pEff->effect.nParam4;
+				}
+			} else bPurge = TRUE;
+
+			delete pEff;
+			pEff = NULL;
 		}
-
-		if (effect.nParam3 || //bSuccess
-			TryApplyEffect(
-				creTarget,
-				&creTarget.m_cRandSaveDeath,
-				&creTarget.m_cRandSaveWand,
-				&creTarget.m_cRandSavePolymorph,
-				&creTarget.m_cRandSaveBreath,
-				&creTarget.m_cRandSaveSpell,
-				&creTarget.m_cRandResistMagic,
-				&creTarget.m_cRandEffProb
-			)
-		) {
-			effect.nParam3 = TRUE;
-			pEff->ApplyEffect(creTarget);
-			if (pEff->bPurge) bPurge = TRUE;
-			effect.bDoSingleUse = pEff->effect.bDoSingleUse;
-
-			//new - store child effect's parameters and resources
-			if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
-				effect.ud0[0] = pEff->effect.ud0[0];
-				effect.ud0[1] = pEff->effect.ud0[1];
-				effect.ud0[2] = pEff->effect.ud0[2];
-				effect.ud0[3] = pEff->effect.ud0[3];
-			} else {
-				effect.ud0[0] = pEff->effect.nParam1;
-				effect.ud0[1] = pEff->effect.nParam2;
-				effect.ud0[2] = pEff->effect.nParam3;
-				effect.ud0[3] = pEff->effect.nParam4;
-			}
-		} else bPurge = TRUE;
-
-		delete pEff;
 	} else bPurge = TRUE;
 
 	return TRUE;

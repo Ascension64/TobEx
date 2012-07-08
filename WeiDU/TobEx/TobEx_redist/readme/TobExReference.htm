@@ -314,6 +314,7 @@
           <p><a href="#intro">Introduction</a></p>
           <p>Main: <a href="#engine">Engine</a> &middot;
           <a href="#debugging">Debugging</a> &middot;
+          <a href="#lua">Lua</a> &middot;
           <a href="#ruleset">Ruleset</a></p>
           <p>Scripting: <a href="#triggers">Triggers</a> &middot;
           <a href="#actions">Actions</a> &middot;
@@ -417,7 +418,7 @@
             <li>With X/2 attacks, the attack that occurs once every two rounds now always occurs every two rounds (rather than a random probability of the attack taking place every single round)</li>
             <li>With 3/2 attacks, the attack that occurs once every two rounds now always uses the offhand if an offhand weapon is present (rather than the offhand never being used)</li>
           </ul>
-          <p><strong>Option:</strong> TobEx gives the option of making all attack animations genuine statistical attacks..</p>
+          <p><strong>Option:</strong> TobEx gives the option of making all attack animations genuine statistical attacks.</p>
           <hr />
           <a name="engine-auto-pause" id="engine-auto-pause"></a><h3>Auto-pause</h3>
           <p><strong>Option:</strong> TobEx gives the option of allowing auto-pause to work on any screen in single player. The behavior mimics that of multiplayer. The original behaviour is that auto-pause only works in the main game screen when in single player.</p>
@@ -506,6 +507,7 @@
           <p>The debugging features of TobEx include:</p>
           <ul>
             <li>A console that logs a variety of internal and TobEx-specific text</li>
+            <li>Expansion of the Lua console to enhance real-time debugging. See the <a href="#lua">Lua section</a> for more details.</li>
             <li>Message boxes of assertion failures will always show when they occur</li>
             <li>Internal logging text, including assertion failures, assertion warnings, network errors, and other internal messages, can be displayed in the TobEx console and logged to TobEx.log</li>
             <li>For assertion failures, TobEx reports a debugging address that is displayed in the console and logged to TobEx.log</li>
@@ -520,6 +522,371 @@
           </address>
         </div>
 
+        <!-- ================== L u a ================== -->
+        <a name="lua" id="lua"></a>
+        <div class="content">
+          <h2>Lua</h2>
+          <p>Baldur's Gate II: Throne of Bhaal uses Lua 3.0 in a limited fashion to facilitate debugging. For an introduction to Lua 3.0 and lua programming syntax, read <a href="http://www.lua.org/manual/3.0/manual.html#4.">Chapter 4</a> of the <a href="http://www.lua.org/manual/3.0/">Lua manual</a>. For a brief description of the CLUAConsole commands, refer to the <a href="http://iesdp.gibberlings3.net/appendices/clua/bg2.htm">Infinity Engine Structures Description Project website</a>.</p>
+          <p>TobEx makes changes to the following CLUAConsole functions:</p>
+          <ul>
+            <li><strong>StartStore(ResRef)</strong>: TobEx fixes the crash associated with using this function, which starts the store named by ResRef with Player1 as the customer.</li>
+          </ul>
+          <hr />
+          <p>TobEx expands on the use of Lua 3.0 for in-game debugging purposes and provides capabilities for modders and users to extend Lua debugging functions. Preset Lua functions imported into Baldur's Gate II: Throne of Bhaal are those described only in <a href="http://www.lua.org/manual/3.0/manual.html#6.1">Chapter 6.1</a> of the <a href="http://www.lua.org/manual/3.0/">Lua Reference Manual</a>. New user-defined functions can be defined by extending TobEx_ini/TobEx.lua or included .lua files. TobEx defines the following new functions:</p>
+          <h3>Global functions (defined internally in C)</h3>
+          <ul>
+            <li><a href="#lua-band">band</a></li>
+            <li><a href="#lua-bor">bor</a></li>
+            <li><a href="#lua-createobject">createobject</a></li>
+            <li><a href="#lua-dec2hex">dec2hex</a></li>
+            <li><a href="#lua-hex2dec">hex2dec</a></li>
+            <li><a href="#lua-getsprite">getsprite</a></li>
+            <li><a href="#lua-mod">mod</a></li>
+            <li><a href="#lua-pow">pow</a></li>
+            <li><a href="#lua-pushfunction">pushfunction</a></li>
+            <li><a href="#lua-pushuserdata">pushuserdata</a></li>
+            <li><a href="#lua-u2n">u2n</a></li>
+          </ul>
+          <h3>TobExObject tag methods (defined internally in C)</h3>
+          <ul>
+            <li><a href="#lua-cdecl">cdecl</a></li>
+            <li><a href="#lua-getaddress">getaddress</a></li>
+            <li><a href="#lua-getbyte">getbyte</a></li>
+            <li><a href="#lua-getdword">getdword</a></li>
+            <li><a href="#lua-getlist">getlist</a></li>
+            <li><a href="#lua-getpointer">getpointer</a></li>
+            <li><a href="#lua-getstring">getstring</a></li>
+            <li><a href="#lua-getword">getword</a></li>
+            <li><a href="#lua-print">print</a></li>
+            <li><a href="#lua-stdcall">stdcall</a></li>
+          </ul>
+          <h3>Global functions (defined externally in Lua)</h3>
+          <ul>
+            <li><a href="#lua-area_getcurrent">area_getcurrent</a></li>
+            <li><a href="#lua-area_listsprites">area_listsprites</a></li>
+            <li><a href="#lua-creature_getstat">creature_getstat</a></li>
+            <li><a href="#lua-creature_liststates">creature_liststates</a></li>
+            <li><a href="#lua-creature_listtriggers">creature_listtriggers</a></li>
+            <li><a href="#lua-creature_listactions">creature_listactions</a></li>
+            <li><a href="#lua-creature_listtriggerobjects">creature_listtriggerobjects</a></li>
+            <li><a href="#lua-creature_listscripts">creature_listscripts</a></li>
+            <li><a href="#lua-dump">dump</a></li>
+            <li><a href="#lua-dump_table">dump_table</a></li>
+            <li><a href="#lua-p">p</a></li>
+            <li><a href="#lua-sprite_getcurrent">sprite_getcurrent</a></li>
+            <li><a href="#lua-sprite_gettype">sprite_gettype</a></li>
+          </ul>
+          <hr />
+          <a name="lua-area_getcurrent" id="lua-area_getcurrent"></a><h4>area_getcurrent()</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (area.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> None</li>
+            <li><strong>Returns:</strong> TobExObject (type "area")</li>
+            <li><strong>Behaviour:</strong> Creates a TobExObject referencing the current area.</li>
+          </ul>
+         <hr />
+          <a name="lua-area_listsprites" id="lua-area_listsprites"></a><h4>area_listsprites(are)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (area.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> are - TobExObject (type "area")</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of all the sprites in the current area into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-band" id="lua-band"></a><h4>band(x,y)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> x,y - number of hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Performs a bitwise AND (x & y) operation. There is no operator synonym for this function.</li>
+          </ul>
+          <hr />
+          <a name="lua-bor" id="lua-bor"></a><h4>bor(x,y)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> x,y - number of hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Performs a bitwise OR (x | y) operation. There is no operator synonym for this function.</li>
+          </ul>
+          <hr />
+          <a name="lua-cdecl" id="lua-cdecl"></a><h4>cdecl(f, [args...])</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> f - cfunction; args... (optional) - any type</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Pushes 'args...' onto the C stack, and calls 'f' using the <i>cdecl</i> calling convention. Arguments of type Lua function and table are ignored, and arguments of nil or non-existent arguments terminate the argument list. The TobExObject is placed into the ecx register as per <i>thiscall</i>. The return value in the eax register is pushed onto the Lua stack as a number.</li>
+          </ul>
+          <hr />
+          <a name="lua-createobject" id="lua-createobject"></a><h4>createobject(u, [type])</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> u - userdata; type (optional) - string</li>
+            <li><strong>Returns:</strong> TobExObject</li>
+            <li><strong>Behaviour:</strong> Creates a TobExObject referencing userdata of type "notype" or 'type' (if explicitly specified). A TobExObject is a global Lua table set to tag "TobExObject" containing the fields "type"->string and "userdata"->userdata. TobExObjects  have access to all functions under the TobExObject tag method scope.</li>
+          </ul>
+          <hr />
+          <a name="lua-creature_getstat" id="lua-creature_getstat"></a><h4>creature_getstat(cre, n)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (creature.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> cre - TobExObject (type "creature"); n - number</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Gets the value of stat number 'n' of the creature.</li>
+          </ul>
+          <hr />
+          <a name="lua-creature_listactions" id="lua-creature_listactions"></a><h4>creature_listactions(cre)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (creature.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> cre - TobExObject (type "creature")</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of all the actions of the creature into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-creature_listscripts" id="lua-creature_listscripts"></a><h4>creature_listscripts(cre)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (creature.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> cre - TobExObject (type "creature")</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of the script ResRefs assigned to the creature, and the current script-block-response currently running, into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-creature_liststates" id="lua-creature_liststates"></a><h4>creature_liststates(cre)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (creature.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> cre - TobExObject (type "creature")</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of all the states that apply to the creature into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-creature_listtriggerobjects" id="lua-creature_listtriggerobjects"></a><h4>creature_listtriggerobjects(_cre)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (creature.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> cre - TobExObject (type "creature")</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of all the trigger objects of the creature into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-creature_listtriggers" id="lua-creature_listtriggers"></a><h4>creature_listtriggers(cre)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (creature.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> cre - TobExObject (type "creature")</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of all the triggers of the creature into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-dec2hex" id="lua-dec2hex"></a><h4>dec2hex(n)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> n - number</li>
+            <li><strong>Returns:</strong> String</li>
+            <li><strong>Behaviour:</strong> Converts a decimal number into a hexadecimal string beginning with "0x".</li>
+          </ul>
+          <hr />
+          <a name="lua-dump" id="lua-dump"></a><h4>dump()</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> None</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of all Lua global variables into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-dump_table" id="lua-dump_table"></a><h4>dump_table(t, name)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> t - table; name - string</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Dumps text of a Lua table into the dialogue window. 'name' is displayed as a prefix to every line of the dump.</li>
+          </ul>
+          <hr />
+          <a name="lua-getaddress" id="lua-getaddress"></a><h4>getaddress(address)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Userdata</li>
+            <li><strong>Behaviour:</strong> Gets 'address' relative to the TobExObject reference address.</li>
+          </ul>
+          <hr />
+          <a name="lua-getbyte" id="lua-getbyte"></a><h4>getbyte(address)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Gets the byte (8-bit) value at 'address' relative to the TobExObject reference address.</li>
+          </ul>
+          <hr />
+          <a name="lua-getdword" id="lua-getdword"></a><h4>getdword(address)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Gets the dword (32-bit) value at 'address' relative to the TobExObject reference address.</li>
+          </ul>
+          <hr />
+          <a name="lua-getlist" id="lua-getlist"></a><h4>getlist(address)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Table</li>
+            <li><strong>Behaviour:</strong> Pushes a table derived from the CPtrList object at 'address' relative to the TobExObject reference address. The index of each table element is the index from the head of a MFC CList object {0,1,2,...}, and the value is its corresponding value.</li>
+          </ul>
+          <hr />
+          <a name="lua-getpointer" id="lua-getpointer"></a><h4>getpointer(address)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Userdata</li>
+            <li><strong>Behaviour:</strong> Gets the value (pointer) at 'address' relative to the TobExObject reference address.</li>
+          </ul>
+          <hr />
+          <a name="lua-getsprite" id="lua-getsprite"></a><h4>getsprite(enum|scriptname)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> enum - number or hexadecimal string (beginning with "0x"); scriptname - string</li>
+            <li><strong>Returns:</strong> Userdata</li>
+            <li><strong>Behaviour:</strong> Gets a reference to a game sprite by by enum (instance index) or scriptname as type userdata.</li>
+          </ul>
+          <hr />
+          <a name="lua-getstring" id="lua-getstring"></a><h4>getstring(address, [length])</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x"); length (optional) - number</li>
+            <li><strong>Returns:</strong> String</li>
+            <li><strong>Behaviour:</strong> Gets the string (terminating at the first nul character, or of specified length 'length') at 'address' relative to the TobExObject reference address.</li>
+          </ul>
+          <hr />
+          <a name="lua-getword" id="lua-getword"></a><h4>getword(address)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> address - number or hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Gets the word (16-bit) value at 'address' relative to the TobExObject reference address.</li>
+          </ul>
+          <hr />
+          <a name="lua-hex2dec" id="lua-hex2dec"></a><h4>hex2dec(string)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> string - hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Converts a hexadecimal string to a decimal number.</li>
+          </ul>
+          <hr />
+          <a name="lua-mod" id="lua-mod"></a><h4>mod(x,y)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> x,y - number of hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Performs a mod (x mod y) operation.</li>
+          </ul>
+          <hr />
+          <a name="lua-p" id="lua-p"></a><h4>p(text)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> text - any type</li>
+            <li><strong>Returns:</strong> None</li>
+            <li><strong>Behaviour:</strong> Prints 'text' to the dialogue window. Synonym for CLUAConsole::DisplayText(tostring(text)).</li>
+          </ul>
+          <hr />
+          <a name="lua-pow" id="lua-pow"></a><h4>pow(x, y)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> x,y - number of hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Performs a pow (x ^ y) operation. Operator ^ can be used as a synonym for this function (defined in TobEx.lua).</li>
+          </ul>
+          <hr />
+          <a name="lua-print" id="lua-print"></a><h4>print([to_console])</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> to_console - boolean</li>
+            <li><strong>Returns:</strong> String (only when to_console == false)</li>
+            <li><strong>Behaviour:</strong> Dumps hard-coded type-based information about the TobExObject into a string. If to_console is true, the text is placed into the dialogue window.</li>
+          </ul>
+          <hr />
+          <a name="lua-pushfunction" id="lua-pushfunction"></a><h4>pushfunction(n)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> n - number of hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> CFunction</li>
+            <li><strong>Behaviour:</strong> Converts a number to a cfunction.</li>
+          </ul>
+          <hr />
+          <a name="lua-pushuserdata" id="lua-pushuserdata"></a><h4>pushuserdata(n)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> n - number of hexadecimal string (beginning with "0x")</li>
+            <li><strong>Returns:</strong> Userdata</li>
+            <li><strong>Behaviour:</strong> Converts a number to userdata with tag 0.</li>
+          </ul>
+          <hr />
+          <a name="lua-sprite_getcurrent" id="lua-sprite_getcurrent"></a><h4>sprite_getcurrent()</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (sprite.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> None</li>
+            <li><strong>Returns:</strong> TobExObject (type variable)</li>
+            <li><strong>Behaviour:</strong> Creates a TobExObject of the sprite highlighted by the game cursor. The TobExObject type is preset using sprite_gettype().</li>
+          </ul>
+          <hr />
+          <a name="lua-sprite_gettype" id="lua-sprite_gettype"></a><h4>sprite_gettype(obj)</h4>
+          <ul>
+            <li><strong>Type:</strong> Lua function (sprite.lua)</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> obj - TobExObject</li>
+            <li><strong>Returns:</strong> String</li>
+            <li><strong>Behaviour:</strong> Gets the specific type of the TobExObject as a string.</li>
+          </ul>
+          <hr />
+          <a name="lua-stdcall" id="lua-stdcall"></a><h4>stdcall(f, [args...])</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> TobExObject tag method</li>
+            <li><strong>Parameters:</strong> f - cfunction; args... (optional) - any type</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Pushes 'args...' onto the C stack and calls 'f' using the <i>stdcall</i>/<i>thiscall</i> calling convention. Arguments of type Lua function and table are ignored, and arguments of nil or non-existent arguments terminate the argument list. The TobExObject is placed into the ecx register as per <i>thiscall</i>. If too many or too few arguments are supplied for the function, the stack pointer is corrected. The return value in the eax register is pushed onto the Lua stack as a number.</li>
+          </ul>
+          <hr />
+          <a name="lua-u2n" id="lua-u2n"></a><h4>u2n(u)</h4>
+          <ul>
+            <li><strong>Type:</strong> C function</li>
+            <li><strong>Scope:</strong> Global</li>
+            <li><strong>Parameters:</strong> u - userdata</li>
+            <li><strong>Returns:</strong> Number</li>
+            <li><strong>Behaviour:</strong> Converts a userdata to number.</li>
+          </ul>
+          <address>
+            <span class="footer">TobEx &gt; Lua</span> &#8226;<a href="#top">BACK TO TOP</a>
+          </address>
+        </div>
+        
         <!-- ================== R u l e s e t ================== -->
         <a name="ruleset" id="ruleset"></a>
         <div class="content">
@@ -729,6 +1096,15 @@
         <a name="triggers" id="triggers"></a>
         <div class="content">
           <h2>Triggers</h2>
+          <p>TobEx modifies the internal script compiler used for dialogues so that it recognises more trigger parameter constructions. These are:</p>
+          <ul>
+            <li>(S,I,I)</li>
+            <li>(S,I,I,I)</li>
+            <li>(S,O,I,I)</li>
+            <li>(S,O,I,I,I)</li>
+            <li>(S,S,O)</li>
+          </ul>
+          <hr />
           <p>TobEx makes changes to the following script trigger opcodes:</p>
           <ul>
             <li><a href="#triggers-4042">0x4042 PartyHasItem(S:Item*)</a></li>
@@ -740,6 +1116,7 @@
             <li><a href="#triggers-40a9">0x40A9 PartyHasItemIdentified(S:ResRef*)</a></li>
             <li><a href="#triggers-40bb">0x40BB Kit(O:Object*,I:Kit*KIT)</a></li>
           </ul>
+          <hr />
           <p>TobEx aldo adds the following new script trigger opcodes:</p>
           <ul>
             <li><a href="#triggers-4100">0x4100 NextTriggerObject(O:Object*)</a></li>

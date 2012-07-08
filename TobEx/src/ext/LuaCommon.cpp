@@ -291,7 +291,7 @@ void LUA_PushFunction() {
 /* getsprite({enum|"scriptname"})
 Global function
 Pushes the memory address of a sprite onto the Lua stack
-The sprite can be referenced either by its enum (as decimal number of a string containing a hexadecimal number starting with "0x") */
+The sprite can be referenced either by its enum (as decimal number of a string containing a hexadecimal number starting with "0x") or scriptname */
 void LUA_GetSprite() {
 	Object o;
 	Enum e = ENUM_INVALID_INDEX;
@@ -985,7 +985,7 @@ void LUA_GetList() {
 	return;
 }
 
-/* print([return_only])
+/* print([to_console])
 Tag method for TobExObject
 Dumps information about the object based on its type onto the dialogue window */
 void LUA_Print() {

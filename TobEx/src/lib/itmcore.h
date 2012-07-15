@@ -48,9 +48,9 @@ public:
 
 	ResItmContainer m_itm; //4h
 	int m_nNumAbilities; //14h
-	short Arg3; //18h, nUsesAbility0, usage1, is it a randomly generated item?
-	short Arg4; //1ah, nUsesAbility1, usage2
-	short Arg5; //1ch, nUsesAbility2, usage3 (time to recharge in ai updates?)
+	short m_wUsage1; //18h, nUsesAbility0, usage1, is it a randomly generated item?, Arg3
+	short m_wUsage2; //1ah, nUsesAbility1, usage2, Arg4
+	short m_wUsage3; //1ch, nUsesAbility2, usage3 (time to recharge in ai updates?), Arg5
 
 	//0: disabled
 	//1-255: hours until recharge

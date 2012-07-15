@@ -56,7 +56,6 @@ Options:
 -0: disabled
 -1: enabled
 
-
 -----770 EquipRanged Action Fix [F]
 Corrects an error in the EquipRanged() action where an equipped shield would prevent one-handed ranged weapons in the weapon slot to be equipped
 

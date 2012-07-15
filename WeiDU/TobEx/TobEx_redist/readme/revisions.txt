@@ -1,3 +1,8 @@
+Beta 0025
+---------
+-Class/structure updates
+-Item Recharge Mod: Fixed bugs where stackable items with 0 quantity in store files were were valued at 1 gold, did not register a quantity when bought, and did not stack properly when bought
+
 Beta 0024
 ---------
 -Class/structure updates

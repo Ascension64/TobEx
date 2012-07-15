@@ -16,6 +16,7 @@
 typedef IECPtrList CStoreProductList;
 
 struct CStoreProduct { //2Ch size
+//constructor: see 0x7A2AA5
 	ResRef rSpell; //0h, for cures
 	CItem* pItem; //8h
 	BOOL bSelected; //ch

@@ -2677,14 +2677,11 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bStoreItemRechargeMod) {
-		//1. CStore::UnmarshalItem(): fix so items with usages of 0 do not unmarshal with usages of 1
-		//2. CStore::AddItem: fix so a non-zero charge item will not stack onto an identical but zero charge item in the bag
-		//1 -> 0
-		char bytes[] = {0x00};
-		vDataList.push_back( Data(0x645AF8, 1, bytes) );
+		//1. CStore::AddItem(): fix so a non-zero charge item will not stack onto an identical but zero charge item in the bag
+		char bytes[] = {0x00}; //1 -> 0
 		vDataList.push_back( Data(0x645E34, 1, bytes) );
 
-		//3. CStore::AddItem()
+		//2. CStore::AddItem()
 		//mov ecx,dword ptr ss:[ebp-20]
 		//push ecx
 		//mov ecx,dword ptr ss:[ebp+8]
@@ -2712,7 +2709,7 @@ void InitPatches() {
 						0x90};
 		vDataList.push_back( Data(0x645FB7, 3, bytes4) );
 
-		//4. CStore::GetBuyPrice(): fix so host item price takes into account if item recharges
+		//3. CStore::GetBuyPrice(): fix so host item price takes into account if item recharges
 		//push ecx
 		//lea eax,dword ptr ss:[ebp-20]
 		//push eax
@@ -2742,7 +2739,7 @@ void InitPatches() {
 						0x90, 0x90};
 		vDataList.push_back( Data(0x645683, 4, bytes7) );
 
-		//5. CStore::GetSellPrice(): fix so customer item price takes into account if item recharges
+		//4. CStore::GetSellPrice(): fix so customer item price takes into account if item recharges
 		//push ecx
 		//lea edx,dword ptr ss:[ebp-38]
 		//push edx
@@ -2771,6 +2768,31 @@ void InitPatches() {
 		char bytes10[] = {0xEB, 0x21,
 						0x90, 0x90};
 		vDataList.push_back( Data(0x6454E4, 4, bytes10) );
+
+		//5. CStore::UnmarshalItem(): fix so non-stackable items with usages of 0 do not unmarshal with usages of 1
+		//mov ecx,dword ptr ss:[ebp+C]
+		//push edx
+		//push eax
+		//push ecx
+		//call
+		char bytes11[] = {0x8B, 0x4D, 0x0C,
+						0x52,
+						0x50,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x645AE6, 7, bytes11) );
+
+		//CALL address
+		ptr = (void*)CStore_UnmarshalItem_SetUsages;
+		address = (DWORD)ptr - 5  - 0x645AEC;
+		char* bytes12 = (char*)&address;
+		vDataList.push_back( Data(0x645AED, 4, bytes12) );
+
+		//jmp
+		//nop
+		char bytes13[] = {0xEB, 0x32,
+						0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x645AF1, 11, bytes13) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

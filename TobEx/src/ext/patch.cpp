@@ -1148,14 +1148,6 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
-	//Limit SAVE_NONE to char in itm/spl/eff feature blocks
-	if (true) {
-		char bytes[] = {0x80};
-		vDataList.push_back( Data(0x501EED, 1, bytes) );
-		vPatchList.push_back( Patch(vDataList) );
-		vDataList.clear();
-	}
-
 	if (pGameOptionsEx->bEnginePriestKnownSpellsExtend) {
 		char bytes[] = {0x62};
 		vDataList.push_back( Data(0x63358D, 1, bytes) );

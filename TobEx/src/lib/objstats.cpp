@@ -97,6 +97,12 @@ CRepeatingRegen::CRepeatingRegen() {
 //CSpellProtection
 CSpellProtection::CSpellProtection() { strrefMsg = 0; }
 
+//CStatModVsObjectList
+int (CStatModVsObjectList::*CStatModVsObjectList_GetModValue)(Object&) =
+	SetFP(static_cast<int (CStatModVsObjectList::*)(Object&)>	(&CStatModVsObjectList::GetModValue),	0x5A6C0D);
+
+int CStatModVsObjectList::GetModValue(Object& o) { return (this->*CStatModVsObjectList_GetModValue)(o); }
+
 //CDerivedStats
 CDerivedStats& (CDerivedStats::*CDerivedStats_Construct_3)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) =
 	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*)>

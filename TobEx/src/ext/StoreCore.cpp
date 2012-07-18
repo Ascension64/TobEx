@@ -56,10 +56,10 @@ void __stdcall CStore_GetSellPrice_GetChargePercent(CStore& sto, short& nTotalUs
 
 void __stdcall CStore_UnmarshalItem_SetUsages(CItem& itm, StoFileItem& stoitm, unsigned int nUsageIdx) {
 	if (itm.GetMaximumStackSize() <= 1) {
-		//non-stackable
+		//non-stackable - use modified code
 		itm.SetNumUsage(nUsageIdx, stoitm.m_wUsage[nUsageIdx] < 0 ? 0 : stoitm.m_wUsage[nUsageIdx]);
 	} else {
-		//non-stackable
+		//stackable - use original code
 		itm.SetNumUsage(nUsageIdx, stoitm.m_wUsage[nUsageIdx] < 1 ? 1 : stoitm.m_wUsage[nUsageIdx]);
 	}
 	return;

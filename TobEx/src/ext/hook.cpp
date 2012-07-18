@@ -47,10 +47,12 @@
 
 void InitHooks() {
 
+	//General
 	DetourMemberFunction(Tramp_CBaldurChitin_Construct, DETOUR_CBaldurChitin::DETOUR_Construct);
 	DetourMemberFunction(Tramp_CRuleTables_Construct, DETOUR_CRuleTables::DETOUR_Construct);
 	DetourMemberFunction(Tramp_CRuleTables_Deconstruct, DETOUR_CRuleTables::DETOUR_Deconstruct);
 
+	//Action
 	if (pGameOptionsEx->bActionExpandedActions) {
 		DetourMemberFunction(Tramp_CInfGame_InitGame, DETOUR_CInfGame::DETOUR_InitGame);
 		DetourMemberFunction(Tramp_CGameSprite_QueueActions, DETOUR_CGameSprite::DETOUR_QueueActions);
@@ -59,6 +61,7 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CCreatureObject_ExecuteAction, DETOUR_CCreatureObject::DETOUR_ExecuteAction);
 	}
 
+	//Debug
 	DetourFunction(Tramp_CloseLogAndErr, DETOUR_CloseLogAndErr);
 
 	if (pGameOptionsEx->bDebugExpandedLUAConsole) {
@@ -84,7 +87,9 @@ void InitHooks() {
 	if (pGameOptionsEx->bDebugLogNetworkErrors)
 		DetourMemberFunction(Tramp_CNetwork_PrintNetworkError, DETOUR_CNetwork::DETOUR_PrintNetworkError);
 
+	//Effect
 	DetourMemberFunction(Tramp_CEffect_CreateEffect, DETOUR_CEffect::DETOUR_CreateEffect);
+	DetourMemberFunction(Tramp_CEffect_CheckNotSaved, DETOUR_CEffect::DETOUR_CheckNotSaved);
 	DetourMemberFunction(Tramp_CDerivedStats_OpAdd, DETOUR_CDerivedStats::DETOUR_OpAdd);
 	DetourMemberFunction(Tramp_CEffectDamage_ApplyEffect, DETOUR_CEffectDamage::DETOUR_ApplyEffect);
 	DetourMemberFunction(Tramp_CItem_GetAbilityEffect, DETOUR_CItem::DETOUR_GetAbilityEffect);
@@ -236,6 +241,7 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffWisdomModFix)
 		DetourMemberFunction(Tramp_CEffectWisdomMod_ApplyEffect, DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect);
 
+	//Engine
 	if (pGameOptionsEx->bEngineModifyEffectStacking)
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 
@@ -294,15 +300,18 @@ void InitHooks() {
 
 	if (pGameOptionsEx->bEngineSpellTurningFix)
 		DetourMemberFunction(Tramp_CCreatureObject_Construct_10, DETOUR_CCreatureObject::DETOUR_Construct);
-
+	
+	//Items
 	if (pGameOptionsEx->bItemsUseAnimPercentThrowingWeapons)
 		DetourMemberFunction(Tramp_CCreatureObject_ValidateAttackSequence, DETOUR_CCreatureObject::DETOUR_ValidateAttackSequence);
 
+	//Music
 	if (pGameOptionsEx->bMusicSonglistExtend) {
 		DetourMemberFunction(Tramp_CSoundMixer_InitSonglist, DETOUR_CSoundMixer::DETOUR_InitSonglist);
 		DetourMemberFunction(Tramp_CArea_GetSong, DETOUR_CArea::DETOUR_GetSong);
 	}
 
+	//Sound
 	if (pGameOptionsEx->bSoundAnimAttackSounds)
 		DetourMemberFunction(Tramp_CAnimation_PlayCurrentSequenceSound, DETOUR_CAnimation::DETOUR_PlayCurrentSequenceSound);
 
@@ -328,6 +337,7 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CScreenCharGen_InitSoundset, DETOUR_CScreenCharGen::DETOUR_InitSoundset);
 	}
 
+	//Trigger
 	DetourMemberFunction(Tramp_CCreatureObject_ActionPickPockets, DETOUR_CCreatureObject::DETOUR_ActionPickPockets);
 
 	if (pGameOptionsEx->bTriggerExpandedTriggers) {
@@ -340,6 +350,7 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CInfGame_GetNumOfItemInBag, DETOUR_CInfGame::DETOUR_GetNumOfItemInBag);
 	}
 
+	//UI
 	DetourFunction(Tramp_CreateUIControl, DETOUR_CreateUIControl);
 	
 	//used by bUserExternMageSpellHiding, bEngineExternMageSpellsCap

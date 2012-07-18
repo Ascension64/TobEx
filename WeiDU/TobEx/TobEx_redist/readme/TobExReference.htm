@@ -362,6 +362,7 @@
             <li><a href="#engine-creatures-moving-areas">Creatures Moving Between Areas</a></li>
             <li><a href="#engine-dead-statics">Dead Static Animations</a></li>
             <li><a href="#engine-dialogue-bar">Dialogue Bar</a></li>
+            <li><a href="#engine-effect-saves">Effect Saving Throws</a></li>
             <li><a href="#engine-effect-stacking">Effect Stacking Behaviour</a></li>
             <li><a href="#engine-fake-talk-exploit">Fake Talk Exploit</a></li>
             <li><a href="#engine-gaining-xp">Gaining Experience</a></li>
@@ -436,6 +437,14 @@
           <hr />
           <a name="engine-dialogue-bar" id="engine-dialogue-bar"></a><h3>Dialogue Bar</h3>
           <p>TobEx greatly expands the amount of text that can display in the dialogue bar before old text is lost. The number of rows supported is 32767.</p>
+          <hr />
+          <a name="engine-effect-saves" id="engine-effect-saves"></a><h3>Effect Saving Throws</h3>
+          <p>TobEx makes the following changes to effect saving throws:</p>
+          <ul>
+            <li>If an effect has multiple saving throw types (e.g. all five), then the engine should check against the best saving throw of the target. TobEx fixes an issue where an effect target with saving throws of increasing values check subsequent lower saving throw values (e.g. only Death checked for Death 1, Wands 2, Poly 3, Breath 4, Spells 5, but all five checked for Death 10, Wands 9, Poly 8, Breath 7, Spells 6).</li>
+            <li>If a target of an effect does not save versus any type, but modifiers result in a successful save (i.e. effect save bonus, save bonus versus same mage school type, and specific save bonus versus object type), then a successful save is not reported in the dialogue bar.</li>
+            <li>TobEx fixes an issue where targets with improved invisibility do not get a +4 saving throw bonus against effects from creatures that cannot see invisible.</li>
+          </ul>
           <hr />
           <a name="engine-effect-stacking" id="engine-effect-stacking"></a><h3>Effect Stacking Behaviour</h3>
           <p>TobEx allows modmakers to modify the way that effect opcodes stack. This hack is currently in beta and has a number of problems. Please do not use it.</p>

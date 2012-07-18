@@ -1,4 +1,4 @@
-//1560 This file contains descriptions for all the hack options found in TobEx .ini files
+//1570 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1047,6 +1047,19 @@ Known values for 'Type' are:
 'Statistic Modifier' can be positive or negative.
 
 For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.
+
+-----1570 Saving Throw Fix [F]
+Fixes three issues with effect saving throws:
+1. For multiple saving throw types, TobEx fixes an inconsistency in the determination of which saving throw type to use.
+Specifically, the engine checks multiple saving throw types when subsequent types have a better value,
+but not the other way around (e.g. in 1, 2, 3, 4, 5, only the first type is checked; in 10, 9, 8, 7, 6, all five types are checked).
+TobEx determines which is the best saving throw type, then checks only that one
+2. TobEx fixes an issue where if a saving throw fails by type, but modifiers result in a successful save, a successful save is not reported in the dialogue bar
+3. TobEx fixes an issue where targets with improved invisibility did not get a +4 saving throw against effects from creatures that cannot see invisible
+
+Options:
+-0: disabled
+-1: enabled
 
 -----1460 Stealth Mod Fix [F]
 Fixes a bug so that an out of bounds move silently skill will limit to 0 or 255 rather than wrap around

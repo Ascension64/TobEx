@@ -86,6 +86,7 @@ struct CGameOptionsEx {
 	BOOL bEffSaveVsPolyMod;
 	BOOL bEffSaveVsSpellMod;
 	BOOL bEffSaveVsWandsMod;
+	BOOL bEffSavingThrowFix;
 	BOOL bEffStealthModFix;
 	BOOL bEffStrengthExModFix;
 	BOOL bEffStrengthMod;

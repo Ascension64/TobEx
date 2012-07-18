@@ -91,6 +91,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffSaveVsPolyMod = FALSE;
 	bEffSaveVsSpellMod = FALSE;
 	bEffSaveVsWandsMod = FALSE;
+	bEffSavingThrowFix = FALSE;
 	bEffStealthModFix = FALSE;
 	bEffStrengthExModFix = FALSE;
 	bEffStrengthMod = FALSE;
@@ -261,6 +262,7 @@ void CGameOptionsEx::Init() {
 	bEffSaveVsPolyMod = GetCoreIniValue("Effect Opcodes", "Save Vs Poly Mod");
 	bEffSaveVsSpellMod = GetCoreIniValue("Effect Opcodes", "Save Vs Spell Mod");
 	bEffSaveVsWandsMod = GetCoreIniValue("Effect Opcodes", "Save Vs Wands Mod");
+	bEffSavingThrowFix = GetCoreIniValue("Effect Opcodes", "Saving Throw Fix");
 	bEffStealthModFix = GetCoreIniValue("Effect Opcodes", "Stealth Mod Fix");
 	bEffStrengthExModFix = GetCoreIniValue("Effect Opcodes", "Strength Extra Mod Fix");
 	bEffStrengthMod = GetCoreIniValue("Effect Opcodes", "Strength Mod");

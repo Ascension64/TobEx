@@ -269,8 +269,12 @@ struct CStatModVsObject { //Size 18h
 };
 
 class CStatModVsObjectList : public IECPtrList { //Size 1Ch
+public:
 	//AA65F4
+	int GetModValue(Object& o);
 };
+
+extern int (CStatModVsObjectList::*CStatModVsObjectList_GetModValue)(Object&);
 
 struct SpellLevelDec { //Size 8h
 	BOOL bOn; //0h

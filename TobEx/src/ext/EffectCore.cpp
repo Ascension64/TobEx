@@ -306,10 +306,6 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 			bSavedVsType = TRUE;
 			break;
 		default: //none
-			LPCSTR lpsz = "DETOUR_CEffect::DETOUR_CheckNotSaved: No specific save type used for effect\r\n";
-			console.write(lpsz);
-			L.timestamp();
-			L.append(lpsz);
 			break;
 		}
 

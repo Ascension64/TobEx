@@ -18,6 +18,16 @@
 //Creature memorized spell flags
 #define CREMEMSPELL_MEMORIZED		0x0001
 
+//Creature proficiency id (BG1)
+#define CREBG1PROF_LARGE_SWORD	0
+#define CREBG1PROF_SMALL_SWORD	1
+#define CREBG1PROF_BOW			2
+#define CREBG1PROF_SPEAR		3
+#define CREBG1PROF_BLUNT		4
+#define CREBG1PROF_SPIKED		5
+#define CREBG1PROF_AXE			6
+#define CREBG1PROF_MISSILE		7
+
 //Creature saving throw flags
 #define CRESAVE_USED	0x80
 

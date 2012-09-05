@@ -152,9 +152,12 @@ public:
 	void SetSaveName(ResRef& rName);
 	unsigned int GetKitUnusableFlag();
 	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
+	short GetProficiencyInItem(CItem& itm);
 	ACTIONRESULT ActionMoveToObject(CGameObject& cgoTarget);
 	ACTIONRESULT ActionPickPockets(CCreatureObject& creTarget);
+	short GetProficiency(int nWeapProfId);
 	short GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod);
+	ACTIONRESULT ActionJumpToAreaEntranceMove(IECString sArea);
 	void UpdateFaceTalkerTimer();
 
 	//AA98A8
@@ -516,7 +519,7 @@ public:
 	CVariableMap* m_pLocalVariables; //6420h
 	int m_bUnmarshalling; //6424h, 1 during Unmarshal, 0 when done
 	CProtectedSplList m_ProtectedSpls; //6428h, of CProtectedSpl objects
-	int u6444;
+	Enum m_eEntrancePoint; //6444h, which entrance point to use when moving between areas
 	int m_nBounceDelay; //6448h, counts down from 25 frames
 	int m_nMoraleAI; //644ch
 	Enum eVisualEffect; //6450h, contains enum of CVisualEffect
@@ -567,7 +570,7 @@ public:
 	BOOL u6738; //play animSound selection?, set to 0 after use
 	char u673c[9];
 	char u6745; //padding?
-	int u6746; //assoc actions
+	int m_nAbandonActionTimer; //6746h, used by AttackReeavluate, TryAttack, MoveToObject; when hits 150, ACTION_FAILED is returned
 	BOOL m_bReequipItem; //674ah
 	BOOL m_bEquippingItem; //674eh
 	char u6752; //default = 2a; if CRE name does not start with *, will put first character in here; inherits value from GAM (unknown above killXP(chapter), inherits from Actor2E (char)
@@ -623,9 +626,12 @@ extern BOOL (CCreatureObject::*CCreatureObject_InDialogAction)();
 extern void (CCreatureObject::*CCreatureObject_SetSaveName)(ResRef&);
 extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
 extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
+extern short (CCreatureObject::*CCreatureObject_GetProficiencyInItem)(CItem&);
 extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionMoveToObject)(CGameObject&);
 extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionPickPockets)(CCreatureObject&);
+extern short (CCreatureObject::*CCreatureObject_GetProficiency)(int);
 extern short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL);
+extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionJumpToAreaEntranceMove)(IECString);
 extern void (CCreatureObject::*CCreatureObject_UpdateFaceTalkerTimer)();
 
 extern bool (CCreatureObject::*CCreatureObject_NeedsAIUpdate)(bool, int);

@@ -32,8 +32,12 @@ BOOL (CCreatureObject::*Tramp_CCreatureObject_EvaluateTrigger)(Trigger&) =
 	SetFP(static_cast<BOOL (CCreatureObject::*)(Trigger&)>					(&CCreatureObject::EvaluateTrigger),		0x8F6C0E);
 ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)() =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)()>					(&CCreatureObject::ExecuteAction),			0x8E2276);
+short (CCreatureObject::*Tramp_CCreatureObject_GetProficiencyInItem)(CItem&) =
+	SetFP(static_cast<short (CCreatureObject::*)(CItem&)>					(&CCreatureObject::GetProficiencyInItem),	0x90C663);
 ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ActionPickPockets)(CCreatureObject&) =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(CCreatureObject&)>	(&CCreatureObject::ActionPickPockets),		0x9431AE);
+ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ActionJumpToAreaEntranceMove)(IECString) =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(IECString)>			(&CCreatureObject::ActionJumpToAreaEntranceMove), 0x953CE9);
 void (CCreatureObject::*Tramp_CCreatureObject_UpdateFaceTalkerTimer)() =
 	SetFP(static_cast<void (CCreatureObject::*)()>							(&CCreatureObject::UpdateFaceTalkerTimer),	0x955CD7);
 
@@ -549,6 +553,78 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ExecuteAction() {
 	return ar;
 }
 
+short DETOUR_CCreatureObject::DETOUR_GetProficiencyInItem(CItem& itm) {
+	short wStarsBG1 = 0;
+	switch (itm.GetType()) {
+	case ITEMTYPE_HAND:
+		wStarsBG1 = 1;
+		break;
+	case ITEMTYPE_LARGE_SWORD:
+		wStarsBG1 = GetProficiency(CREBG1PROF_LARGE_SWORD);
+		break;
+	case ITEMTYPE_DAGGER:
+	case ITEMTYPE_SMALL_SWORD:
+		wStarsBG1 = GetProficiency(CREBG1PROF_SMALL_SWORD);
+		break;
+	case ITEMTYPE_BOW:
+		wStarsBG1 = GetProficiency(CREBG1PROF_BOW);
+		break;
+	case ITEMTYPE_SPEAR:
+	case ITEMTYPE_HALBERD:
+		wStarsBG1 = GetProficiency(CREBG1PROF_SPEAR);
+		break;
+	case ITEMTYPE_MACE:
+	case ITEMTYPE_HAMMER:
+	case ITEMTYPE_STAFF:
+		wStarsBG1 = GetProficiency(CREBG1PROF_BLUNT);
+		break;
+	case ITEMTYPE_MORNING_STAR:
+	case ITEMTYPE_FLAIL:
+		wStarsBG1 = GetProficiency(CREBG1PROF_SPIKED);
+		break;
+	case ITEMTYPE_AXE:
+		wStarsBG1 = GetProficiency(CREBG1PROF_AXE);
+		break;
+	case ITEMTYPE_SLING:
+	case ITEMTYPE_DART:
+	case ITEMTYPE_XBOW:
+		wStarsBG1 = GetProficiency(CREBG1PROF_MISSILE);
+		break;
+	default:
+		break;
+	}
+	
+	short wStarsBG2 = 0;
+	char cItmProfType = itm.GetProficiencyType();
+	
+	if (cItmProfType < 89 || cItmProfType > 134) { //outside standard proficiencies
+		//if ( !cItmProfType ) wStarsBG2 = 1; //original code
+		if (!cItmProfType) {
+			switch (itm.GetType()) {
+			case ITEMTYPE_ARROW:
+			case ITEMTYPE_BOLT:
+			case ITEMTYPE_BULLET:
+				wStarsBG2 = 0;
+				break;
+			default:
+				wStarsBG2 = 1;
+			break;
+			}
+		}
+	} else {
+		wStarsBG2 = GetProficiency(cItmProfType);
+	}
+
+	if (wStarsBG1 > 0 || wStarsBG2 > 0)
+		wStarsBG1 = max(wStarsBG1, wStarsBG2);
+	
+	if (wStarsBG1 < 0 &&
+		g_pChitin->pGame->GetPartyMemberSlot(e) == ENUM_INVALID_INDEX)
+		wStarsBG1 = 0;
+	
+	return wStarsBG1;
+}
+
 ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CCreatureObject::DETOUR_ActionPickPockets");
 
@@ -808,6 +884,14 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		return ACTIONRESULT_FAILED;
 	}
 }
+
+ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionJumpToAreaEntranceMove(IECString sArea) {
+	this->pArea->m_bSaved = false; //re-marshal the previous area 
+	ACTIONRESULT ar = (this->*Tramp_CCreatureObject_ActionJumpToAreaEntranceMove)(sArea);
+	//not the area after the jump
+	return ar;
+}
+
 
 void DETOUR_CCreatureObject::DETOUR_UpdateFaceTalkerTimer() {
 	if (m_nFaceTalkerTimer > 0) {

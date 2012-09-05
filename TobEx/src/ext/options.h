@@ -101,6 +101,7 @@ struct CGameOptionsEx {
 	BOOL bEngineAllowZeroStartXP;
 	BOOL bEngineAssBHPenaltyKit;
 	BOOL bEngineClericRangerHLAFix;
+	BOOL bEngineCloneCreatureFix;
 	BOOL bEngineXPReportFix;
 	int nEngineCustomSoAStartXP;
 	int nEngineCustomToBStartXP;
@@ -117,6 +118,7 @@ struct CGameOptionsEx {
 	BOOL bEngineExternMageSpellsCap;
 	BOOL bEngineExternStealSlots;
 	BOOL bEngineFakeTalkFix;
+	BOOL bEngineLauncherProficiencyFix;
 	BOOL bEngineProficiencyRestrictions;
 	BOOL bEngineOptimiseVarCode;
 	BOOL bEngineMoveAreasFix;

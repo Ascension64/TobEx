@@ -101,12 +101,18 @@ unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)() =
 void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&) =
 	SetFP(static_cast<void (CCreatureObject::*)(short, int, int, int, STRREF, BOOL, IECString&)>
 																			(&CCreatureObject::PrintEventMessage),		0x8FAE5A);
+short (CCreatureObject::*CCreatureObject_GetProficiencyInItem)(CItem&) =
+	SetFP(static_cast<short (CCreatureObject::*)(CItem&)>					(&CCreatureObject::GetProficiencyInItem),	0x90C663);
 ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionMoveToObject)(CGameObject&) =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(CGameObject&)>		(&CCreatureObject::ActionMoveToObject),		0x90EBCA);
 ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionPickPockets)(CCreatureObject&) =
 	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(CCreatureObject&)>	(&CCreatureObject::ActionPickPockets),		0x9431AE);
+short (CCreatureObject::*CCreatureObject_GetProficiency)(int) =
+	SetFP(static_cast<short (CCreatureObject::*)(int)>						(&CCreatureObject::GetProficiency),			0x950A4F);
 short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL) =
 	SetFP(static_cast<short (CCreatureObject::*)(ResSplContainer&, BOOL)>	(&CCreatureObject::GetSpellCastingLevel),	0x9514A1);
+ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionJumpToAreaEntranceMove)(IECString) =
+	SetFP(static_cast<ACTIONRESULT (CCreatureObject::*)(IECString)>			(&CCreatureObject::ActionJumpToAreaEntranceMove), 0x953CE9);
 void (CCreatureObject::*CCreatureObject_UpdateFaceTalkerTimer)() =
 	SetFP(static_cast<void (CCreatureObject::*)()>							(&CCreatureObject::UpdateFaceTalkerTimer),	0x955CD7);
 
@@ -172,10 +178,13 @@ unsigned int CCreatureObject::GetKitUnusableFlag()								{ return (this->*CCrea
 void CCreatureObject::PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6) {
 	return (this->*CCreatureObject_PrintEventMessage)(wEventId, nParam1, nParam2, nParam3, strrefParam4, bParam5, sParam6);
 }
+short CCreatureObject::GetProficiencyInItem(CItem& itm)							{ return (this->*CCreatureObject_GetProficiencyInItem)(itm); }
 ACTIONRESULT CCreatureObject::ActionMoveToObject(CGameObject& cgoTarget)		{ return (this->*CCreatureObject_ActionMoveToObject)(cgoTarget); }
 ACTIONRESULT CCreatureObject::ActionPickPockets(CCreatureObject& creTarget)		{ return (this->*CCreatureObject_ActionPickPockets)(creTarget); }
+short CCreatureObject::GetProficiency(int nWeapProfId)							{ return (this->*CCreatureObject_GetProficiency)(nWeapProfId); }
 short CCreatureObject::GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod)
 	{ return (this->*CCreatureObject_GetSpellCastingLevel)(resSpell, bUseWildMagicMod); }
+ACTIONRESULT CCreatureObject::ActionJumpToAreaEntranceMove(IECString sArea)		{ return (this->*CCreatureObject_ActionJumpToAreaEntranceMove)(sArea); }
 void CCreatureObject::UpdateFaceTalkerTimer()									{ return (this->*CCreatureObject_UpdateFaceTalkerTimer)(); }
 
 bool CCreatureObject::NeedsAIUpdate(bool bRun, int nChitinUpdates)	{ return (this->*CCreatureObject_NeedsAIUpdate)(bRun, nChitinUpdates); }

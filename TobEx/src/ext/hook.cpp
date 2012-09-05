@@ -242,6 +242,9 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CEffectWisdomMod_ApplyEffect, DETOUR_CEffectWisdomMod::DETOUR_ApplyEffect);
 
 	//Engine
+	if (pGameOptionsEx->bEngineCloneCreatureFix)
+		DetourMemberFunction(Tramp_CCreatureObject_ActionJumpToAreaEntranceMove, DETOUR_CCreatureObject::DETOUR_ActionJumpToAreaEntranceMove);
+
 	if (pGameOptionsEx->bEngineModifyEffectStacking)
 		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 
@@ -282,6 +285,9 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CScreenCharGen_MulticlassPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_MulticlassPanelOnUpdate);
 		DetourMemberFunction(Tramp_CScreenCharGen_MageSchoolPanelOnUpdate, DETOUR_CScreenCharGen::DETOUR_MageSchoolPanelOnUpdate);
 	}
+
+	if (pGameOptionsEx->bEngineLauncherProficiencyFix)
+		DetourMemberFunction(Tramp_CCreatureObject_GetProficiencyInItem, DETOUR_CCreatureObject::DETOUR_GetProficiencyInItem);
 
 	if (pGameOptionsEx->bEngineProficiencyRestrictions)
 		DetourMemberFunction(Tramp_CRuleTables_GetWeapProfMax, DETOUR_CRuleTables::DETOUR_GetWeapProfMax);

@@ -106,6 +106,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineAllowZeroStartXP = FALSE;
 	bEngineAssBHPenaltyKit = FALSE;
 	bEngineClericRangerHLAFix = FALSE;
+	bEngineCloneCreatureFix = FALSE;
 	nEngineCustomSoAStartXP = -1;
 	nEngineCustomToBStartXP = -1;
 	bEngineModifyEffectStacking = FALSE;
@@ -121,9 +122,10 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExternMageSpellsCap = FALSE;
 	bEngineExternStealSlots = FALSE;
 	bEngineFakeTalkFix = FALSE;
+	bEngineLauncherProficiencyFix = FALSE;
 	bEngineProficiencyRestrictions = FALSE;
-	bEngineOptimiseVarCode = FALSE;
 	bEngineMoveAreasFix = FALSE;
+	bEngineOptimiseVarCode = FALSE;
 	bEngineRestSpawnsAdvanceTime = FALSE;
 	bEngineSpellTurningFix = FALSE;
 	bEngineSummonLimitFix = FALSE;
@@ -277,6 +279,7 @@ void CGameOptionsEx::Init() {
 	bEngineAllowZeroStartXP = GetCoreIniValue("Engine", "Allow Zero Starting Experience");
 	bEngineAssBHPenaltyKit = GetCoreIniValue("Engine", "Assassin and Bounty Hunter Penalty to Similar Kits");
 	bEngineClericRangerHLAFix = GetCoreIniValue("Engine", "Cleric-Ranger HLA Fix");
+	bEngineCloneCreatureFix = GetCoreIniValue("Engine", "Clone Creature Fix");
 	nEngineCustomSoAStartXP = GetTweakIniValue("Tweak", "Engine:Custom Shadows of Amn Starting Experience", "-1");
 	nEngineCustomToBStartXP = GetTweakIniValue("Tweak", "Engine:Custom Throne of Bhaal Starting Experience", "-1");
 	bEngineModifyEffectStacking = GetCoreIniValue("Engine", "Disable Duplicate Effect Stacking");
@@ -292,9 +295,10 @@ void CGameOptionsEx::Init() {
 	bEngineExternMageSpellsCap = GetCoreIniValue("Engine", "Externalise Mage Spells Cap");
 	bEngineExternStealSlots = GetCoreIniValue("Engine", "Externalise Stealable Item Slots");
 	bEngineFakeTalkFix = GetCoreIniValue("Engine", "Fake Talk Exploit Fix");
+	bEngineLauncherProficiencyFix = GetCoreIniValue("Engine", "Launcher Proficiency Fix");
 	bEngineProficiencyRestrictions = GetTweakIniValue("Tweak", "Engine:Level One Proficiency Restrictions");
-	bEngineOptimiseVarCode = GetCoreIniValue("Engine", "Optimise Variables Code");
 	bEngineMoveAreasFix = GetCoreIniValue("Engine", "Move Areas Fix");
+	bEngineOptimiseVarCode = GetCoreIniValue("Engine", "Optimise Variables Code");
 	bEngineRestSpawnsAdvanceTime = GetTweakIniValue("Tweak", "Engine:Rest Spawns Advance Time");
 	bEngineSpellTurningFix = GetCoreIniValue("Engine", "Spell Turning Fix");
 	bEngineSummonLimitFix = GetCoreIniValue("Engine", "Summon Limit Fix");

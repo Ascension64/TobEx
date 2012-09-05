@@ -305,9 +305,9 @@ public:
 	char u426;
 	char u427; //pad
 	short u428;
-	char u42a;
+	bool m_bSaved; //42ah, to temp folder
 	char u42b; //pad
-	int u42c;
+	unsigned int m_nSavedTime;//42ch
 			
 	CAreaNotes m_AreaNotes; //430h
 	short u4bc; //unused?

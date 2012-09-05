@@ -37,6 +37,8 @@ unsigned int (CItem::*CItem_GetUnusableFlags)() =
 	SetFP(static_cast<unsigned int (CItem::*)()>					(&CItem::GetUnusableFlags),		0x5AB609);
 short (CItem::*CItem_GetMaximumStackSize)() =
 	SetFP(static_cast<short (CItem::*)()>							(&CItem::GetMaximumStackSize),	0x5AB8B7);
+char (CItem::*CItem_GetProficiencyType)() =
+	SetFP(static_cast<char (CItem::*)()>							(&CItem::GetProficiencyType),	0x5ACAB3);
 
 CItem::CItem()																{ (this->*CItem_Construct_0)(); }
 CItem::CItem(CItem& itm)													{ (this->*CItem_Construct_1)(itm); }
@@ -56,3 +58,4 @@ short CItem::GetType()														{ return (this->*CItem_GetType)(); }
 unsigned int CItem::GetFlags()												{ return (this->*CItem_GetFlags)(); }
 unsigned int CItem::GetUnusableFlags()										{ return (this->*CItem_GetUnusableFlags)(); }
 short CItem::GetMaximumStackSize()											{ return (this->*CItem_GetMaximumStackSize)(); }
+char CItem::GetProficiencyType()											{ return (this->*CItem_GetProficiencyType)(); }

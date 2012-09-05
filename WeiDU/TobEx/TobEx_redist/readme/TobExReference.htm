@@ -369,7 +369,7 @@
             <li><a href="#engine-inventory-pause">Inventory Screen Pausing</a></li>
             <li><a href="#engine-item_recharge">Item Recharge in Bags and Stores</a></li>
             <li><a href="#engine-kit-support">Kit Support</a></li>
-            <li><a href="#engine-launchers">Launchers with No Ammo</a></li>
+            <li><a href="#engine-launchers">Launcher Fixes</a></li>
             <li><a href="#engine-music">Music Song List</a></li>
             <li><a href="#engine-player1-death">Player 1 Death</a></li>
             <li><a href="#engine-race-selection">Race Selection Strings</a></li>
@@ -431,6 +431,7 @@
           <hr />
           <a name="engine-creatures-moving-areas" id="engine-creatures-moving-areas"></a><h3>Creatures Moving Between Areas</h3>
           <p>TobEx fixes a bug whereby creatures moving between areas can get multiple copies saved in the area file in a saved game. This bug was fixed in the Throne of Bhaal 26499 BETA patch, and the fix is re-created by TobEx.</p>
+          <p>TobEx also fixes a bug where creatures chasing targets through an area transition can be cloned because the creature was not removed from the previous area.</p>
           <hr />
           <a name="engine-dead-statics" id="engine-dead-statics"></a><h3>Dead Static Animations</h3>
           <p>TobEx fixes a bug where dead static animations are still valid scripting targets. Normally, this causes bugs where a creature in berserk amongst dead static animations will permanently remain in berserk, breaking game transitions.</p>
@@ -441,7 +442,7 @@
           <a name="engine-effect-saves" id="engine-effect-saves"></a><h3>Effect Saving Throws</h3>
           <p>TobEx makes the following changes to effect saving throws:</p>
           <ul>
-            <li>If an effect has multiple saving throw types (e.g. all five), then the engine should check against the best saving throw of the target. TobEx fixes an issue where an effect target with saving throws of increasing values check subsequent lower saving throw values (e.g. only Death checked for Death 1, Wands 2, Poly 3, Breath 4, Spells 5, but all five checked for Death 10, Wands 9, Poly 8, Breath 7, Spells 6).</li>
+            <li>If an effect has multiple saving throw types (e.g. all five), then the best saving throw of the target is used. However, as saving throw types are checked in order, better subsequent saving throw types are all checked, which can create an internal consistency when flagging which saving throw type is used. TobEx fixes this issue. The issue may not have any impact in-game.</li>
             <li>If a target of an effect does not save versus any type, but modifiers result in a successful save (i.e. effect save bonus, save bonus versus same mage school type, and specific save bonus versus object type), then a successful save is not reported in the dialogue bar.</li>
             <li>TobEx fixes an issue where targets with improved invisibility do not get a +4 saving throw bonus against effects from creatures that cannot see invisible.</li>
           </ul>
@@ -473,6 +474,7 @@
           <hr />
           <a name="engine-launchers" id="engine-launchers"></a><h3>Launchers with No Ammo</h3>
           <p>TobEx fixes an exploit where launcher weapons grant the damage and strength bonuses of non-launcher (4)-type abilities. This corrects the issue with non-ammo-requiring launcher weapons (using ranged (2) ability) granting extra damage when ammo is equipped. If this is enabled, damage bonuses of launcher abilities are only given for the first launcher (4)-type ability of the launcher weapon.</p>
+          <p>TobEx also fixes an engine bug where no penalties were applied for having no proficiency points in bows, crossbows, and slings.</p>
           <hr />
           <a name="engine-music" id="engine-music"></a><h3>Music Song List</h3>
           <p>TobEx removes the 100-row limit on SONGLIST.2DA. The script action PlaySong() supports this change, and extended song numbers are recognised in ARE files.</p>

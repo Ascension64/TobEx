@@ -41,6 +41,7 @@ public:
 	unsigned int GetFlags();
 	unsigned int GetUnusableFlags();
 	short GetMaximumStackSize();
+	char GetProficiencyType();
 
 	//AAB400
 	virtual ~CItem();
@@ -84,6 +85,7 @@ extern short (CItem::*CItem_GetType)();
 extern unsigned int (CItem::*CItem_GetFlags)();
 extern unsigned int (CItem::*CItem_GetUnusableFlags)();
 extern short (CItem::*CItem_GetMaximumStackSize)();
+extern char (CItem::*CItem_GetProficiencyType)();
 
 struct CCreInventory { //Size A4h
 //Constructor: 0x8BE36A

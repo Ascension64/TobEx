@@ -1,4 +1,4 @@
-//1570 This file contains descriptions for all the hack options found in TobEx .ini files
+//1600 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1050,10 +1050,8 @@ For a non-permanent timing, the instantaneous cumulative modifier immediately ad
 
 -----1570 Saving Throw Fix [F]
 Fixes three issues with effect saving throws:
-1. For multiple saving throw types, TobEx fixes an inconsistency in the determination of which saving throw type to use.
-Specifically, the engine checks multiple saving throw types when subsequent types have a better value,
-but not the other way around (e.g. in 1, 2, 3, 4, 5, only the first type is checked; in 10, 9, 8, 7, 6, all five types are checked).
-TobEx determines which is the best saving throw type, then checks only that one
+1. For multiple saving throw types, TobEx fixes an internal inconsistency when flagging which saving throw type is used to check save.
+TobEx determines which is the best saving throw type, then checks and flags only that one
 2. TobEx fixes an issue where if a saving throw fails by type, but modifiers result in a successful save, a successful save is not reported in the dialogue bar
 3. TobEx fixes an issue where targets with improved invisibility did not get a +4 saving throw against effects from creatures that cannot see invisible
 
@@ -1199,6 +1197,13 @@ Therefore, cleric-rangers correctly get their first HLA at Ranger level 13 (with
 -34 fNewRateRanger
 -28 fRateCleric
 -24 fRateRanger
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1580 Clone Creature Fix [F]
+Fixed a bug where a character who transitions between areas can cause a hostile creature chasing them through the area transition to clone
 
 Options:
 -0: disabled
@@ -1433,6 +1438,13 @@ Options:
 -0: disabled
 -1: enabled
 
+-----1590 Launcher Proficiency Fix [F]
+Fixes a bug where no penalties were applied for having no proficiency in launcher weapons (bows, crossbows, slings)
+
+Options:
+-0: disabled
+-1: enabled
+
 -----490 Level One Proficiency Restrictions [C, M, T]
 (Different implentation to, and clashes with tob_hacks)
 Enables proficiency restrictions at level one as described by the FIRST_LEVEL column of PROFSMAX.2DA
@@ -1442,16 +1454,16 @@ Options:
 -0: disabled
 -1: enabled
 
-----1540 Optimise Variables Code [F]
-Improves and find and add code for variables
+-----1250 Move Areas Fix [F]
+This hack tries to fix a bug where a creature that is moving between areas may have multiple requests to do so and thus creates multiple copies of the creature in the area and thus the saved game
+Courtesy of the Throne of Bhaal 26499 beta patch
 
 Options:
 -0: disabled
 -1: enabled
 
------1250 Move Areas Fix [F]
-This hack tries to fix a bug where a creature that is moving between areas may have multiple requests to do so and thus creates multiple copies of the creature in the area and thus the saved game
-Courtesy of the Throne of Bhaal 26499 beta patch
+----1540 Optimise Variables Code [F]
+Improves and find and add code for variables
 
 Options:
 -0: disabled

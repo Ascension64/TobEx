@@ -1394,3 +1394,16 @@ BOOL __stdcall CCreatureObject_AttackOnce_DoHalfAttack(CCreatureObject& creSourc
 
 	return creSource.m_bStatisticalAttack;
 }
+
+void __stdcall CCreatureObject_UpdateModalState_DoBardSongNormal(CCreatureObject& creSource) {
+	ResRef rBardSong = "bardsong";
+	creSource.CastSpell(
+		rBardSong,
+		creSource,
+		FALSE,
+		-1,
+		NULL,
+		FALSE,
+		FALSE);
+	return;
+}

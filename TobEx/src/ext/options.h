@@ -149,6 +149,7 @@ struct CGameOptionsEx {
 	BOOL bSpellsCastingFix;
 	BOOL bSpellsUnvoicedConfig;
 	BOOL bSpellsTargetInvisConfig;
+	BOOL bSpellsExternBardSong;
 
 	BOOL bStoreItemRechargeMod;
 

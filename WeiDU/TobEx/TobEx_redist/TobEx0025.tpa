@@ -1,0 +1,4 @@
+//Incremental update for TobEx beta 0025
+
+//Externalise Bard Song Effects
+LAF tobex_copy STR_VAR file = "bardsong.spl" END

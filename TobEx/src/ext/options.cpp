@@ -152,6 +152,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bSpellsCastingFix = FALSE;
 	bSpellsUnvoicedConfig = FALSE;
 	bSpellsTargetInvisConfig = FALSE;
+	bSpellsExternBardSong = FALSE;
 
 	bStoreItemRechargeMod = FALSE;
 		
@@ -326,6 +327,7 @@ void CGameOptionsEx::Init() {
 	bSpellsCastingFix = GetCoreIniValue("Spells", "Casting Fixes");
 	bSpellsUnvoicedConfig = GetCoreIniValue("Spells", "Configurable Spells Can Be Unvoiced");
 	bSpellsTargetInvisConfig = GetCoreIniValue("Spells", "Configurable Spells Can Target Invisible");
+	bSpellsExternBardSong = GetCoreIniValue("Spells", "Externalise Bard Song Effects");
 
 	bStoreItemRechargeMod = GetCoreIniValue("Store", "Item Recharge Mod");
 

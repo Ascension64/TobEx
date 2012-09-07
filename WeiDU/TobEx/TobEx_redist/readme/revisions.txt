@@ -1,10 +1,12 @@
 Beta 0025
 ---------
 -Class/structure updates
+-User Patches: No longer spouts an error when the ./TobEx_ini/patch directory is non-existent or empty
 -Added: Clone Creature Fix
+-Added: Externalise Bard Song Effects
 -Added: Launcher Proficiency Fix
 -Added: Saving Throw Fix
--Item Recharge Mod: Fixed bugs where stackable items with 0 quantity in store files were were valued at 1 gold, did not register a quantity when bought, and did not stack properly when bought
+-Item Recharge Mod: Fixed bugs where stackable items with 0 quantity in store files were valued at 1 gold, did not register a quantity when bought, and did not stack properly when bought
 
 Beta 0024
 ---------

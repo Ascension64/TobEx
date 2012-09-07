@@ -231,9 +231,10 @@ void InitUserPatches(std::vector<Patch>* pvPatchList, std::vector<Data>* pvDataL
 
 	hFind = FindFirstFile(szRegexp, &w32fd);
 	nErrorCode = GetLastError();
-	if (nErrorCode != ERROR_SUCCESS &&
-		nErrorCode != ERROR_FILE_NOT_FOUND &&
-		nErrorCode != ERROR_PATH_NOT_FOUND) {
+	if (nErrorCode == ERROR_FILE_NOT_FOUND ||
+		nErrorCode == ERROR_PATH_NOT_FOUND) {
+		//do nothing
+	} else if (nErrorCode != ERROR_SUCCESS) {
 		LPCTSTR lpsz = "InitUserPatches(): FindFirstFile() failed (error code %d)\r\n";
 		console.writef(lpsz, nErrorCode);
 		L.timestamp();
@@ -2663,6 +2664,30 @@ void InitPatches() {
 						0x0F, 0x84, 0xEB, 0x00, 0x00, 0x00,
 						0xE9, 0x6E, 0x03, 0x00, 0x00};
 		vDataList.push_back( Data(0x911EB4, 13, bytes3) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->bSpellsExternBardSong) {
+		//mov ecx,dword ptr ss:[ebp-920]
+		//call
+		char bytes[] = {0x8B, 0x8D, 0xE0, 0xF6, 0xFF, 0xFF,
+						0x51,
+						0xE8};
+		vDataList.push_back( Data(0x8F1C77, 8, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CCreatureObject_UpdateModalState_DoBardSongNormal;
+		DWORD address = (DWORD)ptr - 5  - 0x8F1C7E;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x8F1C7F, 4, bytes2) );
+
+		//jmp 8F26AC
+		//nop
+		char bytes3[] = {0xE9, 0x24, 0x0A, 0x00, 0x00,
+						0x90, 0x90, 0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x8F1C83, 10, bytes3) );
 
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();

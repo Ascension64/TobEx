@@ -256,6 +256,7 @@
 //0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
 //! 0xAA6DC0, CMessageQueueActions
 //0xAA6DDC, ch (CMessageClearAllActions)
+//0xAA6DF8, 106h, CItem (CMessageAddItem)
 //! 0xAA6E14 CMessageRemoveItem
 //! 0xAA6E4C CMessageModifyPartyGold
 //! 0xAA6E68 CMessagePlaySound

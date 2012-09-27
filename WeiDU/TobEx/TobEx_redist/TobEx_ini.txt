@@ -1,4 +1,4 @@
-//1610 This file contains descriptions for all the hack options found in TobEx .ini files
+//1620 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -135,6 +135,16 @@ Options:
 (Different implementation to, and overrides tob_hacks)
 If pickpocketing is successful, the character does not become visible
 Limitation: Hide In Shadows will still terminate at the end of the round
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1610 TakePartyItem Fix [F]
+Fixes two issues with non-party characters using TakePartyItem() and TakeItemListParty() actions and their variants:
+-no longer puts the items in the magical weapon slot
+-no longer puts the items in the quick item slot
+-removes a buffer overflow in some cases when putting items into the magical weapon slot or last two inventory slots
 
 Options:
 -0: disabled

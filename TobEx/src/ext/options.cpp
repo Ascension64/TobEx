@@ -19,6 +19,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bActionExpandedActions = FALSE;
 	bActionJoinPartyFix = FALSE;
 	bActionPickpocketRemainHidden = FALSE;
+	bActionTakePartyItemFix = FALSE;
 
 	bArenasEnable = FALSE;
 
@@ -193,6 +194,7 @@ void CGameOptionsEx::Init() {
 	bActionExpandedActions = GetCoreIniValue("Action", "Expanded Actions");
 	bActionJoinPartyFix = GetCoreIniValue("Action", "JoinParty Action Class Ability Refresh Fix");
 	bActionPickpocketRemainHidden = GetTweakIniValue("Tweak", "Action:Remain Hidden On Pickpocket Success");
+	bActionTakePartyItemFix = GetCoreIniValue("Action", "TakePartyItem Fix");
 
 	bArenasEnable = GetCoreIniValue("Arenas", "Enable Arenas Game Type");
 

@@ -14,6 +14,7 @@ struct CGameOptionsEx {
 	BOOL bActionExpandedActions;
 	BOOL bActionJoinPartyFix;
 	BOOL bActionPickpocketRemainHidden;
+	BOOL bActionTakePartyItemFix;
 
 	BOOL bArenasEnable;
 	

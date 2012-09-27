@@ -861,6 +861,21 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->bActionTakePartyItemFix) {
+		//change for loop starting point
+		//19 -> 15
+		char bytes[] = {0x0F};
+		vDataList.push_back( Data(0x4A68EB, 1, bytes) );
+
+		//change starting array offset to misc3
+		char bytes2[] = {0xA2};
+		vDataList.push_back( Data(0x4A6910, 1, bytes2) );
+		vDataList.push_back( Data(0x4A6930, 1, bytes2) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->bArenasEnable) {
 		char bytes[] = {0x75};
 		vDataList.push_back( Data(0x7958D7, 1, bytes) );

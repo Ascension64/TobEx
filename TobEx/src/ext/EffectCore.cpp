@@ -188,17 +188,17 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 
 	//Mirror images and stone skins ignore checking saves
 	//Unless poison effects
-	if (effect.nOpcode != CEFFECT_OPCODE_POISON) {
-		if (creTarget.m_nMirrorImages > 0 |
-			creTarget.GetDerivedStats().m_nStoneSkins > 0 |
+	if (effect.nOpcode == CEFFECT_OPCODE_POISON) {
+		if (creTarget.m_nMirrorImages > 0 ||
+			creTarget.GetDerivedStats().m_nStoneSkins > 0 ||
 			creTarget.GetDerivedStats().m_StoneSkinGolem > 0) {
 			return FALSE;
 		}
 	}
-	if (effect.nOpcode != CEFFECT_OPCODE_DISPLAY_ICON &&
+	if (effect.nOpcode == CEFFECT_OPCODE_DISPLAY_ICON &&
 		effect.nParam2 == 6) { //ICON_POISONED
-		if (creTarget.m_nMirrorImages > 0 |
-			creTarget.GetDerivedStats().m_nStoneSkins > 0 |
+		if (creTarget.m_nMirrorImages > 0 ||
+			creTarget.GetDerivedStats().m_nStoneSkins > 0 ||
 			creTarget.GetDerivedStats().m_StoneSkinGolem > 0) {
 			return FALSE;
 		}

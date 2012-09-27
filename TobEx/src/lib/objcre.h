@@ -213,9 +213,9 @@ public:
 	CItem* m_pItemAmmo1; //a8ah
 	CItem* m_pItemAmmo2; //a8eh
 	CItem* m_pItemAmmo3; //a92h
-	CItem* m_pItemMisc0; //a96h
-	CItem* m_pItemMisc1; //a9ah
-	CItem* m_pItemMisc2; //a9eh
+	CItem* m_pItemMisc0; //a96h, quick item 0
+	CItem* m_pItemMisc1; //a9ah, quick item 1
+	CItem* m_pItemMisc2; //a9eh, quick item 2
 	CItem* m_pItemMisc3; //aa2h
 	CItem* m_pItemMisc4; //aa6h
 	CItem* m_pItemMisc5; //aaah

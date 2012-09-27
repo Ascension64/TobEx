@@ -1345,9 +1345,15 @@
             <li><a href="#actions-25">25 PickPockets(O:Target*)</a></li>
             <li><a href="#actions-34">34 UseItem(S:Object*,O:Target*)</a></li>
             <li><a href="#actions-97">97 UseItemPoint(S:Item,P:Target*,I:Ability*)</a></li>
+            <li><a href="#actions-116">116 TakePartyItem(S:Item*)</a></li>
             <li><a href="#actions-174">174 EquipRanged()</a></li>
+            <li><a href="#actions-188">188 TakePartyItemAll(S:Item*)</a></li>
+            <li><a href="#actions-193">193 TakePartyItemRange(S:Item*)</a></li>
             <li><a href="#actions-194">194 ChangeAnimation(S:ResRef*)</a></li>
+            <li><a href="#actions-204">204 TakePartyItemNum(S:ResRef*,I:Num*)</a></li>
             <li><a href="#actions-219">219 ChangeAnimationNoEffect(S:ResRef*)</a></li>
+            <li><a href="#actions-220">220 TakeItemListParty(S:ResRef*)</a></li>
+            <li><a href="#actions-226">226 TakeItemListPartyNum(S:ResRef*,I:Num*)</a></li>
             <li><a href="#actions-274">274 AddKit(I:Kit*KIT)</a></li>
             <li><a href="#actions-289">289 AddSuperKit(I:Kit*KIT)</a></li>
             <li><a href="#actions-317">317 PlaySong(I:Song*)</a></li>
@@ -1378,11 +1384,29 @@
           <a name="actions-97" id="actions-97"></a><p><strong>97 UseItemPoint(S:Item,P:Target*,I:Ability*)</strong><br />
           <i>TobEx modifies this action opcode indirectly by allowing custom animation sequences to be played on the creature using the item. This is controlled by ITEMANIM.2DA and is item ability-specific. Also refer to the <a href="#animations-using-items">Animation Sequences when Using Items</a> section.</i></p>
           <hr />
+          <a name="actions-116" id="actions-116"></a><p><strong>116 TakePartyItem(S:Item*)</strong><br />
+          <i>TobEx fixes this action opcode so that non-party characters taking items no longer put them in the magical weapon slot or quick item slots. TobEx also removes a buffer overflow in some cases when putting items into the magical weapon slot.</i></p>
+          <hr />
           <a name="actions-174" id="actions-174"></a><p><strong>174 EquipRanged()</strong><br />
           <i>TobEx fixes this action opcode so that one-handed ranged weapons are equipped with this action when a shield is currently equipped</i></p>
           <hr />
+          <a name="actions-188" id="actions-188"></a><p><strong>188 TakePartyItemAll(S:Item*)</strong><br />
+          <i>TobEx fixes this action opcode so that non-party characters taking items no longer put them in the magical weapon slot or quick item slots. TobEx also removes a buffer overflow in some cases when putting items into the magical weapon slot.</i></p>
+          <hr />
+          <a name="actions-193" id="actions-193"></a><p><strong>193 TakePartyItemRange(S:Item*)</strong><br />
+          <i>TobEx fixes this action opcode so that non-party characters taking items no longer put them in the magical weapon slot or quick item slots. TobEx also removes a buffer overflow in some cases when putting items into the magical weapon slot.</i></p>
+          <hr />
           <a name="actions-194" id="actions-194"></a><p><strong>194 ChangeAnimation(S:ResRef*)</strong><br />
           <i>TobEx fixes a bug with this action opcode where a creature killed during this action does not die correctly, resulting in an invincible creature with zero hit points.</i></p>
+          <hr />
+          <a name="actions-204" id="actions-204"></a><p><strong>204 TakePartyItemNum(S:ResRef*,I:Num*)</strong><br />
+          <i>TobEx fixes this action opcode so that non-party characters taking items no longer put them in the magical weapon slot or quick item slots. TobEx also removes a buffer overflow in some cases when putting items into the magical weapon slot.</i></p>
+          <hr />
+          <a name="actions-220" id="actions-220"></a><p><strong>220 TakeItemListParty(S:ResRef*)</strong><br />
+          <i>TobEx fixes this action opcode so that non-party characters taking items no longer put them in the magical weapon slot or quick item slots. TobEx also removes a buffer overflow in some cases when putting items into the magical weapon slot.</i></p>
+          <hr />
+          <a name="actions-226" id="actions-226"></a><p><strong>226 TakeItemListPartyNum(S:ResRef*,I:Num*)</strong><br />
+          <i>TobEx fixes this action opcode so that non-party characters taking items no longer put them in the magical weapon slot or quick item slots. TobEx also removes a buffer overflow in some cases when putting items into the magical weapon slot.</i></p>
           <hr />
           <a name="actions-219" id="actions-219"></a><p><strong>219 ChangeAnimationNoEffect(S:ResRef*)</strong><br />
           <i>TobEx fixes a bug with this action opcode where a creature killed during this action does not die correctly, resulting in an invincible creature with zero hit points.</i></p>

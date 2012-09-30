@@ -2,3 +2,6 @@
 
 //Externalise Bard Song Effects
 LAF tobex_copy STR_VAR file = "bardsong.spl" END
+
+//Expanded Triggers
+LAF tobex_copy STR_VAR file = "asgnspec.ids" END

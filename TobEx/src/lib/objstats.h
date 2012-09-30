@@ -332,8 +332,8 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	int XPWorth; //5ch, XPVALUE
 	int currentXP; //60h, XP
 	int gold; //64h, GOLD
-	int moraleBreak; //68h, MORALEBREAK
-	int moraleRecovery; //6ch, MORALERECOVERYTIME
+	int moraleBreak; //68h, MORALEBREAK, range 0-20
+	int moraleRecovery; //6ch, MORALERECOVERYTIME, range 0-UINT_MAX
 	short reputation; //70h, REPUTATION
 	short racialEnemy; //72h, HATEDRACE (49)
 	int hideInShadows; //74h, HIDEINSHADOWS (135)

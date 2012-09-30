@@ -72,7 +72,6 @@ IECString ParseBlockVariables(IECString s, int nType, CBlockVariables& vars) {
 		sTemp.Insert(nHashIdx, (LPCTSTR)sValue);
 	}
 	
-
 	return sTemp;
 }
 
@@ -262,7 +261,33 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			int nValue = 0;
 			if (nStat) nValue = ((CCreatureObject&)sprite).GetDerivedStats().GetStat(nStat);
 			vars.SetInt(nIndex, nValue);
+
+		} else if (sType.CompareNoCase("sp") == 0 &&
+			nType == ARGTYPE_INT) {
+			//special "sp[TYPE]"
+			IECString sValue;
+			sValue = ParseBlockVariables(sTemp, ARGTYPE_STR, vars);
+			sValue.TrimLeft();
+			sValue.TrimRight();
+			sValue.MakeUpper();
+
+			Identifiers ids(ResRef("ASGNSPEC"));
+			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
+			int nSpecial = pIE ? pIE->nOpcode : 0;
+			int nValue = 0;
+			switch (nSpecial) {
+			case 1: //SPRITE_PT_X
+				nValue = sprite.m_currentLoc.x;
+				break;
+			case 2: //SPRITE_PT_Y
+				nValue = sprite.m_currentLoc.y;
+				break;
+			default:
+				break;
+			}
+			vars.SetInt(nIndex, nValue);
 		}
+
 	}
 
 	return;

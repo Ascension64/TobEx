@@ -1288,6 +1288,12 @@
                 <td>s[LEVEL]</td>
               </tr>
               <tr>
+                <td>sp</td>
+                <td>assigns the value of the special value specified (of the current object, if applicable)</td>
+                <td>ASGNSPEC.IDS name</td>
+                <td>sp[SPRITE_PT_X]</td>
+              </tr>
+              <tr>
                 <td>tn</td>
                 <td>assigns the value of a 2DA file value by coordinates</td>
                 <td>file.x.y</td>
@@ -1314,7 +1320,7 @@
           Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next trigger with the value returned by Expression. This trigger does not evaluate and does not count as a trigger in an OR() block. This trigger does not overwrite values of the Assign(), NextTriggerObject() and OR() triggers. The NextTriggerObject() trigger ignores this trigger.</p>
           <ul>
             <li>Expression is a math expression that can use the following symbols:</li>
-              <p>=+-*/%^()</p>
+              <p>= + - * / % ^ ( )</p>
               <p>min(x, y), max(x, y), avg(x, y)</p>
               <p>ceil(x), floor(x), round(x)</p>
               <p>abs(x)</p>
@@ -1322,6 +1328,7 @@
               <p>sqrt(x), pow(x, y)</p>
               <p>log(x), log10(x)</p>
               <p>sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)</p>
+              <p>Custom: and(x, y), or(x, y), band(x, y), bor(x, y)</p>
             <li>Any text in Expression of form #&ltnum&gt and @&ltnum&gt is replaced by the integer and string values, respectively, stored in local trigger block variables of index "num". Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.</li>
           </ul>
           <hr />
@@ -1480,6 +1487,12 @@
                 <td>s[LEVEL]</td>
               </tr>
               <tr>
+                <td>sp</td>
+                <td>assigns the value of the special value specified (of the current object, if applicable)</td>
+                <td>ASGNSPEC.IDS name</td>
+                <td>sp[SPRITE_PT_X]</td>
+              </tr>
+              <tr>
                 <td>tn</td>
                 <td>assigns the value of a 2DA file value by coordinates</td>
                 <td>file.x.y</td>
@@ -1506,7 +1519,7 @@
           Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next action with the value returned by Expression. To replace point X and point Y, use a Loc value of 4 and 5, respectively. This action skips subsequent Assign() and Eval() actions when determining in which action to overwrite a value. This action does not overwrite values of actions beyond ClearBlockVariables() actions.</p>
           <ul>
             <li>Expression is a math expression that can use the following symbols:</li>
-              <p>=+-*/%^()</p>
+              <p>= + - * / % ^ ( )</p>
               <p>min(x, y), max(x, y), avg(x, y)</p>
               <p>ceil(x), floor(x), round(x)</p>
               <p>abs(x)</p>
@@ -1514,6 +1527,7 @@
               <p>sqrt(x), pow(x, y)</p>
               <p>log(x), log10(x)</p>
               <p>sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)</p>
+              <p>Custom: and(x, y), or(x, y), band(x, y), bor(x, y)</p>
             <li>Any text in Expression of form #&ltnum&gt and @&ltnum&gt is replaced by the integer and string values, respectively, stored in local action block variables of index "num". Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.</li>
           </ul>
           <hr />

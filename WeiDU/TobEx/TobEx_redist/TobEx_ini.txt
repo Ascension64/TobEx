@@ -94,6 +94,7 @@ The general form of Statement is "prefix[params]"
 * 'e' - assigns the value of an expression; params is an expression, e.g. e[6 + 7]; see 0x411B Eval() for the format of Expression
 * 'id' - assigns the index of a IDS file value; params is file.value, e.g. id[EA.CHARMED]
 * 's' - assigns the value of the stat specified of the current object; params is the stat name, e.g. s[LEVEL]
+* 'sp' - assigns a special value specified; params is the special name from ASGNSPEC.IDS, e.g. sp[SPRITE_POS_X]
 * 'tn' - assigns the value of a 2DA file value by coordinates; params is file.x.y, e.g. tn[IMPORT01.0.0]
 * 'ts' - assigns the value of a 2DA file value by column and row name; params is file.column.row, e.g. tn[IMPORT01.ITEMS.1]
 * 'v' - assigns the value of a variable; params is name.scope, e.g. [foo.GLOBAL]
@@ -114,6 +115,7 @@ reciprocal(x)
 sqrt(x), pow(x, y)
 log(x), log10(x)
 sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)
+Custom: and(x, y), or(x, y), band(x, y), bor(x, y)
 -Any text in Expression of form #<num> and @<num> is replaced by the integer and string values, respectively, stored in local action block variables of index "num".
 Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
 
@@ -1914,6 +1916,7 @@ This trigger does not evaluate and does not count as a trigger in an OR() block.
 * 'e' - assigns the value of an expression; params is an expression, e.g. e[6 + 7]; see 0x411B Eval() for the format of Expression
 * 'id' - assigns the index of a IDS file value; params is file.value, e.g. id[EA.CHARMED]
 * 's' - assigns the value of the stat specified of the current object; params is the stat name, e.g. s[LEVEL]
+* 'sp' - assigns a special value specified; params is the special name from ASGNSPEC.IDS, e.g. sp[SPRITE_POS_X]
 * 'tn' - assigns the value of a 2DA file value by coordinates; params is file.x.y, e.g. tn[IMPORT01.0.0]
 * 'ts' - assigns the value of a 2DA file value by column and row name; params is file.column.row, e.g. tn[IMPORT01.ITEMS.1]
 * 'v' - assigns the value of a variable; params is name.scope, e.g. [foo.GLOBAL]
@@ -1934,6 +1937,7 @@ reciprocal(x)
 sqrt(x), pow(x, y)
 log(x), log10(x)
 sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)
+Custom: and(x, y), or(x, y), band(x, y), bor(x, y)
 -Any text in Expression of form #<num> and @<num> is replaced by the integer and string values, respectively, stored in local trigger block variables of index "num".
 Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
 

@@ -1632,6 +1632,51 @@ void InitPatches() {
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}
+
+	if (pGameOptionsEx->bEngineExternDifficulty) {
+		
+		//1. CInfGame::LoadBaldurIni()
+		//push edx
+		//call
+		char bytes[] = {0x52,
+						0xE8};
+		vDataList.push_back( Data(0x68877B, 2, bytes) );
+
+		//CALL address
+		void* ptr = (void*)CInfGame_SetDifficultyMultiplier;
+		DWORD address = (DWORD)ptr - 5  - 0x68877C;
+		char* bytes2 = (char*)&address;
+		vDataList.push_back( Data(0x68877D, 4, bytes2) );
+
+		//jmp 6887E6
+		char bytes3[] = {0xEB, 0x63,
+						0x90};
+		vDataList.push_back( Data(0x688781, 3, bytes3) );
+
+		//2. CUIScrollBarOptionsSlider::OnMouseDragKnob()
+		//push edx
+		//call
+		char bytes4[] = {0x8D, 0x45, 0xDC,
+						0x50,
+						0x8B, 0x55, 0xE8,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x7826D2, 9, bytes4) );
+
+		//CALL address
+		ptr = (void*)CInfGame_SetDifficultyMultiplierFeedback;
+		address = (DWORD)ptr - 5  - 0x7826DA;
+		char* bytes5 = (char*)&address;
+		vDataList.push_back( Data(0x7826DB, 4, bytes5) );
+
+		//jmp 6887E6
+		char bytes6[] = {0xEB, 0x7F,
+						0x90, 0x90, 0x90};
+		vDataList.push_back( Data(0x7826DF, 5, bytes6) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
 	
 	if (pGameOptionsEx->bEngineExternEncumbrance) {
 		//1. some animation thing depending on encumbrance

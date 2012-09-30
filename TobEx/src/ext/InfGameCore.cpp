@@ -776,3 +776,77 @@ int __stdcall CRuleTables_GetWeightAllowance(CDerivedStats& cds) {
 
 	return max(0, nWeightAllowanceStr + nWeightAllowanceStrEx + cds.GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_WEIGHTALLOWANCEMOD));
 }
+
+void __stdcall CInfGame_SetDifficultyMultiplier(CInfGame* pGame) {
+	if (!pRuleEx->m_DiffMod.m_2da.bLoaded) {
+		//original code
+		switch (pGame->m_GameOptions.m_nDifficultyLevel) {
+		case DIFFLEV_EASIEST:
+			pGame->m_GameOptions.m_nDifficultyMultiplier = -50;
+			break;
+		case DIFFLEV_EASY:
+			pGame->m_GameOptions.m_nDifficultyMultiplier = -25;
+			break;
+		case DIFFLEV_NORMAL:
+			pGame->m_GameOptions.m_nDifficultyMultiplier = 0;
+			break;
+		case DIFFLEV_HARD:
+			pGame->m_GameOptions.m_nDifficultyMultiplier = 50;
+			break;
+		case DIFFLEV_HARDEST:
+			pGame->m_GameOptions.m_nDifficultyMultiplier = 100;
+			break;
+		default:
+			break;
+		}
+
+		return;
+	}
+	
+	int nDifficultyMod = 0;
+	int nCol = 0;
+	int nRow = pGame->m_GameOptions.m_nDifficultyLevel - 1;
+	IECString sDifficultyMod;
+	
+	if (nCol < pRuleEx->m_DiffMod.nCols &&
+		nRow < pRuleEx->m_DiffMod.nRows &&
+		nCol >= 0 &&
+		nRow >= 0) {
+		sDifficultyMod = *((pRuleEx->m_DiffMod.pDataArray) + (pRuleEx->m_DiffMod.nCols * nRow + nCol));
+	} else {
+		sDifficultyMod = pRuleEx->m_DiffMod.defaultVal;
+	}
+	sscanf_s((LPCTSTR)sDifficultyMod, "%d", &nDifficultyMod);
+	if (nDifficultyMod < -100) nDifficultyMod = -100;
+	pGame->m_GameOptions.m_nDifficultyMultiplier = nDifficultyMod;
+
+	//original code handles setting m_nMPDifficultyMultiplier
+
+	return;
+}
+
+void __stdcall CInfGame_SetDifficultyMultiplierFeedback(CInfGame* pGame, STRREF* pFeedback) {
+	CInfGame_SetDifficultyMultiplier(pGame);
+
+	switch (pGame->m_GameOptions.m_nDifficultyLevel) {
+	case DIFFLEV_EASIEST:
+		*pFeedback = 11308; //Easy
+		break;
+	case DIFFLEV_EASY:
+		*pFeedback = 11309; //Normal
+		break;
+	case DIFFLEV_NORMAL:
+		*pFeedback = 11311; //Core Rules
+		break;
+	case DIFFLEV_HARD:
+		*pFeedback = 11312; //Hard
+		break;
+	case DIFFLEV_HARDEST:
+		*pFeedback = 11313; //Insand
+		break;
+	default:
+		break;
+	}
+
+	return;
+}

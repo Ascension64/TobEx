@@ -115,6 +115,7 @@ struct CGameOptionsEx {
 	BOOL bEngineExpandedStats;
 	BOOL bEngineExternHPTables;
 	BOOL bEngineExternClassRaceRestrictions;
+	BOOL bEngineExternDifficulty;
 	BOOL bEngineExternEncumbrance;
 	BOOL bEngineExternMageSpellsCap;
 	BOOL bEngineExternStealSlots;

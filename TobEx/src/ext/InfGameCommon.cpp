@@ -273,5 +273,15 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 	m_mpContext.addFunction("band", mpBAnd, MathPresso::MFUNC_F_ARG2);
 	m_mpContext.addFunction("bor", mpBOr, MathPresso::MFUNC_F_ARG2);
 
+	if (pGameOptionsEx->bEngineExternDifficulty) {
+		m_DiffMod.LoadTable(ResRef("DIFFMOD"));
+		if (!m_DiffMod.m_2da.bLoaded) {
+			LPCTSTR lpsz = "CRuleTablesEx::Init(): DIFFMOD.2DA not found\r\n";
+			console.write(lpsz);
+			L.timestamp();
+			L.append(lpsz);
+		}
+	}
+
 	return;
 }

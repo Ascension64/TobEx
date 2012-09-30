@@ -71,6 +71,7 @@ public:
 	MathPresso::Context m_mpContext;
 	CBlockVariables m_TriggerVars;
 	std::map<Enum, CBlockVariables*> m_MapActionVars; //stores action block variables for each Enum as required
+	CRuleTable m_DiffMod;
 
 protected:
 	void Init(CRuleTables& rule);

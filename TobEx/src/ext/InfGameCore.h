@@ -62,5 +62,7 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 BOOL __stdcall CRuleTables_IsLowEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance);
 BOOL __stdcall CRuleTables_IsHighEncumbrance(unsigned int nWeight, unsigned int nWeightAllowance);
 int __stdcall CRuleTables_GetWeightAllowance(CDerivedStats& cds);
+void __stdcall CInfGame_SetDifficultyMultiplier(CInfGame* pGame);
+void __stdcall CInfGame_SetDifficultyMultiplierFeedback(CInfGame* pGame, STRREF* pFeedback);
 
 #endif //INFGAMECORE_H

@@ -1,4 +1,4 @@
-//1620 This file contains descriptions for all the hack options found in TobEx .ini files
+//1630 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -1392,6 +1392,18 @@ The mage school restrictions of races are externalised to MGSRCREQ.2DA (0: not a
 If you enable all classes and mage schools, this effectively allows you to use any class-race combination
 Note: there are no pre-existing animations for halfling mages and non-human monks
 Therefore, animation IDs for the former are set to the halfling cleric and the latter to fighter of the same race
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1620 Externalise Difficulty Damage Modifier [M]
+Externalises the difficulty-based damage percentage modifier to DIFFMOD.2DA
+
+DIFFMOD.2DA
+Description
+DAMAGE_MOD: The percentage to add to base damage.
+[ROWNAME]: Difficulty level based on DIFFLEV.IDS
 
 Options:
 -0: disabled

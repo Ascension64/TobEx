@@ -64,6 +64,13 @@ const unsigned char CLASS_MONK					= 20;
 const unsigned short ARGTYPE_INT = 1;
 const unsigned short ARGTYPE_STR = 2;
 
+//DIFFLEV.IDS
+const unsigned int DIFFLEV_EASIEST = 1;
+const unsigned int DIFFLEV_EASY = 2;
+const unsigned int DIFFLEV_NORMAL = 3;
+const unsigned int DIFFLEV_HARD = 4;
+const unsigned int DIFFLEV_HARDEST = 5;
+
 //DMGTYPE.IDS
 const unsigned int DAMAGETYPE_CRUSHING		= 0x00000000;
 const unsigned int DAMAGETYPE_ACID			= 0x00010000;

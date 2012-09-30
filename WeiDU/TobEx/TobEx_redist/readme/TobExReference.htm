@@ -363,6 +363,7 @@
             <li><a href="#engine-creatures-moving-areas">Creatures Moving Between Areas</a></li>
             <li><a href="#engine-dead-statics">Dead Static Animations</a></li>
             <li><a href="#engine-dialogue-bar">Dialogue Bar</a></li>
+            <li><a href="#engine-difficulty">Difficulty</a></li>
             <li><a href="#engine-effect-saves">Effect Saving Throws</a></li>
             <li><a href="#engine-effect-stacking">Effect Stacking Behaviour</a></li>
             <li><a href="#engine-fake-talk-exploit">Fake Talk Exploit</a></li>
@@ -442,6 +443,15 @@
           <hr />
           <a name="engine-dialogue-bar" id="engine-dialogue-bar"></a><h3>Dialogue Bar</h3>
           <p>TobEx greatly expands the amount of text that can display in the dialogue bar before old text is lost. The number of rows supported is 32767.</p>
+          <hr />
+          <a name="engine-difficulty" id="engine-difficulty"></a><h3>Difficulty</h3>
+          <p>TobEx allows modmakers to modify the damage percentage modifier for each difficulty level by extenalising the values to DIFFMOD.2DA.</p>
+          <div class="important">
+            <p>DIFFMOD.2DA<br />
+            <br />
+            DAMAGE_MOD: The percentage to add to base damage.<br />
+            [ROWNAME]: Difficulty level based on DIFFLEV.IDS<br />
+          </div>
           <hr />
           <a name="engine-effect-saves" id="engine-effect-saves"></a><h3>Effect Saving Throws</h3>
           <p>TobEx makes the following changes to effect saving throws:</p>

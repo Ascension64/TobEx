@@ -119,6 +119,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineExpandedStats = FALSE;
 	bEngineExternHPTables = FALSE;
 	bEngineExternClassRaceRestrictions = FALSE;
+	bEngineExternDifficulty = FALSE;
 	bEngineExternEncumbrance = FALSE;
 	bEngineExternMageSpellsCap = FALSE;
 	bEngineExternStealSlots = FALSE;
@@ -294,6 +295,7 @@ void CGameOptionsEx::Init() {
 	bEngineExpandedStats = GetCoreIniValue("Engine", "Expanded Stats");
 	bEngineExternHPTables = GetCoreIniValue("Engine", "Externalise HP Tables");
 	bEngineExternClassRaceRestrictions = GetCoreIniValue("Engine", "Externalise Class-Race Restrictions");
+	bEngineExternDifficulty = GetCoreIniValue("Engine", "Externalise Difficulty Damage Modifier");
 	bEngineExternEncumbrance = GetCoreIniValue("Engine", "Externalise Encumbrance Restrictions");
 	bEngineExternMageSpellsCap = GetCoreIniValue("Engine", "Externalise Mage Spells Cap");
 	bEngineExternStealSlots = GetCoreIniValue("Engine", "Externalise Stealable Item Slots");

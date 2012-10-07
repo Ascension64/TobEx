@@ -595,6 +595,18 @@ CEffectMagicResistMod::~CEffectMagicResistMod()						{ (this->*CEffectMagicResis
 CEffect& CEffectMagicResistMod::Duplicate()							{ return (this->*CEffectMagicResistMod_Duplicate)(); }
 BOOL CEffectMagicResistMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectMagicResistMod_ApplyEffect)(creTarget); }
 
+//CEffectPoisonResistMod
+void (CEffectPoisonResistMod::*CEffectPoisonResistMod_Deconstruct)() =
+	SetFP(static_cast<void (CEffectPoisonResistMod::*)()>				(&CEffectPoisonResistMod::Deconstruct),	0x558F60);
+CEffect& (CEffectPoisonResistMod::*CEffectPoisonResistMod_Duplicate)() =
+	SetFP(static_cast<CEffect& (CEffectPoisonResistMod::*)()>			(&CEffectPoisonResistMod::Duplicate),	0x558E30);
+BOOL (CEffectPoisonResistMod::*CEffectPoisonResistMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectPoisonResistMod::*)(CCreatureObject&)>(&CEffectPoisonResistMod::ApplyEffect),0x52F0A5);
+
+CEffectPoisonResistMod::~CEffectPoisonResistMod()						{ (this->*CEffectPoisonResistMod_Deconstruct)(); }
+CEffect& CEffectPoisonResistMod::Duplicate()							{ return (this->*CEffectPoisonResistMod_Duplicate)(); }
+BOOL CEffectPoisonResistMod::ApplyEffect(CCreatureObject& creTarget)	{ return (this->*CEffectPoisonResistMod_ApplyEffect)(creTarget); }
+
 //CEffectUseEFFFile
 void (CEffectUseEFFFile::*CEffectUseEFFFile_Deconstruct)() =
 	SetFP(static_cast<void (CEffectUseEFFFile::*)()>				(&CEffectUseEFFFile::Deconstruct),	0x559380);

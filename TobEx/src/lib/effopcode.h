@@ -750,6 +750,21 @@ extern void (CEffectMagicResistMod::*CEffectMagicResistMod_Deconstruct)();
 extern CEffect& (CEffectMagicResistMod::*CEffectMagicResistMod_Duplicate)();
 extern BOOL (CEffectMagicResistMod::*CEffectMagicResistMod_ApplyEffect)(CCreatureObject&);
 
+//CEffectPoisonResistMod
+class CEffectPoisonResistMod : public CEffect { //opcode ADh
+public:
+	//AA7C50
+	virtual ~CEffectPoisonResistMod(); //v0
+	void Deconstruct() {} //dummy
+
+	virtual CEffect& Duplicate(); //v4
+	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
+};
+
+extern void (CEffectPoisonResistMod::*CEffectPoisonResistMod_Deconstruct)();
+extern CEffect& (CEffectPoisonResistMod::*CEffectPoisonResistMod_Duplicate)();
+extern BOOL (CEffectPoisonResistMod::*CEffectPoisonResistMod_ApplyEffect)(CCreatureObject&);
+
 //CEffectUseEFFFile
 class CEffectUseEFFFile : public CEffect { //opcode B1h
 public:

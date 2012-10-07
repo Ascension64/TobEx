@@ -49,6 +49,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffCharismaModFix = FALSE;
 	bEffBackstabEveryHitConfig = FALSE;
 	bEffDamageBypassMirrorImageConfig = FALSE;
+	bEffStackingConfig = FALSE;
 	bEffDispelMagicalItemConfig = FALSE;
 	bEffConstitutionModFix = FALSE;
 	bEffContainerUseEffFileFix = FALSE;
@@ -80,6 +81,7 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEffOpenLocksModFix = FALSE;
 	bEffPickPocketsModFix = FALSE;
 	bEffPoisonFix = FALSE;
+	bEffPoisonResistMod = FALSE;
 	bEffPolymorphFix = FALSE;
 	bEffPriestMemSpellMod = FALSE;
 	bEffProficiencyModMod = FALSE;
@@ -110,7 +112,6 @@ CGameOptionsEx::CGameOptionsEx() {
 	bEngineCloneCreatureFix = FALSE;
 	nEngineCustomSoAStartXP = -1;
 	nEngineCustomToBStartXP = -1;
-	bEngineModifyEffectStacking = FALSE;
 	bEngineDisableEndPlayer1Dead = FALSE;
 	bEngineDisableInvPauseSP = FALSE;
 	bEngineDisableXPBoost = FALSE;
@@ -225,6 +226,7 @@ void CGameOptionsEx::Init() {
 	bEffCharismaModFix = GetCoreIniValue("Effect Opcodes", "Charisma Mod Fix");
 	bEffBackstabEveryHitConfig = GetCoreIniValue("Effect Opcodes", "Configurable Backstab Every Hit");
 	bEffDamageBypassMirrorImageConfig = GetCoreIniValue("Effect Opcodes", "Configurable Damage Effect Bypasses Mirror Images");
+	bEffStackingConfig = GetCoreIniValue("Effect Opcodes", "Configurable Effect Stacking");
 	bEffDispelMagicalItemConfig = GetCoreIniValue("Effect Opcodes", "Configurable Magical Item Dispel Behaviour");
 	bEffConstitutionModFix = GetCoreIniValue("Effect Opcodes", "Constitution Mod Fix");
 	bEffContainerUseEffFileFix = GetCoreIniValue("Effect Opcodes", "Container Use EFF File Fix");
@@ -256,6 +258,7 @@ void CGameOptionsEx::Init() {
 	bEffOpenLocksModFix = GetCoreIniValue("Effect Opcodes", "Open Locks Mod Fix");
 	bEffPickPocketsModFix = GetCoreIniValue("Effect Opcodes", "Pick Pockets Mod Fix");
 	bEffPoisonFix = GetCoreIniValue("Effect Opcodes", "Poison Fix");
+	bEffPoisonResistMod = GetCoreIniValue("Effect Opcodes", "Poison Resistance Mod");
 	bEffPolymorphFix = GetCoreIniValue("Effect Opcodes", "Polymorph Fix");
 	bEffPriestMemSpellMod = GetCoreIniValue("Effect Opcodes", "Priest Spell Slots Mod");
 	bEffProficiencyModMod = GetCoreIniValue("Effect Opcodes", "Proficiency Modifier Mod");
@@ -286,7 +289,6 @@ void CGameOptionsEx::Init() {
 	bEngineCloneCreatureFix = GetCoreIniValue("Engine", "Clone Creature Fix");
 	nEngineCustomSoAStartXP = GetTweakIniValue("Tweak", "Engine:Custom Shadows of Amn Starting Experience", "-1");
 	nEngineCustomToBStartXP = GetTweakIniValue("Tweak", "Engine:Custom Throne of Bhaal Starting Experience", "-1");
-	bEngineModifyEffectStacking = GetCoreIniValue("Engine", "Disable Duplicate Effect Stacking");
 	bEngineDisableEndPlayer1Dead = GetTweakIniValue("Tweak", "Engine:Disable End On Player1 Dead");
 	bEngineDisableInvPauseSP = GetTweakIniValue("Tweak", "Engine:Disable Force Inventory Pause");
 	bEngineDisableXPBoost = GetTweakIniValue("Tweak", "Engine:Disable Experience Boost");

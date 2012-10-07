@@ -289,6 +289,13 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 	case TRIGGER_LT:
 		bResult = tTemp.i < tTemp.i2;
 		break;
+	case TRIGGER_CHECK_STAT_BAND:
+		{
+		nFindTargetResult = FindTargetCreature(tTemp, &pCre);
+		if (pCre == NULL) break;
+		bResult = (BOOL)(pCre->GetDerivedStats().GetStat(tTemp.i2) & tTemp.i);
+		break;
+		}
 	default:
 		bResult = (this->*Tramp_CGameSprite_EvaluateTrigger)(t);
 		break;

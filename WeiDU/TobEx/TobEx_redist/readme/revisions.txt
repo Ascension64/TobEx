@@ -6,10 +6,16 @@ Beta 0025
 -Added: Externalise Bard Song Effects
 -Added: Externalise Difficulty Damage Modifier
 -Added: Launcher Proficiency Fix
+-Added: Poison Resistance Mod
 -Added: Saving Throw Fix
 -Added: TakePartyItem Fix
+-Renamed: Disable Duplicate Effect Stacking -> Configurable Effect Stacking
+-Configurable Damage Effect Bypasses Mirror Images: Fixed implementation as per the reference; bit 24 of the effect save type field is used rather than the parent item ability flag of spell flag; this flag is thus different from tob_hacks and Spell Revisions
+-Disable Duplicate Effect Stacking: Fixed issue with timing mode 10, where Bard Song would continue for a prolonged period of time
 -Expanded Actions: Assign() now recognises special type sp[], which currently allows putting the source's coordinates into trigger block variables
 -Expanded Actions: Eval() expressions now recognise and(), or(), band(), and bor() functions
+-Expanded Stats: Fixed bitwise AND and bitwise OR types for Set Stat [318] effect
+-Expanded Triggers: Added 0x411F CheckStatBAND()
 -Expanded Triggers: Assign() now recognises special type sp[], which currently allows putting the source's coordinates into trigger block variables
 -Expanded Triggers: Eval() expressions now recognise and(), or(), band(), and bor() functions
 -Item Recharge Mod: Fixed bugs where stackable items with 0 quantity in store files were valued at 1 gold, did not register a quantity when bought, and did not stack properly when bought

@@ -1,4 +1,4 @@
-//1630 This file contains descriptions for all the hack options found in TobEx .ini files
+//1640 This file contains descriptions for all the hack options found in TobEx .ini files
 
 Description format:
 -------------------
@@ -530,9 +530,21 @@ Options:
 -1: enabled
 
 -----160 Configurable Damage Effect Bypasses Mirror Images [C, M]
-(Identical to tob_hacks, SCS, SCSII, Spell Revisions)
-Adds new bit 24 to item ability flag 'Bypass Mirror Images'
+(Different implementation to tob_hacks, SCS, SCSII, Spell Revisions)
+Adds new bit 24 to effect save type field 'Bypass Mirror Images'
 Only for the damage effect opcode, if this bit is set, the mirror image check is skipped when checking saving throw
+
+Options:
+-0: disabled
+-1: enabled
+
+-----240 Configurable Effect Stacking [M]
+Adds bit 25 (Limit Effect Stacking) of the EFF V2.0 Header offset 0x0040 (Save Type), ITM V1.0 Feature Block offset 0x0024 (Save Type), and SPL V1.0 Feature Block offset 0x0024 (Save Type).
+When set, TobEx checks EFF V2.0 Header offset 0x0048 (Special), ITM V1.0 Feature Block offset 0x002C (Special), and SPL V1.0 Feature Block offset 0x002C (Special)
+for a unique stacking ID. If two effects of the same opcode are applied, both have Limit Effect Stacking Set, and both have the same stacking ID, then the latter applied effect is suspended in application until the former effect expires.
+Regardless of whether it is applied, the latter effect will expire at the same time that it would expire if it was applied. In other words, the total duration of some non-stacking effect opcode is not extended because more than one copy of the effect was applied.
+Stacking IDs are unique to the opcode being applied. To maintain uniqueness of stacking IDs between different mods, one recommendation is to use the higher word of Special as the modder's Infinity Engine Community Prefix, then use the lower word as an identifying ID. For example, 0x41360001 ('A6' 0x0001).
+TobEx also implements bit 26 (Internal: Suspend Effect Application) of the EFF V2.0 Header offset 0x0040 (Save Type), ITM V1.0 Feature Block offset 0x0024 (Save Type), and SPL V1.0 Feature Block offset 0x0024 (Save Type) to prevent effects with limited stacking from being applied.
 
 Options:
 -0: disabled
@@ -858,6 +870,25 @@ Options:
 (Different implementation to, and clashes with tob_hacks)
 Fixes a bug with the poison opcode where a creature with multiple instances of disease, poison, wing buffet, 
 regeneration and/or repeating effect opcodes would only have the highest frequency instance applied 
+
+Options:
+-0: disabled
+-1: enabled
+
+-----1630 Poison Resistance Mod [M]
+Adds sum (1), percentage modifier (2), and instantaneous sum (3) types
+
+Description
+#173 (0x0AD) Stat: Set Poison Resistance [173]
+Applies the modifier value specified by the 'Statistic Modifier' field in the style specified by the 'Type' field.
+
+Known values for 'Type' are:
+0   Flat Value Modifier -> Value = 'Statistic Modifier' value
+1   Cumulative Modifier -> Value = Value + 'Statistic Modifier' value
+2   Percentage Modifier -> Value = (Value * 'Statistic Modifier' value) / 100
+3   Instantaneous Cumulative Modifier -> Value = Value + 'Statistic Modifier' value
+
+Note that the 'Percentage Modifier' type (2) is applied before the 'Cumulative Modifier' types (1) are applied.
 
 Options:
 -0: disabled
@@ -1237,13 +1268,6 @@ Options:
 -(-1): disabled
 -Other value: Throne of Bhaal starting experience set to this value
 
------240 Disable Duplicate Effect Stacking [B]
-Alters stacking behaviour of effects such that a duplicate effect applied from the same item/spell is not applied if the original effect is still active. If the duration of the duplicate effect continues beyond the original effect, the duplicate effect will apply when the original effect expires.
-
-Options:
--0: disabled
--1: enabled
-
 -----1110 Disable End On Player1 Dead [T]
 Disables the ending cutscene when the protagonist dies
 
@@ -1397,7 +1421,7 @@ Options:
 -0: disabled
 -1: enabled
 
------1620 Externalise Difficulty Damage Modifier [M]
+-----1620 Externalise Difficulty Damage Modifier [M, X]
 Externalises the difficulty-based damage percentage modifier to DIFFMOD.2DA
 
 DIFFMOD.2DA
@@ -1825,7 +1849,7 @@ Options:
 -0: disabled
 -1: enabled
 
------1600 Externalise Bard Song Effects [M]
+-----1600 Externalise Bard Song Effects [M, X]
 Externalises the standard bard song effects list to a spell file bardsong.spl, allowing it to be modded
 
 Options:

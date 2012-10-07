@@ -236,7 +236,7 @@ struct EffFileData { //size 108h
 	int nDieSides; //34h
 	unsigned int nSaveType; //38h
 	int nSaveBonus; //3ch
-	BOOL bStoreLocalVariableParam; //40h
+	int nSpecial; //40h
 	int nType1; //44h
 	int u4c; //48h
 	int nLevelMin; //4ch
@@ -321,7 +321,7 @@ struct ITEM_EFFECT { //Size 30h, ItmFileEffect, SplFileEffect
 	int sizeDiceOrMinLevel; //20h
 	unsigned int saveType; //24h
 	int saveBonus; //28h
-	int u2c; //2ch
+	int special; //2ch
 };
 
 //Spl

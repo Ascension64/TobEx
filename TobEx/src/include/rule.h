@@ -413,5 +413,6 @@ const short TRIGGER_EVAL						= 0x411B; //new in TobEx
 const short TRIGGER_EQUALS						= 0x411C; //new in TobEx
 const short TRIGGER_GT							= 0x411D; //new in TobEx
 const short TRIGGER_LT							= 0x411E; //new in TobEx
+const short TRIGGER_CHECK_STAT_BAND				= 0x411F; //new in TobEx
 
 #endif //RULE_H

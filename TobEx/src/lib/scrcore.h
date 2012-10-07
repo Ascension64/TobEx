@@ -212,7 +212,7 @@ struct Trigger { //Size 2Eh
 	//bit1: TRIGGER_EXECUTED (added internally on purge)
 	//bit2: TRIGGER_UPDATED_SPRITE (added internally on add or purge)
 
-	int i2; //1eh (I)
+	int i2; //1eh (I2)
 	int i3; //22h (unknown usage, I3?)
 	IECString sName1; //26h, (S), first global, the global name is appended to the global type e.g. "LOCALSDead", "GLOBALTest"
 	IECString sName2; //2ah, (S), (unknown usage, second global)

@@ -341,6 +341,14 @@ public:
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
+//CEffectPoisonResistMod
+extern BOOL (CEffectPoisonResistMod::*Tramp_CEffectPoisonResistMod_ApplyEffect)(CCreatureObject&);
+
+class DETOUR_CEffectPoisonResistMod : public CEffectPoisonResistMod {
+public:
+	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
+};
+
 //CEffectUseEFFFile
 extern BOOL (CEffectUseEFFFile::*Tramp_CEffectUseEFFFile_ApplyEffect)(CCreatureObject&);
 

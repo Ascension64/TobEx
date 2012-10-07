@@ -89,6 +89,7 @@ void InitHooks() {
 
 	//Effect
 	DetourMemberFunction(Tramp_CEffect_CreateEffect, DETOUR_CEffect::DETOUR_CreateEffect);
+	DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 	DetourMemberFunction(Tramp_CEffect_CheckNotSaved, DETOUR_CEffect::DETOUR_CheckNotSaved);
 	DetourMemberFunction(Tramp_CDerivedStats_OpAdd, DETOUR_CDerivedStats::DETOUR_OpAdd);
 	DetourMemberFunction(Tramp_CEffectDamage_ApplyEffect, DETOUR_CEffectDamage::DETOUR_ApplyEffect);
@@ -186,6 +187,9 @@ void InitHooks() {
 	if (pGameOptionsEx->bEffPoisonFix)
 		DetourMemberFunction(Tramp_CEffectPoison_ApplyEffect, DETOUR_CEffectPoison::DETOUR_ApplyEffect);
 
+	if (pGameOptionsEx->bEffPoisonResistMod)
+		DetourMemberFunction(Tramp_CEffectPoisonResistMod_ApplyEffect, DETOUR_CEffectPoisonResistMod::DETOUR_ApplyEffect);
+
 	if (pGameOptionsEx->bEffProficiencyModMod) {
 		DetourMemberFunction(Tramp_CEffectProficiencyMod_ApplyEffect, DETOUR_CEffectProficiencyMod::DETOUR_ApplyEffect);
 		DetourMemberFunction(Tramp_CDerivedStats_LimitStats, DETOUR_CDerivedStats::DETOUR_LimitStats);
@@ -244,9 +248,6 @@ void InitHooks() {
 	//Engine
 	if (pGameOptionsEx->bEngineCloneCreatureFix)
 		DetourMemberFunction(Tramp_CCreatureObject_ActionJumpToAreaEntranceMove, DETOUR_CCreatureObject::DETOUR_ActionJumpToAreaEntranceMove);
-
-	if (pGameOptionsEx->bEngineModifyEffectStacking)
-		DetourMemberFunction(Tramp_CEffect_ApplyTiming, DETOUR_CEffect::DETOUR_ApplyTiming);
 
 	if (pGameOptionsEx->bEngineDisableInvPauseSP)
 		DetourMemberFunction(Tramp_CScreenInventory_Init, DETOUR_CScreenInventory::DETOUR_Init);

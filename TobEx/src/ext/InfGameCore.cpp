@@ -842,7 +842,7 @@ void __stdcall CInfGame_SetDifficultyMultiplierFeedback(CInfGame* pGame, STRREF*
 		*pFeedback = 11312; //Hard
 		break;
 	case DIFFLEV_HARDEST:
-		*pFeedback = 11313; //Insand
+		*pFeedback = 11313; //Insane
 		break;
 	default:
 		break;

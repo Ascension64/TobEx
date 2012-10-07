@@ -44,6 +44,7 @@ struct CGameOptionsEx {
 	BOOL bEffCharismaModFix;
 	BOOL bEffBackstabEveryHitConfig;
 	BOOL bEffDamageBypassMirrorImageConfig;
+	BOOL bEffStackingConfig;
 	BOOL bEffDispelMagicalItemConfig;
 	BOOL bEffConstitutionModFix;
 	BOOL bEffContainerUseEffFileFix;
@@ -75,6 +76,7 @@ struct CGameOptionsEx {
 	BOOL bEffOpenLocksModFix;
 	BOOL bEffPickPocketsModFix;
 	BOOL bEffPoisonFix;
+	BOOL bEffPoisonResistMod;
 	BOOL bEffPolymorphFix;
 	BOOL bEffPriestMemSpellMod;
 	BOOL bEffProficiencyModMod;
@@ -106,7 +108,6 @@ struct CGameOptionsEx {
 	BOOL bEngineXPReportFix;
 	int nEngineCustomSoAStartXP;
 	int nEngineCustomToBStartXP;
-	BOOL bEngineModifyEffectStacking;
 	BOOL bEngineDisableEndPlayer1Dead;
 	BOOL bEngineDisableInvPauseSP;
 	BOOL bEngineDisableXPBoost;

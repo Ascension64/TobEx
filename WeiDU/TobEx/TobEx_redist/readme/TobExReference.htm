@@ -462,7 +462,10 @@
           </ul>
           <hr />
           <a name="engine-effect-stacking" id="engine-effect-stacking"></a><h3>Effect Stacking Behaviour</h3>
-          <p>TobEx allows modmakers to modify the way that effect opcodes stack. This hack is currently in beta and has a number of problems. Please do not use it.</p>
+          <p>TobEx allows modmakers to configure when effects can stack. This is achieved by implementing bit 25 (Limit Effect Stacking) of the EFF V2.0 Header offset 0x0040 (Save Type), ITM V1.0 Feature Block offset 0x0024 (Save Type), and SPL V1.0 Feature Block offset 0x0024 (Save Type).</p>
+          <p>When set, TobEx checks EFF V2.0 Header offset 0x0048 (Special), ITM V1.0 Feature Block offset 0x002c (Special), and SPL V1.0 Feature Block offset 0x002c (Special) for a unique stacking ID. If two effects of the same opcode are applied, both have Limit Effect Stacking Set, and both have the same stacking ID, then the latter applied effect is suspended in application until the former effect expires. Regardless of whether it is applied, the latter effect will expire at the same time that it would expire if it was applied. In other words, the total duration of some non-stacking effect opcode is not extended because more than one copy of the effect was applied.</p>
+          <p>Stacking IDs are unique to the opcode being applied. To maintain uniqueness of stacking IDs between different mods, one recommendation is to use the higher word of Special as the modder's Infinity Engine Community Prefix, then use the lower word as an identifying ID. For example, 0x41360001 ('A6' 0x0001).</p>
+          <p>TobEx also implements bit 26 (Internal: Suspend Effect Application) of the EFF V2.0 Header offset 0x0040 (Save Type), ITM V1.0 Feature Block offset 0x0024 (Save Type), and SPL V1.0 Feature Block offset 0x0024 (Save Type) to prevent effects with limited stacking from being applied.</p>
           <hr />
           <a name="engine-fake-talk-exploit" id="engine-fake-talk-exploit"></a><h3>Fake Talk Exploit</h3>
           <p>TobEx fixes an exploit where players could intend to initiate dialogue with a neutral creature, cancel their action, and then perform a hostile action instead, resulting in the creature wasting up to 10 seconds doing nothing before becoming hostile.</p>
@@ -1910,6 +1913,18 @@
                 <p>Saving throw type</p>
                 <ul>
                   <li>bit 24: <a href="#effects-12">bypass mirror images</a></li>
+                  <li>bit 25: <a href="#engine-effect-stacking">limit effect stacking</a></li>
+                  <li>bit 26: <a href="#engine-effect-stacking">internal: suspend effect application</a></li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>0x0048 (dword)</td>
+              <td>
+                <p>Special</p>
+                <ul>
+                  <li>Vanilla: Used only for Set Local Variable when the variable is non-existant</li>
+                  <li><a href="#engine-effect-stacking">Stacking ID</a> when bit 25 of 'Saving throw type' is enabled</li>
                 </ul>
               </td>
             </tr>
@@ -1959,6 +1974,7 @@
             <li><a href="#effects-147">#147 (0x093)  Spell: Learn Spell [147]</a></li>
             <li><a href="#effects-164">#164 (0x0A4)  Cure: Drunkeness [164]</a></li>
             <li><a href="#effects-166">#166 (0x0A6)  Stat: Magical Resistance Modifier [166]</a></li>
+            <li><a href="#effects-173">#173 (0x0AD)  Stat: Set Poison Resistance [173]</a></li>
             <li><a href="#effects-177">#177 (0x0B1)  Use EFF File [177]</a></li>
             <li><a href="#effects-181">#181 (0x0B5)  Item: Can't Use Itemtype [181]</a></li>
             <li><a href="#effects-182">#182 (0x0B6)  Item: Apply Effect Item [182]</a></li>
@@ -2378,6 +2394,20 @@
           2   Percentage Modifier -> Value = (Value * 'Statistic Modifier' value) / 100<br />
           3   Cumulative Modifier -> Value = Value + 'Statistic Modifier' value</p>
           <p>For a non-permanent timing, the instantaneous cumulative modifier immediately adds the 'Statistic Modifier' value, unlike the cumulative modifier which adds the 'Statistic Modifier' after all effects are applied. The former has the disadvantage that it will be overriden by any subsequent flat value modifiers. Percentage modifiers override all other modifiers.</p>
+          <hr />
+          <a name="effects-173" id="effects-173"></a><p><strong>#173 (0x0AD)  Stat: Set Poison Resistance [173]</strong><br />
+          <i>TobEx adds paramter 2 values 1 to 3</i><br />
+          Parameter #1: Statistic Modifier<br />
+          Parameter #2: Type<br />
+          Description:<br />
+          Applies the modifier value specified by the 'Statistic Modifier' field in the style specified by the 'Type' field.<br />
+          <br />
+          Known values for 'Type' are:</p>
+          <p class="important">0   Flat Value Modifier -> Value = 'Statistic Modifier' value<br />
+          1   Cumulative Modifier -> Value = Value + 'Statistic Modifier' value<br />
+          2   Percentage Modifier -> Value = (Value * 'Statistic Modifier' value) / 100<br />
+          3   Instantaneous Cumulative Modifier -> Value = Value + 'Statistic Modifier' value</p>
+          <p>Note that the 'Percentage Modifier' type (2) is applied before the 'Cumulative Modifier' types (1) are applied.</p>
           <hr />
           <a name="effects-177" id="effects-177"></a><p><strong>#177 (0x0B1)  Use EFF File [177]</strong><br />
           <i>TobEx fixes this effect opcode so that adjustments to child effect parameters 1 to 4 are saved in unused internal structures of this opcode and restored to the child effect on next application. This fixes stutter issues associated with the <a href="#effects-135">Polymorph</a> (parameter 2 value 1) opcode and is required for the changes to the <a href="#effects-15">Dexterity Modifier</a> (parameter 2 value 3), <a href="#effects-25">Poison</a>, <a href="#effects-44">Strength Modifier</a> (parameter 2 value 3), <a href="#effects-78">Disease</a>, <a href="#effects-98">Regeneration</a>, and <a href="#effects-272">Apply Repeating EFF</a> opcodes to work correctly when used as child effects of this effect.<br />
@@ -2824,6 +2854,18 @@
                 <p>Flags</p>
                 <ul>
                   <li>bit 24: <a href="#effects-12">bypass mirror images</a></li>
+                  <li>bit 25: <a href="#engine-effect-stacking">limit effect stacking</a></li>
+                  <li>bit 26: <a href="#engine-effect-stacking">internal: suspend effect application</a></li>
+                </ul>
+              </td>
+            <tr>
+            </tr>
+              <td>0x002c (dword)</td>
+              <td>
+                <p>Special</p>
+                <ul>
+                  <li>Vanilla: Used only for Set Local Variable when the variable is non-existant</li>
+                  <li><a href="#engine-effect-stacking">Stacking ID</a> when bit 25 of 'Saving throw type' is enabled</li>
                 </ul>
               </td>
             </tr>
@@ -2864,6 +2906,18 @@
                 <p>Flags</p>
                 <ul>
                   <li>bit 24: <a href="#effects-12">bypass mirror images</a></li>
+                  <li>bit 25: <a href="#engine-effect-stacking">limit effect stacking</a></li>
+                  <li>bit 26: <a href="#engine-effect-stacking">internal: suspend effect application</a></li>
+                </ul>
+              </td>
+            <tr>
+            </tr>
+              <td>0x002c (dword)</td>
+              <td>
+                <p>Special</p>
+                <ul>
+                  <li>Vanilla: Used only for Set Local Variable when the variable is non-existant</li>
+                  <li><a href="#engine-effect-stacking">Stacking ID</a> when bit 25 of 'Saving throw type' is enabled</li>
                 </ul>
               </td>
             </tr>

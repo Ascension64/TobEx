@@ -81,7 +81,8 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 		effect.nDuration = effect.nDuration * 15 + g_pChitin->pGame->m_WorldTimer.nGameTime;
 		break;
 	case 10: //apply, set expiry time (duration in ticks)
-		effect.nDuration = effect.nDuration * 15 + g_pChitin->pGame->m_WorldTimer.nGameTime;
+		effect.nTiming = 0x1000;
+		effect.nDuration += g_pChitin->pGame->m_WorldTimer.nGameTime;
 		break;
 	case 3: //set expiry time (duration in sec)
 		effect.nTiming = 6;
@@ -137,33 +138,33 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 		break;
 	}
 
-	BOOL bSimilarEffectExists = FALSE;
-	CEffectList& listEquipped = creTarget.GetEquippedEffectsList();
-	CEffectList& listMain = creTarget.GetMainEffectsList();
-	CEffect* pFound = NULL;
-	if (pGameOptionsEx->bEngineModifyEffectStacking) {
-		pFound = CEffectList_Find(listEquipped, *this, listEquipped.GetCurrentPosition(), creTarget);
-		if (pFound == NULL) pFound = CEffectList_Find(listMain, *this, listMain.GetCurrentPosition(), creTarget);
-		if (pFound != NULL) bSimilarEffectExists = TRUE;
-	
-		if (bSimilarEffectExists) {
-			effect.nSaveType |= EFFECT_STACKING_SUSPEND;
+	if (pGameOptionsEx->bEffStackingConfig &&
+		(effect.nSaveType & CEFFECT_STACKING_LIMIT)) {
+		CEffectList& listEquipped = creTarget.GetEquippedEffectsList();
+		CEffectList& listMain = creTarget.GetMainEffectsList();
+		CEffect* pFound = NULL;
+		
+		pFound = CEffectList_FindPrevious(listEquipped, *this, listEquipped.GetCurrentPosition(), creTarget);
+		if (pFound == NULL) pFound = CEffectList_FindPrevious(listMain, *this, listMain.GetCurrentPosition(), creTarget);
+
+		if (pFound) {
+			effect.nSaveType |= CEFFECT_STACKING_SUSPEND;
 			if (pGameOptionsEx->bDebugVerbose) {
-				LPCTSTR lpsz = "[DETOUR]CEffect::ApplyTiming(): 0x%X suspended (similar to 0x%x)\r\n";
+				LPCTSTR lpsz = "DETOUR_CEffect::DETOUR_ApplyTiming(): Effect %X suspended (like %x)\r\n";
 				console.writef(lpsz, (DWORD)this, (DWORD)pFound);
 				L.timestamp();
 				L.appendf(lpsz, (DWORD)this, (DWORD)pFound);
 			}
 			return TRUE;
 		} else {
-			if (effect.nSaveType & EFFECT_STACKING_SUSPEND) {
+			if (effect.nSaveType & CEFFECT_STACKING_SUSPEND) {
+				effect.nSaveType &= ~(CEFFECT_STACKING_SUSPEND);
 				if (pGameOptionsEx->bDebugVerbose) {
-					LPCTSTR lpsz = "[DETOUR]CEffect::ApplyTiming(): 0x%X unsuspended\r\n";
+					LPCTSTR lpsz = "DETOUR_CEffect::DETOUR_ApplyTiming(): Effect %X resumed\r\n";
 					console.writef(lpsz, (DWORD)this);
 					L.timestamp();
 					L.appendf(lpsz, (DWORD)this);
 				}
-				effect.nSaveType &= ~(EFFECT_STACKING_SUSPEND);
 			}
 		}
 	}

@@ -102,6 +102,8 @@ BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&)
 	SetFP(static_cast<BOOL (CEffectLearnSpell::*)(CCreatureObject&)>		(&CEffectLearnSpell::ApplyEffect),			0x52C250);
 BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectMagicResistMod::*)(CCreatureObject&)>	(&CEffectMagicResistMod::ApplyEffect),		0x52EB97);
+BOOL (CEffectPoisonResistMod::*Tramp_CEffectPoisonResistMod_ApplyEffect)(CCreatureObject&) =
+	SetFP(static_cast<BOOL (CEffectPoisonResistMod::*)(CCreatureObject&)>	(&CEffectPoisonResistMod::ApplyEffect),		0x52F0A5);
 BOOL (CEffectUseEFFFile::*Tramp_CEffectUseEFFFile_ApplyEffect)(CCreatureObject&) =
 	SetFP(static_cast<BOOL (CEffectUseEFFFile::*)(CCreatureObject&)>		(&CEffectUseEFFFile::ApplyEffect),			0x52FBAE);
 BOOL (CEffectCastSpellOnCondition::*Tramp_CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&) =
@@ -2954,6 +2956,37 @@ BOOL DETOUR_CEffectMagicResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget
 	return TRUE;
 }
 
+BOOL DETOUR_CEffectPoisonResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
+	if (0) IECString("DETOUR_CEffectPoisonResistMod::DETOUR_ApplyEffect");
+
+	switch (effect.nParam2) {
+		case 0:
+			//set
+			creTarget.cdsCurrent.resistPoison = effect.nParam1;
+			break;
+		case 1:
+			//sum
+			creTarget.cdsDiff.resistPoison += effect.nParam1;
+			break;
+		case 2:
+			//percentage
+			creTarget.cdsCurrent.resistPoison = (creTarget.cdsCurrent.resistPoison * effect.nParam1) / 100;
+			break;
+		case 3:
+			//instantaneous sum
+			creTarget.cdsCurrent.resistPoison += effect.nParam1;
+			break;
+		default:
+			LPCTSTR lpsz = "DETOUR_CEffectPoisonResistMod::DETOUR_ApplyEffect(): invalid effect.nParam2 (%d)\r\n";
+			console.writef(lpsz, effect.nParam2);
+			L.timestamp();
+			L.appendf(lpsz, effect.nParam2);
+			bPurge = TRUE;
+			break;
+	}
+	return TRUE;
+}
+
 BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 	if (0) IECString("DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect");
 
@@ -4023,10 +4056,10 @@ BOOL CEffectSetStat::ApplyEffect(CCreatureObject& creTarget) {
 		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] || effect.nParam1;
 		break;
 	case 8: //bitwise and
-		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] && effect.nParam1;
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] & effect.nParam1;
 		break;
 	case 9: //bitwise or
-		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] || effect.nParam1;
+		pStatsEx[nOpcode - 200 - 1] = pStatsEx[nOpcode - 200 - 1] | effect.nParam1;
 		break;
 	case 10: //not
 		pStatsEx[nOpcode - 200 - 1] = !pStatsEx[nOpcode - 200 - 1];

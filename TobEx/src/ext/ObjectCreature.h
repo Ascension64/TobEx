@@ -49,5 +49,6 @@ BOOL __stdcall CCreatureObject_UseItem_CannotTargetInvisible(CCreatureObject& cr
 void __stdcall CCreatureObject_UseItem_OverrideAnimation(CCreatureObject& creSource);
 BOOL __stdcall CCreatureObject_AttackOnce_DoHalfAttack(CCreatureObject& creSource, char cInRoundIdx);
 void __stdcall CCreatureObject_UpdateModalState_DoBardSongNormal(CCreatureObject& creSource);
+void __stdcall CCreatureObject_SetDifficultyLuckModifier(CCreatureObject& cre);
 
 #endif //OBJECTCREATURE_H

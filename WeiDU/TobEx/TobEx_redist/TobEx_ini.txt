@@ -1421,12 +1421,13 @@ Options:
 -0: disabled
 -1: enabled
 
------1620 Externalise Difficulty Damage Modifier [M, X]
+-----1620 Externalise Difficulty Settings [M, X]
 Externalises the difficulty-based damage percentage modifier to DIFFMOD.2DA
 
 DIFFMOD.2DA
 Description
-DAMAGE_MOD: The percentage to add to base damage.
+DAMAGE_MOD: The percentage to add to base damage
+LUCK_MOD: The amount to add to luck of party members
 [ROWNAME]: Difficulty level based on DIFFLEV.IDS
 
 Options:

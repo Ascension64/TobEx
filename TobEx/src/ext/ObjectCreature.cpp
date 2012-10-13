@@ -1407,3 +1407,41 @@ void __stdcall CCreatureObject_UpdateModalState_DoBardSongNormal(CCreatureObject
 		FALSE);
 	return;
 }
+
+void __stdcall CCreatureObject_SetDifficultyLuckModifier(CCreatureObject& cre) {
+	if (!pRuleEx->m_DiffMod.m_2da.bLoaded) {
+		//original code
+		if (g_pChitin->cNetwork.bSessionOpen) {
+			if (g_pChitin->pGame->m_GameOptions.m_nMPDifficultyMultiplier < -25)
+				cre.cdsCurrent.luck += 6;
+		} else {
+			if (g_pChitin->pGame->m_GameOptions.m_nDifficultyMultiplier < -25)
+				cre.cdsCurrent.luck += 6;
+		}
+
+		return;
+	}
+	
+	int nLuckMod = 0;
+	int nCol = 1;
+	int nRow = g_pChitin->pGame->m_GameOptions.m_nDifficultyLevel - 1;
+	IECString sLuckMod;
+	
+	if (nCol < pRuleEx->m_DiffMod.nCols &&
+		nRow < pRuleEx->m_DiffMod.nRows &&
+		nCol >= 0 &&
+		nRow >= 0) {
+		sLuckMod = *((pRuleEx->m_DiffMod.pDataArray) + (pRuleEx->m_DiffMod.nCols * nRow + nCol));
+	} else {
+		sLuckMod = pRuleEx->m_DiffMod.defaultVal;
+	}
+	sscanf_s((LPCTSTR)sLuckMod, "%d", &nLuckMod);
+
+	if (g_pChitin->cNetwork.bSessionOpen) {
+		cre.cdsCurrent.luck += nLuckMod;
+	} else {
+		cre.cdsCurrent.luck += nLuckMod;
+	}
+
+	return;
+}

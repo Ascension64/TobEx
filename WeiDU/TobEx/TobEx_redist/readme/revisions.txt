@@ -4,7 +4,7 @@ Beta 0025
 -User Patches: No longer spouts an error when the ./TobEx_ini/patch directory is non-existent or empty
 -Added: Clone Creature Fix
 -Added: Externalise Bard Song Effects
--Added: Externalise Difficulty Damage Modifier
+-Added: Externalise Difficulty Settings
 -Added: Launcher Proficiency Fix
 -Added: Poison Resistance Mod
 -Added: Saving Throw Fix

@@ -449,7 +449,8 @@
           <div class="important">
             <p>DIFFMOD.2DA<br />
             <br />
-            DAMAGE_MOD: The percentage to add to base damage.<br />
+            DAMAGE_MOD: The percentage to add to base damage<br />
+            LUCK_MOD: The amount to add to luck of party members<br />
             [ROWNAME]: Difficulty level based on DIFFLEV.IDS<br />
           </div>
           <hr />
@@ -1178,6 +1179,7 @@
             <li><a href="#triggers-411c">0x411C E(I:Num1*,I:Num2*)</a></li>
             <li><a href="#triggers-411c">0x411D GT(I:Num1*,I:Num2*)</a></li>
             <li><a href="#triggers-411c">0x411E LT(I:Num1*,I:Num2*)</a></li>
+            <li><a href="#triggers-411f">0x411F CheckStatBAND(O:Object*,I:Value*,I:StatNum*Stats)</a></li>
           </ul>
           <hr />
           <a name="triggers-4042" id="triggers-4042"></a><p><strong>0x4042 PartyHasItem(S:Item*)</strong><br />
@@ -1350,6 +1352,10 @@
           0x411E LT(I:Num1*,I:Num2*)</strong><br />
           <i>New</i><br />
           Compares "Num1" to "Num2", where E is equals, GT is greater than, and LT is less than. To make use of these triggers, the <a href="#triggers-411b">0x411B Eval()</a> trigger should be used prior to this trigger.</p>
+          <hr />
+          <a name="triggers-411f" id="triggers-411f"></a><p><strong>0x411F CheckStatBAND(O:Object*,I:Value*,I:StatNum*Stats)</strong><br />
+          <i>New</i><br />
+          Returns true only if the specified object has the statistic in the 3rd parameter produces a non-zero value when executing a bitwise AND with the value of the 2nd parameter.</p>
           <address>
             <span class="footer">TobEx &gt; Triggers</span> &#8226;<a href="#top">BACK TO TOP</a>
           </address>

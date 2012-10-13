@@ -1674,6 +1674,24 @@ void InitPatches() {
 						0x90, 0x90, 0x90};
 		vDataList.push_back( Data(0x7826DF, 5, bytes6) );
 
+		//3. CCreatureObject::ApplyRulesToStats()
+		char bytes7[] = {0x8B, 0x95, 0x48, 0xF6, 0xFF, 0xFF,
+						0x52,
+						0xE8};
+		vDataList.push_back( Data(0x8CDD1D, 8, bytes7) );
+
+		//CALL address
+		ptr = (void*)CCreatureObject_SetDifficultyLuckModifier;
+		address = (DWORD)ptr - 5  - 0x8CDD24;
+		char* bytes8 = (char*)&address;
+		vDataList.push_back( Data(0x8CDD25, 4, bytes8) );
+
+		//jmp short 8CDD89
+		//nop
+		char bytes9[] = {0xE9, 0xA4, 0x00, 0x00, 0x00,
+						0x90};
+		vDataList.push_back( Data(0x8CDD29, 6, bytes9) );
+
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

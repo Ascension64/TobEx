@@ -3214,7 +3214,8 @@ void InitPatches() {
 	}
 
 	if (pGameOptionsEx->bVideoEnableMorePaperdolls) {
-		char bytes[] = {0x55, 0x77, 0x083, 0x00}; //address 0x837755
+		//change vfunc to that of CAnimation1000::GetAnimGroupPaperdollName
+		char bytes[] = {0x55, 0x77, 0x83, 0x00}; //address 0x837755
 		vDataList.push_back( Data(0xAB6B40, 4, bytes) ); //CAnimation1200
 		vDataList.push_back( Data(0xAB6DEC, 4, bytes) ); //CAnimation2000
 		vDataList.push_back( Data(0xAB6ED0, 4, bytes) ); //CAnimation3000

@@ -2961,6 +2961,7 @@ BOOL DETOUR_CEffectPoisonResistMod::DETOUR_ApplyEffect(CCreatureObject& creTarge
 
 	switch (effect.nParam2) {
 		case 0:
+		case 78: //TEMPORARY ONLY workaround for BG2Fixpack immunity batch for disease
 			//set
 			creTarget.cdsCurrent.resistPoison = effect.nParam1;
 			break;
@@ -3052,7 +3053,7 @@ BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			pEff->eSource = eSource;
 			pEff->effect.ptDest = effect.ptDest;
 			pEff->effect.nDuration = effect.nDuration;
-			pEff->effect.nTiming = effect.nTiming;
+			pEff->effect.nTiming = effect.nTiming & 0xFFFF;
 			pEff->effect.bDoSingleUse = effect.bDoSingleUse;
 
 			//new - restore child effect's parameters and resources from previous application
@@ -3071,7 +3072,7 @@ BOOL DETOUR_CEffectUseEFFFile::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 			}
 
 			if (effect.nParam3 || //bSuccess
-				TryApplyEffect(
+				pEff->TryApplyEffect(
 					creTarget,
 					&creTarget.m_cRandSaveDeath,
 					&creTarget.m_cRandSaveWand,
@@ -3213,10 +3214,10 @@ BOOL DETOUR_CEffectCastSpellOnCondition::DETOUR_ApplyEffect(CCreatureObject& cre
 	
 	STRREF strrefName;
 	STRREF strrefDescription;
-	g_pChitin->pGame->GetContingencyConditionTexts(&strrefName, &strrefDescription, (short)effect.nParam2);
-	pConditionalSpell->strrefName = strrefName;
+	g_pChitin->pGame->GetContingencyConditionTexts(&strrefName, &strrefDescription, wParam2Low);
+	pConditionalSpell->strrefCondition = strrefName;
 
-	g_pChitin->pGame->GetContingencyTargetTexts(&strrefName, &strrefDescription, (short)effect.nParam2);
+	g_pChitin->pGame->GetContingencyTargetTexts(&strrefName, &strrefDescription, (short)effect.nParam1);
 	pConditionalSpell->strrefTarget = strrefName;
 
 	creTarget.cdsCurrent.m_ConditionalSpells.AddTail(pConditionalSpell);

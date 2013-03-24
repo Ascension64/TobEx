@@ -115,9 +115,9 @@ BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& s
 	CGameSprite* pOverrideSprite = NULL;
 
 	//Eval() variables
-	BOOL bOverrideInt[2] = { FALSE };
-	int nOverride[2] = { 0 };
-	BOOL bOverrideStr[2] = { FALSE };
+	BOOL bOverrideInt[] = { FALSE, FALSE };
+	int nOverride[] = { 0, 0 };
+	BOOL bOverrideStr[] = { FALSE, FALSE };
 	IECString sOverride[2];
 
 	POSITION pos = m_triggers.GetHeadPosition();
@@ -214,12 +214,16 @@ BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& s
 			//evaluate trigger depending on override object
 			if (bOverrideObject) {
 				if (pOverrideSprite) {
+					if ((tCopy.opcode & 0x4000) == 0) pt->DecodeIdentifiers(*pOverrideSprite); //workaround for 0x0XXX triggers that need the original trigger decoded to work properly
 					bResult |= EvaluateTrigger(tCopy, triggers, *pOverrideSprite);
 					g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pOverrideSprite->GetEnum(), THREAD_ASYNCH, INFINITE);
 				} else bResult |= FALSE;
 				bOverrideObject = FALSE;
 				pOverrideSprite = NULL;
-			} else bResult |= EvaluateTrigger(tCopy, triggers, sprite);
+			} else {
+				if ((tCopy.opcode & 0x4000) == 0) pt->DecodeIdentifiers(sprite); //workaround for 0x0XXX triggers that need the original trigger decoded to work properly
+				bResult |= EvaluateTrigger(tCopy, triggers, sprite);
+			}
 
 			//terminate if not in OR
 			if (bResult == FALSE &&	nOr <= 0) {

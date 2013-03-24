@@ -46,7 +46,7 @@ struct CConditionalSpell { //Size 204h
 	unsigned int dwFlags; //5ah
 	CEffect eff; //5eh, copy of the source effect
 	STRREF strrefTarget; //1f8h, name of contingency target
-	STRREF strrefName; //1fch, name of contingency condition
+	STRREF strrefCondition; //1fch, name of contingency condition
 	int nTicksLastCheck; //200h
 };
 

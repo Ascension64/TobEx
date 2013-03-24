@@ -68,7 +68,7 @@ public:
 	char u149d;
 	int m_nContSpellType; //149eh, 0 = mage, 1 = priest, treated as char
 	short m_wContScrollIdx; //14a2h
-	short u14a4;
+	short m_wContSpellNum; //14a4h, number of contingencies in conditional spell list
 	CMemSpellList m_ContSpells; //14a6h, here unsigned short wSpellFlags holds nNumMemorized instead 
 	int u14c2;
 	ResRef m_rContSpellName; //14c6h

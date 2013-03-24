@@ -1,4 +1,4 @@
-OUTER_SET tobex_redist_version = 25
+OUTER_SET tobex_redist_version = 26
 
 DEFINE_ACTION_FUNCTION tobex_copy STR_VAR file = "nul" BEGIN
   ACTION_IF NOT FILE_EXISTS_IN_GAME "%file%" BEGIN
@@ -218,4 +218,7 @@ END
 
 ACTION_IF (%tobex_installed_version% < 25) BEGIN
   INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx0025.tpa"
+END
+
+ACTION_IF (%tobex_installed_version% < 26) BEGIN
 END

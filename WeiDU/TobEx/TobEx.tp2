@@ -324,7 +324,12 @@ COPY_EXISTING ~clsrcreq.2da~ ~override/clsrcreq.2da~
      FOR (col = 1; col < %num_cols%; col += 1) BEGIN
          SET row = 0
          FOR (row = 0; row < %num_rows%; row += 1) BEGIN
-             SET_2DA_ENTRY_LATER ~_#_#_#file~ %row% %col% 1
+             READ_2DA_ENTRY %row% 0 %num_cols% row_name
+             PATCH_IF ("%row_name%" STRING_EQUAL_CASE "PALADIN") AND (col = 4) BEGIN
+               //don't allow dwarves to be paladins, since they don't meet the requirements
+               SET_2DA_ENTRY_LATER ~_#_#_#file~ %row% %col% 0
+             END ELSE
+               SET_2DA_ENTRY_LATER ~_#_#_#file~ %row% %col% 1
          END
      END
      SET_2DA_ENTRIES_NOW ~_#_#_#file~ %num_cols%

@@ -1,3 +1,13 @@
+Beta 0026
+---------
+-Class/structure updates
+-Cast Spell On Condition Mod: Fixed wrong target text in the contingency info screen
+-Expanded Triggers: Fixed certain 0x0XXX triggers like Heard() not working correctly
+-Poison Resistance Mod: Added temporary workaround for invalid nParam2 messages caused by BG2Fixpack, until BG2Fixpack is updated
+-Remove all race-class restrictions: Disabled dwarven paladins because dwarves do not meet the charisma requirement to be paladins, which caused an infinite loop
+-Saving Throw Fix: Fixed a bug where abilities with multiple effects with the save type would only allow a saving throw against the first effect (fixes issues such as saving against an effect but still showing the portrait icon or visual effect)
+-Use EFF File Fix: Fixed a bug where the parent effect parameters were used to determine whether the child effect was applied or not (fixes issues such as not getting experience for items that instantly kill undead)
+
 Beta 0025
 ---------
 -Class/structure updates

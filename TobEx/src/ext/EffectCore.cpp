@@ -239,8 +239,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 		char cSaveTypeUsed = 0;
 
 		//determine best saving throw
-		if (effect.nSaveType & CEFFECT_SAVETYPE_DEATH &&
-			!(rollSaveDeath & CRESAVE_USED)) {
+		if (effect.nSaveType & CEFFECT_SAVETYPE_DEATH) {
 			if (cdsTarget.saveDeath < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveDeath;
 				wSaveThreshold = cdsTarget.saveDeath;
@@ -248,8 +247,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 1;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_WANDS &&
-			!(rollSaveWands & CRESAVE_USED)) {
+		if (effect.nSaveType & CEFFECT_SAVETYPE_WANDS) {
 			if (cdsTarget.saveWands < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveWands;
 				wSaveThreshold = cdsTarget.saveWands;
@@ -257,8 +255,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 2;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_POLYMORPH &&
-			!(rollSavePoly & CRESAVE_USED)) {
+		if (effect.nSaveType & CEFFECT_SAVETYPE_POLYMORPH) {
 			if (cdsTarget.savePoly < wSaveThreshold) {
 				wSaveRollTotal = cRollSavePoly;
 				wSaveThreshold = cdsTarget.savePoly;
@@ -266,8 +263,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 3;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_BREATH &&
-			!(rollSaveBreath & CRESAVE_USED)) {
+		if (effect.nSaveType & CEFFECT_SAVETYPE_BREATH) {
 			if (cdsTarget.saveBreath < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveBreath;
 				wSaveThreshold = cdsTarget.saveBreath;
@@ -275,8 +271,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 4;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_SPELLS &&
-			!(rollSaveSpells & CRESAVE_USED)) {
+		if (effect.nSaveType & CEFFECT_SAVETYPE_SPELLS) {
 			if (cdsTarget.saveSpell < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveSpells;
 				wSaveThreshold = cdsTarget.saveSpell;

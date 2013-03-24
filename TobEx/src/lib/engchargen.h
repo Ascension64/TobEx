@@ -13,12 +13,14 @@ public:
 
 	void KitPanelOnLoad(CPanel& panel, CCreatureObject& cre);
 	void MageBookPanelOnLoad(CPanel& panel, CCreatureObject& cre);
+	BOOL RollAbilityScore(CCreatureObject& cre, IECString& sColNameMin, IECString& sColNameMax, IECString& sColNameMod, char* ptr, char& cMinVal, char& cMaxVal);
 	void UpdatePanel(int nPanelIdx, CCreatureObject& cre);
 	void KitPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
 	void MageBookPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
 	void ClassPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
 	void MulticlassPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
 	void MageSchoolPanelOnUpdate(CPanel& panel, CCreatureObject& cre);
+	int RollAbilityDice(int nSize, int nNumDice, BOOL bRemoveSmallestRoll);
 	void InitSoundset(CCreatureObject& cre);
 	BOOL CanContinue(CCreatureObject& cre);
 
@@ -53,7 +55,19 @@ public:
 	int u4a2;
 	int nSpellsRemaining; //4a6h
 	int nThievingPointsRemaining; //4aah, used only for the BG1 Skills panel
-	int u4ae[10];
+	int u4ae[7];
+	char m_cMinStrValue; //4cah
+	char m_cMinDexValue; //4cbh
+	char m_cMinConValue; //4cch
+	char m_cMinIntValue; //4cdh
+	char m_cMinWisValue; //4ceh
+	char m_cMinChrValue; //4cfh
+	char m_cMaxStrValue; //4d0h
+	char m_cMaxDexValue; //4d1h
+	char m_cMaxConValue; //4d2h
+	char m_cMaxIntValue; //4d3h
+	char m_cMaxWisValue; //4d4h
+	char m_cMaxChrValue; //4d5h
 	int dwProfsMax; //4d6h, set but not used in-game
 	int u4da;
 	IECPtrList m_OpenPanels; //4deh
@@ -110,12 +124,14 @@ public:
 
 extern void (CScreenCharGen::*CScreenCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&);
 extern void (CScreenCharGen::*CScreenCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&);
+extern BOOL (CScreenCharGen::*CScreenCharGen_RollAbilityScore)(CCreatureObject&, IECString&, IECString&, IECString&, char*, char&, char&);
 extern void (CScreenCharGen::*CScreenCharGen_UpdatePanel)(int, CCreatureObject&);
 extern void (CScreenCharGen::*CScreenCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CScreenCharGen::*CScreenCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CScreenCharGen::*CScreenCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CScreenCharGen::*CScreenCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&);
 extern void (CScreenCharGen::*CScreenCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&);
+extern int (CScreenCharGen::*CScreenCharGen_RollAbilityDice)(int, int, BOOL);
 extern void (CScreenCharGen::*CScreenCharGen_InitSoundset)(CCreatureObject&);
 extern BOOL (CScreenCharGen::*CScreenCharGen_CanContinue)(CCreatureObject&);
 

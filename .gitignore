@@ -2,7 +2,6 @@ AsmJit/*
 debug/*
 detours/*
 ipch/*
-MathPresso/*
 MFC42/*
 TobEx/Debug/*
 TobEx/Release/*

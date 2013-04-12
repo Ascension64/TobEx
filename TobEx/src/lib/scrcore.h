@@ -18,15 +18,15 @@ static Action* g_pActionTemp = reinterpret_cast<Action*>(0xB79300);
 
 //ACTIONRESULT
 const ACTIONRESULT ACTIONRESULT_NEG3			= -3; //-3, loads next action
-const ACTIONRESULT ACTIONRESULT_FAILED			= -2; //loads next action
-const ACTIONRESULT ACTIONRESULT_NONE			= -1; //default, resets the script indices, loads next action, ignore post-action stuff
+const ACTIONRESULT ACTIONRESULT_ERROR			= -2; //failed, loads next action
+const ACTIONRESULT ACTIONRESULT_DONE			= -1; //default, resets the script indices, loads next action, ignore post-action stuff
 const ACTIONRESULT ACTIONRESULT_CONTINUE		= 0; //continue current action, increment action ticks elapsed, terminates instant action loop, halts script processing
 const ACTIONRESULT ACTIONRESULT_SUCCESS			= 1; //stop walking, loads next action, increment action ticks elapsed, terminates instant action loop
 const ACTIONRESULT ACTIONRESULT_2				= 2; //2, adds to action ticks elapsed
 
 struct IdsEntry;
 
-struct ResIdsContainer { //Size 10h
+struct ResIdsFile { //Size 10h
 	BOOL bLoaded; //0h
 	ResTxt* pRes; //4h
 	ResRef name; //8h
@@ -47,18 +47,13 @@ public:
 
 	IdsEntry* FindByHead(IECString sValue, BOOL bCaseSensitive);
 
-	ResIdsContainer m_ids; //4h
+	ResIdsFile m_ids; //4h
 	IECString u14; //14h
 	IECPtrList entries; //18h, contain IdsEntry objects
 	BOOL bUseArray; //34h
 	int* pDataArray; //38h, ptr to array of pIdsEntry
 	int nArraySize; //3ch
 };
-
-extern Identifiers& (Identifiers::*Identifiers_Construct_0)();
-extern Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef);
-extern void (Identifiers::*Identifiers_Deconstruct)();
-extern IdsEntry* (Identifiers::*Identifiers_FindByHead)(IECString, BOOL);
 
 struct CVariable { //Size 54h
 	CVariable();
@@ -69,19 +64,14 @@ struct CVariable { //Size 54h
 	CVariable& OpAssign(CVariable& var) { return *this; } //dummy
 	IECString GetName();
 
-	char szName[32]; //0h
-	short u20; //unused
-	short u22; //unused
-	int nValue2; //24h, dmPt.Y
-	int nValue; //28h, dmPt.X
-	int u2c[2]; //unused
-	char szDMArea[32]; //34h, for Store Local Variable, = res1 + res2 + res3 (associated with deathmatch?)
+	SCRIPTNAME m_szName; //0h
+	WORD m_wType; //20h, unused
+	WORD m_wResRefType; //22h, unused
+	DWORD m_dwValue; //24h, dmPt.Y
+	LONG m_nValue; //28h, dmPt.X
+	double m_dFloatValue; //2ch, unused
+	SCRIPTNAME m_szStringValue; //34h, e.g. szDMArea, for Store Local Variable, = res1 + res2 + res3 (associated with deathmatch?)
 };
-
-extern CVariable& (CVariable::*CVariable_Construct)();
-extern void (CVariable::*CVariable_SetName)(IECString);
-extern CVariable& (CVariable::*CVariable_OpAssign)(CVariable&);
-extern IECString (CVariable::*CVariable_GetName)();
 
 struct CVariableMap { //Size 8h
 	CVariableMap(int nSize);
@@ -99,14 +89,6 @@ struct CVariableMap { //Size 8h
 	CVariable* pArray;
 	unsigned int nArraySize;
 };
-
-extern CVariableMap& (CVariableMap::*CVariableMap_Construct)(int);
-extern void (CVariableMap::*CVariableMap_Deconstruct)();
-extern BOOL (CVariableMap::*CVariableMap_Add)(CVariable&);
-extern CVariable& (CVariableMap::*CVariableMap_Find)(IECString);
-extern unsigned int (CVariableMap::*CVariableMap_GetHash)(IECString);
-extern void (CVariableMap::*CVariableMap_Empty)();
-extern void (CVariableMap::*CVariableMap_SetSize)(int);
 
 struct ObjectIds { //Size 5h
 	ObjectIds();
@@ -127,11 +109,11 @@ public:
 	//BCS correlation: OB ea, general, race, class, specific, gender, alignment, id1, id2, id3, id4, id5, name OB
 	Object();
 
-	Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget, ObjectIds* poids, IECString& sName);
-	Object& Construct(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&) {return *this;} //dummy
+	Object(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char cSpecific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget, ObjectIds* poids, IECString& sName);
+	Object& Construct(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char cSpecific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget, ObjectIds* poids, IECString& sName) {return *this;} //dummy
 
-	Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget);
-	Object& Construct(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum) {return *this;} //dummy
+	Object(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char Specific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget);
+	Object& Construct(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char Specific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget) {return *this;} //dummy
 
 	bool MatchCriteria(Object& oCriteria, BOOL bAnyIncludesNonScript, BOOL bExcludeNonScript, BOOL bEAGroupMatch);
 
@@ -154,32 +136,23 @@ public:
 	BOOL IsAny();
 	BOOL IsMyself();
 
-	IECString Name; //0h
-	unsigned char EnemyAlly; //4h
-	unsigned char General; //5h
-	unsigned char Race; //6h
-	unsigned char Class; //7h
-	Enum eTarget; //8h, set and used after evaluation of Ids
-	ObjectIds oids; //ch
-	unsigned char Specific; //11h, for GroupOfType
-	unsigned char Gender; //12h
-	unsigned char Alignment; //13h
+	IECString m_sName; //0h
+	unsigned char m_cEnemyAlly; //4h
+	unsigned char m_cGeneral; //5h
+	unsigned char m_cRace; //6h
+	unsigned char m_cClass; //7h
+	ENUM m_eTarget; //8h, set and used after evaluation of Ids
+	ObjectIds m_oids; //ch
+	unsigned char m_cSpecific; //11h, for GroupOfType
+	unsigned char m_cGender; //12h
+	unsigned char m_cAlignment; //13h
 };
 
-extern Object& (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&);
-extern Object& (Object::*Object_Construct_8)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum);
-extern bool (Object::*Object_MatchCriteria)(Object&, BOOL, BOOL, BOOL);
-extern void (Object::*Object_OpAssign)(Object&);
-extern void (Object::*Object_DecodeIdentifiers)(CGameSprite&);
-extern CGameObject& (Object::*Object_FindTargetOfType)(CGameObject&, char, BOOL);
-extern CGameObject& (Object::*Object_FindTarget)(CGameObject&, BOOL);
-extern void (Object::*Object_SetIdentifiers)(ObjectIds&);
-extern Object (Object::*Object_GetOpposingEAObject)();
-extern unsigned char (Object::*Object_GetClass)();
-extern void (Object::*Object_GetDualClasses)(unsigned char*, unsigned char*);
-extern BOOL (Object::*Object_HasActiveSubclass)(unsigned char, BOOL);
-
-extern Object* poAny;
+Object* const g_poAnything = reinterpret_cast<Object* const>(0xB75AA0); //unused
+Object* const g_poNonScript = reinterpret_cast<Object* const>(0xB75AB8); //only in CGameObject constructor
+Object* const g_poNothing = reinterpret_cast<Object* const>(0xB75AD0); //for constructors
+Object* const g_poAny = reinterpret_cast<Object* const>(0xB75AE8); //for criteria objects
+Object* const g_poMyself = reinterpret_cast<Object* const>(0xB75B00); //unused
 
 struct Trigger { //Size 2Eh
 //Constructor: 430720h (3 args), 430810h (2 args)
@@ -218,24 +191,12 @@ struct Trigger { //Size 2Eh
 	IECString sName2; //2ah, (S), (unknown usage, second global)
 };
 
-extern Trigger& (Trigger::*Trigger_Construct_3)(short, Object&, int);
-extern Trigger& (Trigger::*Trigger_Construct_2)(short, int);
-extern Trigger& (Trigger::*Trigger_OpAssign)(Trigger&);
-extern short (Trigger::*Trigger_GetOpcode)();
-extern void (Trigger::*Trigger_DecodeIdentifiers)(CGameSprite&);
-extern int (Trigger::*Trigger_GetI)();
-extern int (Trigger::*Trigger_GetI2)();
-extern IECString& (Trigger::*Trigger_GetSName1)();
-extern IECString& (Trigger::*Trigger_GetSName2)();
-
 struct Action { //Size 5Eh
 //Constructor: 0x405820
 //Note: action opcodes (short) from AA5980-AA5B32
 //BCS correlation: AC opcode, oOverride, oObject, oTarget, i, pt.x, pt.y, i2, i3, sName1, sName2 AC
+	DEFINE_MEMALLOC_FUNC;
 public:
-	void* operator new(size_t size);
-	void operator delete(void* mem);
-
 	Action();
 	Action& Construct(void) {return *this;} //dummy
 
@@ -254,12 +215,9 @@ public:
 	int i3; //46h (I)
 	IECString sName1; //4ah (S)
 	IECString sName2; //4eh (S)
-	POINT pt; //52h (P)
+	CPoint pt; //52h (P)
 	unsigned int dwFlags; //5ah, bit0 = do not purge on clear all actions
 };
-
-extern Action& (Action::*Action_Construct_0)(void);
-extern IECString (Action::*Action_GetSName1)();
 
 struct Response { //Size 24h
 //Constructor: 0x416130
@@ -267,7 +225,7 @@ struct Response { //Size 24h
 	Response& Construct(void) {return *this;} //dummy
 
 	void operator=(Response& r);
-	void OpEq(Response& r) {} //dummy
+	void OpAssign(Response& r) {} //dummy
 
 	short probability; //0h
 	short nResponseIdx; //2h, if chosen, gets response block # in the response list
@@ -275,9 +233,6 @@ struct Response { //Size 24h
 	short nScriptIdx; //6h, if chosen, gets script # in the script group (i.e. Override, Race, General, etc.), however this is always 0
 	CActionList m_actions; //8h
 };
-
-extern Response& (Response::*Response_Construct_0)(void);
-extern void (Response::*Response_OpEq)(Response&);
 
 class CResponseList : public IECPtrList { //Size 20h
 public:
@@ -295,9 +250,6 @@ struct CScriptBlock { //Size 3Ch
 	CTriggerList m_triggers; //0h
 	CResponseList m_responses; //1ch
 };
-
-extern BOOL (CScriptBlock::*CScriptBlock_Evaluate)(CTriggerList&, CGameSprite&);
-extern BOOL (CScriptBlock::*CScriptBlock_EvaluateTrigger)(Trigger&, CTriggerList&, CGameSprite&);
 
 struct CScript { //Size 28h
 	ResRef name; //0h
@@ -330,15 +282,5 @@ struct CScriptParser { //Size EEh
 	Identifiers TRIGGER; //6eh
 	Identifiers OBJECT; //aeh
 };
-
-extern short (CScriptParser::*CScriptParser_GetTriggerOpcode)(IECString);
-extern int (CScriptParser::*CScriptParser_GetOpcode)(IECString, IECString);
-extern void (CScriptParser::*CScriptParser_SetError)(IECString);
-extern Object (CScriptParser::*CScriptParser_ParseObject)(IECString&);
-extern IECString (CScriptParser::*CScriptParser_SpanBefore)(IECString, char);
-extern IECString (CScriptParser::*CScriptParser_SpanAfter)(IECString, char);
-extern IECString (CScriptParser::*CScriptParser_GetArgText)(int, IECString);
-extern IECString (CScriptParser::*CScriptParser_GetIdsValue)(Identifiers&, IECString&);
-extern IECString (CScriptParser::*CScriptParser_GetArgTextIdsName)(IECString);
 
 #endif //SCRCORE_H

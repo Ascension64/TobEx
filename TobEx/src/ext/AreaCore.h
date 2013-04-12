@@ -5,7 +5,7 @@
 
 #include "arecore.h"
 
-extern char (CArea::*Tramp_CArea_GetSong)(short);
+DeclareTrampMemberFunc(char, CArea, GetSong, (short wType), GetSong);
 
 class DETOUR_CArea : public CArea {
 public:

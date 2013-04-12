@@ -3,14 +3,16 @@
 
 #include "lua.h"
 
-extern void (CLUAConsole::*Tramp_CLUAConsole_StartStore)(char*);
+//CLUAConsole
+DeclareTrampMemberFunc(void, CLUAConsole, StartStore, (char* sz), StartStore);
 
 class DETOUR_CLUAConsole : public CLUAConsole { //size 1h
 public:
 	void DETOUR_StartStore(char* sz);
 };
 
-extern int (__stdcall *Tramp_IElua_init)();
+//global
+DeclareTrampGlobalFuncPtr(int, __stdcall, IElua_init, ());
 
 int __stdcall DETOUR_IElua_init();
 

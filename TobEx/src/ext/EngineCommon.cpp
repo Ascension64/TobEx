@@ -10,11 +10,11 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 	IECString voiceset((LPTSTR)cre.voiceset);
 	if (strcmp((LPTSTR)cre.voiceset, "") == 0) { //use default soundset
 
-		char sex = cre.oBase.Gender;
+		char sex = cre.oBase.m_cGender;
 
 		for (int nRow = 0; nRow < 100; nRow++) {
 			STRREF ref = g_pChitin->pGame->GetCharSndStrRef(0, nRow, sex);
-			cre.m_BaseStats.soundset[nRow] = ref;
+			cre.m_header.m_strrefSoundset[nRow] = ref;
 			g_pChitin->m_TlkTbl.GetTlkString(ref, cre.soundset[nRow]);
 		}
 
@@ -39,10 +39,10 @@ void EngineCommon_ApplySoundset(CCreatureObject& cre) {
 							STRREF ref = atoi((LPCTSTR)value);
 
 							if (ref) {
-								cre.m_BaseStats.soundset[j] = ref;
+								cre.m_header.m_strrefSoundset[j] = ref;
 								g_pChitin->m_TlkTbl.GetTlkString(ref, cre.soundset[j]);
 							} else {
-								cre.m_BaseStats.soundset[j] = -1;
+								cre.m_header.m_strrefSoundset[j] = -1;
 								g_pChitin->m_TlkTbl.GetTlkString(-1, cre.soundset[j]);
 							}
 

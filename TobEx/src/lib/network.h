@@ -200,9 +200,6 @@ public:
 	CRITICAL_SECTION csIDirectPlay4A; //f22h
 };
 
-extern void (CNetwork::*CNetwork_CloseSession)(bool);
-extern void (CNetwork::*CNetwork_PrintNetworkError)(HRESULT, LPCTSTR);
-
 struct CRogerWilco { //Size 10h
 //Constructor: 0x9DCA20
 	IECString u0;

@@ -14,7 +14,7 @@ public:
 	char szDestAreaEntranceName[32]; //3f6h
 	unsigned int dwFlags; //416h
 	STRREF strrefInfo; //41ah
-	POINT* pVertices; //41eh
+	CPoint* pVertices; //41eh
 	short wVertices; //422h
 	short u424;
 	ResRef rScript; //426h
@@ -23,7 +23,7 @@ public:
 	short wTrapRemovalDifficulty; //450h
 	short wIsTrapped; //452h
 	short wIsDetected; //454h
-	POINT ptTrap; //456h
+	CPoint ptTrap; //456h
 	ResRef rKey; //45eh
 	int u466;
 	int u46a;

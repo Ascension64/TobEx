@@ -2,35 +2,10 @@
 #include "InfGameCommon.h"
 
 #include "chitin.h"
+#include "optionsext.h"
 
-void (CConditionalSpellList::*Tramp_CConditionalSpellList_EvaluateTriggers)(CCreatureObject&) =
-	SetFP(static_cast<void (CConditionalSpellList::*)(CCreatureObject&)>	(&CConditionalSpellList::EvaluateTriggers),	0x46BE04);
-
-CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_Construct_3)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) =
-	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*)>
-																			(&CDerivedStats::Construct),				0x46CB40);
-CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_Construct_0)() =
-	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)()>					(&CDerivedStats::Construct),				0x46D1B2);
-void (CDerivedStats::*Tramp_CDerivedStats_Init)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) =
-	SetFP(static_cast<void (CDerivedStats::*)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*)>
-																			(&CDerivedStats::Init),						0x46DB9C);
-CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_OpAssign)(CDerivedStats&) =
-	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAssign),					0x46EAC6);
-void (CDerivedStats::*Tramp_CDerivedStats_ClearStats)() =
-	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::ClearStats),				0x46FCF5);
-CDerivedStats& (CDerivedStats::*Tramp_CDerivedStats_OpAdd)(CDerivedStats&) =
-	SetFP(static_cast<CDerivedStats& (CDerivedStats::*)(CDerivedStats&)>	(&CDerivedStats::OpAdd),					0x470945);
-void (CDerivedStats::*Tramp_CDerivedStats_LimitStats)() =
-	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::LimitStats),				0x471B36);
-int (CDerivedStats::*Tramp_CDerivedStats_GetStat)(short) =
-	SetFP(static_cast<int (CDerivedStats::*)(short)>						(&CDerivedStats::GetStat),					0x473162);
-void (CDerivedStats::*Tramp_CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate**, int*) =
-	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate**, int*)>(&CDerivedStats::MarshalTemplate),			0x474AAE);
-void (CDerivedStats::*Tramp_CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int) =
-	SetFP(static_cast<void (CDerivedStats::*)(CDerivedStatsTemplate&, int)>
-																			(&CDerivedStats::UnmarshalTemplate),		0x474AF2);
-void (CDerivedStats::*Tramp_CDerivedStats_Deconstruct)() =
-	SetFP(static_cast<void (CDerivedStats::*)()>							(&CDerivedStats::Deconstruct),				0x567770);
+//CConditionalSpellList
+DefineTrampMemberFunc(void, CConditionalSpellList, EvaluateTriggers, (CCreatureObject& cre), EvaluateTriggers, EvaluateTriggers, 0x46BE04);
 
 void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre) {
 	Object o = Object();
@@ -51,7 +26,7 @@ void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre)
 		if (nDelay == 0) nDelay = 100;
 
 		if ((pccs->eff.effect.nParam3 >> 16) == 0) {
-			if (pGameOptionsEx->bDebugVerbose) {
+			if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 				LPCTSTR lpsz = "DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(): effect application time not set\r\n";
 				L.timestamp();
 				L.append(lpsz);
@@ -72,26 +47,26 @@ void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre)
 						cre.CastSpell(pccs->rResource1, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
 						if (pccs->rResource2 != "") cre.CastSpell(pccs->rResource2, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
 						if (pccs->rResource3 != "") cre.CastSpell(pccs->rResource3, cgoTarget, TRUE, 0x9049, NULL, TRUE, FALSE);
-						g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(cgoTarget.e, THREAD_ASYNCH, INFINITE);
+						g_pChitin->pGame->m_GameObjectArray.FreeShare(cgoTarget.e, THREAD_ASYNCH, INFINITE);
 					}
 
 					if (pccs->dwFlags & 0x1) {
 						CMessageDisplayDialogue* pcmDD = IENew CMessageDisplayDialogue();
 						pcmDD->eTarget = cre.e;
 						pcmDD->eSource = cre.e;
-						pcmDD->srOwner = cre.GetLongNameStrRef();
+						pcmDD->srOwner = cre.GetNameRef();
 						pcmDD->srText = 0x9048;
-						pcmDD->rgbOwner = g_pColorRangeArray[cre.m_BaseStats.colors.colorMajor];
+						pcmDD->rgbOwner = g_pColorRangeArray[cre.m_header.m_colors.colorMajor];
 						pcmDD->rgbText = g_ColorDefaultText;
 						pcmDD->u1c = -1;
 						pcmDD->u20 = 0;
 						pcmDD->bFloatText = false;
 						pcmDD->bPlaySound = true;
 
-						g_pChitin->messages.Send(*pcmDD, FALSE);
+						g_pChitin->m_MessageHandler.AddMessage(*pcmDD, FALSE);
 
 						cre.m_EffectsEquipped.RemoveOneEffect(pccs->eff, cre, TRUE);
-						cre.m_EffectsMain.RemoveOneEffect(pccs->eff, cre, TRUE);
+						cre.m_TimedEffectList.RemoveOneEffect(pccs->eff, cre, TRUE);
 						this->RemoveAt(posPrev);
 						delete pccs;
 					}
@@ -106,7 +81,20 @@ void DETOUR_CConditionalSpellList::DETOUR_EvaluateTriggers(CCreatureObject& cre)
 	return;
 }
 
-CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct3(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest) {
+//CDerivedStats
+DefineTrampMemberFunc(CDerivedStats&, CDerivedStats, Construct, (CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest), Construct, Construct3, 0x46CB40);
+DefineTrampMemberFunc(CDerivedStats&, CDerivedStats, Construct, (), Construct, Construct0, 0x46D1B2);
+DefineTrampMemberFunc(void, CDerivedStats, Init, (CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest), Init, Init, 0x46DB9C);
+DefineTrampMemberFunc(CDerivedStats&, CDerivedStats, OpAssign, (CDerivedStats& cds), OpAssign, OpAssign, 0x46EAC6);
+DefineTrampMemberFunc(void, CDerivedStats, ClearStats, (), ClearStats, ClearStats, 0x46FCF5);
+DefineTrampMemberFunc(CDerivedStats&, CDerivedStats, OpAdd, (CDerivedStats& cds), OpAdd, OpAdd, 0x470945);
+DefineTrampMemberFunc(void, CDerivedStats, LimitStats, (), LimitStats, LimitStats, 0x471B36);
+DefineTrampMemberFunc(int, CDerivedStats, GetStat, (short nOpcode), GetStat, GetStat, 0x473162);
+DefineTrampMemberFunc(void, CDerivedStats, MarshalTemplate, (CDerivedStatsTemplate** ppcdst, int* pnSize), MarshalTemplate, MarshalTemplate, 0x474AAE);
+DefineTrampMemberFunc(void, CDerivedStats, UnmarshalTemplate, (CDerivedStatsTemplate& cdst, int nSize), UnmarshalTemplate, UnmarshalTemplate, 0x474AF2);
+DefineTrampMemberFunc(void, CDerivedStats, Deconstruct, (), Deconstruct, Deconstruct, 0x567770);
+
+CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct3(CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest) {
 	DWORD nSize = pRuleEx->m_nStats - 200;
 
 	//init pStatsEx
@@ -117,7 +105,7 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct3(CreFileData& stats, CreFi
 
 	animationRemoval = (int)pStatsEx;
 
-	return (this->*Tramp_CDerivedStats_Construct_3)(stats, memArrayMage, memArrayPriest);
+	return (this->*Tramp_CDerivedStats_Construct3)(stats, memArrayMage, memArrayPriest);
 }
 
 CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct0() {
@@ -131,10 +119,10 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_Construct0() {
 
 	animationRemoval = (int)pStatsEx;
 
-	return (this->*Tramp_CDerivedStats_Construct_0)();
+	return (this->*Tramp_CDerivedStats_Construct0)();
 }
 	
-void DETOUR_CDerivedStats::DETOUR_Init(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest) {
+void DETOUR_CDerivedStats::DETOUR_Init(CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest) {
 	DWORD nSize = pRuleEx->m_nStats - 200;
 
 	int* pStatsEx = NULL;
@@ -158,13 +146,13 @@ void DETOUR_CDerivedStats::DETOUR_Init(CreFileData& stats, CreFileMemSpellLevel*
 		if (*(int*)pCre == 0xAA98A8) {
 			Object o = pCre->oBase;
 
-			pStatsEx[CDERIVEDSTATSEX_FIGHTERLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_FIGHTER);
-			pStatsEx[CDERIVEDSTATSEX_MAGELEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_MAGE);
-			pStatsEx[CDERIVEDSTATSEX_CLERICLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_CLERIC);
-			pStatsEx[CDERIVEDSTATSEX_THIEFLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_THIEF);
-			pStatsEx[CDERIVEDSTATSEX_DRUIDLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_DRUID);
-			pStatsEx[CDERIVEDSTATSEX_RANGERLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.Class, CLASS_RANGER);
-			pStatsEx[CDERIVEDSTATSEX_EFFECTIVECLERICLEVEL] = CDerivedStats_GetEffectiveClericLevelNoAssertion(*this, o.Class);
+			pStatsEx[CDERIVEDSTATSEX_FIGHTERLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.m_cClass, CLASS_FIGHTER);
+			pStatsEx[CDERIVEDSTATSEX_MAGELEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.m_cClass, CLASS_MAGE);
+			pStatsEx[CDERIVEDSTATSEX_CLERICLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.m_cClass, CLASS_CLERIC);
+			pStatsEx[CDERIVEDSTATSEX_THIEFLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.m_cClass, CLASS_THIEF);
+			pStatsEx[CDERIVEDSTATSEX_DRUIDLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.m_cClass, CLASS_DRUID);
+			pStatsEx[CDERIVEDSTATSEX_RANGERLEVEL] = CDerivedStats_GetSubclassLevelNoAssertion(*this, o.m_cClass, CLASS_RANGER);
+			pStatsEx[CDERIVEDSTATSEX_EFFECTIVECLERICLEVEL] = CDerivedStats_GetEffectiveClericLevelNoAssertion(*this, o.m_cClass);
 		} else {
 			LPCTSTR lpsz = "DETOUR_CDerivedStats::DETOUR_Init(): Problem getting CCreatureObject*\r\n";
 			L.timestamp();
@@ -226,7 +214,7 @@ void DETOUR_CDerivedStats::DETOUR_ClearStats() {
 }
 
 CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
-	if (pGameOptionsEx->bEffAttacksPerRoundFix) {
+	if (pGameOptionsEx->GetOption("Eff_AttacksPerRoundFix")) {
 		float fNumAttacks = CDerivedStats_NumAttacksShortToFloat(numAttacks) + CDerivedStats_NumAttacksShortToFloat(cds.numAttacks);
 		numAttacks = CDerivedStats_NumAttacksFloatToShort(fNumAttacks);
 		cds.numAttacks = 0;
@@ -234,7 +222,7 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
 	}
 
 	int* pStatsEx = NULL;
-	if (pGameOptionsEx->bEngineExpandedStats) {
+	if (pGameOptionsEx->GetOption("Engine_ExpandedStats")) {
 		if (animationRemoval && cds.animationRemoval) {
 			DWORD nSize = pRuleEx->m_nStats - 200;
 			pStatsEx = (int*)animationRemoval;
@@ -259,7 +247,7 @@ CDerivedStats& DETOUR_CDerivedStats::DETOUR_OpAdd(CDerivedStats& cds) {
 
 	(this->*Tramp_CDerivedStats_OpAdd)(cds);
 
-	if (pGameOptionsEx->bEngineExpandedStats) {
+	if (pGameOptionsEx->GetOption("Engine_ExpandedStats")) {
 		animationRemoval = (int)pStatsEx;
 	}
 
@@ -455,7 +443,7 @@ float CDerivedStats_NumAttacksShortToFloat(short s) {
 		if (f >= 6.0 && f <= 10.0) {
 			f -= 5.5;
 		} else {
-			if (pGameOptionsEx->bDebugVerbose) {
+			if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 				LPCTSTR lpsz = "CDerivedStats_NumAttacksShortToFloat(): Number of attacks out of range (%d)\r\n";
 				console.writef(lpsz, s);
 				L.timestamp();

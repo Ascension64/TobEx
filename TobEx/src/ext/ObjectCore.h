@@ -4,10 +4,10 @@
 #include "stdafx.h"
 #include "objcore.h"
 
-extern BOOL (CGameSprite::*Tramp_CGameSprite_EvaluateTrigger)(Trigger&);
-extern void (CGameSprite::*Tramp_CGameSprite_ClearAllActions)(BOOL);
-extern ACTIONRESULT (CGameSprite::*Tramp_CGameSprite_ExecuteAction)();
-extern void (CGameSprite::*Tramp_CGameSprite_QueueActions)(Response&, BOOL, BOOL);
+DeclareTrampMemberFunc(BOOL, CGameSprite, EvaluateTrigger, (Trigger& t), EvaluateTrigger);
+DeclareTrampMemberFunc(void, CGameSprite, ClearAllActions, (BOOL bSkipFlagged), ClearAllActions);
+DeclareTrampMemberFunc(ACTIONRESULT, CGameSprite, ExecuteAction, (), ExecuteAction);
+DeclareTrampMemberFunc(void, CGameSprite, QueueActions, (Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue), QueueActions);
 
 class DETOUR_CGameSprite : public CGameSprite {
 public:

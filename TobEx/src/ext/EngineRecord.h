@@ -3,9 +3,9 @@
 
 #include "engrecord.h"
 
-extern void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnLoad)(CCreatureObject&);
-extern void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnUpdate)(CCreatureObject&);
-extern void (CScreenRecord::*Tramp_CScreenRecord_UpdateCharacter)();
+DeclareTrampMemberFunc(void, CScreenRecord, MageBookPanelOnLoad, (CCreatureObject& cre), MageBookPanelOnLoad);
+DeclareTrampMemberFunc(void, CScreenRecord, MageBookPanelOnUpdate, (CCreatureObject& cre), MageBookPanelOnUpdate);
+DeclareTrampMemberFunc(void, CScreenRecord, UpdateCharacter, (), UpdateCharacter);
 
 class DETOUR_CScreenRecord : public CScreenRecord {
 public:

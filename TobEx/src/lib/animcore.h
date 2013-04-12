@@ -20,34 +20,34 @@ public:
 	int dwChannel; //24h
 };
 
-extern BOOL (CAnimationSoundList::*CAnimationSoundList_PlayPrimedSound)(int, CCreatureObject&);
-
-class CAnimation { //Size 6D8h 
+class CAnimation { //Size 6D8h
+	DEFINE_MEMALLOC_FUNC;
 public:
 	CAnimation(); //7F9211
 	CAnimation& Construct() { return *this; } //dummy
+
 	void PlayCurrentSequenceSound(CCreatureObject& cre);
-	static CAnimation* CreateAnimation(unsigned short wAnimId, ColorRangeValues& colors, unsigned short wOrient);
+	static CAnimation* CreateAnimation(unsigned short wAnimId, CreFileColors& colors, unsigned short wOrient);
 
 	static BOOL IsPlayableAnimation(unsigned short wAnimId);
 
 	//AB6148
 	virtual ~CAnimation() {} //v0
-	virtual void GetCurrentFrameDimensions(RECT* pFrame, POINT* pCentre, int zPos) {} //v4
-	virtual void v8() {} //? void GetBoundsRect(RECT* pBounds, POINT* ppt1, POINT* ppt2, zPos, width, height)
+	virtual void GetCurrentFrameDimensions(RECT* pFrame, CPoint* pCentre, int zPos) {} //v4
+	virtual void v8() {} //? void GetBoundsRect(RECT* pBounds, CPoint* ppt1, CPoint* ppt2, zPos, width, height)
 	virtual BOOL SetOrientation(short wOrient) { return TRUE; } //vc
-	virtual void SetArmor(char cArmorLevel, ColorRangeValues& colors) {} //v10
-	virtual void SetHelmet(IECString& sItemAnim, ColorRangeValues& colors) {} //v14
-	virtual void SetShield(IECString& sItemAnim, ColorRangeValues& colors) {} //v18
-	virtual void SetWeapon(IECString& sItemAnim, ColorRangeValues& colors, unsigned int nItemFlags, void* pAttackProb) {} //v1c
+	virtual void SetArmor(char cArmorLevel, CreFileColors& colors) {} //v10
+	virtual void SetHelmet(IECString& sItemAnim, CreFileColors& colors) {} //v14
+	virtual void SetShield(IECString& sItemAnim, CreFileColors& colors) {} //v18
+	virtual void SetWeapon(IECString& sItemAnim, CreFileColors& colors, unsigned int nItemFlags, void* pAttackProb) {} //v1c
 	virtual void v20() {} //VidPal& GetAnimGroupVidPal(nGroupId) (ids use second lowest digit i.e. 0xX0)
 	virtual void GetAnimGroupPaperdollName(IECString* ptr, int nGroupId) {} //v24, ids use as above
-	virtual bool CanUseMiddleVertList() { return false; } //v28
+	virtual bool CanLieDown() { return false; } //v28, CanUseMiddleVertList()
 	virtual void v2c() {} //bool, 0 arg
 	virtual short GetNumSeqPerAnimation() { return 0; } //v30
 	virtual char GetVertListType() { return 0; } //v34, get 18h
 	virtual void v38() {} //GetSomeGoreThing?, get 19h
-	virtual char GetDefaultVertListType() { return 0; } //v3c
+	virtual char GetListType() { return 0; } //v3c
 	virtual unsigned char GetCurrentMovementRate() { return 0; } //v40, get 7h
 	virtual void SetCurrentMovementRate(unsigned char n) {} //v44
 	virtual void ResetCurrentMovementRate() {} //v48, put 6h into 7h
@@ -113,13 +113,6 @@ public:
 	char u3df; //pad
 	CAnimationSoundList soundset[19]; //3e0h, corresponds to rows of anim soundset 2DAs (19 in total)
 };
-
-extern CAnimation& (CAnimation::*CAnimation_Construct)();
-extern void (CAnimation::*CAnimation_PlayCurrentSequenceSound)(CCreatureObject&);
-extern CAnimation* (*CAnimation_CreateAnimation)(unsigned short, ColorRangeValues&, unsigned short);
-extern BOOL (*CAnimation_IsPlayableAnimation)(unsigned short);
-extern LPCTSTR (CAnimation::*CAnimation_GetWalkingSound)(short);
-extern bool (CAnimation::*CAnimation_GetCurrentCycleAndFrame)(short&, short&);
 
 struct AnimData { //Size 8h
 	CAnimation* pAnimation; //0h

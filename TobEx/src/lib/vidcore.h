@@ -2,7 +2,6 @@
 #define VIDCORE_H
 
 #include "stdafx.h"
-#include "datatypes.h"
 #include "rescore.h"
 
 #define CVIDIMG_TRANSPARENT				0x00000001
@@ -14,8 +13,8 @@ struct CVidPolySurface;
 
 typedef unsigned int ABGR; //[ALPHA.RED.GREEN.BLUE]
 
-extern const ABGR* g_pColorRangeArray;
-extern const ABGR g_ColorDefaultText;
+const ABGR* const g_pColorRangeArray = (const ABGR* const)0xAB9B78;
+const ABGR g_ColorDefaultText = 0xBED7D7;
 
 struct CVidPolySurface { //Size 24h
 	CVidPolySurface* pSurfacePrev; //0h
@@ -62,11 +61,9 @@ struct VidPal { //Size 24h
 	char u16;
 	char u17; //pad
 	BOOL u18;
-	ColorRangeValues colors; //1ch
+	CreFileColors colors; //1ch
 	char u23; //pad
 };
-
-extern void (VidPal::*VidPal_SetFxPaletteNo3d)(ABGR*, int, unsigned int, int, BOOL);
 
 struct CVid : public VidPal { //Size 9Ch
 //Constructor: 0x9C97F0
@@ -113,12 +110,12 @@ public:
 	virtual void v14() {}
 	virtual void v18() {} //BOOL LoadFrame(nFrame)
 
-	struct ResBamContainer {
+	struct ResBamFile {
 		BOOL bLoaded;
 		ResBam* pBam;
 		ResRef name; //init to "STATES"
 	} m_bam; //a0h
-	struct ResBahContainer {
+	struct ResBahFile {
 		BOOL bLoaded;
 		ResBah* pBah;
 		ResRef name;
@@ -137,7 +134,7 @@ struct CVidMosaic : public CVid { //Size B0h
 //Constructor: 0x9D0601 (0 args)
 //Constructor: 0x9D069D (2 args, used for ImeUI)
 //vtable: NULL
-	struct ResMosContainer {
+	struct ResMosFile {
 		BOOL bLoaded;
 		Res* pRes; //ResMos
 		ResRef name; //MOS files
@@ -166,7 +163,7 @@ struct CVidBitmap : public CVid { //Size B6h
 //Constructor: 0x9D3C78 (2 args; uses lightmap night)
 //Constructor: 0x9D3E55 (3 args; uses mpalette)
 //vtable: NULL
-	struct ResBmpContainer {
+	struct ResBmpFile {
 		BOOL bLoaded; //9ch, hasRes
 		Res* pRes; //a0h, pResBmp
 		ResRef name; //a4h

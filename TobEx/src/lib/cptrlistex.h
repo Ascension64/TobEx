@@ -2,9 +2,11 @@
 #define CPTRLISTEX_H
 
 #include "win32def.h"
+#include "globals.h"
 
 class IECPtrList : public CObject { //Size 1Ch
 	DECLARE_DYNAMIC(IECPtrList)
+	DEFINE_MEMALLOC_FUNC;
 
 public:
 	IECPtrList(int nBlockSize = 10);
@@ -62,20 +64,5 @@ protected:
 	struct CPlex* m_pBlocks;
 	int m_nBlockSize;
 };
-
-extern IECPtrList& (IECPtrList::*IECPtrList_Construct)(int nBlockSize);
-extern void (IECPtrList::*IECPtrList_RemoveAll)();
-extern void (IECPtrList::*IECPtrList_Deconstruct)();
-extern POSITION (IECPtrList::*IECPtrList_AddHead_void)(void* newElement);
-extern POSITION (IECPtrList::*IECPtrList_AddTail_void)(void* newElement);
-extern void (IECPtrList::*IECPtrList_AddHead_CPtrList)(IECPtrList* pNewList);
-extern void (IECPtrList::*IECPtrList_AddTail_CPtrList)(IECPtrList* pNewList);
-extern void* (IECPtrList::*IECPtrList_RemoveHead)();
-extern void* (IECPtrList::*IECPtrList_RemoveTail)();
-extern POSITION (IECPtrList::*IECPtrList_InsertBefore)(POSITION position, void* newElement);
-extern POSITION (IECPtrList::*IECPtrList_InsertAfter)(POSITION position, void* newElement);
-extern void (IECPtrList::*IECPtrList_RemoveAt)(POSITION position);
-extern POSITION (IECPtrList::*IECPtrList_FindIndex)(int nIndex) const;
-extern POSITION (IECPtrList::*IECPtrList_Find)(void* searchValue, POSITION startAfter) const;
 
 #endif //CPTRLISTEX_H

@@ -6,12 +6,9 @@
 #include "log.h"
 #include "InfGameCommon.h"
 
-void (CAnimation::*Tramp_CAnimation_PlayCurrentSequenceSound)(CCreatureObject&) =
-	SetFP(static_cast<void (CAnimation::*)(CCreatureObject&)>	(&CAnimation::PlayCurrentSequenceSound),	0x7F9DF4);
-BOOL (*Tramp_CAnimation_IsPlayableAnimation)(unsigned short) =
-	reinterpret_cast<BOOL (*)(unsigned short)>																(0x85F364);
-LPCTSTR (CAnimation::*Tramp_CAnimation_GetWalkingSound)(short) =
-	SetFP(static_cast<LPCTSTR (CAnimation::*)(short)>			(&CAnimation::GetWalkingSound),				0x87B7B0);
+DefineTrampMemberFunc(void, CAnimation, PlayCurrentSequenceSound, (CCreatureObject& cre), PlayCurrentSequenceSound, PlayCurrentSequenceSound, 0x7F9DF4);
+DefineTrampStaticFunc(BOOL, __cdecl, CAnimation, IsPlayableAnimation, (unsigned short wAnimId), IsPlayableAnimation, 0x85F364);
+DefineTrampMemberFunc(LPCTSTR, CAnimation, GetWalkingSound, (short wTerrainCode), GetWalkingSound, GetWalkingSound, 0x87B7B0);
 
 void DETOUR_CAnimation::DETOUR_PlayCurrentSequenceSound(CCreatureObject& cre) {
 	(this->*Tramp_CAnimation_PlayCurrentSequenceSound)(cre);

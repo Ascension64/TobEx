@@ -3,8 +3,20 @@
 
 #include "engworld.h"
 
-extern POSITION (CScreenWorld::*Tramp_CScreenWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, bool);
-extern POSITION (CScreenWorld::*Tramp_CScreenWorld_PrintToConsole_4)(IECString&, IECString&, int, bool);
+DeclareTrampMemberFunc(POSITION, CScreenWorld, PrintToConsole, (
+	IECString& sLeft,
+	IECString& sRight,
+	ABGR colLeft,
+	ABGR colRight,
+	int nUserArg,
+	bool bResetScrollbar
+	), PrintToConsole6);
+DeclareTrampMemberFunc(POSITION, CScreenWorld, PrintToConsole, (
+	IECString& sLeft,
+	IECString& sRight,
+	int nUserArg,
+	bool bResetScrollbar
+	), PrintToConsole4);
 
 class DETOUR_CScreenWorld : public CScreenWorld {
 public:

@@ -33,8 +33,7 @@ typedef IECPtrList CColorRgbList; //AA6588
 typedef IECPtrList CBounceEffList; //AA6618, CEffect elements
 
 struct CConditionalSpell { //Size 204h
-	void* operator new (size_t size);
-	void operator delete(void* mem);
+	DEFINE_MEMALLOC_FUNC;
 
 	Trigger t; //0h
 	ResRef rResource1; //2eh, spell 1
@@ -55,8 +54,6 @@ public:
 	//AA65AC
 	void EvaluateTriggers(CCreatureObject& cre);
 };
-
-extern void (CConditionalSpellList::*CConditionalSpellList_EvaluateTriggers)(CCreatureObject&);
 
 struct ColorPal { //Size 2h
 	char m_cColorGroup;
@@ -112,7 +109,7 @@ public:
 	//AA9A1C
 	virtual ~CRepeatingEffBase() {} //v0
 	virtual void Update(CCreatureObject& cre, int nTicks) {} //v4
-	virtual CRepeatingEffBase& Duplicate() { return *this; } //v8
+	virtual CRepeatingEffBase& Copy() { return *this; } //v8
 
 	BOOL bExpired; //4h
 	BOOL bPurge; //8h
@@ -122,10 +119,8 @@ public:
 	//4: Disease
 	//5: Regeneration, Repeating EFF
 	short wType; //eh
-	Enum eSource; //10h
+	ENUM eSource; //10h
 };
-
-extern CRepeatingEffBase& (CRepeatingEffBase::*CRepeatingEffBase_Construct)();
 
 class CRepeatingDisease : public CRepeatingEffBase { //26h
 public:
@@ -134,7 +129,7 @@ public:
 	//AA9858
 	virtual ~CRepeatingDisease() {} //v0
 	virtual void Update(CCreatureObject& cre, int nTicks) {} //v4
-	virtual CRepeatingEffBase& Duplicate() { return *this; } //v8
+	virtual CRepeatingEffBase& Copy() { return *this; } //v8
 
 	int nTicksElapsed; //14h, range 0-15, reset to 0 on the second
 	
@@ -158,7 +153,7 @@ public:
 	//AA9A1C
 	virtual ~CRepeatingEff() {} //v0
 	virtual void Update(CCreatureObject& cre, int nTicks); //v4
-	virtual CRepeatingEffBase& Duplicate() { return *this; } //v8
+	virtual CRepeatingEffBase& Copy() { return *this; } //v8
 
 	int nTicksElapsed; //14h
 
@@ -177,8 +172,6 @@ public:
 	CEffect* pEffect; //2eh
 };
 
-extern void (CRepeatingEff::*CRepeatingEff_Update)(CCreatureObject&, int);
-
 class CRepeatingWingBuffet : public CRepeatingEffBase { //Size 2Ah
 public:
 	CRepeatingWingBuffet();
@@ -186,16 +179,14 @@ public:
 	//AA9A10
 	virtual ~CRepeatingWingBuffet() {} //v0
 	virtual void Update(CCreatureObject& cre, int nTicks); //v4
-	virtual CRepeatingEffBase& Duplicate() { return *this; } //v8
+	virtual CRepeatingEffBase& Copy() { return *this; } //v8
 
 	int nTicksElapsed; //14h
 	short wMode; //18h
 	int nDistance; //1ah
-	POINT ptOrigin; //1eh
-	Enum eOrigin; //26h, trumps ptOrigin if present
+	CPoint ptOrigin; //1eh
+	ENUM eOrigin; //26h, trumps ptOrigin if present
 };
-
-extern void (CRepeatingWingBuffet::*CRepeatingWingBuffet_Update)(CCreatureObject&, int);
 
 class CRepeatingPoison : public CRepeatingEffBase { //26h
 public:
@@ -204,7 +195,7 @@ public:
 	//AA984C
 	virtual ~CRepeatingPoison() {} //v0
 	virtual void Update(CCreatureObject& cre, int nTicks) {} //v4
-	virtual CRepeatingEffBase& Duplicate() { return *this; } //v8
+	virtual CRepeatingEffBase& Copy() { return *this; } //v8
 
 	int nTicksElapsed; //14h, range 0-15, reset to 0 on the second
 	
@@ -228,7 +219,7 @@ public:
 	//AA9864
 	virtual ~CRepeatingRegen() {} //v0
 	virtual void Update(CCreatureObject& cre, int nTicks) {} //v4
-	virtual CRepeatingEffBase& Duplicate() { return *this; } //v8
+	virtual CRepeatingEffBase& Copy() { return *this; } //v8
 
 	int nTicksElapsed; //14h, range 0-15, reset to 0 on the second
 	
@@ -273,8 +264,6 @@ public:
 	//AA65F4
 	int GetModValue(Object& o);
 };
-
-extern int (CStatModVsObjectList::*CStatModVsObjectList_GetModValue)(Object&);
 
 struct SpellLevelDec { //Size 8h
 	BOOL bOn; //0h
@@ -422,10 +411,10 @@ struct CDerivedStatsTemplate { //Size 2B0h
 	int proficiencyExtra18; //19eh, EXTRAPROFICIENCY18 (132)
 	int proficiencyExtra19; //1a2h, EXTRAPROFICIENCY19 (133)
 	int proficiencyExtra20; //1a6h, EXTRAPROFICIENCY20 (134)
-	Enum puppermasterId; //1aah, PUPPETMASTERID
+	ENUM puppermasterId; //1aah, PUPPETMASTERID
 	int puppermasterType; //1aeh, PUPPETMASTERTYPE, 1 or 2
 	int puppetType; //1b2h, PUPPETTYPE
-	Enum puppetId; //1b6h, PUPPETID
+	ENUM puppetId; //1b6h, PUPPETID
 	int checkForBerserk; //1bah, CHECKFORBERSERK
 	int berserkStage1; //1beh, BERSERKSTAGE1
 	int berserkStage2; //1c2h, BERSERKSTAGE2
@@ -490,13 +479,13 @@ struct CDerivedStatsTemplate { //Size 2B0h
 };
 
 struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
-	CDerivedStats(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest);
-	CDerivedStats& Construct(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*) { return *this; } //dummy
+	CDerivedStats(CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest);
+	CDerivedStats& Construct(CreFileHeader&, CreFileMemorizedSpellLevel*, CreFileMemorizedSpellLevel*) { return *this; } //dummy
 
 	CDerivedStats(); //46D1B2
 	CDerivedStats& Construct() { return *this; } //dummy
 
-	void Init(CreFileData& stats, CreFileMemSpellLevel* memArrayMage, CreFileMemSpellLevel* memArrayPriest);
+	void Init(CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest);
 	
 	CDerivedStats& operator=(CDerivedStats& cds);
 	CDerivedStats& OpAssign(CDerivedStats&) { return *this; } //dummy
@@ -559,8 +548,8 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	IECPtrList SplSequencer; //6cch, AA65AC
 	CColorPalList ColorListPal; //6e8h, size 0x2 objects (byte cColorGroup [location], byte cGroupRangeId [gradient])
 	CColorRgbList ColorListRgb; //704h, size 0x8 objects (byte cColorGroup, byte cGroupRangeId, ARGB rgbColor, byte n, byte pad)
-	CreFileMemSpellLevel MemInfoMage[9]; //720h
-	CreFileMemSpellLevel MemInfoPriest[7]; //7b0h
+	CreFileMemorizedSpellLevel MemInfoMage[9]; //720h
+	CreFileMemorizedSpellLevel MemInfoPriest[7]; //7b0h
 
 	int ButtonDisable[14]; //820h
 	int ButtonDisableSpl[3]; //858h
@@ -568,25 +557,5 @@ struct CDerivedStats : public CDerivedStatsTemplate { //Size 8B8h
 	COnAttackEffList m_RangedEffects; //880h, is checked on ranged attack, but FX never added to this list
 	CStatModVsObjectList m_SaveBonusVsObject; //89ch
 };
-
-extern CDerivedStats& (CDerivedStats::*CDerivedStats_Construct_3)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*);
-extern CDerivedStats& (CDerivedStats::*CDerivedStats_Construct_0)();
-extern void (CDerivedStats::*CDerivedStats_Init)(CreFileData&, CreFileMemSpellLevel*, CreFileMemSpellLevel*);
-extern CDerivedStats& (CDerivedStats::*CDerivedStats_OpAssign)(CDerivedStats&);
-extern void (CDerivedStats::*CDerivedStats_ClearStats)();
-extern CDerivedStats& (CDerivedStats::*CDerivedStats_OpAdd)(CDerivedStats&);
-extern void (CDerivedStats::*CDerivedStats_LimitStats)();
-extern int (CDerivedStats::*CDerivedStats_GetStat)(short);
-extern char (CDerivedStats::*CDerivedStats_GetSubclassLevel)(char, char);
-extern short (CDerivedStats::*CDerivedStats_GetMeanLevel)(char);
-extern unsigned char (CDerivedStats::*CDerivedStats_GetFighterClassLevel)(unsigned char);
-extern unsigned char (CDerivedStats::*CDerivedStats_GetMageClassLevel)(unsigned char);
-extern unsigned char (CDerivedStats::*CDerivedStats_GetThiefClassLevel)(unsigned char);
-extern unsigned char (CDerivedStats::*CDerivedStats_GetClericClassLevel)(unsigned char);
-extern void (CDerivedStats::*CDerivedStats_MarshalTemplate)(CDerivedStatsTemplate**, int*);
-extern void (CDerivedStats::*CDerivedStats_UnmarshalTemplate)(CDerivedStatsTemplate&, int);
-extern char (CDerivedStats::*CDerivedStats_GetEffectiveClericLevel)(unsigned char);
-extern char (CDerivedStats::*CDerivedStats_GetEffectiveMageLevel)(unsigned char);
-extern void (CDerivedStats::*CDerivedStats_Deconstruct)();
 
 #endif //OBJSTATS_H

@@ -16,19 +16,19 @@ public:
 	RECT BoundsClosed; //3f0h
 	int nCursorIdx; //400h
 	unsigned int dwFlags; //404h
-	POINT* pVerticesOutlineOpen; //408h
+	CPoint* pVerticesOutlineOpen; //408h
 	short nVerticesOutlineOpen; //40ch
-	POINT* pVerticesOutlineClosed; //40eh
+	CPoint* pVerticesOutlineClosed; //40eh
 	short nVerticesOutlineClosed; //412h
 
 	//refers to search map coordinates
-	POINT* pPointsImpededWhenDoorOpen; //414h
+	CPoint* pPointsImpededWhenDoorOpen; //414h
 	short nPointsImpededWhenDoorOpen; //418h
-	POINT* pPointsImpededWhenDoorClosed; //41ah
+	CPoint* pPointsImpededWhenDoorClosed; //41ah
 	short nPointsImpededWhenDoorClosed; //41eh
 
-	POINT ptToOpen; //420h
-	POINT ptToClose; //428h
+	CPoint ptToOpen; //420h
+	CPoint ptToClose; //428h
 	char script[8]; //430h, doorScript
 	struct Object18h {
 		int u0;
@@ -55,11 +55,11 @@ public:
 	int lockDifficulty; //4bch
 	short u4c0; //set to 0
 
-	//POINT
+	//CPoint
 	int u4c2; //calculation of boundsOpenLeft and boundsOpenRight
 	int u4c6; //boundsOpenBottom
 
-	//POINT
+	//CPoint
 	int u4ca; //calculation of boundsClosedLeft and boundsClosedRight
 	int u4ce; //boundsClosedBottom
 

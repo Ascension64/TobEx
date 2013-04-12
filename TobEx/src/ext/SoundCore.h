@@ -3,7 +3,7 @@
 
 #include "sndcore.h"
 
-extern BOOL (CSoundMixer::*Tramp_CSoundMixer_InitSonglist)(int, char**);
+DeclareTrampMemberFunc(BOOL, CSoundMixer, InitSonglist, (int nSongs, char** pSongFileArray), InitSonglist);
 
 struct DETOUR_CSoundMixer : public CSoundMixer {
 	BOOL DETOUR_InitSonglist(int nSongs, char** pSongFileArray);

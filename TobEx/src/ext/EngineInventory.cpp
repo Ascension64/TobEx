@@ -2,8 +2,7 @@
 
 #include "chitin.h"
 
-void (CScreenInventory::*Tramp_CScreenInventory_Init)() =
-	SetFP(static_cast<void (CScreenInventory::*)()>	(&CScreenInventory::Init),	0x740178);
+DefineTrampMemberFunc(void, CScreenInventory, Init, (), Init, Init, 0x740178);
 
 void DETOUR_CScreenInventory::DETOUR_Init() {
 	(this->*Tramp_CScreenInventory_Init)();

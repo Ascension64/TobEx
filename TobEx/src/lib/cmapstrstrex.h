@@ -55,15 +55,4 @@ protected:
 	int m_nBlockSize;
 };
 
-extern IECMapStringToString& (IECMapStringToString::*IECMapStringToString_Construct_1)(int);
-extern void (IECMapStringToString::*IECMapStringToString_InitHashTable)(UINT, BOOL);
-extern void (IECMapStringToString::*IECMapStringToString_RemoveAll)();
-extern void (IECMapStringToString::*IECMapStringToString_Deconstruct)();
-extern BOOL (IECMapStringToString::*IECMapStringToString_Lookup)(LPCTSTR, IECString&) const;
-extern BOOL (IECMapStringToString::*IECMapStringToString_LookupKey)(LPCTSTR, LPCTSTR&) const;
-extern IECString& (IECMapStringToString::*IECMapStringToString_OpArray)(LPCTSTR);
-extern BOOL (IECMapStringToString::*IECMapStringToString_RemoveKey)(LPCTSTR);
-extern void (IECMapStringToString::*IECMapStringToString_GetNextAssoc)(POSITION&, IECString&, IECString&) const;
-extern void (IECMapStringToString::*IECMapStringToString_Serialize)(CArchive&);
-
 #endif //CMAPSTRSTREX_H

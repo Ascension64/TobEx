@@ -15,7 +15,7 @@
 
 typedef IECPtrList CPartyLocationList; //AAB968
 
-struct Res2daContainer { //Size 10h
+struct Res2daFile { //Size 10h
 	BOOL bLoaded; //0h
 	ResTxt* pRes; //4h
 	ResRef name; //8h
@@ -31,20 +31,17 @@ struct CWorldTimer { //Size 6h
 	unsigned char nPartsOfHour; //5h, during dawn/dusk hour, is the part of the hour out of 255 (1dd5h)
 };
 
-extern void (CWorldTimer::*CWorldTimer_UnpauseGame)();
-extern void (CWorldTimer::*CWorldTimer_PauseGame)();
-
 struct CPartySelection { //Size 22h
-	Enum GetFirstSelected();
+	ENUM GetFirstSelected();
 
 	short u0; //ffff
 	int u2; //always set to 1 on remove
 	CEnumList celSelected; //6h, party members first in number order, then non-members
 };
 
-extern Enum (CPartySelection::*CPartySelection_GetFirstSelected)();
-
 struct CRuleTable { //Size 24h
+	DEFINE_MEMALLOC_FUNC;
+
 	CRuleTable(); //63E230
 	CRuleTable& Construct() { return *this; } //dummy
 
@@ -55,13 +52,12 @@ struct CRuleTable { //Size 24h
 	bool FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders);
 	void UnloadRes();
 	IECString GetDefaultValue();
-	IECString& GetValue(POINT& ptColRow);
+	IECString& GetValue(CPoint& ptColRow);
 
-	//custom
 	IECString& GetRowName(int nRow);
 	IECString& GetColName(int nCol);
 
-	Res2daContainer m_2da; //0h
+	Res2daFile m_2da; //0h
 	IECString* pColHeaderArray; //10h
 	IECString* pRowHeaderArray; //14h
 	IECString* pDataArray; //18h
@@ -69,14 +65,6 @@ struct CRuleTable { //Size 24h
 	short nCols; //20h
 	short nRows; //22h
 };
-
-extern CRuleTable& (CRuleTable::*CRuleTable_Construct)(void);
-extern void (CRuleTable::*CRuleTable_LoadRes)(ResRef&);
-extern IECString& (CRuleTable::*CRuleTable_GetValue_2)(IECString&, IECString&);
-extern bool (CRuleTable::*CRuleTable_FindString)(IECString&, POSITION*, BOOL);
-extern void (CRuleTable::*CRuleTable_UnloadRes)();
-extern IECString (CRuleTable::*CRuleTable_GetDefaultValue)();
-extern IECString& (CRuleTable::*CRuleTable_GetValue_1)(POINT&);
 
 struct IdsEntry { //Size Ch
 	int nOpcode;
@@ -290,31 +278,11 @@ struct CRuleTables { //Size 1DB0h
 	CRuleTable LOADH25; //1d8ch
 };
 
-extern CRuleTables& (CRuleTables::*CRuleTables_Construct)();
-extern void (CRuleTables::*CRuleTables_Deconstruct)();
-extern IECString (CRuleTables::*CRuleTables_GetRaceString)(unsigned char);
-extern IECString (CRuleTables::*CRuleTables_GetAlignmentString)(char);
-extern IECString (CRuleTables::*CRuleTables_GetClassString)(unsigned char, unsigned int);
-extern int (CRuleTables::*CRuleTables_CalculateNewHPRule)(CRuleTable&, int, int, int, int, BOOL, int, BOOL, int);
-extern int (CRuleTables::*CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int);
-extern int (CRuleTables::*CRuleTables_GetMaxMageSpells)(int);
-extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRef)(int, int);
-extern STRREF (CRuleTables::*CRuleTables_GetCharSndStrRef)(int, int, char);
-extern void (CRuleTables::*CRuleTables_GetDetailedClassString)(char, unsigned int, unsigned int, IECString&, CCreatureObject&);
-extern int (CRuleTables::*CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int);
-extern BOOL (CRuleTables::*CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char);
-extern int (CRuleTables::*CRuleTables_GetIntModMaxSpellsPerLevel)(CDerivedStats&);
-extern char (CRuleTables::*CRuleTables_GetMageSchool)(short);
-extern bool (CRuleTables::*CRuleTables_GetContingencyConditionTexts)(STRREF*, STRREF*, short);
-extern bool (CRuleTables::*CRuleTables_GetContingencyTargetTexts)(STRREF*, STRREF*, short);
-extern CRuleTable& (CRuleTables::*CRuleTables_GetClassAbilityTable)(unsigned char, unsigned int);
-extern ResRef (CRuleTables::*CRuleTables_GetMageSpellRefAutoPick)(char, char);
-
 struct MoveAreasElement { //Size 1Ah
 //Constructor: 0x5EF9B0
-	Enum eCre; //cre
+	ENUM eCre; //cre
 	ResRef rArea;
-	POINT ptDest;
+	CPoint ptDest;
 	char cOrient;
 	char u15; //pad
 	int nDelay;
@@ -326,19 +294,17 @@ public:
 	void MoveAllTo(CArea& area);
 };
 
-extern void (CMoveAreasList::*CMoveAreasList_MoveAllTo)(CArea&);
-
 struct CInfGame : public CRuleTables { //Size 4DC8h
 //Constructor: 0x67AD88
 	void InitGame(int nUnused, int nUnused2);
 	int GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly);
 	void DemandServerStore(ResRef& rName, BOOL bAlsoUpdateTemp);
 	void ReleaseServerStore(ResRef& rName);
-	short GetPartyMemberSlot(Enum e);
+	short GetCharacterPortraitNum(ENUM e);
 	CArea& GetLoadedArea(IECString sAreaName);
 	void AddExperienceParty(int n);
 	void SetLoseCutscene();
-	void StorePartyLocations(BOOL);
+	void StorePartyLocations(BOOL bUseSecondList);
 	int GetNumControlledSummons();
 	
 #ifdef _DEBUG
@@ -366,7 +332,7 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	char u1e30; //0x65 = tooltip on, 0x04 = tooltip off?
 	char u1e31;
 	int u1e32;
-	Enum u1e36; //used in ObjectActionListEmpty()
+	ENUM u1e36; //used in ObjectActionListEmpty()
 	int u1e3a;
 
 	struct CGamePermission { //Size 8h
@@ -429,14 +395,14 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u3738;
 	IECString u373c;
 	CVidBitmap m_colorRangePalette; //3740h
-	CGameObjectArrayHandler m_GameObjectArrayHandler; //37f6h
-	CGameRemoteObjectArrayHandler m_GameRemoteObjectArrayHandler; //3824h
+	CGameObjectArray m_GameObjectArray; //37f6h
+	CGameRemoteObjectArray m_GameRemoteObjectArray; //3824h
 	char m_VisibleAreaIdx; //38b4h, index to loaded area array of the currently visible area
 	char u38b5; //pad
 	CArea* m_pLoadedAreas[12]; //38b6h
 	CArea* m_pMasterArea; //38e6h
-	Enum ePlayersJoinOrder[6]; //38eah
-	Enum ePlayersPartyOrder[6]; //3902h, 0: leader
+	ENUM ePlayersJoinOrder[6]; //38eah
+	ENUM ePlayersPartyOrder[6]; //3902h, 0: leader
 	short numInParty; //391ah
 	CEnumList u391c; //enums global characters
 	CPtrArray u3938;
@@ -657,8 +623,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4c1c; //KERNEL32.GetTickCount()
 	int u4c20;
 	int m_nRealTimer; //4c24h
-	POINT u4c28;
-	Enum u4c30;
+	CPoint u4c28;
+	ENUM u4c30;
 	short u4c34;
 	VidPal u4c36;
 	VidPal u4c5a;
@@ -675,9 +641,9 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	int u4ce4;
 	BOOL m_bTutorialGame; //4ce8h
 	BOOL m_bThroneOfBhaalGame; //4cech - used to determine which song to play at start screen, 1 = use MP in STARTARE.2DA
-	Enum m_eBaldurObject; //4cf0h, BALDUR.BCS CBaldurObject
+	ENUM m_eBaldurObject; //4cf0h, BALDUR.BCS CBaldurObject
 	int m_nTimeStopObjectsTicksLeft; //4cf4h, remaining timestop (area sprites) ticks
-	Enum m_eTimeStopExempt; //4cf8h, exempt from timestop (area sprites)
+	ENUM m_eTimeStopExempt; //4cf8h, exempt from timestop (area sprites)
 	int m_nTimeStopGreyscaleTicksLeft; //4cfch, remaining timestop (Greyscale) ticks
 	int m_nDreamSepiaTicksLeft; //4d00h, remaining dream (Sepia) ticks
 	CScriptParser* m_pScriptParser; //4d04h
@@ -694,8 +660,8 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 	BOOL m_bThroneOfBhaal; //4d7ch - used to determine if 25-prefixed files are used
 	int u4d80;
 
-	CPartyLocationList cplStorePartyLoc; //4d84h, used in Store/RestorePartyLocations(), CPartyLocation0 (0x0 Resref areaname, 0x8 POINT)
-	CPartyLocationList cplPrePocketPlane; //4da0h, used in ExitPocketPlane() and Cutscene2 effect, CPartyLocation1 (0x0 Resref areaname, 0x8 POINT)
+	CPartyLocationList cplStorePartyLoc; //4d84h, used in Store/RestorePartyLocations(), CPartyLocation0 (0x0 Resref areaname, 0x8 CPoint)
+	CPartyLocationList cplPrePocketPlane; //4da0h, used in ExitPocketPlane() and Cutscene2 effect, CPartyLocation1 (0x0 Resref areaname, 0x8 CPoint)
 
 	struct CVvcMapEntry { //size 12h
 		ResRef r;
@@ -712,16 +678,5 @@ struct CInfGame : public CRuleTables { //Size 4DC8h
 
 	int u4dc4; //? compared with CVisualEffectVidCell.u39c*/
 };
-
-extern void (CInfGame::*CInfGame_InitGame)(int, int);
-extern int (CInfGame::*CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL);
-extern void (CInfGame::*CInfGame_DemandServerStore)(ResRef&, BOOL);
-extern void (CInfGame::*CInfGame_ReleaseServerStore)(ResRef&);
-extern short (CInfGame::*CInfGame_GetPartyMemberSlot)(Enum);
-extern CArea& (CInfGame::*CInfGame_GetLoadedArea)(IECString);
-extern void (CInfGame::*CInfGame_AddExperienceParty)(int);
-extern void (CInfGame::*CInfGame_SetLoseCutscene)();
-extern void (CInfGame::*CInfGame_StorePartyLocations)(BOOL);
-extern int (CInfGame::*CInfGame_GetNumControlledSummons)();
 
 #endif //INFGAME_H

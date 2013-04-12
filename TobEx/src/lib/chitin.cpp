@@ -4,7 +4,4 @@
 
 CBaldurChitin* g_pChitin;
 
-CBaldurChitin& (CBaldurChitin::*CBaldurChitin_Construct)() =
-	SetFP(static_cast<CBaldurChitin& (CBaldurChitin::*)()>		(&CBaldurChitin::Construct),	0x432108);
-
-CBaldurChitin::CBaldurChitin() { (this->*CBaldurChitin_Construct)(); }
+DefineLibNoRetFunc(CBaldurChitin&, CBaldurChitin, CBaldurChitin, (), Construct, Construct, (), 0x432108);

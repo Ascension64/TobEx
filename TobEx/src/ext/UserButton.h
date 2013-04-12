@@ -3,8 +3,8 @@
 
 #include "uibutton.h"
 
-extern unsigned int (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&);
-extern STRREF (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitHelpText)(Object&);
+DeclareTrampMemberFunc(unsigned int, CUICheckButtonChargenKit, GetKitId, (Object& o), GetKitId);
+DeclareTrampMemberFunc(STRREF, CUICheckButtonChargenKit, GetKitHelpText, (Object& o), GetKitHelpText);
 
 class DETOUR_CUICheckButtonChargenKit : public CUICheckButtonChargenKit {
 public:

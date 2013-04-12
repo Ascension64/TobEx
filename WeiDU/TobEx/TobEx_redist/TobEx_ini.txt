@@ -1546,10 +1546,10 @@ Fixes a broad bug where the dead creatures that are not transferred to the middl
 
 Brief Explanation
 Vertical lists are implemented by areas to determine drawing order
-There are three vertical lists: LIST_FRONT, LIST_MIDDLE, LIST_BACK
+There are three vertical lists: LIST_FRONT, LIST_BACK, LIST_2
 AI targetting generally includes only active creatures in LIST_FRONT
-When most creatures die, they are transferred from LIST_FRONT to LIST_MIDDLE
-However, some creature animations are coded to disallow use of LIST_MIDDLE; when they die, they stay in LIST_FRONT
+When most creatures die, they are transferred from LIST_FRONT to LIST_BACL
+However, some creature animations are coded to disallow use of LIST_BACK; when they die, they stay in LIST_FRONT
 AI targetting does not account for this, and so dead creatures in LIST_FRONT can still be targetted by AI, triggers and actions (e.g. AttackReevaluate)
 Animations affected by this are: 0x6404 SAREVOK, 0x4XXX STATIC_* (SLEEPING_* are excluded based on STATE_SLEEPING)
 This hack correct this issue by preventing dead creatures in LIST_FRONT and are disallowed use of LIST_MIDDLE from being targetted

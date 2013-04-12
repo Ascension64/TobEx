@@ -4,14 +4,10 @@
 #include "objcre.h"
 #include "ScriptAction.h"
 
-BOOL (CGameSprite::*Tramp_CGameSprite_EvaluateTrigger)(Trigger&) =
-	SetFP(static_cast<BOOL (CGameSprite::*)(Trigger&)>	(&CGameSprite::EvaluateTrigger),	0x47F4F2);
-void (CGameSprite::*Tramp_CGameSprite_ClearAllActions)(BOOL) =
-	SetFP(static_cast<void (CGameSprite::*)(BOOL)>					(&CGameSprite::ClearAllActions),	0x47838F);
-ACTIONRESULT (CGameSprite::*Tramp_CGameSprite_ExecuteAction)() =
-	SetFP(static_cast<ACTIONRESULT (CGameSprite::*)()>	(&CGameSprite::ExecuteAction),		0x47891B);
-void (CGameSprite::*Tramp_CGameSprite_QueueActions)(Response&, BOOL, BOOL) =
-	SetFP(static_cast<void (CGameSprite::*)(Response&, BOOL, BOOL)>	(&CGameSprite::QueueActions),		0x48DA78);
+DefineTrampMemberFunc(BOOL, CGameSprite, EvaluateTrigger, (Trigger& t), EvaluateTrigger, EvaluateTrigger, 0x47F4F2);
+DefineTrampMemberFunc(void, CGameSprite, ClearAllActions, (BOOL bSkipFlagged), ClearAllActions, ClearAllActions, 0x47838F);
+DefineTrampMemberFunc(ACTIONRESULT, CGameSprite, ExecuteAction, (), ExecuteAction, ExecuteAction, 0x47891B);
+DefineTrampMemberFunc(void, CGameSprite, QueueActions, (Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue), QueueActions, QueueActions, 0x48DA78);
 
 BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 	if (0) IECString("DETOUR_CGameSprite::DETOUR_EvaluateTrigger");
@@ -84,7 +80,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (pCre == NULL) break;
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
-		bResult = pCre->GetDerivedStats().BounceSplLvl[tTemp.i] || pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn;
+		bResult = pCre->GetActiveStats().BounceSplLvl[tTemp.i] || pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn;
 		}
 		break;
 	case TRIGGER_NUM_BOUNCING_SPELL_LEVEL:
@@ -94,11 +90,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumBounce = 0;
-		if (pCre->GetDerivedStats().BounceSplLvl[tTemp.i]) {
+		if (pCre->GetActiveStats().BounceSplLvl[tTemp.i]) {
 			nNumBounce = UINT_MAX;
 		} else {
-			if (pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn)
-				nNumBounce = pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn)
+				nNumBounce = pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumBounce == tTemp.i2;
 		}
@@ -110,11 +106,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumBounce = 0;
-		if (pCre->GetDerivedStats().BounceSplLvl[tTemp.i]) {
+		if (pCre->GetActiveStats().BounceSplLvl[tTemp.i]) {
 			nNumBounce = UINT_MAX;
 		} else {
-			if (pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn)
-				nNumBounce = pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn)
+				nNumBounce = pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumBounce > (unsigned int)tTemp.i2;
 		}
@@ -126,11 +122,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumBounce = 0;
-		if (pCre->GetDerivedStats().BounceSplLvl[tTemp.i]) {
+		if (pCre->GetActiveStats().BounceSplLvl[tTemp.i]) {
 			nNumBounce = UINT_MAX;
 		} else {
-			if (pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn)
-				nNumBounce = pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn)
+				nNumBounce = pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumBounce < (unsigned int)tTemp.i2;
 		}
@@ -141,7 +137,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (pCre == NULL) break;
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
-		bResult = pCre->GetDerivedStats().ProtSplLvl[tTemp.i] || pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn;
+		bResult = pCre->GetActiveStats().ProtSplLvl[tTemp.i] || pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn;
 		}
 		break;
 	case TRIGGER_NUM_IMMUNE_SPELL_LEVEL:
@@ -151,11 +147,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumProt = 0;
-		if (pCre->GetDerivedStats().ProtSplLvl[tTemp.i]) {
+		if (pCre->GetActiveStats().ProtSplLvl[tTemp.i]) {
 			nNumProt = UINT_MAX;
 		} else {
-			if (pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn)
-				nNumProt = pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn)
+				nNumProt = pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumProt == tTemp.i2;
 		}
@@ -167,11 +163,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumProt = 0;
-		if (pCre->GetDerivedStats().ProtSplLvl[tTemp.i]) {
+		if (pCre->GetActiveStats().ProtSplLvl[tTemp.i]) {
 			nNumProt = UINT_MAX;
 		} else {
-			if (pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn)
-				nNumProt = pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn)
+				nNumProt = pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumProt > (unsigned int)tTemp.i2;
 		}
@@ -183,11 +179,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumProt = 0;
-		if (pCre->GetDerivedStats().ProtSplLvl[tTemp.i]) {
+		if (pCre->GetActiveStats().ProtSplLvl[tTemp.i]) {
 			nNumProt = UINT_MAX;
 		} else {
-			if (pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn)
-				nNumProt = pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn)
+				nNumProt = pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumProt < (unsigned int)tTemp.i2;
 		}
@@ -214,8 +210,8 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumTrap = 0;
-		if (pCre->GetDerivedStats().SplTrapLvl[tTemp.i].bOn)
-			nNumTrap = pCre->GetDerivedStats().SplTrapLvl[tTemp.i].nCount;
+		if (pCre->GetActiveStats().SplTrapLvl[tTemp.i].bOn)
+			nNumTrap = pCre->GetActiveStats().SplTrapLvl[tTemp.i].nCount;
 		bResult = nNumTrap == tTemp.i2;
 		}
 		break;
@@ -226,8 +222,8 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumTrap = 0;
-		if (pCre->GetDerivedStats().SplTrapLvl[tTemp.i].bOn)
-			nNumTrap = pCre->GetDerivedStats().SplTrapLvl[tTemp.i].nCount;
+		if (pCre->GetActiveStats().SplTrapLvl[tTemp.i].bOn)
+			nNumTrap = pCre->GetActiveStats().SplTrapLvl[tTemp.i].nCount;
 		bResult = nNumTrap > (unsigned int)tTemp.i2;
 		}
 		break;
@@ -238,8 +234,8 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumTrap = 0;
-		if (pCre->GetDerivedStats().SplTrapLvl[tTemp.i].bOn)
-			nNumTrap = pCre->GetDerivedStats().SplTrapLvl[tTemp.i].nCount;
+		if (pCre->GetActiveStats().SplTrapLvl[tTemp.i].bOn)
+			nNumTrap = pCre->GetActiveStats().SplTrapLvl[tTemp.i].nCount;
 		bResult = nNumTrap < (unsigned int)tTemp.i2;
 		}
 		break;
@@ -250,9 +246,9 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		unsigned char nClassNew;
 		tTemp.o.GetDualClasses(&nClassNew, &nClassOld);
 		if (nClassNew == nClassOld) break; //not dual-class
-		oCriteria.Class = tTemp.i;
+		oCriteria.m_cClass = tTemp.i;
 		Object oTemp;
-		oTemp.Class = nClassOld;
+		oTemp.m_cClass = nClassOld;
 		bResult = oTemp.MatchCriteria(oCriteria, FALSE, FALSE, FALSE);
 		}
 		break;
@@ -260,7 +256,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		{
 		nFindTargetResult = FindTargetCreature(tTemp, &pCre);
 		if (pCre == NULL) break;
-		int nHurtAmount = pCre->cdsCurrent.maxHP - pCre->m_BaseStats.currentHP;
+		int nHurtAmount = pCre->m_cdsCurrent.maxHP - pCre->m_header.m_wHitPoints;
 		bResult = nHurtAmount == tTemp.i;
 		}
 		break;
@@ -268,7 +264,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		{
 		nFindTargetResult = FindTargetCreature(tTemp, &pCre);
 		if (pCre == NULL) break;
-		int nHurtAmount = pCre->cdsCurrent.maxHP - pCre->m_BaseStats.currentHP;
+		int nHurtAmount = pCre->m_cdsCurrent.maxHP - pCre->m_header.m_wHitPoints;
 		bResult = nHurtAmount > tTemp.i;
 		}
 		break;
@@ -276,7 +272,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		{
 		nFindTargetResult = FindTargetCreature(tTemp, &pCre);
 		if (pCre == NULL) break;
-		int nHurtAmount = pCre->cdsCurrent.maxHP - pCre->m_BaseStats.currentHP;
+		int nHurtAmount = pCre->m_cdsCurrent.maxHP - pCre->m_header.m_wHitPoints;
 		bResult = nHurtAmount < tTemp.i;
 		}
 		break;
@@ -293,7 +289,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		{
 		nFindTargetResult = FindTargetCreature(tTemp, &pCre);
 		if (pCre == NULL) break;
-		bResult = (BOOL)(pCre->GetDerivedStats().GetStat(tTemp.i2) & tTemp.i);
+		bResult = (BOOL)(pCre->GetActiveStats().GetStat(tTemp.i2) & tTemp.i);
 		break;
 		}
 	default:
@@ -303,11 +299,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 
 	if (pCre != NULL &&
 		nFindTargetResult == 0) {
-		g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pCre->e, THREAD_ASYNCH, INFINITE);
+		g_pChitin->pGame->m_GameObjectArray.FreeShare(pCre->e, THREAD_ASYNCH, INFINITE);
 	}
 
 	if (pSprite != NULL)
-		g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pSprite->e, THREAD_ASYNCH, INFINITE);
+		g_pChitin->pGame->m_GameObjectArray.FreeShare(pSprite->e, THREAD_ASYNCH, INFINITE);
 
 	return bResult;
 
@@ -349,17 +345,17 @@ ACTIONRESULT DETOUR_CGameSprite::DETOUR_ExecuteAction() {
 	if (0) IECString("DETOUR_CGameSprite::DETOUR_ExecuteAction");
 
 	bExecutingAction = TRUE;
-	ACTIONRESULT ar = ACTIONRESULT_FAILED;
+	ACTIONRESULT ar = ACTIONRESULT_ERROR;
 
 	if (aCurrent.opcode == ACTION_BREAK_INSTANTS) SetCurrentAction(GetTopAction(g_pActionTemp));
 
 	switch (aCurrent.opcode) {
 	case ACTION_BREAK_INSTANTS:
-		ar = ACTIONRESULT_NONE; //re-implement here to prevent weird behaviour for double BreakInstants()
+		ar = ACTIONRESULT_DONE; //re-implement here to prevent weird behaviour for double BreakInstants()
 		break;
 	case ACTION_LOSE_GAME:
 		g_pChitin->pGame->SetLoseCutscene();
-		ar = ACTIONRESULT_NONE;
+		ar = ACTIONRESULT_DONE;
 		break;
 	case ACTION_DIALOG_SET_GLOBAL:
 		aCurrent.opcode = ACTION_SET_GLOBAL;

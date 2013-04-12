@@ -14,7 +14,7 @@ typedef CPtrArray CPtrArrayDlgAction; //AA73A0
 typedef CPtrArray CPtrArrayCDlgResponse; //AA7388
 typedef CPtrArray CPtrArrayCDlgState; //AA7414
 
-struct ResDlgContainer { //Size 10h
+struct ResDlgFile { //Size 10h
 //constructor: 0x4E2C50
 	BOOL bLoaded;
 	ResDlg* pRes;
@@ -28,7 +28,7 @@ struct CDlgState { //Size 42h
 	STRREF strref; //14h
 	CTriggerList conditions; //18h, Starting Conditions
 
-	Enum u34;
+	ENUM u34;
 	int nTriggerIdx; //38h
 	int nStateIdx; //3ch
 	short u40;
@@ -65,8 +65,6 @@ struct CDlgResponse { //Size 76h
 	BOOL bAddedInterrupts; //72h, set to TRUE when SetInterrupts added to head and tail of response actions
 };
 
-extern CDlgNext& (CDlgResponse::*CDlgResponse_Execute)(CCreatureObject&);
-
 struct CGameDialog { //Size 64h
 //Constructor: 0x4E554E
 	void SetUserArgument(int n);
@@ -74,8 +72,8 @@ struct CGameDialog { //Size 64h
 	ResRef rName; //0h
 	CPtrArrayCDlgState cprStatesStateOrder; //8h
 	CPtrArrayCDlgState cprStatesTriggerOder; //1ch
-	Enum eGabber; //30h
-	Enum eTarget; //34h
+	ENUM eGabber; //30h
+	ENUM eTarget; //34h
 	int nActiveDlgStateIdx; //38h
 	int u3c;
 	int nUserArg; //40h, contains the dialog choice that the user picked
@@ -88,7 +86,5 @@ struct CGameDialog { //Size 64h
 	int u5c; //from Arg4
 	int u60;
 };
-
-extern void (CGameDialog::*CGameDialog_SetUserArgument)(int);
 
 #endif //DLGCORE_H

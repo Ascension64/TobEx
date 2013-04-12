@@ -22,8 +22,8 @@ public:
 	short wFlags; //bch
 
 	int ube; //beh
-	short nMaxMvtDistance; //c2h, as Actor3C
-	short nMaxMvtDistanceToObject; //c4h, as Actor3E
+	short wHuntingRange; //c2h
+	short wFollowRange; //c4h
 	short nMaxNumSpawns; //c6h
 	short nEnabled; //c8h
 	int nSchedule; //cah

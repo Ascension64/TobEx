@@ -13,8 +13,8 @@
 
 //Vertical List Types
 //0xAAA9EE unsigned char CGameObject::LIST_FRONT
-//0xAAA9EF unsigned char CGameObject::LIST_MIDDLE?
-//0xAAA9F0 unsigned char CGameObject::LIST_BACK?
+//0xAAA9EF unsigned char CGameObject::LIST_BACK
+//0xAAA9F0 unsigned char CGameObject::LIST_2
 
 //0xAAA9E1-D CGAMEOBJECT_TYPE
 //0xAAA9E7 unsigned char CGAMEOBJECT_TYPE_CREATURE
@@ -35,7 +35,7 @@
 
 //0xAACF4E short CVISMAP_DISCOVERED (0x8000)
 
-//0xAAD1D0 Enum ENUM_INVALID_INDEX (-1)
+//0xAAD1D0 ENUM ENUM_INVALID_INDEX (-1)
 
 //0xAAD1EE short CINFGAME_POINTSPERREPUTATIONVALUE (10)
 
@@ -240,7 +240,7 @@
 //0xAA69B4, eh, unsigned char, pad
 //! 0xAA69D0 CMessageCutSceneMode
 //0xAA69EC, 12h, DW, unsigned char, pad
-//! 0xAA6A40 CMessageApplyEffect
+//! 0xAA6A40 CMessageAddEffect
 //0xAA6A84, 10h, CString areaName (CMessageExploreArea)
 //0xAA6AB0, 10h, DW
 //! 0xAA6ACC CMessageAddActionTailInterrupt
@@ -249,11 +249,11 @@
 //0xAA6B58, 20h, Object oAttacker (CMessageSetLastAttacker)
 //! 0xAA6CE0 CMessageModifyVariable
 //0xAA6CFC, 22h, CString areaName, DW (Windowwidth / 2 + ScreenOffsetX), DW (Windowheight / 2 + ScreenOffsetY), DW x, DW y, unsigned char int, pad
-//0xAA6D18, 2ah, ResRef (visualeffectname), CString (areaname), POINT, Point2, W zPos (CMessageCreateVisualEffect)
+//0xAA6D18, 2ah, ResRef (visualeffectname), CString (areaname), CPoint, Point2, W zPos (CMessageCreateVisualEffect)
 //0xAA6D50, eh, wAnimId (CMessageAnimationChange)
 //! 0xAA6D6C CMessageSetAnimationSequence
 //0xAA6D88, ch
-//0xAA6DA4, 14h, POINT (CMessageOrientToPoint)
+//0xAA6DA4, 14h, CPoint (CMessageOrientToPoint)
 //! 0xAA6DC0, CMessageQueueActions
 //0xAA6DDC, ch (CMessageClearAllActions)
 //0xAA6DF8, 106h, CItem (CMessageAddItem)
@@ -263,10 +263,10 @@
 //0xAA6E84, 14h, DW, W, W
 //0xAA6EBC, 10h, DW
 //0xAA6ED8, eh, unsigned char
-//0xAA6EF4, 18h, CString sArea, POINT ptTarget (CMessageMoveGlobal)
+//0xAA6EF4, 18h, CString sArea, CPoint ptTarget (CMessageMoveGlobal)
 //0xAA6F10, 10h, unsigned char FadeDirection (0 = ToColor, 1 = FromColor), unsigned char (FadeAmountBlue - all negative, so FF is -1 each time), unsigned char (Green), unsigned char (Red) (CMessageScreenFade) - B61512 = targetBrightness
 //0xAA6F2C, eh, bool bOn, pad (CMessageSetSpawnPtState)
-//0xAA6F48, 14h, POINT pt (CMessageSpawnPtSpawn)
+//0xAA6F48, 14h, CPoint pt (CMessageSpawnPtSpawn)
 //0xAA6F9C, 64h, CString scope, CVariable (CMessageSetVariable)
 //0xAA6FB8, 14h, dwFlags, wIsTrapDiscovered, wIsTrapped (CMessageUpdateContainerState)
 
@@ -297,7 +297,7 @@
 //0xAAB5B4, eh, bool bOn, pad (CMessageSetInStoreState)
 //0xAAB5EC, eh, W (action opcode)
 //0xAAB608, eh, unsigned char, pad
-//0xAAB65C, 14h, CString, Enum source (CMessageNonControlledDialogStart)
+//0xAAB65C, 14h, CString, ENUM source (CMessageNonControlledDialogStart)
 //0xAAB694, 16h, ResRef (filename), unsigned char (filetype, 1 = vvc, 2 = bam of nameanim1), pad (CMessageRemoveVisualEffectVidCell)
 //0xAAB6E8, eh, unsigned char, pad
 //0xAAB704, ch
@@ -309,7 +309,7 @@
 //0xAAB86C, 44h, CColorPalList, CColorRgbList (constructor: 0x5BE891 (pSprite, enum, enum)) (CMessageSetAnimColorsFromList)
 //0xAAB888, 12h, short wNumItems, CItem* pItemArray (CMessageUpdateContainerItems)
 //0xAAB8A4, 16h, DW, W, W, pad?, unsigned char (constructor: 0x5C353B (pSprite, enum, enum))
-//0xAAB8C0, 1eh, W (projIdx), Enum, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
+//0xAAB8C0, 1eh, W (projIdx), ENUM, x, y, zPos, constructor: 0x5C787F (CMessageCreateProjectile)
 //0xAAB8DC, 24h, W, DW* , W, DW, DW, DW, CString
 //0xAAB8F8, b4h, CCreInventory, DW (constructor: 0x5D7877 (pSprite, enum, enum)) (CMessageUpdateInventory)
 //! 0xAAB914 CMessageSpriteUpdate

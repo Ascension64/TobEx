@@ -6,7 +6,7 @@
 #include "objcre.h"
 
 //CEffectAttacksPerRoundMod
-extern BOOL (CEffectAttacksPerRoundMod::*Tramp_CEffectAttacksPerRoundMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectAttacksPerRoundMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectAttacksPerRoundMod : public CEffectAttacksPerRoundMod {
 public:
@@ -14,7 +14,7 @@ public:
 };
 
 //CEffectCharismaMod
-extern BOOL (CEffectCharismaMod::*Tramp_CEffectCharismaMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectCharismaMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectCharismaMod : public CEffectCharismaMod {
 public:
@@ -22,7 +22,7 @@ public:
 };
 
 //CEffectConstitutionMod
-extern BOOL (CEffectConstitutionMod::*Tramp_CEffectConstitutionMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectConstitutionMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectConstitutionMod : public CEffectConstitutionMod {
 public:
@@ -30,7 +30,7 @@ public:
 };
 
 //CEffectDamage
-extern BOOL (CEffectDamage::*Tramp_CEffectDamage_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDamage, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDamage : public CEffectDamage {
 public:
@@ -38,7 +38,7 @@ public:
 };
 
 //CEffectDexterityMod
-extern BOOL (CEffectDexterityMod::*Tramp_CEffectDexterityMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDexterityMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDexterityMod : public CEffectDexterityMod {
 public:
@@ -46,7 +46,7 @@ public:
 };
 
 //CEffectIntelligenceMod
-extern BOOL (CEffectIntelligenceMod::*Tramp_CEffectIntelligenceMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectIntelligenceMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectIntelligenceMod : public CEffectIntelligenceMod {
 public:
@@ -54,7 +54,7 @@ public:
 };
 
 //CEffectLoreMod
-extern BOOL (CEffectLoreMod::*Tramp_CEffectLoreMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectLoreMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectLoreMod : public CEffectLoreMod {
 public:
@@ -62,7 +62,7 @@ public:
 };
 
 //CEffectLuckMod
-extern BOOL (CEffectLuckMod::*Tramp_CEffectLuckMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectLuckMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectLuckMod : public CEffectLuckMod {
 public:
@@ -70,7 +70,7 @@ public:
 };
 
 //CEffectPoison
-extern BOOL (CEffectPoison::*Tramp_CEffectPoison_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectPoison, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectPoison : public CEffectPoison {
 public:
@@ -78,7 +78,7 @@ public:
 };
 
 //CEffectSaveVsDeathMod
-extern BOOL (CEffectSaveVsDeathMod::*Tramp_CEffectSaveVsDeathMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectSaveVsDeathMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectSaveVsDeathMod : public CEffectSaveVsDeathMod {
 public:
@@ -86,7 +86,7 @@ public:
 };
 
 //CEffectSaveVsWandsMod
-extern BOOL (CEffectSaveVsWandsMod::*Tramp_CEffectSaveVsWandsMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectSaveVsWandsMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectSaveVsWandsMod : public CEffectSaveVsWandsMod {
 public:
@@ -94,7 +94,7 @@ public:
 };
 
 //CEffectSaveVsPolyMod
-extern BOOL (CEffectSaveVsPolyMod::*Tramp_CEffectSaveVsPolyMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectSaveVsPolyMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectSaveVsPolyMod : public CEffectSaveVsPolyMod {
 public:
@@ -102,7 +102,7 @@ public:
 };
 
 //CEffectSaveVsBreathMod
-extern BOOL (CEffectSaveVsBreathMod::*Tramp_CEffectSaveVsBreathMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectSaveVsBreathMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectSaveVsBreathMod : public CEffectSaveVsBreathMod {
 public:
@@ -110,7 +110,7 @@ public:
 };
 
 //CEffectSaveVsSpellMod
-extern BOOL (CEffectSaveVsSpellMod::*Tramp_CEffectSaveVsSpellMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectSaveVsSpellMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectSaveVsSpellMod : public CEffectSaveVsSpellMod {
 public:
@@ -118,7 +118,7 @@ public:
 };
 
 //CEffectMageMemSpellMod
-extern BOOL (CEffectMageMemSpellMod::*Tramp_CEffectMageMemSpellMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectMageMemSpellMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectMageMemSpellMod : public CEffectMageMemSpellMod {
 public:
@@ -126,7 +126,7 @@ public:
 };
 
 //CEffectStrengthMod
-extern BOOL (CEffectStrengthMod::*Tramp_CEffectStrengthMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectStrengthMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectStrengthMod : public CEffectStrengthMod {
 public:
@@ -134,7 +134,7 @@ public:
 };
 
 //CEffectWisdomMod
-extern BOOL (CEffectWisdomMod::*Tramp_CEffectWisdomMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectWisdomMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectWisdomMod : public CEffectWisdomMod {
 public:
@@ -142,7 +142,7 @@ public:
 };
 
 //CEffectDispel
-extern BOOL (CEffectDispel::*Tramp_CEffectDispel_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDispel, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDispel : public CEffectDispel {
 public:
@@ -150,7 +150,7 @@ public:
 };
 
 //CEffectStealthMod
-extern BOOL (CEffectStealthMod::*Tramp_CEffectStealthMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectStealthMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectStealthMod : public CEffectStealthMod {
 public:
@@ -158,7 +158,7 @@ public:
 };
 
 //CEffectPriestMemSpellMod
-extern BOOL (CEffectPriestMemSpellMod::*Tramp_CEffectPriestMemSpellMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectPriestMemSpellMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectPriestMemSpellMod : public CEffectPriestMemSpellMod {
 public:
@@ -166,7 +166,7 @@ public:
 };
 
 //CEffectBlindness
-extern BOOL (CEffectBlindness::*Tramp_CEffectBlindness_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectBlindness, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectBlindness : public CEffectBlindness {
 public:
@@ -174,7 +174,7 @@ public:
 };
 
 //CEffectDisease
-extern BOOL (CEffectDisease::*Tramp_CEffectDisease_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDisease, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDisease : public CEffectDisease {
 public:
@@ -182,7 +182,7 @@ public:
 };
 
 //CEffectOpenLocksMod
-extern BOOL (CEffectOpenLocksMod::*Tramp_CEffectOpenLocksMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectOpenLocksMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectOpenLocksMod : public CEffectOpenLocksMod {
 public:
@@ -190,7 +190,7 @@ public:
 };
 
 //CEffectFindTrapsMod
-extern BOOL (CEffectFindTrapsMod::*Tramp_CEffectFindTrapsMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectFindTrapsMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectFindTrapsMod : public CEffectFindTrapsMod {
 public:
@@ -198,7 +198,7 @@ public:
 };
 
 //CEffectPickPocketsMod
-extern BOOL (CEffectPickPocketsMod::*Tramp_CEffectPickPocketsMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectPickPocketsMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectPickPocketsMod : public CEffectPickPocketsMod {
 public:
@@ -206,7 +206,7 @@ public:
 };
 
 //CEffectFatigueMod
-extern BOOL (CEffectFatigueMod::*Tramp_CEffectFatigueMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectFatigueMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectFatigueMod : public CEffectFatigueMod {
 public:
@@ -214,7 +214,7 @@ public:
 };
 
 //CEffectIntoxicationMod
-extern BOOL (CEffectIntoxicationMod::*Tramp_CEffectIntoxicationMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectIntoxicationMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectIntoxicationMod : public CEffectIntoxicationMod {
 public:
@@ -222,7 +222,7 @@ public:
 };
 
 //CEffectTrackingMod
-extern BOOL (CEffectTrackingMod::*Tramp_CEffectTrackingMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectTrackingMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectTrackingMod : public CEffectTrackingMod {
 public:
@@ -230,7 +230,7 @@ public:
 };
 
 //CEffectLevelMod
-extern BOOL (CEffectLevelMod::*Tramp_CEffectLevelMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectLevelMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectLevelMod : public CEffectLevelMod {
 public:
@@ -238,7 +238,7 @@ public:
 };
 
 //CEffectStrengthExMod
-extern BOOL (CEffectStrengthExMod::*Tramp_CEffectStrengthExMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectStrengthExMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectStrengthExMod : public CEffectStrengthExMod {
 public:
@@ -246,7 +246,7 @@ public:
 };
 
 //CEffectRegeneration
-extern BOOL (CEffectRegeneration::*Tramp_CEffectRegeneration_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectRegeneration, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectRegeneration : public CEffectRegeneration {
 public:
@@ -254,7 +254,7 @@ public:
 };
 
 //CEffectMoraleBreakMod
-extern BOOL (CEffectMoraleBreakMod::*Tramp_CEffectMoraleBreakMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectMoraleBreakMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectMoraleBreakMod : public CEffectMoraleBreakMod {
 public:
@@ -262,7 +262,7 @@ public:
 };
 
 //CEffectReputationMod
-extern BOOL (CEffectReputationMod::*Tramp_CEffectReputationMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectReputationMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectReputationMod : public CEffectReputationMod {
 public:
@@ -270,7 +270,7 @@ public:
 };
 
 //CEffectAid
-extern BOOL (CEffectAid::*Tramp_CEffectAid_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectAid, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectAid : public CEffectAid {
 public:
@@ -278,7 +278,7 @@ public:
 };
 
 //CEffectBless
-extern BOOL (CEffectBless::*Tramp_CEffectBless_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectBless, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectBless : public CEffectBless {
 public:
@@ -286,7 +286,7 @@ public:
 };
 
 //CEffectChant
-extern BOOL (CEffectChant::*Tramp_CEffectChant_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectChant, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectChant : public CEffectChant {
 public:
@@ -294,7 +294,7 @@ public:
 };
 
 //CEffectHolyMight
-extern BOOL (CEffectHolyMight::*Tramp_CEffectHolyMight_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectHolyMight, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectHolyMight : public CEffectHolyMight {
 public:
@@ -302,7 +302,7 @@ public:
 };
 
 //CEffectChantBad
-extern BOOL (CEffectChantBad::*Tramp_CEffectChantBad_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectChantBad, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectChantBad : public CEffectChantBad {
 public:
@@ -310,7 +310,7 @@ public:
 };
 
 //CEffectDisableSpelltype
-extern BOOL (CEffectDisableSpelltype::*Tramp_CEffectDisableSpelltype_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDisableSpelltype, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDisableSpelltype : public CEffectDisableSpelltype {
 public:
@@ -318,7 +318,7 @@ public:
 };
 
 //CEffectDisableButton
-extern BOOL (CEffectDisableButton::*Tramp_CEffectDisableButton_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDisableButton, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDisableButton : public CEffectDisableButton {
 public:
@@ -326,7 +326,7 @@ public:
 };
 
 //CEffectLearnSpell
-extern BOOL (CEffectLearnSpell::*Tramp_CEffectLearnSpell_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectLearnSpell, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectLearnSpell : public CEffectLearnSpell {
 public:
@@ -334,7 +334,7 @@ public:
 };
 
 //CEffectMagicResistMod
-extern BOOL (CEffectMagicResistMod::*Tramp_CEffectMagicResistMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectMagicResistMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectMagicResistMod : public CEffectMagicResistMod {
 public:
@@ -342,7 +342,7 @@ public:
 };
 
 //CEffectPoisonResistMod
-extern BOOL (CEffectPoisonResistMod::*Tramp_CEffectPoisonResistMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectPoisonResistMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectPoisonResistMod : public CEffectPoisonResistMod {
 public:
@@ -350,7 +350,7 @@ public:
 };
 
 //CEffectUseEFFFile
-extern BOOL (CEffectUseEFFFile::*Tramp_CEffectUseEFFFile_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectUseEFFFile, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectUseEFFFile : public CEffectUseEFFFile {
 public:
@@ -358,7 +358,7 @@ public:
 };
 
 //CEffectCastSpellOnCondition
-extern BOOL (CEffectCastSpellOnCondition::*Tramp_CEffectCastSpellOnCondition_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectCastSpellOnCondition, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectCastSpellOnCondition : public CEffectCastSpellOnCondition {
 public:
@@ -366,7 +366,7 @@ public:
 };
 
 //CEffectProficiencyMod
-extern BOOL (CEffectProficiencyMod::*Tramp_CEffectProficiencyMod_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectProficiencyMod, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectProficiencyMod : public CEffectProficiencyMod {
 public:
@@ -374,17 +374,17 @@ public:
 };
 
 //CEffectRepeatingEff
-extern CEffectRepeatingEff& (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_Construct_5)(ITEM_EFFECT&, POINT&, Enum, int, int);
-extern BOOL (CEffectRepeatingEff::*Tramp_CEffectRepeatingEff_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(CEffectRepeatingEff&, CEffectRepeatingEff, Construct, (ItmFileEffect& eff, CPoint& ptSource, ENUM eSource, int ptDestX, int ptDestY), Construct5);
+DeclareTrampMemberFunc(BOOL, CEffectRepeatingEff, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectRepeatingEff : public CEffectRepeatingEff {
 public:
-	CEffectRepeatingEff& DETOUR_Construct(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, int ptDestX, int ptDestY);
+	CEffectRepeatingEff& DETOUR_Construct(ItmFileEffect& eff, CPoint& ptSource, ENUM eSource, int ptDestX, int ptDestY);
 	BOOL DETOUR_ApplyEffect(CCreatureObject& creTarget);
 };
 
 //CEffectWingBuffet
-extern BOOL (CEffectWingBuffet::*Tramp_CEffectWingBuffet_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectWingBuffet, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectWingBuffet : public CEffectWingBuffet {
 public:
@@ -392,7 +392,7 @@ public:
 };
 
 //CEffectDisintegrate
-extern BOOL (CEffectDisintegrate::*Tramp_CEffectDisintegrate_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectDisintegrate, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectDisintegrate : public CEffectDisintegrate {
 public:
@@ -400,7 +400,7 @@ public:
 };
 
 //CEffectRemoveProjectile
-extern BOOL (CEffectRemoveProjectile::*Tramp_CEffectRemoveProjectile_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectRemoveProjectile, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectRemoveProjectile : public CEffectRemoveProjectile {
 public:
@@ -408,7 +408,7 @@ public:
 };
 
 //CEffectEnableButton
-extern BOOL (CEffectEnableButton::*Tramp_CEffectEnableButton_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectEnableButton, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectEnableButton : public CEffectEnableButton {
 public:
@@ -416,7 +416,7 @@ public:
 };
 
 //CEffectCutScene2
-extern BOOL (CEffectCutScene2::*Tramp_CEffectCutScene2_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectCutScene2, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectCutScene2 : public CEffectCutScene2 {
 public:
@@ -424,7 +424,7 @@ public:
 };
 
 //CEffectAnimationRemoval
-extern BOOL (CEffectAnimationRemoval::*Tramp_CEffectAnimationRemoval_ApplyEffect)(CCreatureObject&);
+DeclareTrampMemberFunc(BOOL, CEffectAnimationRemoval, ApplyEffect, (CCreatureObject& creTarget), ApplyEffect);
 
 class DETOUR_CEffectAnimationRemoval : public CEffectAnimationRemoval {
 public:
@@ -434,9 +434,9 @@ public:
 //CEffectSetStat
 class CEffectSetStat : public CEffect {
 public:
-	CEffectSetStat(ITEM_EFFECT&, POINT&, Enum, int, int, BOOL, Enum);
+	CEffectSetStat(ItmFileEffect&, CPoint&, ENUM, int, int, BOOL, ENUM);
 
-	virtual CEffect& Duplicate(); //v4
+	virtual CEffect& Copy(); //v4
 	virtual BOOL ApplyEffect(CCreatureObject& creTarget); //v8
 };
 

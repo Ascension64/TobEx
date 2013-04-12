@@ -12,7 +12,7 @@ typedef IECPtrList CItemList; //AA7264
 
 class CCreatureObject;
 
-struct ResItmContainer { //Size 10h
+struct ResItmFile { //Size 10h
 	BOOL bLoaded; //0h
 	ResItm* pRes; //4h
 	ResRef name; //8h
@@ -25,7 +25,7 @@ public:
 	CItem& Construct() { return *this; } //dummy
 
 	CItem(CItem& itm);
-	CItem& Construct(CItem& itm) { return *this; } //dummy
+	CItem& Copy(CItem& itm) { return *this; } //dummy
 
 	BOOL Demand();
 	BOOL Release();
@@ -47,7 +47,7 @@ public:
 	virtual ~CItem();
 	void Deconstruct() {} //dummy
 
-	ResItmContainer m_itm; //4h
+	ResItmFile m_itm; //4h
 	int m_nNumAbilities; //14h
 	short m_wUsage1; //18h, nUsesAbility0, usage1, is it a randomly generated item?, Arg3
 	short m_wUsage2; //1ah, nUsesAbility1, usage2, Arg4
@@ -67,25 +67,6 @@ public:
 	CSound sndAttack2; //8eh
 	short m_wNumAttackSounds; //f8h
 };
-
-extern CItem& (CItem::*CItem_Construct_0)();
-extern CItem& (CItem::*CItem_Construct_1)(CItem&);
-extern void (CItem::*CItem_Deconstruct)();
-extern BOOL (CItem::*CItem_Demand)();
-extern BOOL (CItem::*CItem_Release)();
-extern void (CItem::*CItem_LoadResource)(ResRef&, BOOL);
-extern int (CItem::*CItem_GetNumAbilities)();
-extern short (CItem::*CItem_GetNumUsage)(int);
-extern short (CItem::*CItem_GetNumCharges)(int);
-extern void (CItem::*CItem_SetNumUsage)(int, short);
-extern void (CItem::*CItem_Equip)(CCreatureObject&, int, BOOL);
-extern ItmFileAbility& (CItem::*CItem_GetAbility)(int);
-extern CEffect& (CItem::*CItem_GetAbilityEffect)(int, int, CCreatureObject&);
-extern short (CItem::*CItem_GetType)();
-extern unsigned int (CItem::*CItem_GetFlags)();
-extern unsigned int (CItem::*CItem_GetUnusableFlags)();
-extern short (CItem::*CItem_GetMaximumStackSize)();
-extern char (CItem::*CItem_GetProficiencyType)();
 
 struct CCreInventory { //Size A4h
 //Constructor: 0x8BE36A

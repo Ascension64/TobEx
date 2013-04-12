@@ -6,8 +6,7 @@
 #include "LuaDump.h"
 
 //CLUAConsole
-void (CLUAConsole::*Tramp_CLUAConsole_StartStore)(char*) =
-	SetFP(static_cast<void (CLUAConsole::*)(char*)>		(&CLUAConsole::StartStore),		0x5ACF2E);
+DefineTrampMemberFunc(void, CLUAConsole, StartStore, (char* sz), StartStore, StartStore, 0x5ACF2E);
 
 void DETOUR_CLUAConsole::DETOUR_StartStore(char* sz) {
 	ResRef r(sz);
@@ -22,8 +21,8 @@ void DETOUR_CLUAConsole::DETOUR_StartStore(char* sz) {
 	return;
 }
 
-int (__stdcall *Tramp_IElua_init)() =
-	reinterpret_cast<int (__stdcall *)()>	(0x5ADD86);
+//global
+DefineTrampGlobalFuncPtr(int, __stdcall, IElua_init, (), 0x5ADD86);
 
 int __stdcall DETOUR_IElua_init() {
 	int r = Tramp_IElua_init();

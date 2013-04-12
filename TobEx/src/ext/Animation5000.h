@@ -3,12 +3,12 @@
 
 #include "animext.h"
 
-extern CAnimation5000& (CAnimation5000::*Tramp_CAnimation5000_Construct)(unsigned short, ColorRangeValues&, int);
-extern LPCTSTR (CAnimation5000::*Tramp_CAnimation5000_GetWalkingSound)(short);
+DeclareTrampMemberFunc(CAnimation5000&, CAnimation5000, Construct, (unsigned short wAnimId, CreFileColors& colors, int nOrientation), Construct);
+DeclareTrampMemberFunc(LPCTSTR, CAnimation5000, GetWalkingSound, (short wTerrainCode), GetWalkingSound);
 
 class DETOUR_CAnimation5000 : public CAnimation5000 {
 public:
-	CAnimation5000& DETOUR_Construct(unsigned short wAnimId, ColorRangeValues& colors, int nOrientation);
+	CAnimation5000& DETOUR_Construct(unsigned short wAnimId, CreFileColors& colors, int nOrientation);
 	LPCTSTR DETOUR_GetWalkingSound(short wTerrainCode);
 };
 

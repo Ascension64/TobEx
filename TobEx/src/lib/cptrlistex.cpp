@@ -2,49 +2,20 @@
 
 #include "utils.h"
 
-extern IECPtrList& (IECPtrList::*IECPtrList_Construct)(int) =
-	SetFP(static_cast<IECPtrList& (IECPtrList::*)(int)>					(&IECPtrList::Construct),		0xA4E475);
-extern void (IECPtrList::*IECPtrList_RemoveAll)() =
-	SetFP(static_cast<void (IECPtrList::*)()>							(&IECPtrList::RemoveAll),		0xA4E4D4);
-extern void (IECPtrList::*IECPtrList_Deconstruct)() =
-	SetFP(static_cast<void (IECPtrList::*)()>							(&IECPtrList::Deconstruct),		0xA4E4B4);
-extern POSITION (IECPtrList::*IECPtrList_AddHead_void)(void*) =
-	SetFP(static_cast<POSITION (IECPtrList::*)(void*)>					(&IECPtrList::AddHead),			0xA4E56E);
-extern POSITION (IECPtrList::*IECPtrList_AddTail_void)(void*) =
-	SetFP(static_cast<POSITION (IECPtrList::*)(void*)>					(&IECPtrList::AddTail),			0xA4E598);
-extern void (IECPtrList::*IECPtrList_AddHead_CPtrList)(IECPtrList*) =
-	SetFP(static_cast<void (IECPtrList::*)(IECPtrList*)>				(&IECPtrList::AddHead),			0xA4E5C1);
-extern void (IECPtrList::*IECPtrList_AddTail_CPtrList)(IECPtrList*) =
-	SetFP(static_cast<void (IECPtrList::*)(IECPtrList*)>				(&IECPtrList::AddTail),			0xA4E5E6);
-extern void* (IECPtrList::*IECPtrList_RemoveHead)() =
-	SetFP(static_cast<void* (IECPtrList::*)()>							(&IECPtrList::RemoveHead),		0xA4E60A);
-extern void* (IECPtrList::*IECPtrList_RemoveTail)() =
-	SetFP(static_cast<void* (IECPtrList::*)()>							(&IECPtrList::RemoveTail),		0xA4E62E);
-extern POSITION (IECPtrList::*IECPtrList_InsertBefore)(POSITION, void*) =
-	SetFP(static_cast<POSITION (IECPtrList::*)(POSITION, void*)>		(&IECPtrList::InsertBefore),	0xA4E652);
-extern POSITION (IECPtrList::*IECPtrList_InsertAfter)(POSITION, void*) =
-	SetFP(static_cast<POSITION (IECPtrList::*)(POSITION, void*)>		(&IECPtrList::InsertAfter),		0xA4E691);
-extern void (IECPtrList::*IECPtrList_RemoveAt)(POSITION) =
-	SetFP(static_cast<void (IECPtrList::*)(POSITION)>					(&IECPtrList::RemoveAt),		0xA4E6CE);
-extern POSITION (IECPtrList::*IECPtrList_FindIndex)(int) const =
-	SetFP(static_cast<POSITION (IECPtrList::*)(int) const>				(&IECPtrList::FindIndex),		0xA4E705);
-extern POSITION (IECPtrList::*IECPtrList_Find)(void*, POSITION) const =
-	SetFP(static_cast<POSITION (IECPtrList::*)(void*, POSITION) const>	(&IECPtrList::Find),			0xA4E72B);
-
-IECPtrList::IECPtrList(int nBlockSize)									{ (this->*IECPtrList_Construct)(nBlockSize); }
-void IECPtrList::RemoveAll()											{ return (this->*IECPtrList_RemoveAll)(); }
-IECPtrList::~IECPtrList()												{ (this->*IECPtrList_Deconstruct)(); }
-POSITION IECPtrList::AddHead(void* newElement)							{ return (this->*IECPtrList_AddHead_void)(newElement); }
-POSITION IECPtrList::AddTail(void* newElement)							{ return (this->*IECPtrList_AddTail_void)(newElement); }
-void IECPtrList::AddHead(IECPtrList* pNewList)							{ return (this->*IECPtrList_AddHead_CPtrList)(pNewList); }
-void IECPtrList::AddTail(IECPtrList* pNewList)							{ return (this->*IECPtrList_AddTail_CPtrList)(pNewList); }
-void* IECPtrList::RemoveHead()											{ return (this->*IECPtrList_RemoveHead)(); }
-void* IECPtrList::RemoveTail()											{ return (this->*IECPtrList_RemoveTail)(); }
-POSITION IECPtrList::InsertBefore(POSITION position, void* newElement)	{ return (this->*IECPtrList_InsertBefore)(position, newElement); }
-POSITION IECPtrList::InsertAfter(POSITION position, void* newElement)	{ return (this->*IECPtrList_InsertAfter)(position, newElement); }
-void IECPtrList::RemoveAt(POSITION position)							{ return (this->*IECPtrList_RemoveAt)(position); }
-POSITION IECPtrList::FindIndex(int nIndex) const						{ return (this->*IECPtrList_FindIndex)(nIndex); }
-POSITION IECPtrList::Find(void* searchValue, POSITION startAfter) const	{ return (this->*IECPtrList_Find)(searchValue, startAfter); }
+DefineLibNoRetFunc(IECPtrList&, IECPtrList, IECPtrList, (int nBlockSize), Construct, Construct, (nBlockSize), 0xA4E475);
+DefineLibMemberFunc(void, IECPtrList, RemoveAll, (), RemoveAll, RemoveAll, (), 0xA4E4D4);
+DefineLibNoRetFunc(void, IECPtrList, ~IECPtrList, (), Deconstruct, Deconstruct, (), 0xA4E4B4);
+DefineLibMemberFunc(POSITION, IECPtrList, AddHead, (void* newElement), AddHead, AddHead_void, (newElement), 0xA4E56E);
+DefineLibMemberFunc(POSITION, IECPtrList, AddTail, (void* newElement), AddTail, AddTail_void, (newElement), 0xA4E598);
+DefineLibMemberFunc(void, IECPtrList, AddHead, (IECPtrList* pNewList), AddHead, AddHead_IECPtrList, (pNewList), 0xA4E5C1);
+DefineLibMemberFunc(void, IECPtrList, AddTail, (IECPtrList* pNewList), AddTail, AddTail_IECPtrList, (pNewList), 0xA4E5E6);
+DefineLibMemberFunc(void*, IECPtrList, RemoveHead, (), RemoveHead, RemoveHead, (), 0xA4E60A);
+DefineLibMemberFunc(void*, IECPtrList, RemoveTail, (), RemoveTail, RemoveTail, (), 0xA4E62E);
+DefineLibMemberFunc(POSITION, IECPtrList, InsertBefore, (POSITION position, void* newElement), InsertBefore, InsertBefore, (position, newElement), 0xA4E652);
+DefineLibMemberFunc(POSITION, IECPtrList, InsertAfter, (POSITION position, void* newElement), InsertAfter, InsertAfter, (position, newElement), 0xA4E691);
+DefineLibMemberFunc(void, IECPtrList, RemoveAt, (POSITION position), RemoveAt, RemoveAt, (position), 0xA4E6CE);
+DefineLibMemberFunc(POSITION, IECPtrList, FindIndex, (int nIndex) const, FindIndex, FindIndex, (nIndex), 0xA4E705);
+DefineLibMemberFunc(POSITION, IECPtrList, Find, (void* searchValue, POSITION startAfter) const, Find, Find, (searchValue, startAfter), 0xA4E72B);
 
 const CPtrList& IECPtrList::ToCPtrList() const			{ return reinterpret_cast<const CPtrList&>(*this); }
 CPtrList& IECPtrList::ToCPtrList()						{ return reinterpret_cast<CPtrList&>(*this); }

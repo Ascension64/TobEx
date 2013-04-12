@@ -6,24 +6,38 @@
 #include "objcre.h"
 
 //CEffect
-extern CEffect& (*Tramp_CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum);
-extern BOOL (CEffect::*Tramp_CEffect_ApplyTiming)(CCreatureObject&);
-extern BOOL (CEffect::*Tramp_CEffect_CheckNotSaved)(CCreatureObject&, char&, char&, char&, char&, char&, char&);
+DeclareTrampStaticFunc(CEffect&, __cdecl, CEffect, DecodeEffect, (ItmFileEffect& eff, CPoint& ptSource, ENUM eSource, CPoint& ptDest, ENUM e2), DecodeEffect);
+DeclareTrampMemberFunc(BOOL, CEffect, ApplyTiming, (CCreatureObject& creTarget), ApplyTiming);
+DeclareTrampMemberFunc(BOOL, CEffect, CheckNotSaved, (
+	CCreatureObject& creTarget,
+	char& rollSaveDeath,
+	char& rollSaveWands,
+	char& rollSavePoly,
+	char& rollSaveBreath,
+	char& rollSaveSpells,
+	char& rollMagicResist
+	), CheckNotSaved);
 
 class DETOUR_CEffect : public CEffect {
 public:
-	static CEffect& DETOUR_CreateEffect(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2);
+	static CEffect& DETOUR_DecodeEffect(ItmFileEffect& eff, CPoint& ptSource, ENUM eSource, CPoint& ptDest, ENUM e2);
 	BOOL DETOUR_ApplyTiming(CCreatureObject& creTarget);
 	BOOL DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist);
 };
 
 //CEffectList
-extern void (CEffectList::*Tramp_CEffectList_TryDispel)(CCreatureObject&, POSITION, BOOL, BOOL, char, char);
+DeclareTrampMemberFunc(void, CEffectList, TryDispel, (
+	CCreatureObject& creTarget,
+	POSITION posSkip,
+	BOOL bCheckDispellableFlag,
+	BOOL bCheckProbability,
+	char cRand,
+	char cDispelLevel
+	), TryDispel);
 
 class DETOUR_CEffectList : public CEffectList {
 public:
 	void DETOUR_TryDispel(CCreatureObject& creTarget, POSITION posSkip, BOOL bCheckDispellableFlag, BOOL bCheckProbability, char cRand, char cDispelLevel);
 };
 
-
-#endif //EFFECTCOMMON_H
+#endif //EFFECTCORE_H

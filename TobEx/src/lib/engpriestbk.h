@@ -6,7 +6,7 @@
 class CScreenPriestBook : public CEngine { //Size 1470h
 //constructor: 0x784820
 public:
-	void SetLevel(int);
+	void SetLevel(int nLevel);
 	void Update();
 
 	virtual void v0() {}
@@ -15,8 +15,5 @@ public:
 	int currLevel; //444h
 	//0x572 - BOOL showKnownSpellIcons (?)
 };
-
-extern void (CScreenPriestBook::*CScreenPriestBook_SetLevel)(int);
-extern void (CScreenPriestBook::*CScreenPriestBook_Update)();
 
 #endif //ENGPRIESTBK_H

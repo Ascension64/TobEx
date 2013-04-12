@@ -21,9 +21,9 @@ void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
 
 	POSITION pos = area.m_lVertSortFront.GetHeadPosition();
 	while (pos != NULL) {
-		Enum e = (Enum)area.m_lVertSortFront.GetNext(pos);
+		ENUM e = (ENUM)area.m_lVertSortFront.GetNext(pos);
 		CGameObject* pObj;
-		if (g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pObj, -1) == OBJECT_SUCCESS) {
+		if (g_pChitin->pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pObj, -1) == OBJECT_SUCCESS) {
 			if (pObj->GetType() == CGAMEOBJECT_TYPE_PROJECTILE) {
 				IECString sMissileId;
 				sMissileId.Format("%d", ((CProjectile*)pObj)->nMissileId);
@@ -35,12 +35,12 @@ void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
 				if (bFound) {
 					char nResult;
 					do {
-						nResult = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(e, THREAD_ASYNCH, &pObj, INFINITE);
+						nResult = g_pChitin->pGame->m_GameObjectArray.GetDeny(e, THREAD_ASYNCH, &pObj, INFINITE);
 					} while (nResult == OBJECT_SHARING);
 
 					if (nResult == OBJECT_SUCCESS) {
 						pObj->RemoveFromArea();
-						g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(e, THREAD_ASYNCH, INFINITE);
+						g_pChitin->pGame->m_GameObjectArray.FreeDeny(e, THREAD_ASYNCH, INFINITE);
 					}
 				}
 			} 
@@ -65,16 +65,16 @@ void CArea_RemoveAreaAirEffectSpecific(CArea& area, ResRef& rResource) {
 				if (bRemoveSmoke) {
 					char nResult;
 					do {
-						nResult = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(e, THREAD_ASYNCH, &pObj, INFINITE);
+						nResult = g_pChitin->pGame->m_GameObjectArray.GetDeny(e, THREAD_ASYNCH, &pObj, INFINITE);
 					} while (nResult == OBJECT_SHARING);
 
 					if (nResult == OBJECT_SUCCESS) {
 						pObj->RemoveFromArea();
-						g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(e, THREAD_ASYNCH, INFINITE);
+						g_pChitin->pGame->m_GameObjectArray.FreeDeny(e, THREAD_ASYNCH, INFINITE);
 					}
 				}
 			}
-			g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+			g_pChitin->pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 		}
 	}
 	return;

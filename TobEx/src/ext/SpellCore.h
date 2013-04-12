@@ -3,10 +3,10 @@
 
 #include "splcore.h"
 
-struct DETOUR_ResSplContainer : public ResSplContainer {
+DeclareTrampMemberFunc(CEffect&, ResSplFile, GetAbilityEffect, (int nAbilityIdx, int nEffectIdx, CCreatureObject& creSource), GetAbilityEffect);
+
+struct DETOUR_ResSplFile : public ResSplFile {
 	CEffect& DETOUR_GetAbilityEffect(int nAbilityIdx, int nEffectIdx, CCreatureObject& creSource);
 };
-
-extern CEffect& (ResSplContainer::*Tramp_ResSplContainer_GetAbilityEffect)(int, int, CCreatureObject&);
 
 #endif //SPELLCORE_H

@@ -20,8 +20,8 @@
 #define CAREA_SONGTYPE_9		9
 
 #define LIST_FRONT		0
-#define LIST_MIDDLE		1
-#define LIST_BACK		2
+#define LIST_BACK		1
+#define LIST_2			2
 
 class CInfGame;
 class CArea;
@@ -77,8 +77,8 @@ struct CInfinity { //Size 29Eh
 	int u7c; //g_windowRectHeight/64 + 1 (window height in tiles?)
 	int m_areaWidth; //80h (53eh), in pixels, u38*64 (range: 320-5120)
 	int m_areaHeight; //84h (542h), in pixels u3c*64 (range: 320-5120)
-	POINT u88; //u90/64.u94/64
-	POINT u90; //0.0
+	CPoint u88; //u90/64.u94/64
+	CPoint u90; //0.0
 
 	int u98;
 	int u9c;
@@ -121,7 +121,7 @@ struct CInfinity { //Size 29Eh
 	CCriticalSection u172; //172h
 #endif
 	short u192;
-	POINT u194;
+	CPoint u194;
 	int u19c;
 	char u1a0;
 	char u1a1;
@@ -192,7 +192,7 @@ struct CVisibilityMap { //Size 72h
 	CCriticalSection ua; //ah
 #endif
 	CSearchBitmap* pSearchMap; //2ah, associated search map
-	Enum u2e[15]; //array
+	ENUM u2e[15]; //array
 	int* u6a; //60h size object
 	int* u6e; //4h of 170h size object
 };
@@ -201,26 +201,10 @@ class CArea { //Size B6Eh
 //Constructor: 0x4B7B80
 public:
 	char GetSong(short wType);
-	BOOL CheckPointsAccessible(POINT& pt1, POINT& pt2, TerrainTable& tt, BOOL bCheckVisibility, int nRadius);
+	BOOL CheckPointsAccessible(CPoint& pt1, CPoint& pt2, TerrainTable& tt, BOOL bCheckVisibility, int nRadius);
 
 	//entire ARE V1.0 header (m_header)
-	ResRef areaPrefix; //0h, used for LM, LN, HT, wed, Nwed
-	int m_lastSaved; //8h, in game time (script rounds)
-	int areaFlags; //ch
-	ResRef areaNorth;
-	int u18;
-	ResRef areaEast;
-	int u24;
-	ResRef areaSouth;
-	int u30;
-	ResRef areaWest;
-	int u3c;
-	unsigned short areaType; //40h
-	short probRain; //42h
-	short probSnow; //44h
-	short probFog; //46h
-	short probLightning; //48h
-	short u4a;
+	AreFileHeader m_header;
 
 	int u4c; //disable EXTENDED_NIGHT? (see 0x4C882F)
 
@@ -275,9 +259,9 @@ public:
 	int u238;
 	char u23c;
 	char u23d;
-	Enum u23e;
-	Enum eCursorTarget; //242h, eDamageLocatorTarget
-	Enum u246;
+	ENUM u23e;
+	ENUM eCursorTarget; //242h, eDamageLocatorTarget
+	ENUM u246;
 	int u24a;
 	int u24e;
 	int u252;
@@ -286,17 +270,17 @@ public:
 	CVidBitmap* m_pbmLumNight; //310h, night luminosity map (LN)
 	CVidBitmap m_bmHeight; //314h, height map (HM)
 	CObjectMarker* m_pObjectMarker; //3cah
-	bool u3ce; //3ceh, something to do with the message handler, checked by CPtrListMessage::ExecuteMessages()
+	bool u3ce; //3ceh, something to do with the message handler, checked by CMessageHandler::ExecuteMessages()
 	char u3cf; //unused?
 	int u3d0;
 	int u3d4;
-	POINT u3d8;
+	CPoint u3d8;
 	short u3e0; //unused?
 	long long u3e2;
 	int u3ea;
 	TerrainTable u3ee;
 	TerrainTable u3fe;
-	Enum eAreaObject; //40eh, this area CGameSprite
+	ENUM eAreaObject; //40eh, this area CGameSprite
 	int u412; //nRefs?
 	int nPlayerID; //416h
 	int u41a;
@@ -325,7 +309,7 @@ public:
 	CEnumList m_lVertSortMid; //8eah, assoc 93eh
 	CEnumList m_lVertSortBack; //906h, assoc 95ah
 			
-	//on AddToArea(), gets Enum
+	//on AddToArea(), gets ENUM
 	//adds to active area lists after removing from here
 	CEnumList m_lFrontAdd; //922h
 	CEnumList m_lMidAdd; //93eh
@@ -339,9 +323,9 @@ public:
 
 	IECPtrList u9ca; //AA7014 - gets CDoorObject 438h objects
 	CEnumList m_ObjectsToMarshal; //9e6h, list of enums to save into the area when Marshal()
-	POINT ua02;
+	CPoint ua02;
 	CVariableMap m_AreaVariables; //a0ah
-	CVariableMap m_ObjectNames; //a12h, contains all CGameObjects from ARE file (value is enum)
+	CVariableMap m_NamedCreatures; //a12h, contains all CGameObjects from ARE file (value is enum)
 	char ua1a;
 	char ua1b; //pad
 	short wCurrentSongType; //a1ch (day, night, battle, etc.)
@@ -370,8 +354,5 @@ public:
 	char ub69; //pad
 	int nSndAmbVolume; //b6ah
 };
-
-extern char (CArea::*CArea_GetSong)(short);
-extern BOOL (CArea::*CArea_CheckPointsAccessible)(POINT&, POINT&, TerrainTable&, BOOL, int);
 
 #endif //ARECORE_H

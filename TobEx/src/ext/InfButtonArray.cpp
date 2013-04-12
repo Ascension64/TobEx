@@ -3,8 +3,7 @@
 #include "chitin.h"
 #include "ObjectStats.h"
 
-BOOL (CButtonArray::*Tramp_CButtonArray_CheckButtonEnabled)(int) =
-	SetFP(static_cast<BOOL (CButtonArray::*)(int)>	(&CButtonArray::CheckButtonEnabled),	0x671C9E);
+DefineTrampMemberFunc(BOOL, CButtonArray, CheckButtonEnabled, (int nIdx), CheckButtonEnabled, CheckButtonEnabled, 0x671C9E);
 
 BOOL DETOUR_CButtonArray::DETOUR_CheckButtonEnabled(int nIdx) {
 	if (0) IECString("DETOUR_CButtonArray::DETOUR_CheckButtonEnabled");
@@ -63,19 +62,19 @@ BOOL DETOUR_CButtonArray::DETOUR_CheckButtonEnabled(int nIdx) {
 
 	if (g_pChitin->pGame->m_PartySelection.celSelected.GetCount() == 0) return TRUE;
 
-	Enum e = g_pChitin->pGame->m_PartySelection.GetFirstSelected();
+	ENUM e = g_pChitin->pGame->m_PartySelection.GetFirstSelected();
 	CCreatureObject* pCre = NULL;
 	
 	char nResult;
 	do {
-		nResult = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
+		nResult = g_pChitin->pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (nResult == OBJECT_SHARING || nResult == OBJECT_DENYING);
 	if (nResult != OBJECT_SUCCESS) return TRUE;
 
 	BOOL bButtonAllowed = TRUE;
-	if (wStatBtIdx < 14) bButtonAllowed = !pCre->GetDerivedStats().ButtonDisable[wStatBtIdx];
-	if (wStatBtIdx == 14) bButtonAllowed = !pCre->GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_BUTTONDISABLEFINDTRAPS);
+	if (wStatBtIdx < 14) bButtonAllowed = !pCre->GetActiveStats().ButtonDisable[wStatBtIdx];
+	if (wStatBtIdx == 14) bButtonAllowed = !pCre->GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_BUTTONDISABLEFINDTRAPS);
 
-	g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+	g_pChitin->pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	return bButtonAllowed;
 }

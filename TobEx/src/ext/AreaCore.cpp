@@ -3,8 +3,7 @@
 #include "stdafx.h"
 #include "chitin.h"
 
-char (CArea::*Tramp_CArea_GetSong)(short) =
-	SetFP(static_cast<char (CArea::*)(short)>	(&CArea::GetSong),		0x4D40D6);
+DefineTrampMemberFunc(char, CArea, GetSong, (short wType), GetSong, GetSong, 0x4D40D6);
 
 int DETOUR_CArea::DETOUR_GetSong(short wType) {
 	if (0) IECString("DETOUR_CArea::DETOUR_GetSong");

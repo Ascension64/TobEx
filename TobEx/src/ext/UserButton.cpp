@@ -7,10 +7,8 @@
 #include "console.h"
 #include "log.h"
 
-unsigned int (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitId)(Object&) =
-	SetFP(static_cast<unsigned int (CUICheckButtonChargenKit::*)(Object&)>	(&CUICheckButtonChargenKit::GetKitId),		0x73A6E8);
-STRREF (CUICheckButtonChargenKit::*Tramp_CUICheckButtonChargenKit_GetKitHelpText)(Object&) =
-	SetFP(static_cast<STRREF (CUICheckButtonChargenKit::*)(Object&)>		(&CUICheckButtonChargenKit::GetKitHelpText),0x73A84E);
+DefineTrampMemberFunc(unsigned int, CUICheckButtonChargenKit, GetKitId, (Object& o), GetKitId, GetKitId, 0x73A6E8);
+DefineTrampMemberFunc(STRREF, CUICheckButtonChargenKit, GetKitHelpText, (Object& o), GetKitHelpText, GetKitHelpText, 0x73A84E);
 
 unsigned int DETOUR_CUICheckButtonChargenKit::DETOUR_GetKitId(Object& o) {
 	CScreenCharGen* pCreateChar = g_pChitin->pCreateChar;

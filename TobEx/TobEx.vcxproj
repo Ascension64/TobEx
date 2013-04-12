@@ -47,7 +47,7 @@
     </Midl>
     <ClCompile>
       <AdditionalOptions>/Zp %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;.\MathPresso</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;$(SolutionDir)MathPresso;$(SolutionDir)Common</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -60,7 +60,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>detours.lib; asmjit.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB;.\AsmJit</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)detours\lib.X86;$(SolutionDir)MFC42\LIB;$(SolutionDir)AsmJit</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>
@@ -79,7 +79,7 @@
     </Midl>
     <ClCompile>
       <AdditionalOptions>/wd 4430 /Zp %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.\MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;.\MathPresso</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;$(SolutionDir)MathPresso;$(SolutionDir)Common</AdditionalIncludeDirectories>
       <StructMemberAlignment>1Byte</StructMemberAlignment>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -92,22 +92,26 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>detours.lib; asmjit.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\detours\lib.X86;.\MFC42\LIB;.\AsmJit</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)detours\lib.X86;$(SolutionDir)MFC42\LIB;$(SolutionDir)AsmJit</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MathPresso\MathPresso.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_AST.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_Context.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_DOT.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_JIT.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_Optimizer.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_Parser.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_Tokenizer.cpp" />
-    <ClCompile Include="MathPresso\MathPresso_Util.cpp" />
+    <ClCompile Include="..\Common\console.cpp" />
+    <ClCompile Include="..\Common\log.cpp" />
+    <ClCompile Include="..\Common\options.cpp" />
+    <ClCompile Include="..\Common\patch.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_AST.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Context.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_DOT.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_JIT.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Optimizer.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Parser.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Tokenizer.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Util.cpp" />
     <ClCompile Include="src\ext\Animation1000.cpp" />
     <ClCompile Include="src\ext\Animation1200.cpp" />
     <ClCompile Include="src\ext\Animation1300.cpp" />
@@ -124,7 +128,7 @@
     <ClCompile Include="src\ext\AnimationE000.cpp" />
     <ClCompile Include="src\ext\AreaCommon.cpp" />
     <ClCompile Include="src\ext\ChitinCore.cpp" />
-    <ClCompile Include="src\ext\DialogCore.cpp" />
+    <ClCompile Include="src\ext\DialogCommon.cpp" />
     <ClCompile Include="src\ext\EffectCommon.cpp" />
     <ClCompile Include="src\ext\EffectOpcode.cpp" />
     <ClCompile Include="src\ext\EngineChargen.cpp" />
@@ -147,7 +151,8 @@
     <ClCompile Include="src\ext\ObjectCore.cpp" />
     <ClCompile Include="src\ext\ObjectCreature.cpp" />
     <ClCompile Include="src\ext\ObjectStats.cpp" />
-    <ClCompile Include="src\ext\options.cpp" />
+    <ClCompile Include="src\ext\optionsext.cpp" />
+    <ClCompile Include="src\ext\patchext.cpp" />
     <ClCompile Include="src\ext\ScriptCommon.cpp" />
     <ClCompile Include="src\ext\ScriptCore.cpp" />
     <ClCompile Include="src\ext\ScriptParser.cpp" />
@@ -155,13 +160,11 @@
     <ClCompile Include="src\ext\SpellCore.cpp" />
     <ClCompile Include="src\ext\StoreCore.cpp" />
     <ClCompile Include="src\ext\UserButton.cpp" />
-    <ClCompile Include="src\include\globals.cpp" />
     <ClCompile Include="src\lib\animext.cpp" />
     <ClCompile Include="src\lib\chitin.cpp" />
     <ClCompile Include="src\lib\cmapstrstrex.cpp" />
     <ClCompile Include="src\lib\cptrlistex.cpp" />
     <ClCompile Include="src\lib\cstringex.cpp" />
-    <ClCompile Include="src\lib\datatypes.cpp" />
     <ClCompile Include="src\lib\dlgcore.cpp" />
     <ClCompile Include="src\lib\effcore.cpp" />
     <ClCompile Include="src\lib\effopcode.cpp" />
@@ -193,23 +196,16 @@
     <ClCompile Include="src\TobEx.cpp" />
     <ClCompile Include="src\lib\animcore.cpp" />
     <ClCompile Include="src\lib\arecore.cpp" />
-    <ClCompile Include="src\lib\dbgcore.cpp" />
     <ClCompile Include="src\lib\msgcore.cpp" />
     <ClCompile Include="src\lib\resref.cpp" />
     <ClCompile Include="src\lib\sndcore.cpp" />
-    <ClCompile Include="src\ext\sndmus.cpp" />
     <ClCompile Include="src\lib\vidcore.cpp" />
-    <ClCompile Include="src\include\detoursext.cpp" />
-    <ClCompile Include="src\include\utils.cpp" />
     <ClCompile Include="src\ext\AreaCore.cpp" />
-    <ClCompile Include="src\ext\console.cpp" />
     <ClCompile Include="src\ext\debug.cpp" />
     <ClCompile Include="src\ext\EffectCore.cpp" />
     <ClCompile Include="src\ext\hook.cpp" />
-    <ClCompile Include="src\ext\log.cpp" />
     <ClCompile Include="src\ext\LogCore.cpp" />
     <ClCompile Include="src\ext\main.cpp" />
-    <ClCompile Include="src\ext\patch.cpp" />
     <ClCompile Include="src\ext\ScriptAction.cpp" />
     <ClCompile Include="src\ext\SoundCore.cpp" />
     <ClCompile Include="src\ext\UserChargenKit.cpp" />
@@ -224,15 +220,38 @@
     <ClCompile Include="src\ext\VideoCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MathPresso\MathPresso.h" />
-    <ClInclude Include="MathPresso\MathPresso_AST_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_Context_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_DOT_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_JIT_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_Optimizer_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_Parser_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_Tokenizer_p.h" />
-    <ClInclude Include="MathPresso\MathPresso_Util_p.h" />
+    <ClInclude Include="..\Common\console.h" />
+    <ClInclude Include="..\Common\detours.h" />
+    <ClInclude Include="..\Common\detoursext.h" />
+    <ClInclude Include="..\Common\fileare.h" />
+    <ClInclude Include="..\Common\filebam.h" />
+    <ClInclude Include="..\Common\filebif.h" />
+    <ClInclude Include="..\Common\filechu.h" />
+    <ClInclude Include="..\Common\filecre.h" />
+    <ClInclude Include="..\Common\filedlg.h" />
+    <ClInclude Include="..\Common\fileeff.h" />
+    <ClInclude Include="..\Common\filegam.h" />
+    <ClInclude Include="..\Common\fileitm.h" />
+    <ClInclude Include="..\Common\filepro.h" />
+    <ClInclude Include="..\Common\filespl.h" />
+    <ClInclude Include="..\Common\filesto.h" />
+    <ClInclude Include="..\Common\filevvc.h" />
+    <ClInclude Include="..\Common\filewed.h" />
+    <ClInclude Include="..\Common\filewmp.h" />
+    <ClInclude Include="..\Common\log.h" />
+    <ClInclude Include="..\Common\options.h" />
+    <ClInclude Include="..\Common\patch.h" />
+    <ClInclude Include="..\Common\utils.h" />
+    <ClInclude Include="..\Common\win32def.h" />
+    <ClInclude Include="..\MathPresso\MathPresso.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_AST_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Context_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_DOT_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_JIT_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Optimizer_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Parser_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Tokenizer_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Util_p.h" />
     <ClInclude Include="src\ext\Animation1000.h" />
     <ClInclude Include="src\ext\Animation1200.h" />
     <ClInclude Include="src\ext\Animation1300.h" />
@@ -249,7 +268,7 @@
     <ClInclude Include="src\ext\AnimationE000.h" />
     <ClInclude Include="src\ext\AreaCommon.h" />
     <ClInclude Include="src\ext\ChitinCore.h" />
-    <ClInclude Include="src\ext\DialogCore.h" />
+    <ClInclude Include="src\ext\DialogCommon.h" />
     <ClInclude Include="src\ext\EffectCommon.h" />
     <ClInclude Include="src\ext\EffectCore.h" />
     <ClInclude Include="src\ext\EffectOpcode.h" />
@@ -274,7 +293,8 @@
     <ClInclude Include="src\ext\ObjectCore.h" />
     <ClInclude Include="src\ext\ObjectCreature.h" />
     <ClInclude Include="src\ext\ObjectStats.h" />
-    <ClInclude Include="src\ext\options.h" />
+    <ClInclude Include="src\ext\optionsext.h" />
+    <ClInclude Include="src\ext\patchext.h" />
     <ClInclude Include="src\ext\ScriptCommon.h" />
     <ClInclude Include="src\ext\ScriptCore.h" />
     <ClInclude Include="src\ext\ScriptParser.h" />
@@ -286,7 +306,6 @@
     <ClInclude Include="src\lib\cmapstrstrex.h" />
     <ClInclude Include="src\lib\cptrlistex.h" />
     <ClInclude Include="src\lib\cstringex.h" />
-    <ClInclude Include="src\lib\datatypes.h" />
     <ClInclude Include="src\lib\effopcode.h" />
     <ClInclude Include="src\lib\engchargen.h" />
     <ClInclude Include="src\lib\enginv.h" />
@@ -309,8 +328,6 @@
     <ClInclude Include="src\lib\uibutton.h" />
     <ClInclude Include="src\lib\uiscroll.h" />
     <ClInclude Include="src\lib\uitext.h" />
-    <ClInclude Include="src\lib\win32def.h" />
-    <ClInclude Include="src\template.h" />
     <ClInclude Include="src\TobEx.h" />
     <ClInclude Include="src\lib\animcore.h" />
     <ClInclude Include="src\lib\animext.h" />
@@ -348,19 +365,13 @@
     <ClInclude Include="src\lib\vidcore.h" />
     <ClInclude Include="src\include\_constants.h" />
     <ClInclude Include="src\include\_MFC.h" />
-    <ClInclude Include="src\include\detours.h" />
-    <ClInclude Include="src\include\detoursext.h" />
     <ClInclude Include="src\include\globals.h" />
     <ClInclude Include="src\include\rule.h" />
-    <ClInclude Include="src\include\utils.h" />
     <ClInclude Include="src\ext\AreaCore.h" />
-    <ClInclude Include="src\ext\console.h" />
     <ClInclude Include="src\ext\debug.h" />
     <ClInclude Include="src\ext\hook.h" />
-    <ClInclude Include="src\ext\log.h" />
     <ClInclude Include="src\ext\LogCore.h" />
     <ClInclude Include="src\ext\main.h" />
-    <ClInclude Include="src\ext\patch.h" />
     <ClInclude Include="src\ext\ScriptAction.h" />
     <ClInclude Include="src\ext\SoundCore.h" />
     <ClInclude Include="src\ext\UserChargenKit.h" />

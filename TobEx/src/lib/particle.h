@@ -24,7 +24,7 @@ struct CParticle { //Size 7Ah
 	IECPtrList u20; //AABA88
 	int u3c;
 	int u40;
-	POINT pt; //44h
+	CPoint pt; //44h
 	int m_HalfHeight; //4ch
 	short u50;
 	int u52;

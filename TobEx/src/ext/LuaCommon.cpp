@@ -294,17 +294,17 @@ Pushes the memory address of a sprite onto the Lua stack
 The sprite can be referenced either by its enum (as decimal number of a string containing a hexadecimal number starting with "0x") or scriptname */
 void LUA_GetSprite() {
 	Object o;
-	Enum e = ENUM_INVALID_INDEX;
+	ENUM e = ENUM_INVALID_INDEX;
 	void* u = NULL;
 
 	lua_Object arg1 = lua_lua2C(1);
 	if (IElua_getparam(1, g_IETagNumber)) {
-		e = (Enum)IElua_getnumber(arg1);
+		e = (ENUM)IElua_getnumber(arg1);
 	} else if (IElua_getparam(1, g_IETagString)) {
 		sscanf_s(IElua_getstring(arg1), "0x%x", &e);
 		if (e == 0 || e == ENUM_INVALID_INDEX) {
-			o.Name = IElua_getstring(arg1);
-			o.Name.MakeUpper();
+			o.m_sName = IElua_getstring(arg1);
+			o.m_sName.MakeUpper();
 		}
 	} else {
 		IElua_error_badarg("getsprite", 1, "number or string");
@@ -323,10 +323,10 @@ void LUA_GetSprite() {
 
 	char nReturnVal;
 	do {
-		nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pSprite, INFINITE);
+		nReturnVal = g_pChitin->pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pSprite, INFINITE);
 	} while (nReturnVal == OBJECT_SHARING || nReturnVal == OBJECT_DENYING);
 	if (nReturnVal == OBJECT_SUCCESS &&	pSprite) {
-		if (o.Name.IsEmpty()) {
+		if (o.m_sName.IsEmpty()) {
 			u = pSprite;
 		} else {
 			o.DecodeIdentifiers(*pSprite);
@@ -337,9 +337,9 @@ void LUA_GetSprite() {
 		} else {
 			lua_error("Cannot find object");
 		}
-		g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+		g_pChitin->pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
-		lua_error("GetGameObjectShare failed");
+		lua_error("GetShare failed");
 	}
 
 	return;

@@ -112,7 +112,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 				CArea& area = g_pChitin->pGame->GetLoadedArea(sScope);
 				if (&area != NULL) pVar = &area.m_AreaVariables.Find(sVariable);
 			}
-			vars.SetInt(nIndex, pVar ? pVar->nValue : 0);
+			vars.SetInt(nIndex, pVar ? pVar->m_nValue : 0);
 		
 		} else if (sType.CompareNoCase("ts") == 0) {
 			//table by string "t[NAME.COL.ROW]"
@@ -159,7 +159,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 		} else if (sType.CompareNoCase("tn") == 0) {
 			//table by int "t[NAME.X.Y]"
 			IECString sTable;
-			POINT pt = {0, 0};
+			CPoint pt(0, 0);
 
 			if ((nIdx = sTemp.Find('.')) != -1) {
 				sTable = ParseBlockVariables(sTemp.Left(nIdx), ARGTYPE_STR, vars);
@@ -259,7 +259,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
 			int nStat = pIE ? pIE->nOpcode : 0;
 			int nValue = 0;
-			if (nStat) nValue = ((CCreatureObject&)sprite).GetDerivedStats().GetStat(nStat);
+			if (nStat) nValue = ((CCreatureObject&)sprite).GetActiveStats().GetStat(nStat);
 			vars.SetInt(nIndex, nValue);
 
 		} else if (sType.CompareNoCase("sp") == 0 &&

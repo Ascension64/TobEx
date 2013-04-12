@@ -14,12 +14,9 @@
 #include "UserRecMageSpell.h"
 #include "UserCommon.h"
 
-void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnLoad)(CCreatureObject&) =
-	SetFP(static_cast<void (CScreenRecord::*)(CCreatureObject&)>	(&CScreenRecord::MageBookPanelOnLoad),	0x6E0FE6);
-void (CScreenRecord::*Tramp_CScreenRecord_MageBookPanelOnUpdate)(CCreatureObject&) =
-	SetFP(static_cast<void (CScreenRecord::*)(CCreatureObject&)>	(&CScreenRecord::MageBookPanelOnUpdate),0x6E563F);
-void (CScreenRecord::*Tramp_CScreenRecord_UpdateCharacter)() =
-	SetFP(static_cast<void (CScreenRecord::*)()>					(&CScreenRecord::UpdateCharacter),		0x6E9F57);
+DefineTrampMemberFunc(void, CScreenRecord, MageBookPanelOnLoad, (CCreatureObject& cre), MageBookPanelOnLoad, MageBookPanelOnLoad, 0x6E0FE6);
+DefineTrampMemberFunc(void, CScreenRecord, MageBookPanelOnUpdate, (CCreatureObject& cre), MageBookPanelOnUpdate, MageBookPanelOnUpdate, 0x6E563F);
+DefineTrampMemberFunc(void, CScreenRecord, UpdateCharacter, (), UpdateCharacter, UpdateCharacter, 0x6E9F57);
 
 void DETOUR_CScreenRecord::DETOUR_MageBookPanelOnLoad(CCreatureObject& cre) {
 	CPanel& panel = manager.GetPanel(8);
@@ -112,7 +109,7 @@ void DETOUR_CScreenRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 
 	//Update on/off status of spell buttons
 	for (int i = 0; i <= 24; i++ ) {
-		Enum eChar = ENUM_INVALID_INDEX;
+		ENUM eChar = ENUM_INVALID_INDEX;
 		CInfGame* pGame = g_pChitin->pGame;
 		CScreenRecord* pCharacter = g_pChitin->pCharacter;
 		int nPlayerIdx = pCharacter->GetActivePlayerIdx();
@@ -126,7 +123,7 @@ void DETOUR_CScreenRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 		char threadNum = THREAD_ASYNCH;
 		char threadVal;
 		do {
-			threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eChar, threadNum, &pCre, INFINITE);
+			threadVal = g_pChitin->pGame->m_GameObjectArray.GetShare(eChar, threadNum, &pCre, INFINITE);
 		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 		if (threadVal == OBJECT_SUCCESS) {
@@ -144,7 +141,7 @@ void DETOUR_CScreenRecord::DETOUR_MageBookPanelOnUpdate(CCreatureObject& cre) {
 				L.append(lpsz);
 				console.write(lpsz);
 			}
-			g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eChar, threadNum, INFINITE);
+			g_pChitin->pGame->m_GameObjectArray.FreeShare(eChar, threadNum, INFINITE);
 		}
 	}
 
@@ -170,7 +167,7 @@ void DETOUR_CScreenRecord::DETOUR_UpdateCharacter() {
 		CInfGame* pGame = g_pChitin->pGame;
 		assert(pGame);
 
-		Enum ePlayer1;
+		ENUM ePlayer1;
 		if (u141c) {
 			ePlayer1 = g_pChitin->pCreateChar->eChar;
 		} else {
@@ -184,14 +181,14 @@ void DETOUR_CScreenRecord::DETOUR_UpdateCharacter() {
 		CCreatureObject* pCre;
 		char threadVal;
 		do {
-			threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectDeny(ePlayer1, THREAD_ASYNCH, &pCre, INFINITE);
+			threadVal = pGame->m_GameObjectArray.GetDeny(ePlayer1, THREAD_ASYNCH, &pCre, INFINITE);
 		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 		if (threadVal == OBJECT_SUCCESS) {
 			EngineCommon_ApplySoundset(*pCre);
-			pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(ePlayer1, THREAD_ASYNCH, INFINITE);
+			pGame->m_GameObjectArray.FreeDeny(ePlayer1, THREAD_ASYNCH, INFINITE);
 		} else {
-			LPCTSTR lpsz = "DETOUR_UpdateCharacter(): FreeGameObjectDeny returned %d\r\n";
+			LPCTSTR lpsz = "DETOUR_UpdateCharacter(): FreeDeny returned %d\r\n";
 			console.writef(lpsz, threadVal);
 			L.timestamp();
 			L.appendf(lpsz, threadVal);

@@ -16,19 +16,19 @@ public:
 	void Deconstruct() {} //dummy
 
 	virtual void OnLoseFocus(); //vc
-	virtual void OnLMouseDrag(POINT pt); //v14
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
-	virtual void OnLMouseBtUp(POINT pt); //v1c
-	virtual BOOL OnLMouseDblClk(POINT pt); //v20
-	virtual BOOL OnRMouseBtDn(POINT pt); //v24
-	virtual void OnRMouseBtUp(POINT pt); //v28
+	virtual void OnLMouseDrag(CPoint pt); //v14
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
+	virtual void OnLMouseBtUp(CPoint pt); //v1c
+	virtual BOOL OnLMouseDblClk(CPoint pt); //v20
+	virtual BOOL OnRMouseBtDn(CPoint pt); //v24
+	virtual void OnRMouseBtUp(CPoint pt); //v28
 	virtual void SetRedraw(); //v48
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 	virtual BOOL NeedsRedraw(); //v58
 
-	virtual void OnLClicked(POINT pt); //v5c
-	virtual void OnLDblClicked(POINT pt); //v60
-	virtual void OnRClicked(POINT pt); //v64
+	virtual void OnLClicked(CPoint pt); //v5c
+	virtual void OnLDblClicked(CPoint pt); //v60
+	virtual void OnRClicked(CPoint pt); //v64
 	virtual void SetText(IECString& sText); //v68
 
 	CVidCell vc; //4ah
@@ -44,8 +44,8 @@ public:
 	char u12d;
 	IECString* m_pText; //12eh, array of captions (size: m_nTextRows)
 	CVidFont vf; //132h
-	POINT u62e;
-	BOOL bActive; //636h, 0: greyed
+	CPoint u62e;
+	BOOL m_bActive; //636h, 0: greyed
 	char u63a;
 	char u63b; //pad
 	int u63c;
@@ -56,24 +56,6 @@ public:
 	int framePress; //stores a short, high char = pressed+1, low char = unpressed+1
 	int frameState; //stores a short, high char = disabled+1, low char = pressed+1
 };
-
-extern CUIButton& (CUIButton::*CUIButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, char, BOOL);
-extern void (CUIButton::*CUIButton_SetActive)(BOOL);
-extern void (CUIButton::*CUIButton_Deconstruct)();
-extern void (CUIButton::*CUIButton_OnLoseFocus)();
-extern void (CUIButton::*CUIButton_OnLMouseDrag)(POINT);
-extern BOOL (CUIButton::*CUIButton_OnLMouseBtDn)(POINT);
-extern void (CUIButton::*CUIButton_OnLMouseBtUp)(POINT);
-extern BOOL (CUIButton::*CUIButton_OnLMouseDblClk)(POINT);
-extern BOOL (CUIButton::*CUIButton_OnRMouseBtDn)(POINT);
-extern void (CUIButton::*CUIButton_OnRMouseBtUp)(POINT);
-extern void (CUIButton::*CUIButton_SetRedraw)();
-extern BOOL (CUIButton::*CUIButton_Redraw)(BOOL);
-extern BOOL (CUIButton::*CUIButton_NeedsRedraw)();
-extern void (CUIButton::*CUIButton_OnLClicked)(POINT);
-extern void (CUIButton::*CUIButton_OnLDblClicked)(POINT);
-extern void (CUIButton::*CUIButton_OnRClicked)(POINT);
-extern void (CUIButton::*CUIButton_SetText)(IECString&);
 
 class CUIButtonPlusMinus : public CUIButton { //Size 654h
 //Constructor: 0x6F82C3 (profs), 0x6F889F (thief skills) -> 0x5A3C3A
@@ -97,25 +79,17 @@ public:
 	virtual ~CUIButtonMageBookKnownSpell(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 
-	virtual void OnLClicked(POINT pt); //v5c
-	virtual void OnRClicked(POINT pt); //v64
+	virtual void OnLClicked(CPoint pt); //v5c
+	virtual void OnRClicked(CPoint pt); //v64
 
 	ResRef m_rSpell; //650h
 	ResRef m_rSpellIcon; //658h
 	BOOL u660;
 	BOOL u664;
 };
-
-extern CUIButtonMageBookKnownSpell& (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_SetSpell)(ResRef&);
-extern void (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_Deconstruct)();
-extern BOOL (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_OnLMouseBtDn)(POINT);
-extern BOOL (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_Redraw)(BOOL);
-extern void (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_OnLClicked)(POINT);
-extern void (CUIButtonMageBookKnownSpell::*CUIButtonMageBookKnownSpell_OnRClicked)(POINT);
 
 class CUIButtonPriestBookKnownSpell : public CUIButton { //Size 668h
 public:
@@ -127,25 +101,17 @@ public:
 	virtual ~CUIButtonPriestBookKnownSpell(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 
-	virtual void OnLClicked(POINT pt); //v5c
-	virtual void OnRClicked(POINT pt); //v64
+	virtual void OnLClicked(CPoint pt); //v5c
+	virtual void OnRClicked(CPoint pt); //v64
 
 	ResRef m_rSpell; //650h
 	ResRef m_rSpellIcon; //658h
 	BOOL u660;
 	BOOL u664;
 };
-
-extern CUIButtonPriestBookKnownSpell& (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_SetSpell)(ResRef&);
-extern void (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_Deconstruct)();
-extern BOOL (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_OnLMouseBtDn)(POINT);
-extern BOOL (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_Redraw)(BOOL);
-extern void (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_OnLClicked)(POINT);
-extern void (CUIButtonPriestBookKnownSpell::*CUIButtonPriestBookKnownSpell_OnRClicked)(POINT);
 
 class CUICheckButton : public CUIButton { //Size 658h
 public:
@@ -159,18 +125,12 @@ public:
 	void Deconstruct() {} //dummy
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 
 	short wFrameOn; //650h
 	short wFrameOff; //652h
 	BOOL bToggle; //654h
 };
-
-extern CUICheckButton& (CUICheckButton::*CUICheckButton_Construct_4CPanel_ChuFileControlInfoBase_BYTE_BOOL)(CPanel&, ChuFileControlInfoBase&, char, BOOL);
-extern void (CUICheckButton::*CUICheckButton_Deconstruct)();
-extern void (CUICheckButton::*CUICheckButton_SetToggleState)(BOOL);
-extern BOOL (CUICheckButton::*CUICheckButton_Redraw)(BOOL);
-extern void (CUICheckButton::*CUICheckButton_OnLClicked)(POINT);
 
 class CUICheckButtonChargenClass : public CUICheckButton { //Size 658h
 public:
@@ -182,13 +142,8 @@ public:
 	virtual ~CUICheckButtonChargenClass(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
-
-extern CUICheckButtonChargenClass& (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern unsigned char (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_GetClass)();
-extern void (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_Deconstruct)();
-extern void (CUICheckButtonChargenClass::*CUICheckButtonChargenClass_OnLClicked)(POINT);
 
 class CUICheckButtonChargenKit : public CUICheckButton { //Size 658h
 public:
@@ -201,14 +156,8 @@ public:
 	virtual ~CUICheckButtonChargenKit(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
-
-extern CUICheckButtonChargenKit& (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern unsigned int (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitId)(Object&);
-extern STRREF (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_GetKitHelpText)(Object&);
-extern void (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_Deconstruct)();
-extern void (CUICheckButtonChargenKit::*CUICheckButtonChargenKit_OnLClicked)(POINT);
 
 class CUICheckButtonChargenMageSchool : public CUICheckButton { //Size 658h
 public:
@@ -220,13 +169,8 @@ public:
 	virtual ~CUICheckButtonChargenMageSchool(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
-
-extern CUICheckButtonChargenMageSchool& (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern unsigned int (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_GetKit)();
-extern void (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_Deconstruct)();
-extern void (CUICheckButtonChargenMageSchool::*CUICheckButtonChargenMageSchool_OnLClicked)(POINT);
 
 class CUICheckButtonChargenMulticlass : public CUICheckButton { //Size 658h
 public:
@@ -238,13 +182,8 @@ public:
 	virtual ~CUICheckButtonChargenMulticlass(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
-
-extern CUICheckButtonChargenMulticlass& (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern unsigned char (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_GetClass)();
-extern void (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_Deconstruct)();
-extern void (CUICheckButtonChargenMulticlass::*CUICheckButtonChargenMulticlass_OnLClicked)(POINT);
 
 class CUICheckButtonChargenMageSpell : public CUICheckButton { //Size 66Eh
 //Constructor: 0x7328A0
@@ -266,26 +205,17 @@ public:
 	//AB5394
 	virtual ~CUICheckButtonMageBookContChoice(); //v0
 	void Deconstruct() {} //dummy
-	virtual void OnLMouseBtUp(POINT pt); //v1c
-	virtual BOOL OnLMouseDblClk(POINT pt); //v20
+	virtual void OnLMouseBtUp(CPoint pt); //v1c
+	virtual BOOL OnLMouseDblClk(CPoint pt); //v20
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 
 	short wNumber; //658h
 	ResRef rIcon; //65ah
 	ResRef rSpell; //662h
 	int nArrowDirection; //66ah, 0: no arrow, -1: left arrow, 1: right arrow
 };
-
-extern CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Deconstruct)();
-extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLMouseBtUp)(POINT);
-extern BOOL (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLMouseDblClk)(POINT);
-extern BOOL (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_Redraw)(BOOL);
-extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_OnLClicked)(POINT);
-extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_SetSpell)(ResRef, short);
-extern void (CUICheckButtonMageBookContChoice::*CUICheckButtonMageBookContChoice_SetArrowIcon)(BOOL);
 
 class CUICheckButtonMageBookContSelected : public CUICheckButton { //Size 668h
 public:
@@ -298,17 +228,11 @@ public:
 	void Deconstruct() {} //dummy
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 
 	ResRef rIcon; //658h
 	ResRef rSpell; //660h
 };
-
-extern CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Deconstruct)();
-extern BOOL (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_Redraw)(BOOL);
-extern void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_OnLClicked)(POINT);
-extern void (CUICheckButtonMageBookContSelected::*CUICheckButtonMageBookContSelected_SetSpell)(ResRef);
 
 class CUICheckButtonMageBookContSwitch : public CUICheckButton { //Size 658h
 public:
@@ -319,12 +243,8 @@ public:
 	virtual ~CUICheckButtonMageBookContSwitch(); //v0
 	void Deconstruct() {} //dummy
 
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
-
-extern CUICheckButtonMageBookContSwitch& (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_Deconstruct)();
-extern void (CUICheckButtonMageBookContSwitch::*CUICheckButtonMageBookContSwitch_OnLClicked)(POINT);
 
 class CUICheckButtonRecMageSpell : public CUICheckButton { //Size 66Ch
 public:
@@ -337,19 +257,12 @@ public:
 	void Deconstruct() {} //dummy
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
 
-	virtual void OnLClicked(POINT pt); //v5c
-	virtual void OnLClickedHLA(POINT pt); //v6c
+	virtual void OnLClicked(CPoint pt); //v5c
+	virtual void OnLClickedHLA(CPoint pt); //v6c
 
 	ResRef m_rSpellIcon; //658h
 	ResRef m_rSpell; //660h
 	BOOL u668;
 };
-
-extern CUICheckButtonRecMageSpell& (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_SetSpell)(ResRef);
-extern void (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_Deconstruct)();
-extern BOOL (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_Redraw)(BOOL);
-extern void (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_OnLClicked)(POINT);
-extern void (CUICheckButtonRecMageSpell::*CUICheckButtonRecMageSpell_OnLClickedHLA)(POINT);
 
 #endif //UIBUTTON_H

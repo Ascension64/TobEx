@@ -1,9 +1,6 @@
 #include "dlgcore.h"
 
 //CDlgResponse
-CDlgNext& (CDlgResponse::*CDlgResponse_Execute)(CCreatureObject&) =
-	SetFP(static_cast<CDlgNext& (CDlgResponse::*)(CCreatureObject&)>	(&CDlgResponse::Execute),	0x4E867F);
-
 CDlgResponse::CDlgResponse() {
 	dwFlags = 0;
 	rText = -1;
@@ -18,10 +15,7 @@ CDlgResponse::CDlgResponse() {
 	bAddedInterrupts = FALSE;
 }
 
-CDlgNext& CDlgResponse::Execute(CCreatureObject& cre)	{ return (this->*CDlgResponse_Execute)(cre); }
+DefineLibMemberFunc(CDlgNext&, CDlgResponse, Execute, (CCreatureObject& cre), Execute, Execute, (cre), 0x4E867F);
 
 //CGameDialog
-void (CGameDialog::*CGameDialog_SetUserArgument)(int) =
-	SetFP(static_cast<void (CGameDialog::*)(int)>	(&CGameDialog::SetUserArgument),	0x4E6955);
-
-void CGameDialog::SetUserArgument(int n)	{ return (this->*CGameDialog_SetUserArgument)(n); }
+DefineLibMemberFunc(void, CGameDialog, SetUserArgument, (int n), SetUserArgument, SetUserArgument, (n), 0x4E6955);

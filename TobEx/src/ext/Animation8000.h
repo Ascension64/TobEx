@@ -3,7 +3,7 @@
 
 #include "animext.h"
 
-extern LPCTSTR (CAnimation8000::*Tramp_CAnimation8000_GetWalkingSound)(short);
+DeclareTrampMemberFunc(LPCTSTR, CAnimation8000, GetWalkingSound, (short wTerrainCode), GetWalkingSound);
 
 class DETOUR_CAnimation8000 : public CAnimation8000 {
 public:

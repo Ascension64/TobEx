@@ -1,0 +1,17 @@
+//TobExEE
+#ifndef P_CHITIN_H
+#define P_CHITIN_H
+
+#ifdef __2014
+
+  #define CSTRING_BGEE_BUILD	0XA2E2C4
+
+  #define CBALDURCHITIN_CONSTRUCT	0X41BB80
+  #define CBALDURCHITIN_GETINFGAME	0X409480
+
+  #define CBALDURCHITIN_DOEXIT	0X7A5220
+
+#elif
+#endif
+
+#endif //P_CHITIN_H

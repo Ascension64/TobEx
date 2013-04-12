@@ -3,7 +3,7 @@
 
 #include "enginv.h"
 
-extern void (CScreenInventory::*Tramp_CScreenInventory_Init)();
+DeclareTrampMemberFunc(void, CScreenInventory, Init, (), Init);
 
 class DETOUR_CScreenInventory : public CScreenInventory {
 public:

@@ -33,7 +33,7 @@ void __stdcall CStore_GetBuyPrice_GetChargePercent(CStore& sto, short& nTotalUsa
 
 	if (nCharges > 0) {
 		nTotalCharges += nCharges;
-		nTotalUsages += (pAbility->chargeType == 3 || pAbility->flags & ITEMABILITYFLAG_RECHARGES) ? nCharges : itm.GetNumUsage(nUsageIdx);
+		nTotalUsages += (pAbility->m_wUsageFlags == 3 || pAbility->m_dwAbilityFlags & ITEMABILITYFLAG_RECHARGES) ? nCharges : itm.GetNumUsage(nUsageIdx);
 	}
 	return;
 }
@@ -49,7 +49,7 @@ void __stdcall CStore_GetSellPrice_GetChargePercent(CStore& sto, short& nTotalUs
 
 	if (nCharges > 0) {
 		nTotalCharges += nCharges;
-		nTotalUsages += (pAbility->chargeType == 3 || pAbility->flags & ITEMABILITYFLAG_RECHARGES) ? nCharges : itm.GetNumUsage(nUsageIdx);
+		nTotalUsages += (pAbility->m_wUsageFlags == 3 || pAbility->m_dwAbilityFlags & ITEMABILITYFLAG_RECHARGES) ? nCharges : itm.GetNumUsage(nUsageIdx);
 	}
 	return;
 }

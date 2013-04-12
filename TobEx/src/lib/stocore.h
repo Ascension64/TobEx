@@ -2,13 +2,12 @@
 #define STOCORE_H
 
 #include "stdafx.h"
-#include "datatypes.h"
 #include "itmcore.h"
 #include "rescore.h"
 
 typedef IECPtrList CStoFileItemList; //AACCB0
 
-struct ResStoContainer { //Size 10h
+struct ResStoFile { //Size 10h
 //Constructor: 0x6463FC
 	BOOL bLoaded; //0h
 	ResSto* pRes; //4h
@@ -45,14 +44,5 @@ public:
 	ResRef m_header; //d0h, STORV1.0
 	BOOL bUnmarshaled; //d8h
 };
-
-extern CStore& (CStore::*CStore_Construct_0)();
-extern CStore& (CStore::*CStore_Construct_1_ResRef)(ResRef&);
-extern void (CStore::*CStore_Deconstruct)();
-extern void (CStore::*CStore_Unmarshal)(ResRef&);
-extern int (CStore::*CStore_GetNumItemsInStock)();
-extern int (CStore::*CStore_GetItemAmount)(int);
-extern BOOL (CStore::*CStore_UnmarshalItem)(int, CItem*);
-extern ResRef (CStore::*CStore_GetItemName)(int);
 
 #endif //STOCORE_H

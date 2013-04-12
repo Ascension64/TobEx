@@ -8,7 +8,7 @@ bool UserCommon_HasSpell(CCreatureObject* pCre, ResRef& rSpell, CKnownSpellList*
 	POSITION pos = cplKnownSpell->GetHeadPosition();
 	while (pos != NULL) {
 		CreFileKnownSpell* pcks = (CreFileKnownSpell*)cplKnownSpell->GetNext(pos);
-		if (!(pcks->name != rSpell)) return true;
+		if (!(pcks->m_rKnownSpellName != rSpell)) return true;
 	}
 	return false;
 }

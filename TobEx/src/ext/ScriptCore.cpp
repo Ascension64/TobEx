@@ -1,17 +1,15 @@
 #include "ScriptCore.h"
 
 #include "chitin.h"
+#include "optionsext.h"
 #include "objcore.h"
 #include "InfGameCommon.h"
 #include "ScriptCommon.h"
 
 //CVariableMap
-BOOL (CVariableMap::*Tramp_CVariableMap_Add)(CVariable&) =
-	SetFP(static_cast<BOOL (CVariableMap::*)(CVariable&)>		(&CVariableMap::Add),			0x64A2E8);
-CVariable& (CVariableMap::*Tramp_CVariableMap_Find)(IECString) =
-	SetFP(static_cast<CVariable& (CVariableMap::*)(IECString)>	(&CVariableMap::Find),			0x64A709);
-unsigned int (CVariableMap::*Tramp_CVariableMap_GetHash)(IECString) =
-	SetFP(static_cast<unsigned int (CVariableMap::*)(IECString)>(&CVariableMap::GetHash),		0x64A96E);
+DefineTrampMemberFunc(BOOL, CVariableMap, Add, (CVariable& var), Add, Add, 0x64A2E8);
+DefineTrampMemberFunc(CVariable&, CVariableMap, Find, (IECString sVar), Find, Find, 0x64A709);
+DefineTrampMemberFunc(unsigned int, CVariableMap, GetHash, (IECString sVar), GetHash, GetHash, 0x64A96E);
 
 BOOL DETOUR_CVariableMap::DETOUR_Add(CVariable& var) {
 	if (0) IECString("DETOUR_CVariableMap::DETOUR_Add");
@@ -34,15 +32,15 @@ BOOL DETOUR_CVariableMap::DETOUR_Add(CVariable& var) {
 			if (sBucket.IsEmpty() || !sBucket.Compare(sName)) {
 				bSuccess = TRUE;
 				pArray[nHash] = var;
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "DETOUR_CVariableMap::DETOUR_Add(): Map[0x%X]->%s(id=%d)=%d\r\n";
-					L.appendf(lpsz, (DWORD)this, (LPCTSTR)sName, nHash, var.nValue);
-					console.writef(lpsz, (DWORD)this, (LPCTSTR)sName, nHash, var.nValue);
+					L.appendf(lpsz, (DWORD)this, (LPCTSTR)sName, nHash, var.m_nValue);
+					console.writef(lpsz, (DWORD)this, (LPCTSTR)sName, nHash, var.m_nValue);
 				}
 			} else { //collision
 				if (nHash == nHashEnd) {
 					bFail = TRUE;
-					if (pGameOptionsEx->bDebugVerbose) {
+					if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 						LPCTSTR lpsz = "DETOUR_CVariableMap::DETOUR_Add(): Map[0x%X]->SetSize(%d)\r\n";
 						L.appendf(lpsz, (DWORD)this, nArraySize * 2);
 						console.writef(lpsz, (DWORD)this, nArraySize * 2);
@@ -98,8 +96,7 @@ unsigned int DETOUR_CVariableMap::DETOUR_GetHash(IECString sVar) {
 }
 
 //CScriptBlock
-BOOL (CScriptBlock::*Tramp_CScriptBlock_Evaluate)(CTriggerList&, CGameSprite&) =
-	SetFP(static_cast<BOOL (CScriptBlock::*)(CTriggerList&, CGameSprite&)>	(&CScriptBlock::Evaluate),	0x405D19);
+DefineTrampMemberFunc(BOOL, CScriptBlock, Evaluate, (CTriggerList& triggers, CGameSprite& sprite), Evaluate, Evaluate, 0x405D19);
 
 BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& sprite) {
 	if (0) IECString("DETOUR_CScriptBlock::DETOUR_Evaluate");
@@ -216,7 +213,7 @@ BOOL DETOUR_CScriptBlock::DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& s
 				if (pOverrideSprite) {
 					if ((tCopy.opcode & 0x4000) == 0) pt->DecodeIdentifiers(*pOverrideSprite); //workaround for 0x0XXX triggers that need the original trigger decoded to work properly
 					bResult |= EvaluateTrigger(tCopy, triggers, *pOverrideSprite);
-					g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pOverrideSprite->GetEnum(), THREAD_ASYNCH, INFINITE);
+					g_pChitin->pGame->m_GameObjectArray.FreeShare(pOverrideSprite->GetEnum(), THREAD_ASYNCH, INFINITE);
 				} else bResult |= FALSE;
 				bOverrideObject = FALSE;
 				pOverrideSprite = NULL;

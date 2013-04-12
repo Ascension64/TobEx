@@ -4,9 +4,7 @@
 #include "stdafx.h"
 
 struct cmp_str {
-	bool operator()(char const *a, char const *b) const {
-		return std::strcmp(a, b) < 0;
-	}
+	bool operator()(char const *a, char const *b) const { return std::strcmp(a, b) < 0;	}
 };
 typedef IECString (*LUA_DumpFunc)(void*);
 extern std::map<char*, LUA_DumpFunc, cmp_str> g_DumpFunctions;

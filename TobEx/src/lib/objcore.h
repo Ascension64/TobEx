@@ -24,15 +24,15 @@
 #define CGAMEOBJECT_TYPE_AREA			0x61
 #define CGAMEOBJECT_TYPE_BALDUR			0x71
 
-//CGameObjectArrayHandler thread indices
+//CGameObjectArray thread indices
 const char THREAD_ASYNCH	= 0;
 const char THREAD_1			= 1;
 const char THREAD_2			= 2;
 
-//CGameObjectArrayHandler return values (0xAAD1C4)
+//CGameObjectArray return values (0xAAD1C4)
 const char OBJECT_SUCCESS		= 0;
 const char OBJECT_LOCK_FAILED	= 1;
-const char OBJECT_DELETED		= 2; //Index.id does not match Enum.id
+const char OBJECT_DELETED		= 2; //Index.id does not match ENUM.id
 const char OBJECT_BAD_ENUM		= 3;
 const char OBJECT_SHARING		= 4;
 const char OBJECT_DENYING		= 5;
@@ -57,7 +57,7 @@ public:
 	char u10;
 	char u11; //padding?
 	short u12;
-	POINT u14; //current position?
+	CPoint u14; //current position?
 	short u1c;
 	int u1e;
 	short u22[8];
@@ -95,17 +95,17 @@ public:
 	//AA6844
 	virtual ~CGameObject() {} //v0
 	virtual char GetType() { return 0; } //v4
-	virtual void AddToArea(CArea& area, POINT& pt, int zPos, char cVertListType) {} //v8
+	virtual void AddToArea(CArea& area, CPoint& pt, int zPos, char cVertListType) {} //v8
 	virtual void AIUpdate() {} //vc
 	virtual Object& GetCurrentObject() { return o; } //return a value
 	virtual void v14() {} //v14 (dw 3738h) - get some enum?
-	virtual void v18() {} //v18 void GetCurrentPoint(POINT* ptr)
+	virtual void v18() {} //v18 void GetCurrentPoint(CPoint* ptr)
 	virtual void v1c() {} //v1c POSITION& GetVerticalListPosition(), gets 16h
 	virtual char GetVertListType() { return 0; } //v20, returns 1ah
 	virtual void v24() {} //v24 bool IsAllowSaving(STRREF), 1 = allow save
 	virtual void v28() {} //v28 bool CompressTime(int)
 	virtual void v2c() {} //v2c void DebugDump()
-	virtual BOOL IsPointWithinMe(POINT pt) { return FALSE; } //v30
+	virtual BOOL IsPointWithinMe(CPoint pt) { return FALSE; } //v30
 	virtual void v34() {} //v34 ? involves rectangles
 	virtual void v38() {} //v38 BOOL InAnArea()
 	virtual void v3c() {} //v3c ? to do with modal states
@@ -118,7 +118,7 @@ public:
 	virtual void v58() {} //v58 DoNothing
 	virtual void v5c() {} //v5c void SetVerticalListPosition(POSITION*), sets 16h
 
-	Enum GetEnum();
+	ENUM GetEnum();
 
 	char nObjType; //4h, CGameObject type
 	//objectType, e.g. see constants from AAA9E1-AAA9ED
@@ -140,17 +140,17 @@ public:
 	//CBaldurObject (71h) - size: 0x3D8, AA6C28
 
 	char u5; //pad
-	POINT m_currentLoc; //6h
+	CPoint m_currentLoc; //6h
 	int zPos; //eh
 	CArea* pArea; //12h
 	POSITION* posVertList; //16h, ref to pos of vertical list with this enum
 	char m_vertListType; //1ah, which area vertical this is part of
 	char u1b; //pad
 	Object o;  //1ch, this o (main Object used in script triggers)
-	Enum e; //30h, this e
+	ENUM e; //30h, this e
 	short u34; // = 7 * 4 + 4
 	int nPlayerNetworkId; //36h, remotePlayerID
-	Enum u3a; //another enum
+	ENUM u3a; //another enum
 	
 	//which modulus of the tick depends on m_nAIUpdateInterval & e == m_nAIUpdateInterval & nChitinUpdates
 	//0: every tick
@@ -162,8 +162,6 @@ public:
 	char u40; // increment modulo of 3 (range: 0-2), set to 1 when there are no triggers
 	char u41; //padding?
 };
-
-extern Enum (CGameObject::*CGameObject_GetEnum)();
 
 class CGameSprite : public CGameObject { //Size 3D4h
 //Constructor: 0x476DED
@@ -276,19 +274,12 @@ public:
 	ACTIONRESULT arCurrent; //356h, the return value of ExecuteAction()
 	char u358;
 	char u359; //pad?
-	Enum eGameTextOverHead; //35ah
+	ENUM eGameTextOverHead; //35ah
 	BOOL bExecutingAction; //35eh, set during the ExecuteAction() function
 	BOOL u362; //has stored triggers?
 	BOOL m_bInterruptState; //366h, SetInterrupt() for sprite
 	CSound u36a;
 };
-
-extern BOOL (CGameSprite::*CGameSprite_EvaluateTrigger)(Trigger&);
-extern void (CGameSprite::*CGameSprite_ClearAllActions)(BOOL);
-extern ACTIONRESULT (CGameSprite::*CGameSprite_ExecuteAction)();
-extern void (CGameSprite::*CGameSprite_SetCurrentAction)(Action&);
-extern Action& (CGameSprite::*CGameSprite_GetTopAction)(Action*);
-extern void (CGameSprite::*CGameSprite_QueueActions)(Response&, BOOL, BOOL);
 
 struct CGameObjectEntry { //Size Ch
 public:
@@ -298,13 +289,13 @@ public:
 	CGameObject* pGameObject; //8h
 };
 
-struct CGameObjectArrayHandler { //Size 2Eh
+struct CGameObjectArray { //Size 2Eh
 //Constructor: 0x675FB0
-	char GetGameObjectShare(Enum e, char threadNum, void* pptr, int dwTimeout);
-	char GetGameObject(Enum e, char threadNum, void* pptr, int dwTimeout);
-	char GetGameObjectDeny(Enum e, char threadNum, void* pptr, int dwTimeout);
-	char FreeGameObjectShare(Enum e, char threadNum, int dwTimeout);
-	char FreeGameObjectDeny(Enum e, char threadNum, int dwTimeout);
+	char GetShare(ENUM e, char threadNum, void* pptr, int dwTimeout);
+	char Get(ENUM e, char threadNum, void* pptr, int dwTimeout);
+	char GetDeny(ENUM e, char threadNum, void* pptr, int dwTimeout);
+	char FreeShare(ENUM e, char threadNum, int dwTimeout);
+	char FreeDeny(ENUM e, char threadNum, int dwTimeout);
 
 #ifdef _DEBUG
 	_CCriticalSection ccs; //0h
@@ -319,7 +310,7 @@ struct CGameObjectArrayHandler { //Size 2Eh
 	short nIdxLink; //2ch, nRemoteIdx?
 };
 
-struct CGameRemoteObjectArrayHandler { //Size 90h
+struct CGameRemoteObjectArray { //Size 90h
 //Constructor: 0x677B5D
 	int* dwArray; //0h
 	short dwArraySize; //4h, numEntries
@@ -339,11 +330,5 @@ struct CGameRemoteObjectArrayHandler { //Size 90h
 	CCriticalSection ccs; //70h
 #endif
 };
-
-extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, char, void*, int);
-extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObject)(Enum, char, void*, int);
-extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectDeny)(Enum, char, void*, int);
-extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, char, int);
-extern char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, char, int);
 
 #endif //OBJCORE_H

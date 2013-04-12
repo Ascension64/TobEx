@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TobEx", "TobEx\TobEx.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TobExLoader", "TobExLoader\TobExLoader.vcxproj", "{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TobExEE", "TobExEE\TobExEE.vcxproj", "{69B9F599-5EDD-474F-90B5-A207737C2192}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Debug|Win32.Build.0 = Debug|Win32
 		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Release|Win32.ActiveCfg = Release|Win32
 		{B6A5EE46-4FEF-4E83-8A59-C14CF15B2E5C}.Release|Win32.Build.0 = Release|Win32
+		{69B9F599-5EDD-474F-90B5-A207737C2192}.Debug|Win32.ActiveCfg = Debug|Win32
+		{69B9F599-5EDD-474F-90B5-A207737C2192}.Debug|Win32.Build.0 = Debug|Win32
+		{69B9F599-5EDD-474F-90B5-A207737C2192}.Release|Win32.ActiveCfg = Release|Win32
+		{69B9F599-5EDD-474F-90B5-A207737C2192}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

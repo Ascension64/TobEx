@@ -7,13 +7,13 @@
 typedef IECPtrList CMemSpellList; //AAA8E4
 typedef IECPtrList CKnownSpellList; //AAA8CC
 
-struct ResSplContainer { //Size 10h
-	ResSplContainer();
+struct ResSplFile { //Size 10h
+	ResSplFile();
 
-	ResSplContainer(ResRef r);
-	ResSplContainer& Construct(ResRef r) { return *this; } //dummy
+	ResSplFile(ResRef r);
+	ResSplFile& Construct(ResRef r) { return *this; } //dummy
 
-	~ResSplContainer();
+	~ResSplFile();
 	void Deconstruct() {} //dummy
 
 	void LoadResource(ResRef& r, BOOL bAddToHandler, BOOL bLogNotFound);
@@ -33,21 +33,6 @@ struct ResSplContainer { //Size 10h
 	ResSpl* pRes; //4h
 	ResRef name; //8h
 };
-
-extern ResSplContainer& (ResSplContainer::*ResSplContainer_Construct_1ResRef)(ResRef);
-extern void (ResSplContainer::*ResSplContainer_Deconstruct)();
-extern void (ResSplContainer::*ResSplContainer_LoadResource)(ResRef&, BOOL, BOOL);
-extern BOOL (ResSplContainer::*ResSplContainer_Demand)();
-extern BOOL (ResSplContainer::*ResSplContainer_Release)();
-extern int (ResSplContainer::*ResSplContainer_GetNumAbilities)();
-extern SplFileAbility& (ResSplContainer::*ResSplContainer_GetSpellAbility)(int);
-extern CEffect& (ResSplContainer::*ResSplContainer_GetAbilityEffect)(int, int, CCreatureObject&);
-extern short (ResSplContainer::*ResSplContainer_GetSpellLevel)();
-extern int (ResSplContainer::*ResSplContainer_GetExclusionFlags)();
-extern STRREF (ResSplContainer::*ResSplContainer_GetSpellDescription)();
-extern short (ResSplContainer::*ResSplContainer_GetSpellType)();
-extern int (ResSplContainer::*ResSplContainer_GetSpellFlags)();
-extern char (ResSplContainer::*ResSplContainer_GetSpellSchoolPrimary)();
 
 /*
 struct SpellMod { //Size 1Eh

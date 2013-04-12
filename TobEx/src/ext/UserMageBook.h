@@ -11,7 +11,7 @@ public:
 	CUIButtonMageBookUp(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 
 	virtual ~CUIButtonMageBookUp(); //v0
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
 
 class CUIButtonMageBookDn : public CUIButton {
@@ -19,27 +19,29 @@ public:
 	CUIButtonMageBookDn(CPanel& panel, ChuFileControlInfoBase& controlInfo);
 
 	virtual ~CUIButtonMageBookDn(); //v0
-	virtual void OnLClicked(POINT pt); //v5c
+	virtual void OnLClicked(CPoint pt); //v5c
 };
 
-extern CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*Tramp_CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUICheckButtonMageBookContChoice::*Tramp_CUICheckButtonMageBookContChoice_OnLClicked)(POINT);
+//CUICheckButtonMageBookContChoice
+DeclareTrampMemberFunc(CUICheckButtonMageBookContChoice&, CUICheckButtonMageBookContChoice, Construct, (CPanel& panel, ChuFileControlInfoBase& controlInfo), Construct2);
+DeclareTrampMemberFunc(void, CUICheckButtonMageBookContChoice, OnLClicked, (CPoint pt), OnLClicked);
 
 class DETOUR_CUICheckButtonMageBookContChoice : public CUICheckButtonMageBookContChoice {
 public:
 	CUICheckButtonMageBookContChoice& DETOUR_Construct(CPanel& panel, ChuFileControlInfoBase& controlInfo);
-	void DETOUR_OnLClicked(POINT pt);
+	void DETOUR_OnLClicked(CPoint pt);
 
 	ResRef rParentSpell;
 };
 
-extern CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*Tramp_CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&);
-extern void (CUICheckButtonMageBookContSelected::*Tramp_CUICheckButtonMageBookContSelected_OnLClicked)(POINT);
+//CUICheckButtonMageBookContSelected
+DeclareTrampMemberFunc(CUICheckButtonMageBookContSelected&, CUICheckButtonMageBookContSelected, Construct, (CPanel& panel, ChuFileControlInfoBase& controlInfo), Construct2);
+DeclareTrampMemberFunc(void, CUICheckButtonMageBookContSelected, OnLClicked, (CPoint pt), OnLClicked);
 
 class DETOUR_CUICheckButtonMageBookContSelected : public CUICheckButtonMageBookContSelected {
 public:
 	CUICheckButtonMageBookContSelected& DETOUR_Construct(CPanel& panel, ChuFileControlInfoBase& controlInfo);
-	void DETOUR_OnLClicked(POINT pt);
+	void DETOUR_OnLClicked(CPoint pt);
 
 	ResRef rParentSpell;
 };

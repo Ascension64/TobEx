@@ -19,12 +19,12 @@ void CUIScrollBarChargenMageSpell::UpdatePanel() {
 	char threadNum = THREAD_ASYNCH;
 	char threadVal;
 	do {
-		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(g_pChitin->pCreateChar->eChar, threadNum, &pCre, INFINITE);
+		threadVal = g_pChitin->pGame->m_GameObjectArray.GetDeny(g_pChitin->pCreateChar->eChar, threadNum, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
 		g_pChitin->pCreateChar->UpdatePanel(pPanel->index, *pCre);
-		g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(g_pChitin->pCreateChar->eChar, threadNum, INFINITE);
+		g_pChitin->pGame->m_GameObjectArray.FreeDeny(g_pChitin->pCreateChar->eChar, threadNum, INFINITE);
 	}
 	return;
 }

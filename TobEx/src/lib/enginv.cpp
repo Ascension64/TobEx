@@ -1,6 +1,5 @@
 #include "enginv.h"
 
-void (CScreenInventory::*CScreenInventory_Init)() =
-	SetFP(static_cast<void (CScreenInventory::*)()>	(&CScreenInventory::Init),	0x740178);
+#include "stdafx.h"
 
-void CScreenInventory::Init() { return (this->*CScreenInventory_Init)(); }
+DefineLibMemberFunc(void, CScreenInventory, Init, (), Init, Init, (), 0x740178);

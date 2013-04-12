@@ -5,8 +5,7 @@
 #include "sndmus.h"
 #include "console.h"
 
-BOOL (CSoundMixer::*Tramp_CSoundMixer_InitSonglist)(int, char**) =
-	SetFP(static_cast<BOOL (CSoundMixer::*)(int, char**)>		(&CSoundMixer::InitSonglist),	0x9E209B);
+DefineTrampMemberFunc(BOOL, CSoundMixer, InitSonglist, (int nSongs, char** pSongFileArray), InitSonglist, InitSonglist, 0x9E209B);
 
 BOOL DETOUR_CSoundMixer::DETOUR_InitSonglist(int nSongs, char** pSongFileArray) {
 	if (!bSosDriverLoaded) return FALSE;

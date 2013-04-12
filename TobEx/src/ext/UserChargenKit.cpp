@@ -7,9 +7,7 @@
 #include "objcre.h"
 #include "chitin.h"
 #include "rescore.h"
-#include "options.h"
-#include "console.h"
-#include "log.h"
+#include "optionsext.h"
 
 static int currKitNum = 0;
 
@@ -24,12 +22,12 @@ void CUIScrollBarChargenKit::UpdatePanel() {
 	char threadNum = THREAD_ASYNCH;
 	char threadVal;
 	do {
-		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(g_pChitin->pCreateChar->eChar, threadNum, &pCre, INFINITE);
+		threadVal = g_pChitin->pGame->m_GameObjectArray.GetDeny(g_pChitin->pCreateChar->eChar, threadNum, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
 		g_pChitin->pCreateChar->UpdatePanel(pPanel->index, *pCre);
-		g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(g_pChitin->pCreateChar->eChar, threadNum, INFINITE);
+		g_pChitin->pGame->m_GameObjectArray.FreeDeny(g_pChitin->pCreateChar->eChar, threadNum, INFINITE);
 	}
 	return;
 }
@@ -37,7 +35,7 @@ void CUIScrollBarChargenKit::UpdatePanel() {
 CUIScrollBarChargenKit::~CUIScrollBarChargenKit() {}
 
 void CUIScrollBarChargenKit::OnMouseDragKnob() {
-	if (pGameOptionsEx->bDebugVerbose) {
+	if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnMouseDragKnob()\r\n";
 		console.write(lpsz);
 		L.timestamp();
@@ -55,7 +53,7 @@ void CUIScrollBarChargenKit::OnMouseDragKnob() {
 }
 
 void CUIScrollBarChargenKit::OnLMouseBtnDnArrowUp() {
-	if (pGameOptionsEx->bDebugVerbose) {
+	if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLMouseBtnDnArrowUp()\r\n";
 		console.write(lpsz);
 		L.timestamp();
@@ -72,7 +70,7 @@ void CUIScrollBarChargenKit::OnLMouseBtnDnArrowUp() {
 }
 
 void CUIScrollBarChargenKit::OnLMouseBtnDnArrowDn() {
-	if (pGameOptionsEx->bDebugVerbose) {
+	if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLMouseBtnDnArrowDn()\r\n";
 		console.write(lpsz);
 		L.timestamp();
@@ -93,7 +91,7 @@ void CUIScrollBarChargenKit::OnLMouseBtnDnArrowDn() {
 }
 
 void CUIScrollBarChargenKit::OnLClickedAboveKnob(short interval) {
-	if (pGameOptionsEx->bDebugVerbose) {
+	if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLClickedAboveKnob()\r\n";
 		console.write(lpsz);
 		L.timestamp();
@@ -111,7 +109,7 @@ void CUIScrollBarChargenKit::OnLClickedAboveKnob(short interval) {
 }
 
 void CUIScrollBarChargenKit::OnLClickedBelowKnob(short interval) {
-	if (pGameOptionsEx->bDebugVerbose) {
+	if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 		LPCTSTR lpsz = "CUIScrollBarChargenKit::OnLClickedBelowKnob()\r\n";
 		console.write(lpsz);
 		L.timestamp();

@@ -3,14 +3,15 @@
 
 #include "engchargen.h"
 
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*Tramp_CScreenCharGen_InitSoundset)(CCreatureObject&);
+DeclareTrampMemberFunc(void, CScreenCharGen, KitPanelOnLoad, (CPanel& panel, CCreatureObject& cre), KitPanelOnLoad);
+DeclareTrampMemberFunc(void, CScreenCharGen, MageBookPanelOnLoad, (CPanel& panel, CCreatureObject& cre), MageBookPanelOnLoad);
+DeclareTrampMemberFunc(void, CScreenCharGen, KitPanelOnUpdate, (CPanel& panel, CCreatureObject& cre), KitPanelOnUpdate);
+DeclareTrampMemberFunc(void, CScreenCharGen, MageBookPanelOnUpdate, (CPanel& panel, CCreatureObject& cre), MageBookPanelOnUpdate);
+DeclareTrampMemberFunc(void, CScreenCharGen, ClassPanelOnUpdate, (CPanel& panel, CCreatureObject& cre), ClassPanelOnUpdate);
+DeclareTrampMemberFunc(void, CScreenCharGen, MulticlassPanelOnUpdate, (CPanel& panel, CCreatureObject& cre), MulticlassPanelOnUpdate);
+DeclareTrampMemberFunc(void, CScreenCharGen, MageSchoolPanelOnUpdate, (CPanel& panel, CCreatureObject& cre), MageSchoolPanelOnUpdate);
+DeclareTrampMemberFunc(void, CScreenCharGen, InitSoundset, (CCreatureObject& cre), InitSoundset);
+
 
 class DETOUR_CScreenCharGen : public CScreenCharGen {
 public:

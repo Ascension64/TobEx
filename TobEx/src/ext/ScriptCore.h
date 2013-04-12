@@ -4,9 +4,9 @@
 #include "scrcore.h"
 
 //CVariableMap
-extern BOOL (CVariableMap::*Tramp_CVariableMap_Add)(CVariable&);
-extern CVariable& (CVariableMap::*Tramp_CVariableMap_Find)(IECString);
-extern unsigned int (CVariableMap::*Tramp_CVariableMap_GetHash)(IECString);
+DeclareTrampMemberFunc(BOOL, CVariableMap, Add, (CVariable& var), Add);
+DeclareTrampMemberFunc(CVariable&, CVariableMap, Find, (IECString sVar), Find);
+DeclareTrampMemberFunc(unsigned int, CVariableMap, GetHash, (IECString sVar), GetHash);
 
 struct DETOUR_CVariableMap : public CVariableMap { //Size 8h
 	BOOL DETOUR_Add(CVariable& var);
@@ -15,7 +15,7 @@ struct DETOUR_CVariableMap : public CVariableMap { //Size 8h
 };
 
 //CScriptBlock
-extern BOOL (CScriptBlock::*Tramp_CScriptBlock_Evaluate)(CTriggerList&, CGameSprite&);
+DeclareTrampMemberFunc(BOOL, CScriptBlock, Evaluate, (CTriggerList& triggers, CGameSprite& sprite), Evaluate);
 
 struct DETOUR_CScriptBlock : public CScriptBlock {
 	BOOL DETOUR_Evaluate(CTriggerList& triggers, CGameSprite& sprite);

@@ -11,4 +11,4 @@ Configuration Properties --> C/C++ --> General --> Additional Include Directorie
 
 Configuration Properties --> Linker --> General --> Additional Library Directories
 -This needs to point to the detours lib directory, the MFC42 lib directory, and the AsmJit directory
--The easiest way to do this is to place both the detours and MFC42 directories into the TobEx directory, and to place compiled AsmJit libraries into the TobEx\AsmJit directory
+-The easiest way to do this is to place both the detours and MFC42 directories into the solution directory, and to place compiled AsmJit libraries into the TobEx\AsmJit directory

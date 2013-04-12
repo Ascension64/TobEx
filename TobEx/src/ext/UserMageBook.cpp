@@ -11,28 +11,18 @@
 #include "splcore.h"
 #include "engmagebk.h"
 
-CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*Tramp_CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
-	SetFP(static_cast<CUICheckButtonMageBookContChoice& (CUICheckButtonMageBookContChoice::*)(CPanel&, ChuFileControlInfoBase&)>
-																			(&CUICheckButtonMageBookContChoice::Construct),		0x7C124D);
-void (CUICheckButtonMageBookContChoice::*Tramp_CUICheckButtonMageBookContChoice_OnLClicked)(POINT) =
-	SetFP(static_cast<void (CUICheckButtonMageBookContChoice::*)(POINT)>	(&CUICheckButtonMageBookContChoice::OnLClicked),	0x7C1304);
-CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*Tramp_CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(CPanel&, ChuFileControlInfoBase&) =
-	SetFP(static_cast<CUICheckButtonMageBookContSelected& (CUICheckButtonMageBookContSelected::*)(CPanel&, ChuFileControlInfoBase&)>
-																			(&CUICheckButtonMageBookContSelected::Construct),	0x7C0CAC);
-void (CUICheckButtonMageBookContSelected::*Tramp_CUICheckButtonMageBookContSelected_OnLClicked)(POINT) =
-	SetFP(static_cast<void (CUICheckButtonMageBookContSelected::*)(POINT)>	(&CUICheckButtonMageBookContSelected::OnLClicked),	0x7C0D56);
-
+//CUIButtonMageBookUp
 int CUIButtonMageBook_KnownSpellOffset = 0;
 
 CUIButtonMageBookUp::CUIButtonMageBookUp(CPanel& panel, ChuFileControlInfoBase& controlInfo) : CUIButton(panel, controlInfo, 1, TRUE) {}
 CUIButtonMageBookUp::~CUIButtonMageBookUp() {}
 
-void CUIButtonMageBookUp::OnLClicked(POINT pt) {
+void CUIButtonMageBookUp::OnLClicked(CPoint pt) {
 	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	CPanel& panel = pWizSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
-	Enum e;
+	ENUM e;
 
 	if (pWizSpell->nActivePlayerIdx < pGame->numInParty) {
 		e = pGame->ePlayersPartyOrder[pWizSpell->nActivePlayerIdx];
@@ -43,7 +33,7 @@ void CUIButtonMageBookUp::OnLClicked(POINT pt) {
 	CCreatureObject* pCre;
 	char threadVal;
 	do {
-		threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
+		threadVal = pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
@@ -52,12 +42,12 @@ void CUIButtonMageBookUp::OnLClicked(POINT pt) {
 		for (int i = 27; i <= 50; i++ ) {
 			CUIButtonMageBookKnownSpell& control = (CUIButtonMageBookKnownSpell&)panel.GetUIControl(i);
 			CreFileKnownSpell& kspell = pCre->GetKnownSpellMage(pWizSpell->currLevel, i - 27 + CUIButtonMageBook_KnownSpellOffset);
-			&kspell ? control.SetSpell(kspell.name) : control.SetSpell(ResRef());
+			&kspell ? control.SetSpell(kspell.m_rKnownSpellName) : control.SetSpell(ResRef());
 			control.SetRedraw();
 		}
-		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+		pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
-		LPCTSTR lpsz = "CUIButtonMageBookUp::OnLClicked(): GetGameObjectShare returned %d\r\n";
+		LPCTSTR lpsz = "CUIButtonMageBookUp::OnLClicked(): GetShare returned %d\r\n";
 		console.writef(lpsz, threadVal);
 		L.timestamp();
 		L.appendf(lpsz, threadVal);
@@ -66,15 +56,16 @@ void CUIButtonMageBookUp::OnLClicked(POINT pt) {
 	return;
 }
 
+//CUIButtonMageBookDn
 CUIButtonMageBookDn::CUIButtonMageBookDn(CPanel& panel, ChuFileControlInfoBase& controlInfo) : CUIButton(panel, controlInfo, 1, TRUE) {}
 CUIButtonMageBookDn::~CUIButtonMageBookDn() {}
 
-void CUIButtonMageBookDn::OnLClicked(POINT pt) {
+void CUIButtonMageBookDn::OnLClicked(CPoint pt) {
 	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	CPanel& panel = pWizSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
-	Enum e;
+	ENUM e;
 
 	if (pWizSpell->nActivePlayerIdx < pGame->numInParty) {
 		e = pGame->ePlayersPartyOrder[pWizSpell->nActivePlayerIdx];
@@ -85,7 +76,7 @@ void CUIButtonMageBookDn::OnLClicked(POINT pt) {
 	CCreatureObject* pCre;
 	char threadVal;
 	do {
-		threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
+		threadVal = pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
@@ -100,13 +91,13 @@ void CUIButtonMageBookDn::OnLClicked(POINT pt) {
 		for (int i = 27; i <= 50; i++ ) {
 			CUIButtonMageBookKnownSpell& control = (CUIButtonMageBookKnownSpell&)panel.GetUIControl(i);
 			CreFileKnownSpell& kspell = pCre->GetKnownSpellMage(pWizSpell->currLevel, i - 27 + CUIButtonMageBook_KnownSpellOffset);
-			&kspell ? control.SetSpell(kspell.name) : control.SetSpell(ResRef());
+			&kspell ? control.SetSpell(kspell.m_rKnownSpellName) : control.SetSpell(ResRef());
 			control.SetRedraw();
 		}
 
-		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+		pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
-		LPCTSTR lpsz = "CUIButtonMageBookDn::OnLClicked(): GetGameObjectShare returned %d\r\n";
+		LPCTSTR lpsz = "CUIButtonMageBookDn::OnLClicked(): GetShare returned %d\r\n";
 		console.writef(lpsz, threadVal);
 		L.timestamp();
 		L.appendf(lpsz, threadVal);
@@ -115,13 +106,17 @@ void CUIButtonMageBookDn::OnLClicked(POINT pt) {
 	return;
 }
 
+//CUICheckButtonMageBookContChoice
+DefineTrampMemberFunc(CUICheckButtonMageBookContChoice&, CUICheckButtonMageBookContChoice, Construct, (CPanel& panel, ChuFileControlInfoBase& controlInfo), Construct, Construct2, 0x7C124D);
+DefineTrampMemberFunc(void, CUICheckButtonMageBookContChoice, OnLClicked, (CPoint pt), OnLClicked, OnLClicked, 0x7C1304);
+
 CUICheckButtonMageBookContChoice& DETOUR_CUICheckButtonMageBookContChoice::DETOUR_Construct(CPanel& panel, ChuFileControlInfoBase& controlInfo) {
-	(this->*Tramp_CUICheckButtonMageBookContChoice_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo);
+	(this->*Tramp_CUICheckButtonMageBookContChoice_Construct2)(panel, controlInfo);
 	rParentSpell = "";
 	return *this;
 }
 
-void DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(POINT pt) {
+void DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(CPoint pt) {
 	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	if (pWizSpell == NULL) {
 		LPCTSTR lpsz = "DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(): pWiz == NULL\r\n";
@@ -143,7 +138,7 @@ void DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(POINT pt) {
 				if (CScreenMageBook_AddContingencySpellEx(pWizSpell, sSpell, sParentSpell)) {
 					pWizSpell->SetSpellContingencyState(rParentSpell.IsEmpty() ? sSpell : sParentSpell, FALSE);
 				}
-				ResSplContainer resSpell(rSpell);
+				ResSplFile resSpell(rSpell);
 				resSpell.Demand();
 				textDesc.ClearText();
 				pTlk->GetTlkString(resSpell.GetSpellDescription(), strref);
@@ -170,13 +165,17 @@ void DETOUR_CUICheckButtonMageBookContChoice::DETOUR_OnLClicked(POINT pt) {
 	return;
 }
 
+//CUICheckButtonMageBookContSelected
+DefineTrampMemberFunc(CUICheckButtonMageBookContSelected&, CUICheckButtonMageBookContSelected, Construct, (CPanel& panel, ChuFileControlInfoBase& controlInfo), Construct, Construct2, 0x7C0CAC);
+DefineTrampMemberFunc(void, CUICheckButtonMageBookContSelected, OnLClicked, (CPoint pt), OnLClicked, OnLClicked, 0x7C0D56);
+
 CUICheckButtonMageBookContSelected& DETOUR_CUICheckButtonMageBookContSelected::DETOUR_Construct(CPanel& panel, ChuFileControlInfoBase& controlInfo) {
-	(this->*Tramp_CUICheckButtonMageBookContSelected_Construct_2CPanel_ChuFileControlInfoBase)(panel, controlInfo);
+	(this->*Tramp_CUICheckButtonMageBookContSelected_Construct2)(panel, controlInfo);
 	rParentSpell = "";
 	return *this;
 }
 
-void DETOUR_CUICheckButtonMageBookContSelected::DETOUR_OnLClicked(POINT pt) {
+void DETOUR_CUICheckButtonMageBookContSelected::DETOUR_OnLClicked(CPoint pt) {
 	CScreenMageBook* pWizSpell = g_pChitin->pWizSpell;
 	pWizSpell->SetSpellContingencyState(rParentSpell.IsEmpty() ? IECString(rSpell.GetBuffer()) : IECString(rParentSpell.GetBuffer()), TRUE);
 	pWizSpell->ClearContingencySpell(index - 22);

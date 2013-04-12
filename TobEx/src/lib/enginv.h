@@ -22,7 +22,7 @@ public:
 	int u442;
 	int u446;
 	int u44a;
-	Enum eContainersOpened[6]; //44eh, current container interacted with by each player
+	ENUM eContainersOpened[6]; //44eh, current container interacted with by each player
 	BOOL bContainerSearched[6]; //466h, one for each playerId
 	int u47e;
 	int u482;
@@ -71,7 +71,5 @@ public:
 	int u141c;
 	BOOL bWorldPaused; //from CScreenWorld.146h;
 };
-
-extern void (CScreenInventory::*CScreenInventory_Init)();
 
 #endif //ENGINV_H

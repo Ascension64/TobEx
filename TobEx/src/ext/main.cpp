@@ -2,7 +2,8 @@
 
 #include "stdafx.h"
 #include "debug.h"
-#include "patch.h"
+#include "patchext.h"
+#include "optionsext.h"
 #include "hook.h"
 
 void Init() {
@@ -17,8 +18,10 @@ void Init() {
 	const char* bufferD = "%sTobEx Dialogue Log (%s %.2d %s %.4d %.2d:%.2d:%.2d)\r\n";
 
 	//init console
-	if (console.Init())
+	if (console.Init()) {
 		console.writef(CONSOLEFORECOLOR_HEADER, buffer, "", lpVersion ? " build " : "", lpVersion ? lpVersion : "", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
+		SetForegroundWindow(FindWindow("ChitinClass",NULL));
+	}
 
 	//init log
 	int nDebugLogFileMode = GetCoreIniValue("Debug", "Log File Mode");
@@ -27,11 +30,11 @@ void Init() {
 
 	char lpFile[MAX_PATH];
 	if (GetModuleFileName(NULL, lpFile, MAX_PATH)) {
-		const int nPEAddress = (int)GetModuleHandle(lpFile);
+		const unsigned int nPEAddress = (unsigned int)GetModuleHandle(lpFile);
 		if (nPEAddress == g_nPEAddressDefault) {
 			InitOptions();
 
-			if (pGameOptionsEx->bDebugLogDialogueBar) {
+			if (pGameOptionsEx->GetOption("Debug_LogDialogueBar")) {
 				if (LD.Init(nDebugLogFileMode))
 					LD.appendf(bufferD, "-----", days[tmLocal.tm_wday], tmLocal.tm_mday, months[tmLocal.tm_mon], tmLocal.tm_year + 1900, tmLocal.tm_hour, tmLocal.tm_min, tmLocal.tm_sec);
 			}

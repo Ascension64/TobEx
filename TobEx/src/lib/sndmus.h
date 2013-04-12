@@ -187,7 +187,7 @@ struct ACMHeader {
 	unsigned short subblocks : 12;
 }; 
 
-extern void (__cdecl *Sos_LoadSongPath)(LPTSTR, LPTSTR);
-extern BOOL (__cdecl *Sos_InitSonglist)(SongResource**, int);
+DefineGlobalFuncPtr(void, __cdecl, Sos_LoadSongPath, (LPTSTR szPath, LPTSTR szAcmExt), 0xA160F8);
+DefineGlobalFuncPtr(BOOL, __cdecl, Sos_InitSonglist, (SongResource** ppsrArray, int nSongs), 0xA145D6);
 
 #endif //SNDMUS_H

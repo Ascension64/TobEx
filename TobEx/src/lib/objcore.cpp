@@ -1,58 +1,19 @@
 #include "objcore.h"
 
-#include "stdafx.h"
-
 //CGameObject
-Enum (CGameObject::*CGameObject_GetEnum)() =
-	SetFP(static_cast<Enum (CGameObject::*)()>	(&CGameObject::GetEnum),	0x494D00);
-
-Enum CGameObject::GetEnum()	{ return (this->*CGameObject_GetEnum)(); }
+DefineLibMemberFunc(ENUM, CGameObject, GetEnum, (), GetEnum, GetEnum, (), 0x494D00);
 
 //CGameSprite
-BOOL (CGameSprite::*CGameSprite_EvaluateTrigger)(Trigger&) =
-	SetFP(static_cast<BOOL (CGameSprite::*)(Trigger&)>				(&CGameSprite::EvaluateTrigger),	0x47F4F2);
-void (CGameSprite::*CGameSprite_ClearAllActions)(BOOL) =
-	SetFP(static_cast<void (CGameSprite::*)(BOOL)>					(&CGameSprite::ClearAllActions),	0x47838F);
-ACTIONRESULT (CGameSprite::*CGameSprite_ExecuteAction)() =
-	SetFP(static_cast<ACTIONRESULT (CGameSprite::*)()>				(&CGameSprite::ExecuteAction),		0x47891B);
-void (CGameSprite::*CGameSprite_SetCurrentAction)(Action&) =
-	SetFP(static_cast<void (CGameSprite::*)(Action&)>				(&CGameSprite::SetCurrentAction),	0x48F85F);
-Action& (CGameSprite::*CGameSprite_GetTopAction)(Action*) =
-	SetFP(static_cast<Action& (CGameSprite::*)(Action*)>			(&CGameSprite::GetTopAction),		0x48CC65);
-void (CGameSprite::*CGameSprite_QueueActions)(Response&, BOOL, BOOL) =
-	SetFP(static_cast<void (CGameSprite::*)(Response&, BOOL, BOOL)>	(&CGameSprite::QueueActions),		0x48DA78);
+DefineLibMemberFunc(BOOL, CGameSprite, EvaluateTrigger, (Trigger& t), EvaluateTrigger, EvaluateTrigger, (t), 0x47F4F2);
+DefineLibMemberFunc(void, CGameSprite, ClearAllActions, (BOOL bSkipFlagged), ClearAllActions, ClearAllActions, (bSkipFlagged), 0x47838F);
+DefineLibMemberFunc(ACTIONRESULT, CGameSprite, ExecuteAction, (), ExecuteAction, ExecuteAction, (), 0x47891B);
+DefineLibMemberFunc(void, CGameSprite, SetCurrentAction, (Action& a), SetCurrentAction, SetCurrentAction, (a), 0x48F85F);
+DefineLibMemberFunc(Action&, CGameSprite, GetTopAction, (Action* pAction), GetTopAction, GetTopAction, (pAction), 0x48CC65);
+DefineLibMemberFunc(void, CGameSprite, QueueActions, (Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue), QueueActions, QueueActions, (r, bSkipIfAlreadyQueued, bClearActionQueue), 0x48DA78);
 
-BOOL CGameSprite::EvaluateTrigger(Trigger& t)		{ return (this->*CGameSprite_EvaluateTrigger)(t); }
-void CGameSprite::ClearAllActions(BOOL bSkipFlagged){ return (this->*CGameSprite_ClearAllActions)(bSkipFlagged); }
-ACTIONRESULT CGameSprite::ExecuteAction()			{ return (this->*CGameSprite_ExecuteAction)(); }
-void CGameSprite::SetCurrentAction(Action& a)		{ return (this->*CGameSprite_SetCurrentAction)(a); }
-Action& CGameSprite::GetTopAction(Action* pAction)	{ return (this->*CGameSprite_GetTopAction)(pAction); }
-void CGameSprite::QueueActions(Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue) { return (this->*CGameSprite_QueueActions)(r, bSkipIfAlreadyQueued, bClearActionQueue); }
-
-//CGameObjectArrayHandler
-char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectShare)(Enum, char, void*, int) =
-	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, void*, int)>	(&CGameObjectArrayHandler::GetGameObjectShare),		0x67626B);
-char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObject)(Enum, char, void*, int) =
-	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, void*, int)>	(&CGameObjectArrayHandler::GetGameObject),			0x6764E5);
-char (CGameObjectArrayHandler::*CGameObjectArrayHandler_GetGameObjectDeny)(Enum, char, void*, int) =
-	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, void*, int)>	(&CGameObjectArrayHandler::GetGameObjectDeny),		0x676570);
-char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectShare)(Enum, char, int) =
-	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, int)>			(&CGameObjectArrayHandler::FreeGameObjectShare),	0x676808);
-char (CGameObjectArrayHandler::*CGameObjectArrayHandler_FreeGameObjectDeny)(Enum, char, int) =
-	SetFP(static_cast<char (CGameObjectArrayHandler::*)(Enum, char, int)>			(&CGameObjectArrayHandler::FreeGameObjectDeny),		0x676A16);
-
-char CGameObjectArrayHandler::GetGameObjectShare(Enum e, char threadNum, void* pptr, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_GetGameObjectShare)(e, threadNum, pptr, dwTimeout);
-}
-char CGameObjectArrayHandler::GetGameObject(Enum e, char threadNum, void* pptr, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_GetGameObject)(e, threadNum, pptr, dwTimeout);
-}
-char CGameObjectArrayHandler::GetGameObjectDeny(Enum e, char threadNum, void* pptr, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_GetGameObjectDeny)(e, threadNum, pptr, dwTimeout);
-}
-char CGameObjectArrayHandler::FreeGameObjectShare(Enum e, char threadNum, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_FreeGameObjectShare)(e, threadNum, dwTimeout);
-}
-char CGameObjectArrayHandler::FreeGameObjectDeny(Enum e, char threadNum, int dwTimeout) {
-	return (this->*CGameObjectArrayHandler_FreeGameObjectDeny)(e, threadNum, dwTimeout);
-}
+//CGameObjectArray
+DefineLibMemberFunc(char, CGameObjectArray, GetShare, (ENUM e, char threadNum, void* pptr, int dwTimeout), GetShare, GetShare, (e, threadNum, pptr, dwTimeout), 0x67626B);
+DefineLibMemberFunc(char, CGameObjectArray, Get, (ENUM e, char threadNum, void* pptr, int dwTimeout), Get, Get, (e, threadNum, pptr, dwTimeout), 0x6764E5);
+DefineLibMemberFunc(char, CGameObjectArray, GetDeny, (ENUM e, char threadNum, void* pptr, int dwTimeout), GetDeny, GetDeny, (e, threadNum, pptr, dwTimeout), 0x676570);
+DefineLibMemberFunc(char, CGameObjectArray, FreeShare, (ENUM e, char threadNum, int dwTimeout), FreeShare, FreeShare, (e, threadNum, dwTimeout), 0x676808);
+DefineLibMemberFunc(char, CGameObjectArray, FreeDeny, (ENUM e, char threadNum, int dwTimeout), FreeDeny, FreeDeny, (e, threadNum, dwTimeout), 0x676A16);

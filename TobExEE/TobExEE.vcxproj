@@ -1,0 +1,291 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{69B9F599-5EDD-474F-90B5-A207737C2192}</ProjectGuid>
+    <RootNamespace>TobEx</RootNamespace>
+    <Keyword>MFCDLLProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v90</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)WeiDU\TobEx\TobEx_redist\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Zp %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;$(SolutionDir)MathPresso;$(SolutionDir)Common;.\src\pointers</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__2014;WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>detours.lib; asmjit.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)detours\lib.X86;$(SolutionDir)MFC42\LIB;$(SolutionDir)AsmJit</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+    <Manifest>
+      <OutputManifestFile>
+      </OutputManifestFile>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/wd 4430 /Zp %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(SolutionDir)MFC42\INCLUDE;.\src\lib;.\src\include;.\src\ext;.\src;$(SolutionDir)MathPresso;$(SolutionDir)Common;.\src\pointers</AdditionalIncludeDirectories>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+      <PreprocessorDefinitions>__2014;WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>detours.lib; asmjit.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)detours\lib.X86;$(SolutionDir)MFC42\LIB;$(SolutionDir)AsmJit</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
+      <MinimumRequiredVersion>5.0</MinimumRequiredVersion>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Common\console.cpp" />
+    <ClCompile Include="..\Common\log.cpp" />
+    <ClCompile Include="..\Common\options.cpp" />
+    <ClCompile Include="..\Common\patch.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_AST.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Context.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_DOT.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_JIT.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Optimizer.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Parser.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Tokenizer.cpp" />
+    <ClCompile Include="..\MathPresso\MathPresso_Util.cpp" />
+    <ClCompile Include="src\ext\ChitinCore.cpp" />
+    <ClCompile Include="src\ext\EngineWorld.cpp" />
+    <ClCompile Include="src\ext\hook.cpp" />
+    <ClCompile Include="src\ext\LuaCommon.cpp" />
+    <ClCompile Include="src\ext\LuaCore.cpp" />
+    <ClCompile Include="src\ext\LuaDump.cpp" />
+    <ClCompile Include="src\ext\optionsext.cpp" />
+    <ClCompile Include="src\ext\patchext.cpp" />
+    <ClCompile Include="src\lib\animext.cpp" />
+    <ClCompile Include="src\lib\chitin.cpp" />
+    <ClCompile Include="src\lib\cmapstrstrex.cpp" />
+    <ClCompile Include="src\lib\cptrlistex.cpp" />
+    <ClCompile Include="src\lib\cstringex.cpp" />
+    <ClCompile Include="src\lib\dlgcore.cpp" />
+    <ClCompile Include="src\lib\effcore.cpp" />
+    <ClCompile Include="src\lib\effopcode.cpp" />
+    <ClCompile Include="src\lib\engchargen.cpp" />
+    <ClCompile Include="src\lib\engine.cpp" />
+    <ClCompile Include="src\lib\enginv.cpp" />
+    <ClCompile Include="src\lib\engmagebk.cpp" />
+    <ClCompile Include="src\lib\engpriestbk.cpp" />
+    <ClCompile Include="src\lib\engrecord.cpp" />
+    <ClCompile Include="src\lib\engworld.cpp" />
+    <ClCompile Include="src\lib\infbtarr.cpp" />
+    <ClCompile Include="src\lib\infgame.cpp" />
+    <ClCompile Include="src\lib\itmcore.cpp" />
+    <ClCompile Include="src\lib\lua.cpp" />
+    <ClCompile Include="src\lib\network.cpp" />
+    <ClCompile Include="src\lib\objcore.cpp" />
+    <ClCompile Include="src\lib\objcre.cpp" />
+    <ClCompile Include="src\lib\objstats.cpp" />
+    <ClCompile Include="src\lib\objvef.cpp" />
+    <ClCompile Include="src\lib\rescore.cpp" />
+    <ClCompile Include="src\lib\scrcore.cpp" />
+    <ClCompile Include="src\lib\splcore.cpp" />
+    <ClCompile Include="src\lib\stocore.cpp" />
+    <ClCompile Include="src\lib\tlkcore.cpp" />
+    <ClCompile Include="src\lib\uibutton.cpp" />
+    <ClCompile Include="src\lib\uicore.cpp" />
+    <ClCompile Include="src\lib\uiscroll.cpp" />
+    <ClCompile Include="src\lib\uitext.cpp" />
+    <ClCompile Include="src\lib\animcore.cpp" />
+    <ClCompile Include="src\lib\arecore.cpp" />
+    <ClCompile Include="src\lib\msgcore.cpp" />
+    <ClCompile Include="src\lib\resref.cpp" />
+    <ClCompile Include="src\lib\sndcore.cpp" />
+    <ClCompile Include="src\lib\vidcore.cpp" />
+    <ClCompile Include="src\ext\debug.cpp" />
+    <ClCompile Include="src\ext\main.cpp" />
+    <ClCompile Include="src\TobExEE.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\console.h" />
+    <ClInclude Include="..\Common\crc32.h" />
+    <ClInclude Include="..\Common\detours.h" />
+    <ClInclude Include="..\Common\detoursext.h" />
+    <ClInclude Include="..\Common\fileare.h" />
+    <ClInclude Include="..\Common\filebam.h" />
+    <ClInclude Include="..\Common\filebif.h" />
+    <ClInclude Include="..\Common\filechu.h" />
+    <ClInclude Include="..\Common\filecre.h" />
+    <ClInclude Include="..\Common\filedlg.h" />
+    <ClInclude Include="..\Common\fileeff.h" />
+    <ClInclude Include="..\Common\filegam.h" />
+    <ClInclude Include="..\Common\fileitm.h" />
+    <ClInclude Include="..\Common\filepro.h" />
+    <ClInclude Include="..\Common\filespl.h" />
+    <ClInclude Include="..\Common\filesto.h" />
+    <ClInclude Include="..\Common\filevvc.h" />
+    <ClInclude Include="..\Common\filewed.h" />
+    <ClInclude Include="..\Common\filewmp.h" />
+    <ClInclude Include="..\Common\log.h" />
+    <ClInclude Include="..\Common\options.h" />
+    <ClInclude Include="..\Common\patch.h" />
+    <ClInclude Include="..\Common\utils.h" />
+    <ClInclude Include="..\Common\win32def.h" />
+    <ClInclude Include="..\MathPresso\MathPresso.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_AST_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Context_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_DOT_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_JIT_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Optimizer_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Parser_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Tokenizer_p.h" />
+    <ClInclude Include="..\MathPresso\MathPresso_Util_p.h" />
+    <ClInclude Include="src\ext\ChitinCore.h" />
+    <ClInclude Include="src\ext\EngineWorld.h" />
+    <ClInclude Include="src\ext\hook.h" />
+    <ClInclude Include="src\ext\LuaCommon.h" />
+    <ClInclude Include="src\ext\LuaCore.h" />
+    <ClInclude Include="src\ext\LuaDump.h" />
+    <ClInclude Include="src\ext\optionsext.h" />
+    <ClInclude Include="src\ext\patchext.h" />
+    <ClInclude Include="src\include\crcexe.h" />
+    <ClInclude Include="src\include\datacons.h" />
+    <ClInclude Include="src\lib\cmapstrstrex.h" />
+    <ClInclude Include="src\lib\cptrlistex.h" />
+    <ClInclude Include="src\lib\cstringex.h" />
+    <ClInclude Include="src\lib\effopcode.h" />
+    <ClInclude Include="src\lib\engchargen.h" />
+    <ClInclude Include="src\lib\enginv.h" />
+    <ClInclude Include="src\lib\engjourn.h" />
+    <ClInclude Include="src\lib\engmagebk.h" />
+    <ClInclude Include="src\lib\engpriestbk.h" />
+    <ClInclude Include="src\lib\engproj.h" />
+    <ClInclude Include="src\lib\engrecord.h" />
+    <ClInclude Include="src\lib\engstore.h" />
+    <ClInclude Include="src\lib\engworld.h" />
+    <ClInclude Include="src\lib\infbtarr.h" />
+    <ClInclude Include="src\lib\infcursor.h" />
+    <ClInclude Include="src\lib\lua.h" />
+    <ClInclude Include="src\lib\objare.h" />
+    <ClInclude Include="src\lib\objstats.h" />
+    <ClInclude Include="src\lib\objtext.h" />
+    <ClInclude Include="src\lib\particle.h" />
+    <ClInclude Include="src\lib\stdafx.h" />
+    <ClInclude Include="src\lib\tlkcore.h" />
+    <ClInclude Include="src\lib\uibutton.h" />
+    <ClInclude Include="src\lib\uiscroll.h" />
+    <ClInclude Include="src\lib\uitext.h" />
+    <ClInclude Include="src\lib\animcore.h" />
+    <ClInclude Include="src\lib\animext.h" />
+    <ClInclude Include="src\lib\arecore.h" />
+    <ClInclude Include="src\lib\chitin.h" />
+    <ClInclude Include="src\lib\dbgcore.h" />
+    <ClInclude Include="src\lib\dlgcore.h" />
+    <ClInclude Include="src\lib\effcore.h" />
+    <ClInclude Include="src\lib\engine.h" />
+    <ClInclude Include="src\lib\infgame.h" />
+    <ClInclude Include="src\lib\itmcore.h" />
+    <ClInclude Include="src\lib\msgcore.h" />
+    <ClInclude Include="src\lib\network.h" />
+    <ClInclude Include="src\lib\objbaldur.h" />
+    <ClInclude Include="src\lib\objcont.h" />
+    <ClInclude Include="src\lib\objcore.h" />
+    <ClInclude Include="src\lib\objcre.h" />
+    <ClInclude Include="src\lib\objdoor.h" />
+    <ClInclude Include="src\lib\objproj.h" />
+    <ClInclude Include="src\lib\objsound.h" />
+    <ClInclude Include="src\lib\objspawn.h" />
+    <ClInclude Include="src\lib\objstatic.h" />
+    <ClInclude Include="src\lib\objtile.h" />
+    <ClInclude Include="src\lib\objtrig.h" />
+    <ClInclude Include="src\lib\objvef.h" />
+    <ClInclude Include="src\lib\pathfind.h" />
+    <ClInclude Include="src\lib\rescore.h" />
+    <ClInclude Include="src\lib\resref.h" />
+    <ClInclude Include="src\lib\scrcore.h" />
+    <ClInclude Include="src\lib\sndcore.h" />
+    <ClInclude Include="src\lib\sndmus.h" />
+    <ClInclude Include="src\lib\splcore.h" />
+    <ClInclude Include="src\lib\stocore.h" />
+    <ClInclude Include="src\lib\uicore.h" />
+    <ClInclude Include="src\lib\vidcore.h" />
+    <ClInclude Include="src\include\_constants.h" />
+    <ClInclude Include="src\include\_MFC.h" />
+    <ClInclude Include="src\include\globals.h" />
+    <ClInclude Include="src\include\rule.h" />
+    <ClInclude Include="src\ext\debug.h" />
+    <ClInclude Include="src\ext\main.h" />
+    <ClInclude Include="src\pointers\p_chitin.h" />
+    <ClInclude Include="src\pointers\p_cmapss.h" />
+    <ClInclude Include="src\pointers\p_cptrlist.h" />
+    <ClInclude Include="src\pointers\p_cstring.h" />
+    <ClInclude Include="src\pointers\p_engworld.h" />
+    <ClInclude Include="src\pointers\p_globals.h" />
+    <ClInclude Include="src\pointers\p_infgame.h" />
+    <ClInclude Include="src\pointers\p_lua.h" />
+    <ClInclude Include="src\pointers\p_resref.h" />
+    <ClInclude Include="src\pointers\p_size.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\TobExEE.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

@@ -50,7 +50,7 @@ public:
 	virtual void v2c() {} //0x4362A1, ProcMain for multiplayer loop (NetworkProcMain)
 	virtual void v30() {} //0x436359, ProcMain for CResHandler loop (ResHandlerProcMain)
 	virtual void v34() {} //0x4363A6, ProcMain for timer loop - calls v8c (WindowProcMain)
-	virtual void CreateResObject(int fileType) {} //v38, 0x434D1C
+	virtual void CreateRes(unsigned int nResType) {} //v38, 0x434D1C
 	virtual IECString GetChitinIcon() { return IECString("IDI_BIOWARE"); } //v3c, 0x43C8D0
 	virtual void v40(IECString* pStr) { pStr->operator =("Baldr"); return; } //Baldr (0xB77238)
 	virtual int GetResTypeId(IECString* pStr) { return 0; } //v44, returns CRES_TYPE ID based on filetype (compares file extension)
@@ -243,7 +243,7 @@ public:
 
 	CRogerWilco m_CRogerWilco; //4016h
 	int u4026;
-	POINT ptCursor; //402ah
+	CPoint ptCursor; //402ah
 	int nChitinUpdates; //4032h
 	BOOL m_bRunningWindowUpdateProc; //4036h
 	CObList GameDirectories; //403ah, Contains 0x8 CObjects (vt, dwLoaded, IECString* directoryName) for directories for the game, AB8ED0
@@ -380,8 +380,8 @@ public:
 #endif
 	} m_646726; //5da0h
 
-	CMessageHandler BaldurMessageHandler; //6b34h
-	CPtrListMessage messages; //6c48h
+	CRemoteMessageHandler m_RemoteMessageHandler; //6b34h
+	CMessageHandler m_MessageHandler; //6c48h
 	int u6c66;
 	int u6c6a;
 	STRREF OnWindowClosePrompt; //6c6eh
@@ -450,7 +450,5 @@ public:
 	BOOL m_bFirstRun; //7204h
 	int nInstallType; //7208h
 };
-
-extern CBaldurChitin& (CBaldurChitin::*CBaldurChitin_Construct)(void);
 
 #endif //CHITIN_H

@@ -64,7 +64,9 @@ choose one:"
 
 
 @0 = ~TobEx - Core~
-@1 = ~This components requires an existing TobEx installation.~
+@1 = ~This component requires an existing TobEx installation.~
+@2 = ~This component requires a Throne of Bhaal installation.~
+@3 = ~This component requires a Baldur's Gate: Enhanced Edition installation.~
 
 @100 = ~Extras~
 @101 = ~Apply Concentration Check On Damage [WIP]~

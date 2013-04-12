@@ -1,32 +1,33 @@
 #include "EffectCore.h"
 
-#include "stdafx.h"
 #include "chitin.h"
-#include "options.h"
-#include "effcore.h"
+#include "optionsext.h"
 #include "effopcode.h"
 #include "EffectCommon.h"
 #include "EffectOpcode.h"
 #include "console.h"
 #include "log.h"
 
-CEffect& (*Tramp_CEffect_CreateEffect)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum) =
-	SetFP(static_cast<CEffect& (*)(ITEM_EFFECT&, POINT&, Enum, POINT&, Enum)>	(&CEffect::CreateEffect),		0x4F3EC2);
-BOOL (CEffect::*Tramp_CEffect_ApplyTiming)(CCreatureObject&) =
-	SetFP(static_cast<BOOL (CEffect::*)(CCreatureObject&)>						(&CEffect::ApplyTiming),		0x4FFFA0);
+//CEffect
+DefineTrampStaticFunc(CEffect&, __cdecl, CEffect, DecodeEffect, (ItmFileEffect& eff, CPoint& ptSource, ENUM eSource, CPoint& ptDest, ENUM e2), DecodeEffect, 0x4F3EC2);
+DefineTrampMemberFunc(BOOL, CEffect, ApplyTiming, (CCreatureObject& creTarget), ApplyTiming, ApplyTiming, 0x4FFFA0);
+DefineTrampMemberFunc(BOOL, CEffect, CheckNotSaved, (
+	CCreatureObject& creTarget,
+	char& rollSaveDeath,
+	char& rollSaveWands,
+	char& rollSavePoly,
+	char& rollSaveBreath,
+	char& rollSaveSpells,
+	char& rollMagicResist
+	), CheckNotSaved, CheckNotSaved, 0x501B29);
 
-BOOL (CEffect::*Tramp_CEffect_CheckNotSaved)(CCreatureObject&, char&, char&, char&, char&, char&, char&) =
-	SetFP(static_cast<BOOL (CEffect::*)(CCreatureObject&, char&, char&, char&, char&, char&, char&)>(&CEffect::CheckNotSaved),		0x501B29);
-void (CEffectList::*Tramp_CEffectList_TryDispel)(CCreatureObject&, POSITION, BOOL, BOOL, char, char) =
-	SetFP(static_cast<void (CEffectList::*)(CCreatureObject&, POSITION, BOOL, BOOL, char, char)>	(&CEffectList::TryDispel),	0x543EC8);
-
-CEffect& DETOUR_CEffect::DETOUR_CreateEffect(ITEM_EFFECT& eff, POINT& ptSource, Enum eSource, POINT& ptDest, Enum e2) {
+CEffect& DETOUR_CEffect::DETOUR_DecodeEffect(ItmFileEffect& eff, CPoint& ptSource, ENUM eSource, CPoint& ptDest, ENUM e2) {
 	if (0) IECString("DETOUR_CEffect::DETOUR_CreateEffect");
 
 	CEffect* pEffect = NULL;
-	switch (eff.opcode) {
+	switch (eff.m_wOpcode) {
 	case CEFFECT_OPCODE_SET_STAT: //0x13E
-		if (pGameOptionsEx->bEngineExpandedStats) pEffect = new CEffectSetStat(eff, ptSource, eSource, ptDest.x, ptDest.y, FALSE, e2);
+		if (pGameOptionsEx->GetOption("Engine_ExpandedStats")) pEffect = new CEffectSetStat(eff, ptSource, eSource, ptDest.x, ptDest.y, FALSE, e2);
 		break;
 	default:
 		break;
@@ -34,23 +35,23 @@ CEffect& DETOUR_CEffect::DETOUR_CreateEffect(ITEM_EFFECT& eff, POINT& ptSource, 
 
 	if (pEffect == NULL) {
 		//Let the engine handle the standard opcodes
-		pEffect = &Tramp_CEffect_CreateEffect(eff, ptSource, eSource, ptDest, e2);
+		pEffect = &Tramp_CEffect_DecodeEffect(eff, ptSource, eSource, ptDest, e2);
 	}
 
 	if (pEffect != NULL) {
-		switch (eff.opcode) {
+		switch (eff.m_wOpcode) {
 		case CEFFECT_OPCODE_POISON:
-			if (pGameOptionsEx->bEffPoisonFix) {
+			if (pGameOptionsEx->GetOption("Eff_PoisonFix")) {
 				pEffect->effect.nParam4 = g_pChitin->pGame->m_WorldTimer.nGameTime;
 			}
 			break;
 		case CEFFECT_OPCODE_DISEASE:
-			if (pGameOptionsEx->bEffDiseaseFix) {
+			if (pGameOptionsEx->GetOption("Eff_DiseaseFix")) {
 				pEffect->effect.nParam4 = g_pChitin->pGame->m_WorldTimer.nGameTime;
 			}
 			break;
 		case CEFFECT_OPCODE_REGENERATION:
-			if (pGameOptionsEx->bEffRegenerationFix) {
+			if (pGameOptionsEx->GetOption("Eff_RegenerationFix")) {
 				pEffect->effect.nParam4 = g_pChitin->pGame->m_WorldTimer.nGameTime;
 			}
 			break;
@@ -138,10 +139,10 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 		break;
 	}
 
-	if (pGameOptionsEx->bEffStackingConfig &&
+	if (pGameOptionsEx->GetOption("Eff_StackingConfig") &&
 		(effect.nSaveType & CEFFECT_STACKING_LIMIT)) {
 		CEffectList& listEquipped = creTarget.GetEquippedEffectsList();
-		CEffectList& listMain = creTarget.GetMainEffectsList();
+		CEffectList& listMain = creTarget.GetTimedEffectList();
 		CEffect* pFound = NULL;
 		
 		pFound = CEffectList_FindPrevious(listEquipped, *this, listEquipped.GetCurrentPosition(), creTarget);
@@ -149,7 +150,7 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 
 		if (pFound) {
 			effect.nSaveType |= CEFFECT_STACKING_SUSPEND;
-			if (pGameOptionsEx->bDebugVerbose) {
+			if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 				LPCTSTR lpsz = "DETOUR_CEffect::DETOUR_ApplyTiming(): Effect %X suspended (like %x)\r\n";
 				console.writef(lpsz, (DWORD)this, (DWORD)pFound);
 				L.timestamp();
@@ -159,7 +160,7 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 		} else {
 			if (effect.nSaveType & CEFFECT_STACKING_SUSPEND) {
 				effect.nSaveType &= ~(CEFFECT_STACKING_SUSPEND);
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "DETOUR_CEffect::DETOUR_ApplyTiming(): Effect %X resumed\r\n";
 					console.writef(lpsz, (DWORD)this);
 					L.timestamp();
@@ -175,32 +176,32 @@ BOOL DETOUR_CEffect::DETOUR_ApplyTiming(CCreatureObject& creTarget) {
 BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& rollSaveDeath, char& rollSaveWands, char& rollSavePoly, char& rollSaveBreath, char& rollSaveSpells, char& rollMagicResist) {
 	if (0) IECString("DETOUR_CEffect::DETOUR_CheckNotSaved");
 
-	char cRollSaveDeath = rollSaveDeath & ~CRESAVE_USED;
-	char cRollSaveWands = rollSaveWands & ~CRESAVE_USED;
-	char cRollSavePoly = rollSavePoly & ~CRESAVE_USED;
-	char cRollSaveBreath = rollSaveBreath & ~CRESAVE_USED;
-	char cRollSaveSpells = rollSaveSpells & ~CRESAVE_USED;
-	char cRollMagicResist = rollMagicResist & ~CRESAVE_USED;
+	char cRollSaveDeath = rollSaveDeath & ~CGAMEEFFECT_USEDROLL;
+	char cRollSaveWands = rollSaveWands & ~CGAMEEFFECT_USEDROLL;
+	char cRollSavePoly = rollSavePoly & ~CGAMEEFFECT_USEDROLL;
+	char cRollSaveBreath = rollSaveBreath & ~CGAMEEFFECT_USEDROLL;
+	char cRollSaveSpells = rollSaveSpells & ~CGAMEEFFECT_USEDROLL;
+	char cRollMagicResist = rollMagicResist & ~CGAMEEFFECT_USEDROLL;
 
 	short wSaveRollTotal = 0;
-	BOOL bSavedVsType = FALSE;
+	BOOL bPrintMsg = FALSE;
 	STRREF srSuccessSave;
-	CDerivedStats& cdsTarget = creTarget.GetDerivedStats();
+	CDerivedStats& cdsTarget = creTarget.GetActiveStats();
 
 	//Mirror images and stone skins ignore checking saves
 	//Unless poison effects
 	if (effect.nOpcode == CEFFECT_OPCODE_POISON) {
 		if (creTarget.m_nMirrorImages > 0 ||
-			creTarget.GetDerivedStats().m_nStoneSkins > 0 ||
-			creTarget.GetDerivedStats().m_StoneSkinGolem > 0) {
+			creTarget.GetActiveStats().m_nStoneSkins > 0 ||
+			creTarget.GetActiveStats().m_StoneSkinGolem > 0) {
 			return FALSE;
 		}
 	}
 	if (effect.nOpcode == CEFFECT_OPCODE_DISPLAY_ICON &&
 		effect.nParam2 == 6) { //ICON_POISONED
 		if (creTarget.m_nMirrorImages > 0 ||
-			creTarget.GetDerivedStats().m_nStoneSkins > 0 ||
-			creTarget.GetDerivedStats().m_StoneSkinGolem > 0) {
+			creTarget.GetActiveStats().m_nStoneSkins > 0 ||
+			creTarget.GetActiveStats().m_StoneSkinGolem > 0) {
 			return FALSE;
 		}
 	}
@@ -211,11 +212,11 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 	if (!(effect.dwFlags & CEFFECT_FLAG_IGNORE_RESISTANCE) &&
 		cdsTarget.resistMagic > cRollMagicResist && //threshold > roll
 		effect.dwFlags & CEFFECT_FLAG_DISPELLABLE) {
-		if (!(cRollMagicResist & CRESAVE_USED)) {
+		if (!(cRollMagicResist & CGAMEEFFECT_USEDROLL)) {
 			CMessageDisplayDialogue* pMDD = IENew CMessageDisplayDialogue();
 			pMDD->eTarget = creTarget.e;
 			pMDD->eSource = creTarget.e;
-			pMDD->srOwner = creTarget.GetLongNameStrRef();
+			pMDD->srOwner = creTarget.GetNameRef();
 			pMDD->srText = 19224; //'Magic Resistance'
 			pMDD->rgbOwner = g_ColorDefaultText;
 			pMDD->rgbText = g_ColorDefaultText;
@@ -225,21 +226,21 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 			pMDD->u22 = 0;
 			pMDD->bPlaySound = true;
 
-			g_pChitin->messages.Send(*pMDD, FALSE);
-			rollMagicResist |= CRESAVE_USED;
+			g_pChitin->m_MessageHandler.AddMessage(*pMDD, FALSE);
+			rollMagicResist |= CGAMEEFFECT_USEDROLL;
 		}
 
 		return FALSE;
 	}
 
 	//Modified from vanilla, use only the lowest char
-	if ((effect.nSaveType & 0xFF) == CEFFECT_SAVETYPE_NONE) return TRUE;
+	if ((effect.nSaveType & 0xFF) == ITEM_SAVINGTHROW_NONE) return TRUE;
 
-	if (pGameOptionsEx->bEffSavingThrowFix) {
+	if (pGameOptionsEx->GetOption("Eff_SavingThrowFix")) {
 		char cSaveTypeUsed = 0;
 
 		//determine best saving throw
-		if (effect.nSaveType & CEFFECT_SAVETYPE_DEATH) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_DEATH) {
 			if (cdsTarget.saveDeath < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveDeath;
 				wSaveThreshold = cdsTarget.saveDeath;
@@ -247,7 +248,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 1;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_WANDS) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_WANDS) {
 			if (cdsTarget.saveWands < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveWands;
 				wSaveThreshold = cdsTarget.saveWands;
@@ -255,7 +256,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 2;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_POLYMORPH) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_POLYMORPH) {
 			if (cdsTarget.savePoly < wSaveThreshold) {
 				wSaveRollTotal = cRollSavePoly;
 				wSaveThreshold = cdsTarget.savePoly;
@@ -263,7 +264,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 3;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_BREATH) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_BREATH) {
 			if (cdsTarget.saveBreath < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveBreath;
 				wSaveThreshold = cdsTarget.saveBreath;
@@ -271,7 +272,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				cSaveTypeUsed = 4;
 			}
 		}
-		if (effect.nSaveType & CEFFECT_SAVETYPE_SPELLS) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_SPELLS) {
 			if (cdsTarget.saveSpell < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveSpells;
 				wSaveThreshold = cdsTarget.saveSpell;
@@ -282,24 +283,34 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 
 		switch (cSaveTypeUsed) {
 		case 1: //death
-			rollSaveDeath |= CRESAVE_USED;
-			bSavedVsType = TRUE;
+			if (!(rollSaveDeath & CGAMEEFFECT_USEDROLL)) {
+				rollSaveDeath |= CGAMEEFFECT_USEDROLL;
+				bPrintMsg = TRUE;
+			}
 			break;
 		case 2: //wands
-			rollSaveWands |= CRESAVE_USED;
-			bSavedVsType = TRUE;
+			if (!(rollSaveWands & CGAMEEFFECT_USEDROLL)) {
+				rollSaveWands |= CGAMEEFFECT_USEDROLL;
+				bPrintMsg = TRUE;
+			}
 			break;
 		case 3: //poly
-			rollSavePoly |= CRESAVE_USED;
-			bSavedVsType = TRUE;
+			if (!(rollSavePoly & CGAMEEFFECT_USEDROLL)) {
+				rollSavePoly |= CGAMEEFFECT_USEDROLL;
+				bPrintMsg = TRUE;
+			}
 			break;
 		case 4: //breath
-			rollSaveBreath |= CRESAVE_USED;
-			bSavedVsType = TRUE;
+			if (!(rollSaveBreath & CGAMEEFFECT_USEDROLL)) {
+				rollSaveBreath |= CGAMEEFFECT_USEDROLL;
+				bPrintMsg = TRUE;
+			}
 			break;
 		case 5: //spells
-			rollSaveSpells |= CRESAVE_USED;
-			bSavedVsType = TRUE;
+			if (!(rollSaveSpells & CGAMEEFFECT_USEDROLL)) {
+				rollSaveSpells |= CGAMEEFFECT_USEDROLL;
+				bPrintMsg = TRUE;
+			}
 			break;
 		default: //none
 			break;
@@ -308,18 +319,18 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 		//apply modifiers to roll
 		wSaveRollTotal += effect.nSaveBonus;
 
-		if (g_pChitin->pGame->GetMageSchool(creTarget.m_BaseStats.kit[1]) == effect.nType1) {
+		if (g_pChitin->pGame->GetMageSchool(creTarget.m_header.m_wKit[1]) == effect.nType1) {
 			wSaveRollTotal += 2;
 		}
 
 		CCreatureObject* pCreSource = NULL;
 		char returnVal;
 		do {
-			returnVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eSource, THREAD_ASYNCH, &pCreSource, INFINITE);
+			returnVal = g_pChitin->pGame->m_GameObjectArray.GetShare(eSource, THREAD_ASYNCH, &pCreSource, INFINITE);
 		} while (returnVal == OBJECT_SHARING || returnVal == OBJECT_DENYING);
 		if (returnVal == OBJECT_SUCCESS) {
 			if (pCreSource->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
-				wSaveRollTotal += creTarget.GetDerivedStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
+				wSaveRollTotal += creTarget.GetActiveStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
 
 				//improved invis saving throw bonus inserted here
 				if (!pCreSource->CanSeeInvisible() &&
@@ -328,82 +339,82 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				}
 
 			}
-			returnVal = g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eSource, THREAD_ASYNCH, INFINITE);
+			returnVal = g_pChitin->pGame->m_GameObjectArray.FreeShare(eSource, THREAD_ASYNCH, INFINITE);
 		}
 	}
 
 	//original code
-	if (!pGameOptionsEx->bEffSavingThrowFix) {
+	if (!pGameOptionsEx->GetOption("Eff_SavingThrowFix")) {
 
-		if (effect.nSaveType & CEFFECT_SAVETYPE_DEATH) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_DEATH) {
 			if (cdsTarget.saveDeath < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveDeath;
 				wSaveThreshold = cdsTarget.saveDeath;
 				srSuccessSave = 14009;
-				if (!(rollSaveDeath & CRESAVE_USED)) {
+				if (!(rollSaveDeath & CGAMEEFFECT_USEDROLL)) {
 					if (wSaveRollTotal >= wSaveThreshold) {
-						rollSaveDeath |= CRESAVE_USED;
-						bSavedVsType = TRUE;
+						rollSaveDeath |= CGAMEEFFECT_USEDROLL;
+						bPrintMsg = TRUE;
 					}
 				}
 			}
 		}
 
-		if (effect.nSaveType & CEFFECT_SAVETYPE_WANDS) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_WANDS) {
 			if (cdsTarget.saveWands < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveWands;
 				wSaveThreshold = cdsTarget.saveWands;
 				srSuccessSave = 14006;
 				//srFailedSave = 10049;
-				if (!(rollSaveWands & CRESAVE_USED)) {
+				if (!(rollSaveWands & CGAMEEFFECT_USEDROLL)) {
 					if (wSaveRollTotal >= wSaveThreshold) {
-						rollSaveWands |= CRESAVE_USED;
-						bSavedVsType = TRUE;
+						rollSaveWands |= CGAMEEFFECT_USEDROLL;
+						bPrintMsg = TRUE;
 					}
 				}
 			}
 		}
 
-		if (effect.nSaveType & CEFFECT_SAVETYPE_POLYMORPH) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_POLYMORPH) {
 			if (cdsTarget.savePoly < wSaveThreshold) {
 				wSaveRollTotal = cRollSavePoly;
 				wSaveThreshold = cdsTarget.savePoly;
 				srSuccessSave = 14005;
 				//srFailedSave = 10050;
-				if (!(rollSavePoly & CRESAVE_USED)) {
+				if (!(rollSavePoly & CGAMEEFFECT_USEDROLL)) {
 					if (wSaveRollTotal >= wSaveThreshold) {
-						rollSavePoly |= CRESAVE_USED;
-						bSavedVsType = TRUE;
+						rollSavePoly |= CGAMEEFFECT_USEDROLL;
+						bPrintMsg = TRUE;
 					}
 				}
 			}
 		}
 
-		if (effect.nSaveType & CEFFECT_SAVETYPE_BREATH) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_BREATH) {
 			if (cdsTarget.saveBreath < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveBreath;
 				wSaveThreshold = cdsTarget.saveBreath;
 				srSuccessSave = 14004;
 				//srFailedSave = 10051;
-				if (!(rollSaveBreath & CRESAVE_USED)) {
+				if (!(rollSaveBreath & CGAMEEFFECT_USEDROLL)) {
 					if (wSaveRollTotal >= wSaveThreshold) {
-						rollSaveBreath |= CRESAVE_USED;
-						bSavedVsType = TRUE;
+						rollSaveBreath |= CGAMEEFFECT_USEDROLL;
+						bPrintMsg = TRUE;
 					}
 				}
 			}
 		}
 
-		if (effect.nSaveType & CEFFECT_SAVETYPE_SPELLS) {
+		if (effect.nSaveType & ITEM_SAVINGTHROW_SPELLS) {
 			if (cdsTarget.saveSpell < wSaveThreshold) {
 				wSaveRollTotal = cRollSaveSpells;
 				wSaveThreshold = cdsTarget.saveSpell;
 				srSuccessSave = 14003;
 				//srFailedSave = 10052;
-				if (!(rollSaveSpells & CRESAVE_USED)) {
+				if (!(rollSaveSpells & CGAMEEFFECT_USEDROLL)) {
 					if (wSaveRollTotal >= wSaveThreshold) {
-						rollSaveSpells |= CRESAVE_USED;
-						bSavedVsType = TRUE;
+						rollSaveSpells |= CGAMEEFFECT_USEDROLL;
+						bPrintMsg = TRUE;
 					}
 				}
 			}
@@ -411,26 +422,26 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 
 		wSaveRollTotal += effect.nSaveBonus;
 
-		if (g_pChitin->pGame->GetMageSchool(creTarget.m_BaseStats.kit[1]) == effect.nType1) {
+		if (g_pChitin->pGame->GetMageSchool(creTarget.m_header.m_wKit[1]) == effect.nType1) {
 			wSaveRollTotal += 2;
 		}
 
 		CCreatureObject* pCreSource = NULL;
 		char returnVal;
 		do {
-			returnVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eSource, THREAD_ASYNCH, &pCreSource, INFINITE);
+			returnVal = g_pChitin->pGame->m_GameObjectArray.GetShare(eSource, THREAD_ASYNCH, &pCreSource, INFINITE);
 		} while (returnVal == OBJECT_SHARING || returnVal == OBJECT_DENYING);
 		if (returnVal == OBJECT_SUCCESS) {
 			if (pCreSource->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
-				wSaveRollTotal += creTarget.GetDerivedStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
+				wSaveRollTotal += creTarget.GetActiveStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
 			}
-			returnVal = g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eSource, THREAD_ASYNCH, INFINITE);
+			returnVal = g_pChitin->pGame->m_GameObjectArray.FreeShare(eSource, THREAD_ASYNCH, INFINITE);
 		}
 	}
 
 	if (wSaveRollTotal >= wSaveThreshold) {
 		//saved
-		if (bSavedVsType &&
+		if (bPrintMsg &&
 			!(cdsTarget.stateFlags & STATE_DEAD)) {
 			if (g_pChitin->pGame->m_GameOptions.m_nEffectTextLevel & 1) {
 				IECString sRoll;
@@ -453,12 +464,12 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				pMDT->u22 = 0;
 				pMDT->u23 = 0;
 
-				g_pChitin->messages.Send(*pMDT, FALSE);
+				g_pChitin->m_MessageHandler.AddMessage(*pMDT, FALSE);
 			} else if (g_pChitin->pGame->m_GameOptions.m_nEffectTextLevel & 8) {
 				CMessageDisplayDialogue* pMDD = IENew CMessageDisplayDialogue();
 				pMDD->eTarget = creTarget.e;
 				pMDD->eSource = creTarget.e;
-				pMDD->srOwner = creTarget.GetLongNameStrRef();
+				pMDD->srOwner = creTarget.GetNameRef();
 				pMDD->srText = srSuccessSave;
 				pMDD->rgbOwner = g_ColorDefaultText;
 				pMDD->rgbText = g_ColorDefaultText;
@@ -468,13 +479,23 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 				pMDD->u22 = 0;
 				pMDD->bPlaySound = true;
 
-				g_pChitin->messages.Send(*pMDD, FALSE);
+				g_pChitin->m_MessageHandler.AddMessage(*pMDD, FALSE);
 			}
 		}
 
 		return FALSE;
 	} else return TRUE;
 }
+
+//CEffectList
+DefineTrampMemberFunc(void, CEffectList, TryDispel, (
+	CCreatureObject& creTarget,
+	POSITION posSkip,
+	BOOL bCheckDispellableFlag,
+	BOOL bCheckProbability,
+	char cRand,
+	char cDispelLevel
+	), TryDispel, TryDispel, 0x543EC8);
 
 void DETOUR_CEffectList::DETOUR_TryDispel(
 	CCreatureObject& creTarget,

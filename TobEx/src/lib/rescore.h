@@ -2,37 +2,56 @@
 #define RESCORE_H
 
 #include "stdafx.h"
-#include "datatypes.h"
+#include "fileare.h"
+#include "filebam.h"
+#include "filebif.h"
+#include "filechu.h"
+#include "filecre.h"
+#include "filedlg.h"
+#include "fileeff.h"
+#include "filegam.h"
+#include "fileitm.h"
+#include "filepro.h"
+#include "filespl.h"
+#include "filesto.h"
+#include "filevvc.h"
+#include "filewed.h"
+#include "filewmp.h"
 
 //file types
 typedef const int CRES_TYPE;
-const int CRES_TYPE_BMP = 0x001;
-const int CRES_TYPE_WAV = 0x004;
-const int CRES_TYPE_WFX = 0x005;
-const int CRES_TYPE_PLT = 0x006;
-const int CRES_TYPE_BAM = 0x3E8;
-const int CRES_TYPE_WED = 0x3E9;
-const int CRES_TYPE_CHU = 0x3EA;
-const int CRES_TYPE_TIS = 0x3EB;
-const int CRES_TYPE_MOS = 0x3EC;
-const int CRES_TYPE_ITM = 0x3ED;
-const int CRES_TYPE_SPL = 0x3EE;
-const int CRES_TYPE_BCS = 0x3EF;
-const int CRES_TYPE_IDS = 0x3F0;
-const int CRES_TYPE_CRE = 0x3F1;
-const int CRES_TYPE_ARE = 0x3F2;
-const int CRES_TYPE_DLG = 0x3F3;
-const int CRES_TYPE_2DA = 0x3F4;
-const int CRES_TYPE_GAM = 0x3F5;
-const int CRES_TYPE_STO = 0x3F6;
-const int CRES_TYPE_WMP = 0x3F7;
-const int CRES_TYPE_EFF = 0x3F8;
-const int CRES_TYPE_BS  = 0x3F9;
-const int CRES_TYPE_CHR = 0x3FA;
-const int CRES_TYPE_VVC = 0x3FB;
-const int CRES_TYPE_VEF = 0x3FC;
-const int CRES_TYPE_PRO = 0x3FD;
-const int CRES_TYPE_BIO = 0x3FE;
+const int CRES_TYPE_BMP = 0x001; //1
+const int CRES_TYPE_WAV = 0x004; //4
+const int CRES_TYPE_WFX = 0x005; //5
+const int CRES_TYPE_PLT = 0x006; //6
+const int CRES_TYPE_BAM = 0x3E8; //1000
+const int CRES_TYPE_WED = 0x3E9; //1001
+const int CRES_TYPE_CHU = 0x3EA; //1002
+const int CRES_TYPE_TIS = 0x3EB; //1003
+const int CRES_TYPE_MOS = 0x3EC; //1004
+const int CRES_TYPE_ITM = 0x3ED; //1005
+const int CRES_TYPE_SPL = 0x3EE; //1006
+const int CRES_TYPE_BCS = 0x3EF; //1007
+const int CRES_TYPE_IDS = 0x3F0; //1008
+const int CRES_TYPE_CRE = 0x3F1; //1009
+const int CRES_TYPE_ARE = 0x3F2; //1010
+const int CRES_TYPE_DLG = 0x3F3; //1011
+const int CRES_TYPE_2DA = 0x3F4; //1012
+const int CRES_TYPE_GAM = 0x3F5; //1013
+const int CRES_TYPE_STO = 0x3F6; //1014
+const int CRES_TYPE_WMP = 0x3F7; //1015
+const int CRES_TYPE_EFF = 0x3F8; //1016
+const int CRES_TYPE_BS  = 0x3F9; //1017
+const int CRES_TYPE_CHR = 0x3FA; //1018
+const int CRES_TYPE_VVC = 0x3FB; //1019
+const int CRES_TYPE_VEF = 0x3FC; //1020
+const int CRES_TYPE_PRO = 0x3FD; //1021
+const int CRES_TYPE_BIO = 0x3FE; //1022
+const int CRES_TYPE_WBM = 0x3FF; //1023, BGEE
+const int CRES_TYPE_FNT = 0x400; //1024, BGEE
+const int CRES_TYPE_GUI = 0x402; //1026, BGEE
+const int CRES_TYPE_SQL = 0x403; //1027, BGEE
+const int CRES_TYPE_PVRZ = 0x404; //1028, BGEE
 const int CRES_TYPE_BAH = 0x44C; //compressed BAM?
 
 typedef IECPtrList CKeyTableEntryList; //AB8E94
@@ -73,9 +92,6 @@ public:
 	POSITION pNode; //48h, CNode containing this object
 	unsigned int u4c; //4ch, identical to uc of KeyTableEntry (12 bits ?, 8 bits ?, 12 bits biffIndex [-1 for not in biff?])
 };
-
-extern void (Res::*Res_RemoveFromHandler)();
-extern void (Res::*Res_AddToHandler)();
 
 class ResBah : public Res { //Size 7Ah
 //Constructor: 0x98B355
@@ -143,9 +159,6 @@ public:
 	int* pFile; //0x58
 	BOOL bPointersLoaded; //0x5c
 };
-
-extern void* (ResItm::*ResItm_Demand)();
-extern int (ResItm::*ResItm_Release)();
 
 class ResSpl : public Res { //Size 60h
 //Constructor: 0x434D1C (find all Res constructors here)
@@ -261,8 +274,6 @@ struct KeyTable { //Size 24h
 	int u20;
 };
 
-extern KeyTableEntry& (KeyTable::*KeyTable_FindKey)(ResRef&, CRES_TYPE, BOOL);
-
 struct CResHandler { //Size 2A8h
 //Constructor: 0x98CB00
 	void Free(Res& res);
@@ -291,7 +302,7 @@ struct CResHandler { //Size 2A8h
 	int* pBiffPtrArray; //ech, pointer to array of CBiff* pointers
 	struct CResCache { //Size 15Ch
 	//Constructor: 0x99C3BC
-		BOOL m_bCacheInitialized;; //0h
+		BOOL m_bCacheInitialized; //0h
 		char cwd[260]; //4h, getcwd() - current working directory (game path)
 		IECString cacheDirectory; //108h, "hd0:\\cache\\"
 		IECString u10c;
@@ -319,7 +330,5 @@ struct CResHandler { //Size 2A8h
 	char u2a6;
 	char u2a7; //pad
 };
-
-extern void (CResHandler::*CResHandler_Free)(Res&);
 
 #endif //RESCORE_H

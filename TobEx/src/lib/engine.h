@@ -116,8 +116,6 @@ public:
 	CUIScrollBar* pScrollActive; //fah, active scroll bar in focus
 };
 
-extern int (CEngine::*CEngine_GetActivePlayerIdx)();
-
 struct CEngineObject : public CObject { //Size 20h
 //Constructor: 0x9E32DE
 public:

@@ -50,7 +50,7 @@
 #define SIZE_CINFCURSOR				0x08F6
 #define SIZE_CINFGAME				0x4DC8
 #define SIZE_CSCREENINVENTORY		0x1424
-#define SIZE_CMESSAGEHANDLER		0x0114
+#define SIZE_CREMOTEMESSAGEHANDLER	0x0114
 #define SIZE_CNETWORK				0x0F3A
 #define SIZE_CNETWORKWINDOW			0x0088
 #define SIZE_COBJECTMARKER			0x005E
@@ -101,7 +101,7 @@ void Debug() {
 	_CheckSize(SIZE_CINFCURSOR, CInfCursor);
 	_CheckSize(SIZE_CINFGAME, CInfGame);
 	_CheckSize(SIZE_CSCREENINVENTORY, CScreenInventory);
-	_CheckSize(SIZE_CMESSAGEHANDLER, CMessageHandler);
+	_CheckSize(SIZE_CREMOTEMESSAGEHANDLER, CRemoteMessageHandler);
 	_CheckSize(SIZE_CNETWORK, CNetwork);
 	_CheckSize(SIZE_CNETWORKWINDOW, CNetworkWindow);
 	_CheckSize(SIZE_COBJECTMARKER, CObjectMarker);

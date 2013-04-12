@@ -20,13 +20,13 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 
 	CGameSprite* pTarget = NULL;
 	Object oOverride = a.oOverride;
-	if (!oOverride.MatchCriteria(*poAny, FALSE, FALSE, FALSE) ||
-		!oOverride.Name.IsEmpty() ||
-		oOverride.oids.id1 != OBJECT_NOTHING) {
+	if (!oOverride.MatchCriteria(*g_poAny, FALSE, FALSE, FALSE) ||
+		!oOverride.m_sName.IsEmpty() ||
+		oOverride.m_oids.id1 != OBJECT_NOTHING) {
 		oOverride.DecodeIdentifiers(sprite);
 		pTarget = (CGameSprite*)&oOverride.FindTargetOfType(sprite, CGAMEOBJECT_TYPE_SPRITE, FALSE);
 		if (pTarget) {
-			a.oOverride = *poAny;
+			a.oOverride = *g_poAny;
 		} else {
 			return TRUE;
 		}
@@ -42,12 +42,12 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 	if (!sScope.Compare("GLOBAL")) {
 		CVariable& var = g_pChitin->pGame->m_GlobalVariables.Find(sVariable);
 		if (&var != NULL) {
-			var.nValue = bIncrement ? var.nValue + a.i : a.i;
-			nNewValue = var.nValue;
+			var.m_nValue = bIncrement ? var.m_nValue + a.i : a.i;
+			nNewValue = var.m_nValue;
 		} else {
 			varNew.SetName(sVariable);
-			varNew.nValue = a.i;
-			nNewValue = varNew.nValue;
+			varNew.m_nValue = a.i;
+			nNewValue = varNew.m_nValue;
 			g_pChitin->pGame->m_GlobalVariables.Add(varNew);
 		}
 
@@ -58,7 +58,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 		pMsg->sVariable = sVariable;
 		pMsg->nValue = nNewValue;
 		pMsg->nBehaviour = 0;
-		g_pChitin->messages.Send(*pMsg, FALSE);
+		g_pChitin->m_MessageHandler.AddMessage(*pMsg, FALSE);
 
 		return TRUE;
 	}
@@ -67,12 +67,12 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 		if (pTarget->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
 			CVariable& var = ((CCreatureObject*)pTarget)->m_pLocalVariables->Find(sVariable);
 			if (&var != NULL) {
-				var.nValue = bIncrement ? var.nValue + a.i : a.i;
-				nNewValue = var.nValue;
+				var.m_nValue = bIncrement ? var.m_nValue + a.i : a.i;
+				nNewValue = var.m_nValue;
 			} else {
 				varNew.SetName(sVariable);
-				varNew.nValue = a.i;
-				nNewValue = varNew.nValue;
+				varNew.m_nValue = a.i;
+				nNewValue = varNew.m_nValue;
 				((CCreatureObject*)pTarget)->m_pLocalVariables->Add(varNew); //64A2E8
 			}
 
@@ -83,7 +83,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 			pMsg->sVariable = sVariable;
 			pMsg->nValue = nNewValue;
 			pMsg->nBehaviour = 0;
-			g_pChitin->messages.Send(*pMsg, FALSE);
+			g_pChitin->m_MessageHandler.AddMessage(*pMsg, FALSE);
 
 			return TRUE;
 		} else {
@@ -102,12 +102,12 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 	if (&area != NULL) {
 		CVariable& var = area.m_AreaVariables.Find(sVariable);
 		if (&var != NULL) {
-			var.nValue = bIncrement ? var.nValue + a.i : a.i;
-			nNewValue = var.nValue;
+			var.m_nValue = bIncrement ? var.m_nValue + a.i : a.i;
+			nNewValue = var.m_nValue;
 		} else {
 			varNew.SetName(sVariable);
-			varNew.nValue = a.i;
-			nNewValue = varNew.nValue;
+			varNew.m_nValue = a.i;
+			nNewValue = varNew.m_nValue;
 			area.m_AreaVariables.Add(varNew);
 		}
 
@@ -118,7 +118,7 @@ BOOL CGameSprite_AtomicSetGlobal(CGameSprite& sprite, Action& a) {
 		pMsg->sVariable = sVariable;
 		pMsg->nValue = nNewValue;
 		pMsg->nBehaviour = 0;
-		g_pChitin->messages.Send(*pMsg, FALSE);
+		g_pChitin->m_MessageHandler.AddMessage(*pMsg, FALSE);
 
 		return TRUE;
 	}
@@ -137,7 +137,7 @@ ACTIONRESULT CGameSprite_ActionAssign(CGameSprite& sprite, Action& a) {
 	}
 	if (pSpriteRef &&
 		a.i2 >= 0 && a.i2 < BLOCK_VAR_ARRAY_SIZE) {
-		std::map<Enum, CBlockVariables*>::iterator it = pRuleEx->m_MapActionVars.find(sprite.e);
+		std::map<ENUM, CBlockVariables*>::iterator it = pRuleEx->m_MapActionVars.find(sprite.e);
 		if (it == pRuleEx->m_MapActionVars.end()) pRuleEx->m_MapActionVars[sprite.e] = new CBlockVariables();
 
 		if (a.i == ARGTYPE_INT) {
@@ -147,14 +147,14 @@ ACTIONRESULT CGameSprite_ActionAssign(CGameSprite& sprite, Action& a) {
 		}
 	}
 
-	return ACTIONRESULT_NONE;
+	return ACTIONRESULT_DONE;
 }
 
 ACTIONRESULT CGameSprite_ActionEval(CGameSprite& sprite, Action& a) {
 	IECString sExpression;
 	Action* aTarget = NULL;
 
-	std::map<Enum, CBlockVariables*>::iterator it = pRuleEx->m_MapActionVars.find(sprite.e);
+	std::map<ENUM, CBlockVariables*>::iterator it = pRuleEx->m_MapActionVars.find(sprite.e);
 	if (it == pRuleEx->m_MapActionVars.end()) {
 		sExpression = a.sName1;
 	} else {
@@ -225,11 +225,11 @@ ACTIONRESULT CGameSprite_ActionEval(CGameSprite& sprite, Action& a) {
 		}
 	}
 
-	return ACTIONRESULT_NONE;
+	return ACTIONRESULT_DONE;
 }
 
 ACTIONRESULT CGameSprite_ActionClearBlockVars(CGameSprite& sprite) {
-	std::map<Enum, CBlockVariables*>::iterator it = pRuleEx->m_MapActionVars.find(sprite.e);
+	std::map<ENUM, CBlockVariables*>::iterator it = pRuleEx->m_MapActionVars.find(sprite.e);
 	if (it != pRuleEx->m_MapActionVars.end()) {
 		it->second->Empty();
 		/*delete pRuleEx->m_MapActionVars[sprite.e];
@@ -237,11 +237,11 @@ ACTIONRESULT CGameSprite_ActionClearBlockVars(CGameSprite& sprite) {
 		pRuleEx->m_MapActionVars.erase(it);*/
 	}
 
-	return ACTIONRESULT_NONE;
+	return ACTIONRESULT_DONE;
 }
 
 void CCreatureObject_ActionChangeAnimation_CopyState(CCreatureObject& creOld, CCreatureObject& creNew) {
-	creNew.SetSaveName(ResRef(creOld.aCurrent.GetSName1()));
-	if (creOld.m_BaseStats.currentHP <= 0) creNew.m_BaseStats.stateFlags |= STATE_DEAD;
+	creNew.SetResRef(ResRef(creOld.aCurrent.GetSName1()));
+	if (creOld.m_header.m_wHitPoints <= 0) creNew.m_header.m_dwGeneralState |= STATE_DEAD;
 	return;
 }

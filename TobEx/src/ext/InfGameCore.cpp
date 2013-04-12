@@ -1,42 +1,36 @@
 #include "InfGameCore.h"
 
 #include "stdafx.h"
+#include "optionsext.h"
 #include "objcre.h"
 #include "chitin.h"
 #include "infgame.h"
-#include "cstringex.h"
-#include "console.h"
-#include "log.h"
 #include "InfGameCommon.h"
 #include "ObjectStats.h"
 
-CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)() =
-	SetFP(static_cast<CRuleTables& (CRuleTables::*)()>									(&CRuleTables::Construct),					0x6213DC);
-void (CRuleTables::*Tramp_CRuleTables_Deconstruct)() =
-	SetFP(static_cast<void (CRuleTables::*)()>											(&CRuleTables::Deconstruct),				0x6279D1);
-int (CRuleTables::*Tramp_CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int) =
-	SetFP(static_cast<int (CRuleTables::*)(char, char, CDerivedStats&, CDerivedStats&, int, int)>
-																						(&CRuleTables::CalculateNewHPSubclass),		0x631055);
-ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRef)(int, int) =
-	SetFP(static_cast<ResRef (CRuleTables::*)(int, int)>								(&CRuleTables::GetMageSpellRef),			0x633691);
-int (CRuleTables::*Tramp_CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int) =
-	SetFP(static_cast<int (CRuleTables::*)(char, char, char, BOOL, int, unsigned int)>	(&CRuleTables::GetWeapProfMax),				0x636C57);
-BOOL (CRuleTables::*Tramp_CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char) =
-	SetFP(static_cast<BOOL (CRuleTables::*)(unsigned int, unsigned char)>				(&CRuleTables::IsMageSchoolAllowed),		0x637DEE);
-ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(char, char) =
-	SetFP(static_cast<ResRef (CRuleTables::*)(char, char)>								(&CRuleTables::GetMageSpellRefAutoPick),	0x63AD1A);
-
-void (CMoveAreasList::*Tramp_CMoveAreasList_MoveAllTo)(CArea&) =
-	SetFP(static_cast<void (CMoveAreasList::*)(CArea&)>	(&CMoveAreasList::MoveAllTo),	0x5EFA6D);
-
-void (CInfGame::*Tramp_CInfGame_InitGame)(int, int) =
-	SetFP(static_cast<void (CInfGame::*)(int, int)>					(&CInfGame::InitGame),				0x67C6C5);
-int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL) =
-	SetFP(static_cast<int (CInfGame::*)(ResRef&, ResRef&, BOOL)>	(&CInfGame::GetNumOfItemInBag),		0x68F35C);
-void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)() =
-	SetFP(static_cast<void (CInfGame::*)()>							(&CInfGame::SetLoseCutscene),		0x6AE3E0);
-
 //CRuleTables
+DefineTrampMemberFunc(CRuleTables&, CRuleTables, Construct, (), Construct, Construct, 0x6213DC);
+DefineTrampMemberFunc(void, CRuleTables, Deconstruct, (), Deconstruct, Deconstruct, 0x6279D1);
+DefineTrampMemberFunc(int, CRuleTables, CalculateNewHPSubclass, (
+	char nClass,
+	char nSubclass,
+	CDerivedStats& cdsOld,
+	CDerivedStats& cdsNew,
+	int nMinRoll,
+	int nDivisor
+	), CalculateNewHPSubclass, CalculateNewHPSubclass, 0x631055);
+DefineTrampMemberFunc(ResRef, CRuleTables, GetMageSpellRef, (int nSpellLevel, int nIndex), GetMageSpellRef, GetMageSpellRef, 0x633691);
+DefineTrampMemberFunc(int, CRuleTables, GetWeapProfMax, (
+	char nClassId,
+	char nClassPrimary,
+	char nClassSecondary,
+	BOOL bTwoClasses,
+	int nWeapProfId,
+	unsigned int dwKit
+	), GetWeapProfMax, GetWeapProfMax, 0x636C57);
+DefineTrampMemberFunc(BOOL, CRuleTables, IsMageSchoolAllowed, (unsigned int dwKit, unsigned char nRace), IsMageSchoolAllowed, IsMageSchoolAllowed, 0x637DEE);
+DefineTrampMemberFunc(ResRef, CRuleTables, GetMageSpellRefAutoPick, (char nSpellLevel, char nIndex), GetMageSpellRefAutoPick, GetMageSpellRefAutoPick, 0x63AD1A);
+
 CRuleTables& DETOUR_CRuleTables::DETOUR_Construct() {
 	CRuleTables& rule = (this->*Tramp_CRuleTables_Construct)();
 	pRuleEx = new CRuleTablesEx(rule);
@@ -105,7 +99,7 @@ int DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(char nClass, char nSubclas
 		return (this->*Tramp_CRuleTables_CalculateNewHPSubclass)(nClass, nSubclass, cdsOld, cdsNew, nMinRoll, nDivisor);
 	}
 
-	if (pGameOptionsEx->bDebugVerbose) {
+	if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 		LPCTSTR lpsz = "DETOUR_CRuleTables::DETOUR_CalculateNewHPSubclass(): Using table %s.2DA\r\n";
 		L.timestamp();
 		L.appendf(lpsz, (LPCTSTR)sTable);
@@ -130,7 +124,7 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 		return rSpell;
 	}
 
-	if (pGameOptionsEx->bEngineExternMageSpellsCap) {
+	if (pGameOptionsEx->GetOption("Engine_ExternMageSpellsCap")) {
 		IECString sCol;
 		sCol.Format("%d", nSpellLevel);
 		IECString sRow("MAGE");
@@ -151,7 +145,7 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 
 			//safety for index 199+
 			if (nIndex >= 99) {
-				return pGameOptionsEx->bUserExternMageSpellHiding ? CRuleTables_TryHideSpell(rSpell): rSpell;
+				return pGameOptionsEx->GetOption("User_ExternMageSpellHiding") ? CRuleTables_TryHideSpell(rSpell): rSpell;
 			}
 		} else {
 			//spell levels 1-8, and level 9 with normal nMaxSpells
@@ -165,7 +159,7 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRef(int nSpellLevel, int nIndex) {
 		rSpell = szSpell;
 	}
 
-	return pGameOptionsEx->bUserExternMageSpellHiding ? CRuleTables_TryHideSpell(rSpell): rSpell;
+	return pGameOptionsEx->GetOption("User_ExternMageSpellHiding") ? CRuleTables_TryHideSpell(rSpell): rSpell;
 }
 
 int DETOUR_CRuleTables::DETOUR_GetWeapProfMax(char nClassId, char nClassPrimary, char nClassSecondary, BOOL bTwoClasses, int nWeapProfId, unsigned int dwKit) {
@@ -225,11 +219,13 @@ ResRef DETOUR_CRuleTables::DETOUR_GetMageSpellRefAutoPick(char nSpellLevel, char
 }
 
 //CMoveAreasList
+DefineTrampMemberFunc(void, CMoveAreasList, MoveAllTo, (CArea& area), MoveAllTo, MoveAllTo, 0x5EFA6D);
+
 void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) { 
 	if (0) IECString("DETOUR_CMoveAreasList::DETOUR_MoveAllTo");
 
-	ITEM_EFFECT* pItmEff = new ITEM_EFFECT;
-	CEffect::CreateItemEffect(*pItmEff, CEFFECT_OPCODE_MOVE_TO_AREA);
+	ItmFileEffect* pItmEff = new ItmFileEffect;
+	CEffect::ClearItemEffect(*pItmEff, CEFFECT_OPCODE_MOVE_TO_AREA);
 	IECPtrList cp;
 
 	POSITION pos_i = GetHeadPosition();
@@ -240,20 +236,20 @@ void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) {
 		pComp->rArea = pElement->rArea;
 		pComp->ptDest = pElement->ptDest;
 
-		pItmEff->param2 = pElement->cOrient;
-		pItmEff->param1 = pElement->nDelay;
-		pElement->rArea.Copy(pItmEff->resource);
-		pItmEff->timing = 1;
-		POINT pt;
+		pItmEff->m_nParam2 = pElement->cOrient;
+		pItmEff->m_nParam1 = pElement->nDelay;
+		pElement->rArea.Copy(pItmEff->m_rResource);
+		pItmEff->m_cTiming = 1;
+		CPoint pt;
 		pt.x = -1;
 		pt.y = -1;
-		CEffect* pEff = &CEffect::CreateEffect(*pItmEff, pElement->ptDest, pElement->eCre, pt, -1);
+		CEffect* pEff = &CEffect::DecodeEffect(*pItmEff, pElement->ptDest, pElement->eCre, pt, -1);
 
 		CInfGame* pGame = g_pChitin->pGame;
 		CCreatureObject* pCre = NULL;
 		char threadVal;
 		do {
-			threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectDeny(pElement->eCre, THREAD_ASYNCH, &pCre, INFINITE);
+			threadVal = pGame->m_GameObjectArray.GetDeny(pElement->eCre, THREAD_ASYNCH, &pCre, INFINITE);
 		} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 		if (threadVal != OBJECT_SUCCESS) {
 			delete pComp;
@@ -269,7 +265,7 @@ void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) {
 					pCompElement->rArea == pComp->rArea &&
 					pCompElement->sCreLongName.Compare(pComp->sCreLongName) == 0) {
 					delete pComp;
-					pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(pElement->eCre, THREAD_ASYNCH, INFINITE);
+					pGame->m_GameObjectArray.FreeDeny(pElement->eCre, THREAD_ASYNCH, INFINITE);
 					bFoundIdentical = true;
 					break; //Bioware forgot to break this loop
 				}
@@ -277,10 +273,10 @@ void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) {
 
 			if (!bFoundIdentical) {
 				cp.AddTail(pComp);
-				pCre->m_BaseStats.dwFlags |= 0x4000; //bit14
+				pCre->m_header.m_dwFlags |= CREFILEHEADER_FLAG_LIMBO_CREATURE; //bit14
 				area.m_ObjectsToMarshal.AddTail((void*)pCre->e);
 				pCre->ApplyEffect(*pEff, true, TRUE, FALSE);
-				pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(pElement->eCre, THREAD_ASYNCH, INFINITE);
+				pGame->m_GameObjectArray.FreeDeny(pElement->eCre, THREAD_ASYNCH, INFINITE);
 			}
 		}
 	}
@@ -299,8 +295,12 @@ void DETOUR_CMoveAreasList::DETOUR_MoveAllTo(CArea& area) {
 }
 
 //CInfGame
+DefineTrampMemberFunc(void, CInfGame, InitGame, (int nUnused, int nUnused2), InitGame, InitGame, 0x67C6C5);
+DefineTrampMemberFunc(int, CInfGame, GetNumOfItemInBag, (ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly), GetNumOfItemInBag, GetNumOfItemInBag, 0x68F35C);
+DefineTrampMemberFunc(void, CInfGame, SetLoseCutscene, (), SetLoseCutscene, SetLoseCutscene, 0x6AE3E0);
+
 void DETOUR_CInfGame::DETOUR_InitGame(int nUnused, int nUnused2) {
-	std::map<Enum, CBlockVariables*>::iterator it;
+	std::map<ENUM, CBlockVariables*>::iterator it;
 	for (it = pRuleEx->m_MapActionVars.begin(); it != pRuleEx->m_MapActionVars.end(); it++) {
 		delete it->second;
 		it->second = NULL;
@@ -321,7 +321,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 			store.Unmarshal(rBag);
 			BOOL bStoreValid = store.bUnmarshaled && store.m_header == "STORV1.0" ? TRUE : FALSE;
 			if (bStoreValid == FALSE) {
-				bool bFailed = !g_pChitin->BaldurMessageHandler.RequestHostFile(rBag.FormatToString(), CRES_TYPE_STO, TRUE, TRUE, true);
+				bool bFailed = !g_pChitin->m_RemoteMessageHandler.RequestHostFile(rBag.FormatToString(), CRES_TYPE_STO, TRUE, TRUE, true);
 				if (bFailed) {
 					g_pChitin->cNetwork.CloseSession(true);
 					return 0;
@@ -361,7 +361,7 @@ int DETOUR_CInfGame::DETOUR_GetNumOfItemInBag(ResRef& rBag, ResRef& rItem, BOOL 
 			if (bRequested) {
 				CMessageHostReleaseServerStore* pMsg = IENew CMessageHostReleaseServerStore();
 				pMsg->rStoreName = store.m_filename;
-				g_pChitin->messages.Send(*pMsg, FALSE);
+				g_pChitin->m_MessageHandler.AddMessage(*pMsg, FALSE);
 			}
 			return nItemCount;
 		}
@@ -441,7 +441,7 @@ IECString& __stdcall CRuleTables_GetMaxProfs(CCreatureObject& cre, IECString& sR
 	int levelExp = atoi((LPCTSTR)sLevelExp);
 
 	IECString sColName;
-	cre.m_BaseStats.currentExp < levelExp ? sColName = "FIRST_LEVEL" : sColName = "NONE" /*"OTHER_LEVELS"*/;
+	cre.m_header.m_dwXp < levelExp ? sColName = "FIRST_LEVEL" : sColName = "NONE" /*"OTHER_LEVELS"*/;
 		
 	return g_pChitin->pGame->PROFSMAX.GetValue(sColName, sRowName); //placed into g_pChitin->pCharacter->dwProfsMax;
 }
@@ -517,7 +517,7 @@ STRREF __stdcall CInfGame_GetRaceText(unsigned int nRace) {
 BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef) {
 	BOOL bPass = TRUE;
 	IECString sCreName(cre.szScriptName);
-	POINT loc = {0, 0};
+	CPoint loc(0, 0);
 	ResRef rSlotItm = cre.m_Inventory.items[wSlot] ? cre.m_Inventory.items[wSlot]->m_itm.name : "";
 	ResRef rGrabItm = &itmGrabbed ? itmGrabbed.m_itm.name : "";
 
@@ -547,7 +547,7 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 				STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
 				*pStrRef = strref;
 					
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_PICKUP[_E]\r\n";
 					L.timestamp();
 					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
@@ -566,7 +566,7 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 				STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
 				*pStrRef = strref;
 				
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_ONLY_EQUIP\r\n";
 					L.timestamp();
 					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
@@ -585,7 +585,7 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 				STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
 				*pStrRef = strref;
 
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_DROP_E\r\n";
 					L.timestamp();
 					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
@@ -649,7 +649,7 @@ BOOL __stdcall CRuleTables_DoesEquipSlotPassCreExclude(CCreatureObject& cre, sho
 BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short wSlot, CItem& itmGrabbed, STRREF* pStrRef) {
 	BOOL bPass = TRUE;
 	IECString sCreName(cre.szScriptName);
-	POINT loc = {0, 0};
+	CPoint loc(0, 0);
 	ResRef rSlotItm = cre.m_Inventory.items[wSlot] ? cre.m_Inventory.items[wSlot]->m_itm.name : "";
 	ResRef rGrabItm = &itmGrabbed ? itmGrabbed.m_itm.name : "";
 
@@ -679,7 +679,7 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 				STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
 				*pStrRef = strref;
 
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_PICKUP[_I]\r\n";
 					L.timestamp();
 					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);
@@ -698,7 +698,7 @@ BOOL __stdcall CRuleTables_DoesInvSlotPassCreExclude(CCreatureObject& cre, short
 				STRREF strref = atoi((LPCTSTR)pRuleEx->m_ItemCreExclude.GetValue(loc));
 				*pStrRef = strref;
 
-				if (pGameOptionsEx->bDebugVerbose) {
+				if (pGameOptionsEx->GetOption("Debug_Verbose")) {
 					LPCTSTR lpsz = "CRuleTables_DoesEquipSlotPassCreExclude(): Found %s restricted on %s with FLAG_NO_DROP_I\r\n";
 					L.timestamp();
 					L.appendf(lpsz, (LPCTSTR)sItm, (LPCTSTR)sUser);

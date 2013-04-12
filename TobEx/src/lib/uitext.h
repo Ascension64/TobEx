@@ -28,9 +28,9 @@ public:
 	void Deconstruct() {} //dummy
 
 	virtual void SetEnabled(bool b); //v4
-	virtual void OnLMouseDrag(POINT pt); //v14
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
-	virtual void OnLMouseBtUp(POINT pt); //v1c
+	virtual void OnLMouseDrag(CPoint pt); //v14
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
+	virtual void OnLMouseBtUp(CPoint pt); //v1c
 	virtual void ShowTooltip(bool b); //v30
 	virtual void SetRedraw(); //v48
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
@@ -38,7 +38,7 @@ public:
 
 	virtual void HighlightText(POSITION pos); //v5c
 	virtual void UnhighlightText(); //v60
-	virtual void OnLClicked(POINT pt); //v64, calls UserProc()
+	virtual void OnLClicked(CPoint pt); //v64, calls UserProc()
 	virtual void UserProc(int nArg); //v68, nArg = TextAreaEntry.nUserArg, e.g. selecting custom script
 
 	POSITION Append(IECString& sLeft, IECString& sRight, ABGR colLeft, ABGR colRight, int nUserArg, bool bResetScrollbar);
@@ -81,22 +81,6 @@ public:
 	bool bConstructed; //aa7h
 };
 
-extern void (CUITextArea::*CUITextArea_Deconstruct)();
-extern void (CUITextArea::*CUITextArea_SetEnabled)(bool);
-extern void (CUITextArea::*CUITextArea_OnLMouseDrag)(POINT);
-extern BOOL (CUITextArea::*CUITextArea_OnLMouseBtDn)(POINT);
-extern void (CUITextArea::*CUITextArea_OnLMouseBtUp)(POINT);
-extern void (CUITextArea::*CUITextArea_ShowTooltip)(bool);
-extern void (CUITextArea::*CUITextArea_SetRedraw)();
-extern BOOL (CUITextArea::*CUITextArea_Redraw)(BOOL);
-extern BOOL (CUITextArea::*CUITextArea_NeedsRedraw)();
-extern void (CUITextArea::*CUITextArea_HighlightText)(POSITION);
-extern void (CUITextArea::*CUITextArea_UnhighlightText)();
-extern void (CUITextArea::*CUITextArea_OnLClicked)(POINT);
-extern void (CUITextArea::*CUITextArea_UserProc)(int);
-extern POSITION (CUITextArea::*CUITextArea_Append)(IECString&, IECString&, ABGR, ABGR, int, bool);
-extern void (CUITextArea::*CUITextArea_ClearText)();
-
 class CUITextField : public CUIControl { //Size 87Eh
 //Constructor: 0x59C00A
 public:
@@ -107,10 +91,10 @@ public:
 	virtual void SetEnabled(bool b); //v4
 	virtual void OnLoseFocus(); //vc
 	virtual void OnGetFocus(); //v10
-	virtual void OnLMouseDrag(POINT pt); //v14
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
-	virtual void OnLMouseBtUp(POINT pt); //v1c
-	virtual BOOL OnRMouseBtDn(POINT pt); //v24
+	virtual void OnLMouseDrag(CPoint pt); //v14
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
+	virtual void OnLMouseBtUp(CPoint pt); //v1c
+	virtual BOOL OnRMouseBtDn(CPoint pt); //v24
 	virtual void OnKeyPress(short wChar); //v2c
 	virtual void SetRedraw(); //v48
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
@@ -126,8 +110,8 @@ public:
 	CVidMosaic ufa;
 	CVidMosaic u1aa;
 	CVidCell cvcCursor; //25ah
-	POINT ptXY; //330h, from controlInfo (32h, 34h)
-	POINT pt; //338h
+	CPoint ptXY; //330h, from controlInfo (32h, 34h)
+	CPoint pt; //338h
 	CVidFont font; //340h
 	short u83c; //from controlInfo 66h
 	short u83e; //from controlInfo 68h
@@ -156,24 +140,6 @@ public:
 	char u87d;
 };
 
-extern void (CUITextField::*CUITextField_Deconstruct)();
-extern void (CUITextField::*CUITextField_SetEnabled)(bool);
-extern void (CUITextField::*CUITextField_OnLoseFocus)();
-extern void (CUITextField::*CUITextField_OnGetFocus)();
-extern void (CUITextField::*CUITextField_OnLMouseDrag)(POINT);
-extern BOOL (CUITextField::*CUITextField_OnLMouseBtDn)(POINT);
-extern void (CUITextField::*CUITextField_OnLMouseBtUp)(POINT);
-extern BOOL (CUITextField::*CUITextField_OnRMouseBtDn)(POINT);
-extern void (CUITextField::*CUITextField_OnKeyPress)(short);
-extern void (CUITextField::*CUITextField_SetRedraw)();
-extern BOOL (CUITextField::*CUITextField_Redraw)(BOOL);
-extern BOOL (CUITextField::*CUITextField_NeedsRedraw)();
-extern void (CUITextField::*CUITextField_SetTextColors)(ABGR, ABGR);
-extern void (CUITextField::*CUITextField_Execute)(IECString&);
-extern IECString (CUITextField::*CUITextField_GetText)();
-extern void (CUITextField::*CUITextField_SetText)(IECString&);
-extern void (CUITextField::*CUITextField_UpdateDisplayArea)();
-
 class CUITextBar : public CUIControl { //size 886h
 //Similar to CUITextField except it only supports a single row
 //Constructor: 0x58931D
@@ -185,8 +151,8 @@ public:
 	virtual void SetEnabled(bool b); //v4
 	virtual void OnLoseFocus(); //vc
 	virtual void OnGetFocus(); //v10
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
-	virtual BOOL OnRMouseBtDn(POINT pt); //v24
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
+	virtual BOOL OnRMouseBtDn(CPoint pt); //v24
 	virtual void OnKeyPress(short wChar); //v2c
 	virtual void SetRedraw(); //v48
 	virtual BOOL Redraw(BOOL bForceRedraw); //v4c
@@ -200,8 +166,8 @@ public:
 	CVidMosaic ufa;
 	CVidMosaic u1aa;
 	CVidCell cvcCursor; //25ah
-	POINT ptXY; //330h, from controlInfo (32h, 34h)
-	POINT pt; //338h, from controlInfo (36h, 38h)
+	CPoint ptXY; //330h, from controlInfo (32h, 34h)
+	CPoint pt; //338h, from controlInfo (36h, 38h)
 	CVidFont font; //340h
 	short m_wMaxInputLength; //83ch, from controlInfo 64h
 	short m_wTextCase; //83eh, from controlInfo 66h
@@ -229,7 +195,7 @@ public:
 
 	void Execute(IECString& s); //v5c
 
-	Enum m_eDebug; //886h, the enum to debug dump on
+	ENUM m_eDebug; //886h, the enum to debug dump on
 	bool m_bDebugState; //88ah, true = do debug dump
 	char u88b; //pad
 };

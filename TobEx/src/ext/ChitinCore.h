@@ -3,7 +3,7 @@
 
 #include "chitin.h"
 
-extern CBaldurChitin& (CBaldurChitin::*Tramp_CBaldurChitin_Construct)(void);
+DeclareTrampMemberFunc(CBaldurChitin&, CBaldurChitin, Construct, (), Construct);
 
 int __stdcall CBaldurChitin_MessageBox(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
 

@@ -135,11 +135,11 @@ IECString LUADump_object(void* p) {
 	Object* pO = (Object*)p;
 	IECString s;
 
-	if (pO->eTarget != ENUM_INVALID_INDEX) {
+	if (pO->m_eTarget != ENUM_INVALID_INDEX) {
 		CGameObject* pObject;
 		char nReturnVal;
 		do {
-			nReturnVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(pO->eTarget, THREAD_ASYNCH, &pObject, INFINITE);
+			nReturnVal = g_pChitin->pGame->m_GameObjectArray.GetShare(pO->m_eTarget, THREAD_ASYNCH, &pObject, INFINITE);
 		} while (nReturnVal == OBJECT_SHARING || nReturnVal == OBJECT_DENYING);
 		if (nReturnVal == OBJECT_SUCCESS) {
 			switch (pObject->GetType()) {
@@ -171,7 +171,7 @@ IECString LUADump_object(void* p) {
 					!stricmp(((CCreatureObject*)pObject)->szScriptName, "None") ||
 					((CCreatureObject*)pObject)->szScriptName[0] == 0
 				) {
-					sName.Format("%c%s", ((CCreatureObject*)pObject)->u6752, (LPCTSTR)((CCreatureObject*)pObject)->rSaveName);
+					sName.Format("%c%s", ((CCreatureObject*)pObject)->u6752, (LPCTSTR)((CCreatureObject*)pObject)->m_rSaveName);
 					sName.Remove('*');
 				} else {
 					sName.Format("\"%.32s\"", ((CCreatureObject*)pObject)->szScriptName);
@@ -205,15 +205,15 @@ IECString LUADump_object(void* p) {
 				break;
 			}
 
-			g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(pO->eTarget, THREAD_ASYNCH, INFINITE);
+			g_pChitin->pGame->m_GameObjectArray.FreeShare(pO->m_eTarget, THREAD_ASYNCH, INFINITE);
 		}
-	} else if (!pO->Name.IsEmpty()) {
-		s = pO->Name;
+	} else if (!pO->m_sName.IsEmpty()) {
+		s = pO->m_sName;
 	} else {
 		bool bUseIds = false;
 		bool bUseTypes = true;
 		for (int i = 0; i < 5; i++) {
-			if (pO->oids[i]) {
+			if (pO->m_oids[i]) {
 				bUseIds = true;
 				break;
 			}
@@ -223,11 +223,11 @@ IECString LUADump_object(void* p) {
 
 			CScriptParser& parser = *g_pChitin->pGame->m_pScriptParser; 
 			for (int i = 0; i < 5; i++) {
-				if (pO->oids[i] == 0) continue;
+				if (pO->m_oids[i] == 0) continue;
 				POSITION pos = parser.OBJECT.entries.GetHeadPosition();
 				while (pos) {
 					IdsEntry* pEntry = (IdsEntry*)parser.OBJECT.entries.GetNext(pos);
-					if (pEntry->nOpcode == pO->oids[i]) {
+					if (pEntry->nOpcode == pO->m_oids[i]) {
 						IECString sTemp = s;
 						s.Format("%s(%s)", (LPCTSTR)pEntry->head, (LPCSTR)sTemp);
 						break;
@@ -241,13 +241,13 @@ IECString LUADump_object(void* p) {
 			CScriptParser& parser = *g_pChitin->pGame->m_pScriptParser; 
 			ResRef files[] = {"EA", "GENERAL", "RACE", "CLASS", "SPECIFIC", "GENDER", "ALIGN"};
 			unsigned char values[7];
-			values[0] = pO->EnemyAlly;
-			values[1] = pO->General;
-			values[2] = pO->Race;
-			values[3] = pO->Class;
-			values[4] = pO->Specific;
-			values[5] = pO->Gender;
-			values[6] = pO->Alignment;
+			values[0] = pO->m_cEnemyAlly;
+			values[1] = pO->m_cGeneral;
+			values[2] = pO->m_cRace;
+			values[3] = pO->m_cClass;
+			values[4] = pO->m_cSpecific;
+			values[5] = pO->m_cGender;
+			values[6] = pO->m_cAlignment;
 			int nNumToDump = 7;
 			while (nNumToDump > 0) {
 				if (values[nNumToDump - 1] != 0xFF &&
@@ -320,7 +320,7 @@ IECString LUADump_sprite_creature(void* p) {
 		!stricmp(pObject->szScriptName, "None") ||
 		pObject->szScriptName[0] == 0
 	) {
-		sName.Format("%c%s", pObject->u6752, (LPCTSTR)pObject->rSaveName);
+		sName.Format("%c%s", pObject->u6752, (LPCTSTR)pObject->m_rSaveName);
 		sName.Remove('*');
 	} else {
 		sName.Format("\"%.32s\"", pObject->szScriptName);

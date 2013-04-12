@@ -1,3 +1,13 @@
+Beta 0027
+---------
+-TobEx now installs on and has basic functionality for Baldur's Gate: Enhanced Edition
+-Class/structure updates
+-Internal code optimisations
+-Log Dialogue Bar: Fixed a bug that prevent user patches from working if TobEx_dlg.log already exists
+-Saving Throw Fix: Fixed a bug where successfully save against a group of effects showed too many messages in the dialogue bar
+-TobExLoader: Added detection of Baldur's Gate: Enhanced Edition
+-TobExLoader: Modified error messages to be slightly more informative
+
 Beta 0026
 ---------
 -Class/structure updates

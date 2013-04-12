@@ -2,7 +2,7 @@ BACKUP "TobEx/backup"
 
 AUTHOR "Ascension64 (http://www.shsforums.net/forum/606-tobex/)"
 
-VERSION "Beta 0025"
+VERSION "Beta 0027"
 
 README "TobEx/tra/%LANGUAGE%/readme.htm" "TobEx/tra/english/readme.htm"
 
@@ -55,86 +55,103 @@ ACTION_INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobEx.tpa"
 
 BEGIN @101 DESIGNATED 101 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Apply Concentration Check On Damage=0~ ~Effect Opcodes:Apply Concentration Check On Damage=1~
 
 BEGIN @102 DESIGNATED 102 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Awaken On Damage=0~ ~Effect Opcodes:Awaken On Damage=1~
 
 BEGIN @103 DESIGNATED 103 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Blindness As Spell Description=0~ ~Effect Opcodes:Blindness As Spell Description=1~
 
 BEGIN @104 DESIGNATED 104 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Disable Stoneskin Grey Colour=0~ ~Effect Opcodes:Disable Stoneskin Grey Colour=1~
 
 BEGIN @105 DESIGNATED 105 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:No Spell Interruption On Zero Damage=0~ ~Effect Opcodes:No Spell Interruption On Zero Damage=1~
 
 BEGIN @106 DESIGNATED 106 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Use Caster Level On Mirror Image=0~ ~Effect Opcodes:Use Caster Level On Mirror Image=1~
 
 BEGIN @107 DESIGNATED 107 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Allow All Races to Dual Class=0~ ~Engine:Allow All Races to Dual Class=1~
 
 BEGIN @108 DESIGNATED 108 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Allow Equipping Armor in Combat=0~ ~Engine:Allow Equipping Armor in Combat=1~
 
 BEGIN @109 DESIGNATED 109 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Disable Experience Boost=0~ ~Engine:Disable Experience Boost=1~
 
 BEGIN @110 DESIGNATED 110 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Disable Force Inventory Pause=0~ ~Engine:Disable Force Inventory Pause=1~
 
 BEGIN @111 DESIGNATED 111 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Disable Silence On Charm=0~ ~Engine:Disable Silence On Charm=1~
 
 BEGIN @112 DESIGNATED 112 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Level One Proficiency Restrictions=0~ ~Engine:Level One Proficiency Restrictions=1~
 
 BEGIN @113 DESIGNATED 113 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Action:Remain Hidden On Pickpocket Success=0~ ~Action:Remain Hidden On Pickpocket Success=1~
 
 BEGIN @114 DESIGNATED 114 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Rest Spawns Advance Time=0~ ~Engine:Rest Spawns Advance Time=1~
 
 BEGIN @115 DESIGNATED 115 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Sound:Dialogue Greeting Subtitles=0~ ~Sound:Dialogue Greeting Subtitles=1~
 
 BEGIN @116 DESIGNATED 116 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Sound:Enable Animation Attack Sounds=0~ ~Sound:Enable Animation Attack Sounds=1~
 
 BEGIN @117 DESIGNATED 117 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~UI:Universal Four Inventory Weapon Slots=0~ ~UI:Universal Four Inventory Weapon Slots=1~
 
@@ -142,6 +159,7 @@ COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
 
 BEGIN @118 DESIGNATED 118 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 
 //charsnd MALE
 STRING_SET 16235 @4809
@@ -314,6 +332,7 @@ END
 
 BEGIN @119 DESIGNATED 119 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 
 COPY_EXISTING ~clsrcreq.2da~ ~override/clsrcreq.2da~
               ~mgsrcreq.2da~ ~override/mgsrcreq.2da~
@@ -338,26 +357,31 @@ COPY_EXISTING ~clsrcreq.2da~ ~override/clsrcreq.2da~
 
 BEGIN @120 DESIGNATED 120 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Disintegrate=0~ ~Effect Opcodes:Drop Inventory on Disintegrate=1~
 
 BEGIN @121 DESIGNATED 121 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Frozen Death=0~ ~Effect Opcodes:Drop Inventory on Frozen Death=1~
 
 BEGIN @122 DESIGNATED 122 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Stone Death=0~ ~Effect Opcodes:Drop Inventory on Stone Death=1~
 
 BEGIN @123 DESIGNATED 123 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Enable Auto-Pause On All Screens=0~ ~Engine:Enable Auto-Pause On All Screens=1~
 
 BEGIN @124 DESIGNATED 124 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
+REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Action:Attacks Are All Genuine=0~ ~Action:Attacks Are All Genuine=1~
 COPY "TobEx/TobEx_redist/override/rndbase1.bmp" "override/rndbase1.bmp"

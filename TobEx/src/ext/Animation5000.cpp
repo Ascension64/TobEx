@@ -1,14 +1,9 @@
 #include "Animation5000.h"
 
-#include "console.h"
+DefineTrampMemberFunc(CAnimation5000&, CAnimation5000, Construct, (unsigned short wAnimId, CreFileColors& colors, int nOrientation), Construct, Construct, 0x843678);
+DefineTrampMemberFunc(LPCTSTR, CAnimation5000, GetWalkingSound, (short wTerrainCode), GetWalkingSound, GetWalkingSound, 0x851DCA);
 
-CAnimation5000& (CAnimation5000::*Tramp_CAnimation5000_Construct)(unsigned short, ColorRangeValues&, int) =
-	SetFP(static_cast<CAnimation5000& (CAnimation5000::*)(unsigned short, ColorRangeValues&, int)>
-															(&CAnimation5000::Construct),		0x843678);
-LPCTSTR (CAnimation5000::*Tramp_CAnimation5000_GetWalkingSound)(short) =
-	SetFP(static_cast<LPCTSTR (CAnimation5000::*)(short)>	(&CAnimation5000::GetWalkingSound),	0x851DCA);
-
-CAnimation5000& DETOUR_CAnimation5000::DETOUR_Construct(unsigned short wAnimId, ColorRangeValues& colors, int nOrientation) {
+CAnimation5000& DETOUR_CAnimation5000::DETOUR_Construct(unsigned short wAnimId, CreFileColors& colors, int nOrientation) {
 	switch (wAnimId & 0xF00) { //class
 	case 0x200: //MAGE_*
 		switch (wAnimId & 0xF) { //race

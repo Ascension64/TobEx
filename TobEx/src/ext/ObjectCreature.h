@@ -3,22 +3,33 @@
 
 #include "objcre.h"
 
-extern CCreatureObject& (CCreatureObject::*Tramp_CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int);
-extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellPriest)(int, int);
-extern CreFileKnownSpell& (CCreatureObject::*Tramp_CCreatureObject_GetKnownSpellMage)(int, int);
-extern BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellPriest)(int, int, int*);
-extern BOOL (CCreatureObject::*Tramp_CCreatureObject_AddMemSpellMage)(int, int, int*);
-extern void (CCreatureObject::*Tramp_CCreatureObject_ValidateAttackSequence)(char*);
-extern BOOL (CCreatureObject::*Tramp_CCreatureObject_EvaluateTrigger)(Trigger&);
-extern ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ExecuteAction)();
-extern short (CCreatureObject::*Tramp_CCreatureObject_GetProficiencyInItem)(CItem&);
-extern ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ActionPickPockets)(CCreatureObject&);
-extern ACTIONRESULT (CCreatureObject::*Tramp_CCreatureObject_ActionJumpToAreaEntranceMove)(IECString);
-extern void (CCreatureObject::*Tramp_CCreatureObject_UpdateFaceTalkerTimer)();
+DeclareTrampMemberFunc(CCreatureObject&, CCreatureObject, Construct, (
+	void* pFile,
+	unsigned int dwSize,
+	short wCreType,
+	int nExpirationTime,
+	int wHuntingRange,
+	int wFollowRange,
+	unsigned int nTimeOfDayVisible,
+	int nPosStartX,
+	int nPosStartY,
+	int nDirection
+	), Construct10);
+DeclareTrampMemberFunc(CreFileKnownSpell&, CCreatureObject, GetKnownSpellPriest, (int nLevel, int nIndex), GetKnownSpellPriest);
+DeclareTrampMemberFunc(CreFileKnownSpell&, CCreatureObject, GetKnownSpellMage, (int nLevel, int nIndex), GetKnownSpellMage);
+DeclareTrampMemberFunc(BOOL, CCreatureObject, AddMemSpellPriest, (int nLevel , int nIndex, int* pIndex), AddMemSpellPriest);
+DeclareTrampMemberFunc(BOOL, CCreatureObject, AddMemSpellMage, (int nLevel , int nIndex, int* pIndex), AddMemSpellMage);
+DeclareTrampMemberFunc(void, CCreatureObject, ValidateAttackSequence, (char* pSeq), ValidateAttackSequence);
+DeclareTrampMemberFunc(BOOL, CCreatureObject, EvaluateTrigger, (Trigger& t), EvaluateTrigger);
+DeclareTrampMemberFunc(ACTIONRESULT, CCreatureObject, ExecuteAction, (), ExecuteAction);
+DeclareTrampMemberFunc(short, CCreatureObject, GetProficiencyInItem, (CItem& itm), GetProficiencyInItem);
+DeclareTrampMemberFunc(ACTIONRESULT, CCreatureObject, ActionPickPockets, (CCreatureObject& creTarget), ActionPickPockets);
+DeclareTrampMemberFunc(ACTIONRESULT, CCreatureObject, ActionJumpToAreaEntranceMove, (IECString sArea), ActionJumpToAreaEntranceMove);
+DeclareTrampMemberFunc(void, CCreatureObject, UpdateFaceTalkerTimer, (), UpdateFaceTalkerTimer);
 
 class DETOUR_CCreatureObject : public CCreatureObject {
 public:
-	CCreatureObject& DETOUR_Construct(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing);
+	CCreatureObject& DETOUR_Construct(void* pFile, unsigned int dwSize, short wCreType, int nExpirationTime, int wHuntingRange, int wFollowRange, unsigned int nTimeOfDayVisible, int nPosStartX, int nPosStartY, int nDirection);
 	CreFileKnownSpell& DETOUR_GetKnownSpellPriest(int nLevel, int nIndex);
 	CreFileKnownSpell& DETOUR_GetKnownSpellMage(int nLevel, int nIndex);
 	BOOL DETOUR_AddMemSpellPriest(int nLevel , int nIndex, int* pIndex);
@@ -43,7 +54,7 @@ void __stdcall CCreatureObject_JoinParty_UpdateClassAbilities(CCreatureObject& c
 BOOL __stdcall CCreatureObject_Spell_IsOverrideInvisible(CCreatureObject& creSource, CCreatureObject& creTarget);
 BOOL __stdcall CCreatureObject_IsDeadInFrontVerticalList(CCreatureObject& cre);
 BOOL __stdcall CCreatureObject_Spell_IsOverrideSilence(CCreatureObject& creSource);
-LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject& creSource, ResSplContainer& resSpell, SplFileAbility& ability);
+LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject& creSource, ResSplFile& resSpell, SplFileAbility& ability);
 short __stdcall CCreatureObject_DoSpellCasting_GetCastingSpeed(CCreatureObject& creSource, SplFileAbility& ability);
 BOOL __stdcall CCreatureObject_UseItem_CannotTargetInvisible(CCreatureObject& creSource, CCreatureObject& creTarget);
 void __stdcall CCreatureObject_UseItem_OverrideAnimation(CCreatureObject& creSource);

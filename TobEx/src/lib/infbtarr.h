@@ -29,7 +29,7 @@ struct CButtonArrayButton { //Size 1D4h
 	CVidCell u14;
 	CVidCell uea;
 	int u1c0;
-	BOOL bActive; //1c4h
+	BOOL m_bActive; //1c4h
 	int u1c8;
 	int u1cc;
 	BOOL bDisabled; //1d0h
@@ -55,7 +55,5 @@ struct CButtonArray { //Size 1820h
 	int nIndexMageSpellStart; //1818h, of CQuickObjectList
 	int u181c; //0 = showing priest spells, 1 = showing mage spells
 };
-
-extern BOOL (CButtonArray::*CButtonArray_CheckButtonEnabled)(int);
 
 #endif //INFBTARR_H

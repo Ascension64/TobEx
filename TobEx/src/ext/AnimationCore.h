@@ -3,9 +3,9 @@
 
 #include "animcore.h"
 
-extern void (CAnimation::*Tramp_CAnimation_PlayCurrentSequenceSound)(CCreatureObject&);
-extern BOOL (*Tramp_CAnimation_IsPlayableAnimation)(unsigned short);
-extern LPCTSTR (CAnimation::*Tramp_CAnimation_GetWalkingSound)(short);
+DeclareTrampMemberFunc(void, CAnimation, PlayCurrentSequenceSound, (CCreatureObject& cre), PlayCurrentSequenceSound);
+DeclareTrampStaticFunc(BOOL, __cdecl, CAnimation, IsPlayableAnimation, (unsigned short wAnimId), IsPlayableAnimation);
+DeclareTrampMemberFunc(LPCTSTR, CAnimation, GetWalkingSound, (short wTerrainCode), GetWalkingSound);
 
 class DETOUR_CAnimation : public CAnimation {
 public:

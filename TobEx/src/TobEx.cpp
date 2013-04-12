@@ -2,7 +2,7 @@
 
 #include "TobEx.h"
 
-#include "stdafx.h"
+#include "win32def.h"
 #include "main.h"
 
 //Use as Extension DLL

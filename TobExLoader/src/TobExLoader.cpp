@@ -10,29 +10,42 @@ using namespace std;
 
 int WINAPI WinMain (HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow) {
 
-	char* szFileName = "BGMain.exe";
-	char* szClassName = "ChitinClass";
-	char* szWindowName = NULL; //"Baldur's Gate II - Shadows of Amn - Throne of Bhaal";
-	char* szLibPath = "TobEx.dll";
+	char* szFileNameTOB = "BGMain.exe";
+	char* szClassNameTOB = "ChitinClass";
+	char* szWindowNameTOB = NULL; //"Baldur's Gate II - Shadows of Amn - Throne of Bhaal";
+	char* szLibPathTOB = "TobEx.dll";
+
+	char* szFileNameBGEE = "Baldur.exe";
+	char* szClassNameBGEE = "SDL_app";
+	char* szWindowNameBGEE = NULL; //"Baldur's Gate - Enhanced Edition";
+	char* szLibPathBGEE = "TobExEE.dll";
+
+	int nGameType = 0;
+
 	WIN32_FIND_DATAA FileData;
 	STARTUPINFOA si = { 0 };
 	PROCESS_INFORMATION pi = { 0 };
 	si.cb = sizeof(si);
 
-	if (FindWindowA((LPCSTR)szClassName, (LPCSTR)szWindowName)) {
+	if (FindWindowA((LPCSTR)szClassNameTOB, (LPCSTR)szWindowNameTOB) ||
+		FindWindowA((LPCSTR)szClassNameBGEE, (LPCSTR)szWindowNameBGEE)) {
 		displayErrorMessage("WinMain(): Please close existing game before running TobEx.", 0);
 		return -1;
 	}
 
-	if (FindFirstFileA(szFileName, &FileData) != INVALID_HANDLE_VALUE) {
-		if (!checkFileVersion(szFileName, "2, 5, 0, 2")) return -1;
+	if (FindFirstFileA(szFileNameTOB, &FileData) != INVALID_HANDLE_VALUE) {
+		if (!checkFileVersion(szFileNameTOB, "2, 5, 0, 2")) return -1;
+		nGameType = 0;
+	} else if (FindFirstFileA(szFileNameBGEE, &FileData) != INVALID_HANDLE_VALUE) {
+		if (!checkFileVersion(szFileNameBGEE, "0.1.0.0")) return -1;
+		nGameType = 1;
 	} else {
-		displayErrorMessage("WinMain(): FindFirstFileA() failed.", GetLastError());
+		displayErrorMessage("FindFirstFileA(): Could not find game executable.", GetLastError());
 		return -1;
 	}
 
 	if ( CreateProcessA(
-		reinterpret_cast<LPCSTR>(szFileName),
+		reinterpret_cast<LPCSTR>(nGameType == 1 ? szFileNameBGEE : szFileNameTOB),
 		NULL, //pointer to cmd arguments
 		NULL, //process security
 		NULL, //default thread security
@@ -43,13 +56,13 @@ int WINAPI WinMain (HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int n
 		&si,
 		&pi )
 	) {
-		DWORD dwExitCode = injectDLL(pi.hProcess, szLibPath);
+		DWORD dwExitCode = injectDLL(pi.hProcess, nGameType == 1 ? szLibPathBGEE : szLibPathTOB);
 		ResumeThread(pi.hThread);
 	    CloseHandle(pi.hThread);
 	    CloseHandle(pi.hProcess);
 		if (!dwExitCode) return -1;
 	} else {
-		displayErrorMessage("WinMain(): CreateProcessA() failed.", GetLastError());
+		displayErrorMessage("CreateProcessA(): Unable to start game.", GetLastError());
 	}
 
 	return 0;
@@ -117,18 +130,18 @@ BOOL checkFileVersion(char* szFileName, const char* szVer) {
 					bSuccess = FALSE;
 				}
 			} else {
-				displayErrorMessage("checkFileVersion(): VerQueryValue() failed.", GetLastError());
+				displayErrorMessage("VerQueryValue(): Unable to check file version.", GetLastError());
 				bSuccess = FALSE;
 			}
 		} else {
-			displayErrorMessage("checkFileVersion(): GetFileVersionInfoA() failed.", GetLastError());
+			displayErrorMessage("GetFileVersionInfoA(): Unable to check file version.", GetLastError());
 			bSuccess = FALSE;
 		}
 
 		delete[] lpFileVerInfo;
 
 	} else {
-		displayErrorMessage("checkFileVersion(): GetFileVersionInfoSizeA() failed.", GetLastError());
+		displayErrorMessage("GetFileVersionInfoSizeA(): Unable to check file version.", GetLastError());
 		bSuccess = FALSE;
 	}
 
@@ -142,18 +155,18 @@ DWORD injectDLL(HANDLE hProcess, char* szLibPath) {
 	LPVOID lpLibAddress;
 	lpLibAddress = VirtualAllocEx(hProcess, NULL, szLibPathSize, MEM_COMMIT, PAGE_READWRITE);
 	if (!lpLibAddress) {
-		displayErrorMessage("injectDLL(): VirtualAllocEx() failed.", GetLastError());
+		displayErrorMessage("VirtualAllocEx(): Unable to inject DLL.", GetLastError());
 		return 0;
 	}
   
 	if ( !WriteProcessMemory(hProcess, lpLibAddress, szLibPath, szLibPathSize, NULL) ) {
-		displayErrorMessage("injectDLL(): WriteProcessMemory() failed.", GetLastError());
+		displayErrorMessage("WriteProcessMemory(): Unable to inject DLL.", GetLastError());
 		return 0;
 	}
 
 	HMODULE hKernel32 = GetModuleHandleA(reinterpret_cast<LPCSTR>("KERNEL32.DLL"));
 	if (!hKernel32) {
-		displayErrorMessage("injectDLL(): GetModuleHandleA() failed.", GetLastError());
+		displayErrorMessage("GetModuleHandleA(): Unable to inject DLL.", GetLastError());
 		return 0;
 	}
 
@@ -161,13 +174,13 @@ DWORD injectDLL(HANDLE hProcess, char* szLibPath) {
 	DWORD dwRemoteThreadID;
 	LPTHREAD_START_ROUTINE lpStartRoutine = reinterpret_cast<LPTHREAD_START_ROUTINE>(GetProcAddress(hKernel32, "LoadLibraryA"));
 	if (!lpStartRoutine) {
-		displayErrorMessage("injectDLL(): GetProcAddress() failed.", GetLastError());
+		displayErrorMessage("GetProcAddress(): Unable to inject DLL.", GetLastError());
 		return 0;
 	}
 
 	hRemoteThread = CreateRemoteThread(hProcess, NULL, 0, lpStartRoutine, lpLibAddress, 0, &dwRemoteThreadID); 
 	if (!hRemoteThread) {
-		displayErrorMessage("injectDLL(): CreateRemoteThread() failed.", GetLastError());
+		displayErrorMessage("CreateRemoteThread(): Unable to inject DLL.", GetLastError());
 		return 0;
 	}
 
@@ -179,32 +192,32 @@ DWORD injectDLL(HANDLE hProcess, char* szLibPath) {
 		case WAIT_TIMEOUT:
 			break;
 		case WAIT_FAILED:
-			displayErrorMessage("injectDLL(): WaitForSingleObject() failed.", GetLastError());
+			displayErrorMessage("WaitForSingleObject(): Unable to inject DLL.", GetLastError());
 			return 0;
 		default:
-			displayErrorMessage("injectDLL(): WaitForSingleObject() returned invalid value.", 0);
+			displayErrorMessage("WaitForSingleObject(): Unable to inject DLL.", 0);
 			return 0;
 	}
 
 	DWORD dwExitCode;
 	BOOL result = GetExitCodeThread(hRemoteThread, &dwExitCode);
 	if (!result) {
-		displayErrorMessage("injectDLL(): GetExitCodeThread() failed.", GetLastError());
+		displayErrorMessage("GetExitCodeThread(): GetExitCodeThread() failed.", GetLastError());
 		return 0;
 	}
 
 	if (dwExitCode == STILL_ACTIVE) {
-		displayErrorMessage("injectDLL(): hRemoteThread still active.", 0);
+		displayErrorMessage("hRemoteThread: TobExLoader exited prematurely.", 0);
 		return 0;
 	}
 
 	if (!CloseHandle(hRemoteThread)) {
-		displayErrorMessage("injectDLL(): CloseHandle() failed.", GetLastError());
+		displayErrorMessage("CloseHandle(): Unable to close thread handle.", GetLastError());
 		return 0;
 	}
 
 	if (!VirtualFreeEx(hProcess, lpLibAddress, 0, MEM_RELEASE)) {
-		displayErrorMessage("injectDLL(): VirtualFreeEx() failed.", GetLastError());
+		displayErrorMessage("VirtualFreeEx(): Unable to free memory.", GetLastError());
 		return 0;
 	}
 

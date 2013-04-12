@@ -3,7 +3,7 @@
 #include <cassert>
 
 #include "stdafx.h"
-#include "options.h"
+#include "optionsext.h"
 #include "UserChargenKit.h"
 #include "UserChargenMageSpell.h"
 #include "UserRecMageSpell.h"
@@ -11,10 +11,8 @@
 #include "UserPriestBook.h"
 #include "uicore.h"
 #include "uitext.h"
-#include "console.h"
 
-CUIControl* (__cdecl *Tramp_CreateUIControl)(CPanel&, ChuFileControlInfoBase&) =
-	reinterpret_cast<CUIControl* (__cdecl *)(CPanel&, ChuFileControlInfoBase&)>	(0x95D5E0);
+DefineTrampGlobalFuncPtr(CUIControl*, __cdecl, CreateUIControl, (CPanel& panel, ChuFileControlInfoBase& controlInfo), 0x95D5E0);
 
 CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase& controlInfo) {
 	CUIControl* pControl = Tramp_CreateUIControl(panel, controlInfo);
@@ -29,7 +27,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 7:
 				switch (controlInfo.id) {
 				case 31:
-					if (pGameOptionsEx->bUserChargenMageSpellScroll) {
+					if (pGameOptionsEx->GetOption("User_ChargenMageSpellScroll")) {
 						pControl = new CUIScrollBarChargenMageSpell(panel, controlInfo);
 					}
 					break;
@@ -40,12 +38,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 22:
 				switch (controlInfo.id) {
 				case 15:
-					if (pGameOptionsEx->bUserChargenKitSelectScroll) {
+					if (pGameOptionsEx->GetOption("User_ChargenKitSelectScroll")) {
 						pControl = new CUIScrollBarChargenKit(panel, controlInfo);
 					}
 					break;
 				case 16:
-					if (pGameOptionsEx->bUserChargenKitSelectScroll) {
+					if (pGameOptionsEx->GetOption("User_ChargenKitSelectScroll")) {
 						pControl = IENew CUICheckButtonChargenKit(panel, controlInfo);
 					}
 					break;
@@ -64,12 +62,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 2:
 				switch (controlInfo.id) {
 				case 65:
-					if (pGameOptionsEx->bUserMageBookScroll) {
+					if (pGameOptionsEx->GetOption("User_MageBookScroll")) {
 						pControl = new CUIButtonMageBookUp(panel, controlInfo);
 					}
 					break;
 				case 66:
-					if (pGameOptionsEx->bUserMageBookScroll) {
+					if (pGameOptionsEx->GetOption("User_MageBookScroll")) {
 						pControl = new CUIButtonMageBookDn(panel, controlInfo);
 					}
 					break;
@@ -88,12 +86,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 2:
 				switch (controlInfo.id) {
 				case 62:
-					if (pGameOptionsEx->bUserPriestBookScroll) {
+					if (pGameOptionsEx->GetOption("User_PriestBookScroll")) {
 						pControl = new CUIButtonPriestBookUp(panel, controlInfo);
 					}
 					break;
 				case 63:
-					if (pGameOptionsEx->bUserPriestBookScroll) {
+					if (pGameOptionsEx->GetOption("User_PriestBookScroll")) {
 						pControl = new CUIButtonPriestBookDn(panel, controlInfo);
 					}
 					break;
@@ -112,12 +110,12 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 8:
 				switch (controlInfo.id) {
 				case 24:
-					if (pGameOptionsEx->bUserRecordMageSpellScroll) {
+					if (pGameOptionsEx->GetOption("User_RecordMageSpellScroll")) {
 						pControl = IENew CUICheckButtonRecMageSpell(panel, controlInfo);
 					}
 					break;
 				case 30:
-					if (pGameOptionsEx->bUserRecordMageSpellScroll) {
+					if (pGameOptionsEx->GetOption("User_RecordMageSpellScroll")) {
 						pControl = new CUIScrollBarRecMageSpell(panel, controlInfo);
 					}
 					break;
@@ -145,8 +143,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 4: //small log bar
 				switch (controlInfo.id) {
 				case 3:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -156,8 +154,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 7: //large log bar
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -167,8 +165,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 12: //medium log bar
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -178,8 +176,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 13: //dialog3
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -189,8 +187,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 14: //dialog2
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -200,8 +198,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 18: //large log bar (MP)/dialogue panel (MP)
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -211,8 +209,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 22: //medium log bar (MP)
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -222,8 +220,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 29: //dialog panel
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -233,8 +231,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 30: //dialog3 (MP)
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:
@@ -244,8 +242,8 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			case 31: //dialog2 (MP)
 				switch (controlInfo.id) {
 				case 1:
-					if (pGameOptionsEx->nUserCustomDlgBarSize) {
-						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->nUserCustomDlgBarSize;
+					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
+						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
 					}
 					break;
 				default:

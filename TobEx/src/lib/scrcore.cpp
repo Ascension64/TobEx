@@ -1,58 +1,25 @@
 #include "scrcore.h"
 
 //Identifiers
-Identifiers& (Identifiers::*Identifiers_Construct_0)() =
-	SetFP(static_cast<Identifiers& (Identifiers::*)()>				(&Identifiers::Construct),	0x40FB70);
-Identifiers& (Identifiers::*Identifiers_Construct_1_ResRef)(ResRef) =
-	SetFP(static_cast<Identifiers& (Identifiers::*)(ResRef)>		(&Identifiers::Construct),	0x40FC37);
-void (Identifiers::*Identifiers_Deconstruct)() =
-	SetFP(static_cast<void (Identifiers::*)()>						(&Identifiers::Deconstruct),0x40FE31);
-IdsEntry* (Identifiers::*Identifiers_FindByHead)(IECString, BOOL) =
-	SetFP(static_cast<IdsEntry* (Identifiers::*)(IECString, BOOL)>	(&Identifiers::FindByHead),0x410502);
-
-Identifiers::Identifiers() { (this->*Identifiers_Construct_0)(); }
-Identifiers::Identifiers(ResRef rFile) { (this->*Identifiers_Construct_1_ResRef)(rFile); }
-Identifiers::~Identifiers() { (this->*Identifiers_Deconstruct)(); }
-IdsEntry* Identifiers::FindByHead(IECString sValue, BOOL bCaseSensitive) { return (this->*Identifiers_FindByHead)(sValue, bCaseSensitive); }
+DefineLibNoRetFunc(Identifiers&, Identifiers, Identifiers, (), Construct, Construct0, (), 0x40FB70);
+DefineLibNoRetFunc(Identifiers&, Identifiers, Identifiers, (ResRef rFile), Construct, Construct1, (rFile), 0x40FC37);
+DefineLibNoRetFunc(void, Identifiers, ~Identifiers, (), Deconstruct, Deconstruct, (), 0x40FE31);
+DefineLibMemberFunc(IdsEntry*, Identifiers, FindByHead, (IECString sValue, BOOL bCaseSensitive), FindByHead, FindByHead, (sValue, bCaseSensitive), 0x410502);
 
 //CVariable
-void (CVariable::*CVariable_SetName)(IECString) =
-	SetFP(static_cast<void (CVariable::*)(IECString)>			(&CVariable::SetName),		0x45FD80);
-CVariable& (CVariable::*CVariable_Construct)() =
-	SetFP(static_cast<CVariable& (CVariable::*)()>				(&CVariable::Construct),	0x4B6850);
-CVariable& (CVariable::*CVariable_OpAssign)(CVariable&) =
-	SetFP(static_cast<CVariable& (CVariable::*)(CVariable&)>	(&CVariable::OpAssign),		0x4B68C0);
-IECString (CVariable::*CVariable_GetName)() =
-	SetFP(static_cast<IECString (CVariable::*)()>				(&CVariable::GetName),		0x54DE90);
-
-void CVariable::SetName(IECString s) { return (this->*CVariable_SetName)(s); }
-CVariable::CVariable() { (this->*CVariable_Construct)(); }
-CVariable& CVariable::operator=(CVariable& var) { return (this->*CVariable_OpAssign)(var); }
-IECString CVariable::GetName() { return (this->*CVariable_GetName)(); }
+DefineLibMemberFunc(void, CVariable, SetName, (IECString s), SetName, SetName, (s), 0x45FD80);
+DefineLibNoRetFunc(CVariable&, CVariable, CVariable, (), Construct, Construct, (), 0x4B6850);
+DefineLibMemberFunc(CVariable&, CVariable, operator=, (CVariable& var), OpAssign, OpAssign, (var), 0x4B68C0);
+DefineLibMemberFunc(IECString, CVariable, GetName, (), GetName, GetName, (), 0x54DE90);
 
 //CVariableMap
-CVariableMap& (CVariableMap::*CVariableMap_Construct)(int) =
-	SetFP(static_cast<CVariableMap& (CVariableMap::*)(int)>		(&CVariableMap::Construct),		0x64A1E0);
-void (CVariableMap::*CVariableMap_Deconstruct)() =
-	SetFP(static_cast<void (CVariableMap::*)()>					(&CVariableMap::Deconstruct),	0x64A2C7);
-BOOL (CVariableMap::*CVariableMap_Add)(CVariable&) =
-	SetFP(static_cast<BOOL (CVariableMap::*)(CVariable&)>		(&CVariableMap::Add),			0x64A2E8);
-CVariable& (CVariableMap::*CVariableMap_Find)(IECString) =
-	SetFP(static_cast<CVariable& (CVariableMap::*)(IECString)>	(&CVariableMap::Find),			0x64A709);
-unsigned int (CVariableMap::*CVariableMap_GetHash)(IECString) =
-	SetFP(static_cast<unsigned int (CVariableMap::*)(IECString)>(&CVariableMap::GetHash),		0x64A96E);
-void (CVariableMap::*CVariableMap_Empty)() =
-	SetFP(static_cast<void (CVariableMap::*)()>					(&CVariableMap::Empty),			0x64AA27);
-void (CVariableMap::*CVariableMap_SetSize)(int) =
-	SetFP(static_cast<void (CVariableMap::*)(int)>				(&CVariableMap::SetSize),		0x64B23D);
-
-CVariableMap::CVariableMap(int nSize)				{ (this->*CVariableMap_Construct)(nSize); }
-CVariableMap::~CVariableMap()						{ (this->*CVariableMap_Deconstruct)(); }
-BOOL CVariableMap::Add(CVariable& var)				{ return (this->*CVariableMap_Add)(var); }
-CVariable& CVariableMap::Find(IECString sVar)		{ return (this->*CVariableMap_Find)(sVar); }
-unsigned int CVariableMap::GetHash(IECString sVar)	{ return (this->*CVariableMap_GetHash)(sVar); }
-void CVariableMap::Empty()							{ return (this->*CVariableMap_Empty)(); }
-void CVariableMap::SetSize(int nSize)				{ return (this->*CVariableMap_SetSize)(nSize); }
+DefineLibNoRetFunc(CVariableMap&, CVariableMap, CVariableMap, (int nSize), Construct, Construct, (nSize), 0x64A1E0);
+DefineLibNoRetFunc(void, CVariableMap, ~CVariableMap, (), Deconstruct, Deconstruct, (), 0x64A2C7);
+DefineLibMemberFunc(BOOL, CVariableMap, Add, (CVariable& var), Add, Add, (var), 0x64A2E8);
+DefineLibMemberFunc(CVariable&, CVariableMap, Find, (IECString sVar), Find, Find, (sVar), 0x64A709);
+DefineLibMemberFunc(unsigned int, CVariableMap, GetHash, (IECString sVar), GetHash, GetHash, (sVar), 0x64A96E);
+DefineLibMemberFunc(void, CVariableMap, Empty, (), Empty, Empty, (), 0x64AA27);
+DefineLibMemberFunc(void, CVariableMap, SetSize, (int nSize), SetSize, SetSize, (nSize), 0x64B23D);
 
 //ObjectIds
 ObjectIds::ObjectIds() {
@@ -67,125 +34,78 @@ char ObjectIds::operator[](unsigned int n) {
 	return n < 5 ? *((unsigned char*)this + n) : 0;
 }
 
-
 //Object
-static Object* poAnything = reinterpret_cast<Object*>(0xB75AA0); //unused
-static Object* poNonScript = reinterpret_cast<Object*>(0xB75AB8); //only in CGameObject constructor
-static Object* poNothing = reinterpret_cast<Object*>(0xB75AD0); //for constructors
-Object* poAny = reinterpret_cast<Object*>(0xB75AE8); //for criteria objects
-static Object* poMyself = reinterpret_cast<Object*>(0xB75B00); //unused
-
-Object& (Object::*Object_Construct_10)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&) =
-	SetFP(static_cast<Object& (Object::*)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum, ObjectIds*, IECString&)>
-																			(&Object::Construct),			0x410C14);
-Object& (Object::*Object_Construct_8)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum) =
-	SetFP(static_cast<Object& (Object::*)(unsigned char, unsigned char, unsigned char, unsigned char, char, char, char, Enum)>
-																			(&Object::Construct),			0x410CEE);
-bool (Object::*Object_MatchCriteria)(Object&, BOOL, BOOL, BOOL) =
-	SetFP(static_cast<bool (Object::*)(Object&, BOOL, BOOL, BOOL)>			(&Object::MatchCriteria),		0x410D9E);
-void (Object::*Object_OpAssign)(Object&) =
-	SetFP(static_cast<void (Object::*)(Object&)>							(&Object::OpAssign),			0x4119BD);
-void (Object::*Object_DecodeIdentifiers)(CGameSprite&) =
-	SetFP(static_cast<void (Object::*)(CGameSprite&)>						(&Object::DecodeIdentifiers),	0x411A4C);
-CGameObject& (Object::*Object_FindTargetOfType)(CGameObject&, char, BOOL) =
-	SetFP(static_cast<CGameObject& (Object::*)(CGameObject&, char, BOOL)>	(&Object::FindTargetOfType),	0x414EA9);
-CGameObject& (Object::*Object_FindTarget)(CGameObject&, BOOL) =
-	SetFP(static_cast<CGameObject& (Object::*)(CGameObject&, BOOL)>			(&Object::FindTarget),			0x414FA8);
-
-void (Object::*Object_SetIdentifiers)(ObjectIds&) =
-	SetFP(static_cast<void (Object::*)(ObjectIds&)>							(&Object::SetIdentifiers),		0x41531E);
-Object (Object::*Object_GetOpposingEAObject)() =
-	SetFP(static_cast<Object (Object::*)()>									(&Object::GetOpposingEAObject),	0x4157E9);
-unsigned char (Object::*Object_GetClass)() =
-	SetFP(static_cast<unsigned char (Object::*)()>							(&Object::GetClass),			0x4158A4);
-void (Object::*Object_GetDualClasses)(unsigned char*, unsigned char*) =
-	SetFP(static_cast<void (Object::*)(unsigned char*, unsigned char*)>		(&Object::GetDualClasses),		0x4158B5);
-extern BOOL (Object::*Object_HasActiveSubclass)(unsigned char, BOOL) =
-	SetFP(static_cast<BOOL (Object::*)(unsigned char, BOOL)>				(&Object::HasActiveSubclass),	0x415BD0);
-
-Object::Object() { (this->*Object_Construct_8)(0, 0, 0, 0, 0, 0, 0, -1); }
-Object::Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget, ObjectIds* poids, IECString& sName)
-	{ (this->*Object_Construct_10)(EnemyAlly, General, Race, Class, Specific, Gender, Alignment, eTarget, poids, sName); }
-Object::Object(unsigned char EnemyAlly, unsigned char General, unsigned char Race, unsigned char Class, char Specific, char Gender, char Alignment, Enum eTarget)
-	{ (this->*Object_Construct_8)(EnemyAlly, General, Race, Class, Specific, Gender, Alignment, eTarget); }
-bool Object::MatchCriteria(Object& oCriteria, BOOL bAnyIncludesNonScript, BOOL bExcludeNonScript, BOOL bEAGroupMatch)
-	{ return (this->*Object_MatchCriteria)(oCriteria, bAnyIncludesNonScript, bExcludeNonScript, bEAGroupMatch); }
-void Object::operator=(Object& o)												{ return (this->*Object_OpAssign)(o); }
-void Object::DecodeIdentifiers(CGameSprite& spriteSource)						{ return (this->*Object_DecodeIdentifiers)(spriteSource); }
-CGameObject& Object::FindTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList)
-	{ return (this->*Object_FindTargetOfType)(source, type, bCheckMiddleList); }
-CGameObject& Object::FindTarget(CGameObject& source, BOOL bCheckMiddleList)		{ return (this->*Object_FindTarget)(source, bCheckMiddleList); }
-void Object::SetIdentifiers(ObjectIds& ids)										{ return (this->*Object_SetIdentifiers)(ids); }
-Object Object::GetOpposingEAObject()											{ return (this->*Object_GetOpposingEAObject)(); }
-unsigned char Object::GetClass()												{ return (this->*Object_GetClass)(); }
-void Object::GetDualClasses(unsigned char* pClassNew, unsigned char* pClassOrg)	{ return (this->*Object_GetDualClasses)(pClassNew, pClassOrg); }
-BOOL Object::HasActiveSubclass(unsigned char nSubclass, BOOL bThreadAsync)		{ return (this->*Object_HasActiveSubclass)(nSubclass, bThreadAsync); }
+Object::Object() { Object(0, 0, 0, 0, 0, 0, 0, -1); }
+DefineLibNoRetFunc(Object&, Object, Object, (
+	unsigned char cEnemyAlly,
+	unsigned char cGeneral,
+	unsigned char cRace,
+	unsigned char cClass,
+	unsigned char cSpecific,
+	unsigned char cGender,
+	unsigned char cAlignment,
+	ENUM eTarget,
+	ObjectIds* poids,
+	IECString& sName
+	), Construct, Construct10, (cEnemyAlly, cGeneral, cRace, cClass, cSpecific, cGender, cAlignment, eTarget, poids, sName), 0x410C14);
+DefineLibNoRetFunc(Object&, Object, Object, (
+	unsigned char cEnemyAlly,
+	unsigned char cGeneral,
+	unsigned char cRace,
+	unsigned char cClass,
+	unsigned char cSpecific,
+	unsigned char cGender,
+	unsigned char cAlignment,
+	ENUM eTarget
+	), Construct, Construct8, (cEnemyAlly, cGeneral, cRace, cClass, cSpecific, cGender, cAlignment, eTarget), 0x410CEE);
+DefineLibMemberFunc(bool, Object, MatchCriteria, (
+	Object& oCriteria,
+	BOOL bAnyIncludesNonScript,
+	BOOL bExcludeNonScript,
+	BOOL bEAGroupMatch
+	), MatchCriteria, MatchCriteria, (oCriteria, bAnyIncludesNonScript, bExcludeNonScript, bEAGroupMatch), 0x410D9E);
+DefineLibMemberFunc(void, Object, operator=, (Object& o), OpAssign, OpAssign, (o), 0x4119BD);
+DefineLibMemberFunc(void, Object, DecodeIdentifiers, (CGameSprite& spriteSource), DecodeIdentifiers, DecodeIdentifiers, (spriteSource), 0x411A4C);
+DefineLibMemberFunc(CGameObject&, Object, FindTargetOfType, (CGameObject& source, char type, BOOL bCheckMiddleList), FindTargetOfType, FindTargetOfType, (source, type, bCheckMiddleList), 0x414EA9);
+DefineLibMemberFunc(CGameObject&, Object, FindTarget, (CGameObject& source, BOOL bCheckMiddleList), FindTarget, FindTarget, (source, bCheckMiddleList), 0x414FA8);
+DefineLibMemberFunc(void, Object, SetIdentifiers, (ObjectIds& ids), SetIdentifiers, SetIdentifiers, (ids), 0x41531E);
+DefineLibMemberFunc(Object, Object, GetOpposingEAObject, (), GetOpposingEAObject, GetOpposingEAObject, (), 0x4157E9);
+DefineLibMemberFunc(unsigned char, Object, GetClass, (), GetClass, GetClass, (), 0x4158A4);
+DefineLibMemberFunc(void, Object, GetDualClasses, (unsigned char* pClassNew, unsigned char* pClassOrg), GetDualClasses, GetDualClasses, (pClassNew, pClassOrg), 0x4158B5);
+DefineLibMemberFunc(BOOL, Object, HasActiveSubclass, (unsigned char nSubclass, BOOL bThreadAsync), HasActiveSubclass, HasActiveSubclass, (nSubclass, bThreadAsync), 0x415BD0);
 
 BOOL inline Object::operator==(Object& o) {
 	//normally inline
-	if (
-		EnemyAlly == o.EnemyAlly &&
-		General == o.General &&
-		Race == o.Race &&
-		Class == o.Class &&
-		Specific == o.Specific &&
-		Alignment == o.Alignment &&
-		Gender == o.Gender &&
-		eTarget == o.eTarget
-	) {
-		return TRUE;
-	} else {
-		return FALSE;
-	}
+	return m_cEnemyAlly == o.m_cEnemyAlly &&
+		m_cGeneral == o.m_cGeneral &&
+		m_cRace == o.m_cRace &&
+		m_cClass == o.m_cClass &&
+		m_cSpecific == o.m_cSpecific &&
+		m_cAlignment == o.m_cAlignment &&
+		m_cGender == o.m_cGender &&
+		m_eTarget == o.m_eTarget;
 }
 
-BOOL Object::IsAnything()	{ return operator==(*poAnything); }
-BOOL Object::IsNonScript()	{ return operator==(*poNonScript); }
-BOOL Object::IsNothing()	{ return operator==(*poNothing); }
-BOOL Object::IsAny()		{ return operator==(*poAny); }
-BOOL Object::IsMyself()		{ return operator==(*poMyself); }
+BOOL Object::IsAnything()	{ return operator==(*g_poAnything); }
+BOOL Object::IsNonScript()	{ return operator==(*g_poNonScript); }
+BOOL Object::IsNothing()	{ return operator==(*g_poNothing); }
+BOOL Object::IsAny()		{ return operator==(*g_poAny); }
+BOOL Object::IsMyself()		{ return operator==(*g_poMyself); }
 
 //Trigger
-Trigger& (Trigger::*Trigger_Construct_3)(short, Object&, int) =
-	SetFP(static_cast<Trigger& (Trigger::*)(short, Object&, int)>	(&Trigger::Construct),			0x430720);
-Trigger& (Trigger::*Trigger_Construct_2)(short, int) =
-	SetFP(static_cast<Trigger& (Trigger::*)(short, int)>			(&Trigger::Construct),			0x430810);
-Trigger& (Trigger::*Trigger_OpAssign)(Trigger&) =
-	SetFP(static_cast<Trigger& (Trigger::*)(Trigger&)>				(&Trigger::OpAssign),			0x496100);
-short (Trigger::*Trigger_GetOpcode)() =
-	SetFP(static_cast<short (Trigger::*)()>							(&Trigger::GetOpcode),			0x4943B0);
-void (Trigger::*Trigger_DecodeIdentifiers)(CGameSprite&) =
-	SetFP(static_cast<void (Trigger::*)(CGameSprite&)>				(&Trigger::DecodeIdentifiers),	0x4943D0);
-int (Trigger::*Trigger_GetI)() =
-	SetFP(static_cast<int (Trigger::*)()>							(&Trigger::GetI),				0x4943F0);
-int (Trigger::*Trigger_GetI2)() =
-	SetFP(static_cast<int (Trigger::*)()>							(&Trigger::GetI2),				0x494410);
-IECString& (Trigger::*Trigger_GetSName1)() =
-	SetFP(static_cast<IECString& (Trigger::*)()>					(&Trigger::GetSName1),			0x494430);
-IECString& (Trigger::*Trigger_GetSName2)() =
-	SetFP(static_cast<IECString& (Trigger::*)()>					(&Trigger::GetSName2),			0x494450);
-
-Trigger::Trigger()									{ (this->*Trigger_Construct_2)(TRIGGER_NONE, 0); }
-Trigger::Trigger(short wOpcode, Object& o, int i)	{ (this->*Trigger_Construct_3)(wOpcode, o, i); }
-Trigger::Trigger(short wOpcode, int n)				{ (this->*Trigger_Construct_2)(wOpcode, n); }
-Trigger& Trigger::operator=(Trigger& t)				{ return (this->*Trigger_OpAssign)(t); }
-short Trigger::GetOpcode()							{ return (this->*Trigger_GetOpcode)(); }
-void Trigger::DecodeIdentifiers(CGameSprite& sprite){ return (this->*Trigger_DecodeIdentifiers)(sprite); }
-int Trigger::GetI()									{ return (this->*Trigger_GetI)(); }
-int Trigger::GetI2()								{ return (this->*Trigger_GetI2)(); }
-IECString& Trigger::GetSName1()						{ return (this->*Trigger_GetSName1)(); }
-IECString& Trigger::GetSName2()						{ return (this->*Trigger_GetSName2)(); }
+Trigger::Trigger()	{ Trigger(TRIGGER_NONE, 0); }
+DefineLibNoRetFunc(Trigger&, Trigger, Trigger, (short wOpcode, Object& o, int i), Construct, Construct3, (wOpcode, o, i), 0x430720);
+DefineLibNoRetFunc(Trigger&, Trigger, Trigger, (short wOpcode, int i), Construct, Construct2, (wOpcode, i), 0x430810);
+DefineLibMemberFunc(Trigger&, Trigger, operator=, (Trigger& t), OpAssign, OpAssign, (t), 0x496100);
+DefineLibMemberFunc(short, Trigger, GetOpcode, (), GetOpcode, GetOpcode, (), 0x4943B0);
+DefineLibMemberFunc(void, Trigger, DecodeIdentifiers, (CGameSprite& sprite), DecodeIdentifiers, DecodeIdentifiers, (sprite), 0x4943D0);
+DefineLibMemberFunc(int, Trigger, GetI, (), GetI, GetI, (), 0x4943F0);
+DefineLibMemberFunc(int, Trigger, GetI2, (), GetI2, GetI2, (), 0x494410);
+DefineLibMemberFunc(IECString&, Trigger, GetSName1, (), GetSName1, GetSName1, (), 0x494430);
+DefineLibMemberFunc(IECString&, Trigger, GetSName2, (), GetSName2, GetSName2, (), 0x494450);
 
 //Action
-Action& (Action::*Action_Construct_0)() =
-	SetFP(static_cast<Action& (Action::*)()>	(&Action::Construct),		0x405820);
-IECString (Action::*Action_GetSName1)() =
-	SetFP(static_cast<IECString (Action::*)()>	(&Action::GetSName1),		0x430330);
-
-void* Action::operator new(size_t size) { return ::operator new(size, 0); }
-void Action::operator delete(void* mem) { return ::operator delete(mem, 0); } 
-Action::Action() { (this->*Action_Construct_0)(); }
-IECString Action::GetSName1() { return (this->*Action_GetSName1)(); }
+DefineLibNoRetFunc(Action&, Action, Action, (), Construct, Construct0, (), 0x405820);
 
 void Action::operator=(Action& a) {
 	this->opcode = a.opcode;
@@ -203,50 +123,23 @@ void Action::operator=(Action& a) {
 	return;
 }
 
-//Response
-Response& (Response::*Response_Construct_0)() =
-	SetFP(static_cast<Response& (Response::*)()>	(&Response::Construct),	0x416130);
-void (Response::*Response_OpEq)(Response&) =
-	SetFP(static_cast<void (Response::*)(Response&)>(&Response::OpEq),		0x4162A9);
+DefineLibMemberFunc(IECString, Action, GetSName1, (), GetSName1, GetSName1, (), 0x430330);
 
-Response::Response() { (this->*Response_Construct_0)(); }
-void Response::operator=(Response& r) { (this->*Response_OpEq)(r); }
+//Response
+DefineLibNoRetFunc(Response&, Response, Response, (), Construct, Construct0, (), 0x416130);
+DefineLibMemberFunc(void, Response, operator=, (Response& r), OpAssign, OpAssign, (r), 0x4162A9);
 
 //CScriptBlock
-BOOL (CScriptBlock::*CScriptBlock_Evaluate)(CTriggerList&, CGameSprite&) =
-	SetFP(static_cast<BOOL (CScriptBlock::*)(CTriggerList&, CGameSprite&)>				(&CScriptBlock::Evaluate),			0x405D19);
-BOOL (CScriptBlock::*CScriptBlock_EvaluateTrigger)(Trigger&, CTriggerList&, CGameSprite&) =
-	SetFP(static_cast<BOOL (CScriptBlock::*)(Trigger&, CTriggerList&, CGameSprite&)>	(&CScriptBlock::EvaluateTrigger),	0x405DDD);
-
-BOOL CScriptBlock::Evaluate(CTriggerList& triggers, CGameSprite& sprite)					{ return (this->*CScriptBlock_Evaluate)(triggers, sprite); }
-BOOL CScriptBlock::EvaluateTrigger(Trigger& t, CTriggerList& triggers, CGameSprite& sprite)	{ return (this->*CScriptBlock_EvaluateTrigger)(t, triggers, sprite); }
+DefineLibMemberFunc(BOOL, CScriptBlock, Evaluate, (CTriggerList& triggers, CGameSprite& sprite), Evaluate, Evaluate, (triggers, sprite), 0x405D19);
+DefineLibMemberFunc(BOOL, CScriptBlock, EvaluateTrigger, (Trigger& t, CTriggerList& triggers, CGameSprite& sprite), EvaluateTrigger, EvaluateTrigger, (t, triggers, sprite), 0x405DDD);
 
 //CScriptParser
-short (CScriptParser::*CScriptParser_GetTriggerOpcode)(IECString) =
-	SetFP(static_cast<short (CScriptParser::*)(IECString)>						(&CScriptParser::GetTriggerOpcode),	0x428829);
-int (CScriptParser::*CScriptParser_GetOpcode)(IECString, IECString) =
-	SetFP(static_cast<int (CScriptParser::*)(IECString, IECString)>				(&CScriptParser::GetOpcode),		0x428EB0);
-void (CScriptParser::*CScriptParser_SetError)(IECString) =
-	SetFP(static_cast<void (CScriptParser::*)(IECString)>						(&CScriptParser::SetError),			0x428F9E);
-Object (CScriptParser::*CScriptParser_ParseObject)(IECString&) =
-	SetFP(static_cast<Object (CScriptParser::*)(IECString&)>					(&CScriptParser::ParseObject),		0x429035);
-IECString (CScriptParser::*CScriptParser_SpanBefore)(IECString, char) =
-	SetFP(static_cast<IECString (CScriptParser::*)(IECString, char)>			(&CScriptParser::SpanBefore),		0x429A23);
-IECString (CScriptParser::*CScriptParser_SpanAfter)(IECString, char) =
-	SetFP(static_cast<IECString (CScriptParser::*)(IECString, char)>			(&CScriptParser::SpanAfter),		0x429B24);
-IECString (CScriptParser::*CScriptParser_GetArgText)(int, IECString) =
-	SetFP(static_cast<IECString (CScriptParser::*)(int, IECString)>				(&CScriptParser::GetArgText),		0x42FB7A);
-IECString (CScriptParser::*CScriptParser_GetIdsValue)(Identifiers&, IECString&) =
-	SetFP(static_cast<IECString (CScriptParser::*)(Identifiers&, IECString&)>	(&CScriptParser::GetIdsValue),		0x430430);
-IECString (CScriptParser::*CScriptParser_GetArgTextIdsName)(IECString) =
-	SetFP(static_cast<IECString (CScriptParser::*)(IECString)>					(&CScriptParser::GetArgTextIdsName),0x430620);
-
-short CScriptParser::GetTriggerOpcode(IECString sName) { return (this->*CScriptParser_GetTriggerOpcode)(sName); }
-void CScriptParser::SetError(IECString s) { return (this->*CScriptParser_SetError)(s); }
-Object CScriptParser::ParseObject(IECString& sArg) { return (this->*CScriptParser_ParseObject)(sArg); }
-IECString CScriptParser::SpanBefore(IECString s, char c) { return (this->*CScriptParser_SpanBefore)(s, c); }
-IECString CScriptParser::SpanAfter(IECString s, char c) { return (this->*CScriptParser_SpanAfter)(s, c); }
-IECString CScriptParser::GetArgText(int nArgIdx, IECString sFuncDesc) { return (this->*CScriptParser_GetArgText)(nArgIdx, sFuncDesc); }
-IECString CScriptParser::GetIdsValue(Identifiers& ids, IECString& sName) { return (this->*CScriptParser_GetIdsValue)(ids, sName); }
-int CScriptParser::GetOpcode(IECString sValue, IECString sIdsName) { return (this->*CScriptParser_GetOpcode)(sValue, sIdsName); }
-IECString CScriptParser::GetArgTextIdsName(IECString sArgText) { return (this->*CScriptParser_GetArgTextIdsName)(sArgText); }
+DefineLibMemberFunc(short, CScriptParser, GetTriggerOpcode, (IECString sName), GetTriggerOpcode, GetTriggerOpcode, (sName), 0x428829);
+DefineLibMemberFunc(int, CScriptParser, GetOpcode, (IECString sValue, IECString sIdsName), GetOpcode, GetOpcode, (sValue, sIdsName), 0x428EB0);
+DefineLibMemberFunc(void, CScriptParser, SetError, (IECString s), SetError, SetError, (s), 0x428F9E);
+DefineLibMemberFunc(Object, CScriptParser, ParseObject, (IECString& sArg), ParseObject, ParseObject, (sArg), 0x429035);
+DefineLibMemberFunc(IECString, CScriptParser, SpanBefore, (IECString s, char c), SpanBefore, SpanBefore, (s, c), 0x429A23);
+DefineLibMemberFunc(IECString, CScriptParser, SpanAfter, (IECString s, char c), SpanAfter, SpanAfter, (s, c), 0x429B24);
+DefineLibMemberFunc(IECString, CScriptParser, GetArgText, (int nArgIdx, IECString sFuncDesc), GetArgText, GetArgText, (nArgIdx, sFuncDesc), 0x42FB7A);
+DefineLibMemberFunc(IECString, CScriptParser, GetIdsValue, (Identifiers& ids, IECString& sName), GetIdsValue, GetIdsValue, (ids, sName), 0x430430);
+DefineLibMemberFunc(IECString, CScriptParser, GetArgTextIdsName, (IECString sArgText), GetArgTextIdsName, GetArgTextIdsName, (sArgText), 0x430620);

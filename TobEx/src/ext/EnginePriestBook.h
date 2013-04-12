@@ -3,7 +3,7 @@
 
 #include "engpriestbk.h"
 
-extern void (CScreenPriestBook::*Tramp_CScreenPriestBook_SetLevel)(int);
+DeclareTrampMemberFunc(void, CScreenPriestBook, SetLevel, (int nLevel), SetLevel);
 
 class DETOUR_CScreenPriestBook : public CScreenPriestBook {
 public:

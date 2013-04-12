@@ -28,7 +28,7 @@ public:
 	int u13e;
 	int u142;
 	bool bPaused; //146h
-	bool u147; //if 1, makes inventory inactive ;; (during rest, chapter info, or movie)
+	bool u147; //if 1, makes inventory inactive (during rest, chapter info, or movie)
 	char u148;
 	char u149; //pad
 	int u14a;
@@ -47,7 +47,7 @@ public:
 	CUITextArea* pTextArea2; //ea6h
 	CGameDialog dlgNotOwned; //eaah, dlg set up here if neither parties have matching dialog to one being initiated
 	CGameDialog* m_dlgCurrent; //f0eh
-	POINT ptDlgAreaScreen; //f12h
+	CPoint ptDlgAreaScreen; //f12h
 	ResRef rDlgAreaName; //f1ah
 	BOOL bNonPausingDialogue; //f22h
 	RECT rDlgGameArea; //f26h
@@ -109,16 +109,16 @@ public:
 		char u173; //pad
 	} uf4a;
 
-	Enum u10be;
+	ENUM u10be;
 	short u10c2;
 	int u10c4;
-	Enum u10c8;
-	Enum u10cc;
+	ENUM u10c8;
+	ENUM u10cc;
 	IECString u10d0;
 	int u10d4;
 	int u10d8;
 	int u10dc;
-	Enum u10e0;
+	ENUM u10e0;
 	char u10e4;
 	char u10e5;
 	int u10e6;
@@ -129,7 +129,7 @@ public:
 	bool u10fb; //some overriding button active state setting
 	int u10fc;
 	ResRef u1100;
-	Enum eAutoPauseObject; //1108h
+	ENUM eAutoPauseObject; //1108h
 	STRREF strrefAutoPause; //110ch
 	int nAutoPauseOwnerColor; //1110h, color skin of Cre
 	STRREF strrefAutoPauseOwnerName; //1114h, long name
@@ -177,7 +177,7 @@ public:
 	int u118e;
 	int u1192;
 	int u1196;
-	IECPtrList u119a; //AB5884, 12h objects (int, Enum, unsigned short, int, int)
+	IECPtrList u119a; //AB5884, 12h objects (int, ENUM, unsigned short, int, int)
 	int u11b6;
 	char u11ba;
 	char u11bb;
@@ -191,7 +191,7 @@ public:
 	IECString u11d0;
 	int u11d4;
 	int u11d8;
-	Enum u11dc;
+	ENUM u11dc;
 	BOOL u11e0; //bInDialogueMode?
 	char u11e4;
 	char u11e5; //pad
@@ -214,9 +214,5 @@ public:
 	int u1244;
 	int u1248;
 };
-
-extern void (CScreenWorld::*CScreenWorld_StartStore)(Object&, Object&, ResRef, BOOL, BOOL, BOOL);
-extern POSITION (CScreenWorld::*CScreenWorld_PrintToConsole_6)(IECString&, IECString&, ABGR, ABGR, int, bool);
-extern POSITION (CScreenWorld::*CScreenWorld_PrintToConsole_4)(IECString&, IECString&, int, bool);
 
 #endif //ENGWORLD_H

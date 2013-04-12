@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "sndcore.h"
 
-extern IECString (__cdecl *GetTlkString)(STRREF);
+DefineGlobalFuncPtr(IECString, __cdecl, GetTlkString, (STRREF strref), 0x43B193);
 
 class CFileTlk : public CFile { //Size 12h
 //Constructor: 0x9AAD00
@@ -57,7 +57,5 @@ public:
 	} u5a; //5ah
 
 };
-
-extern bool (CTlkTbl::*CTlkTbl_GetTlkString)(STRREF, CStrRef&);
 
 #endif //TLKCORE_H

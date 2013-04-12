@@ -1,6 +1,7 @@
 #include "InfGameCommon.h"
 
 #include "stdafx.h"
+#include "optionsext.h"
 #include "chitin.h"
 
 //CBlockVariables
@@ -52,7 +53,7 @@ CRuleTablesEx::~CRuleTablesEx() {
 	delete m_StepToStrModExTable;
 	m_StepToStrModExTable = NULL;
 
-	std::map<Enum, CBlockVariables*>::iterator it;
+	std::map<ENUM, CBlockVariables*>::iterator it;
 	for (it = m_MapActionVars.begin(); it != m_MapActionVars.end(); it++) {
 		delete it->second;
 		it->second = NULL;
@@ -62,7 +63,7 @@ CRuleTablesEx::~CRuleTablesEx() {
 
 void CRuleTablesEx::Init(CRuleTables& rule) {
 
-	if (pGameOptionsEx->bEffStrengthMod || pGameOptionsEx->bEffDexterityMod) {
+	if (pGameOptionsEx->GetOption("Eff_StrengthMod") || pGameOptionsEx->GetOption("Eff_DexterityMod")) {
 		m_ClassSpellAbility.LoadTable(ResRef("CLSSPLAB"));
 		if (!m_ClassSpellAbility.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): CLSSPLAB.2DA not found\r\n";
@@ -72,7 +73,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bEffStrengthMod) {
+	if (pGameOptionsEx->GetOption("Eff_StrengthMod")) {
 		if (!rule.STRMODEX.m_2da.bLoaded) {
 			rule.STRMODEX.LoadTable(ResRef("STRMODEX"));
 		}
@@ -124,7 +125,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
  
-	if (pGameOptionsEx->bEngineExternClassRaceRestrictions) {
+	if (pGameOptionsEx->GetOption("Engine_ExternClassRaceRestrictions")) {
 		m_ClassRaceReq.LoadTable(ResRef("CLSRCREQ"));
 		if (!m_ClassRaceReq.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): CLSRCREQ.2DA not found\r\n";
@@ -134,7 +135,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bEngineExternClassRaceRestrictions) {
+	if (pGameOptionsEx->GetOption("Engine_ExternClassRaceRestrictions")) {
 		m_MageSchoolRaceReq.LoadTable(ResRef("MGSRCREQ"));
 		if (!m_MageSchoolRaceReq.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): MGSRCREQ.2DA not found\r\n";
@@ -144,7 +145,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bSoundExternWalkSounds) {
+	if (pGameOptionsEx->GetOption("Sound_ExternWalkSounds")) {
 		m_AnimWalkSound.LoadTable(ResRef("ANIWKSND"));
 		if (!m_AnimWalkSound.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): ANIWKSND.2DA not found\r\n";
@@ -154,7 +155,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bSoundExternWalkSounds) {
+	if (pGameOptionsEx->GetOption("Sound_ExternWalkSounds")) {
 		m_AnimTerrainSound.LoadTable(ResRef("ANITNSND"));
 		if (!m_AnimTerrainSound.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): ANITNSND.2DA not found\r\n";
@@ -164,7 +165,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bUserExternMageSpellHiding) {
+	if (pGameOptionsEx->GetOption("User_ExternMageSpellHiding")) {
 		m_HideSpell.LoadTable(ResRef("HIDESPL"));
 		if (!m_HideSpell.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): HIDESPL.2DA not found\r\n";
@@ -174,7 +175,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bUserExternRaceSelectionText) {
+	if (pGameOptionsEx->GetOption("User_ExternRaceSelectionText")) {
 		m_RaceText.LoadTable(ResRef("RACETEXT"));
 		if (!m_RaceText.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): RACETEXT.2DA not found\r\n";
@@ -184,7 +185,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bItemsExternCreExcl) {
+	if (pGameOptionsEx->GetOption("Items_ExternCreExcl")) {
 		m_ItemCreExclude.LoadTable(ResRef("ITEM_USE"));
 		if (!m_ItemCreExclude.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): ITEM_USE.2DA not found\r\n";
@@ -194,7 +195,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bEngineExpandedStats) {
+	if (pGameOptionsEx->GetOption("Engine_ExpandedStats")) {
 		Identifiers idStats("STATS");
 		if (!idStats.m_ids.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): Something went wrong with loading STATS.IDS. Expanded Stats is disabled.\r\n";
@@ -217,7 +218,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 	m_nEncumbranceLowThreshold = -1;
 	m_nEncumbranceHighThreshold = -1;
 
-	if (pGameOptionsEx->bEngineExternEncumbrance) {
+	if (pGameOptionsEx->GetOption("Engine_ExternEncumbrance")) {
 		m_Encumbrance.LoadTable(ResRef("ENCUMBER"));
 		if (!m_Encumbrance.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): ENCUMBER.2DA not found\r\n";
@@ -240,7 +241,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 	if (m_nEncumbranceLowThreshold < 0) m_nEncumbranceLowThreshold = 100;
 	if (m_nEncumbranceHighThreshold < 0) m_nEncumbranceHighThreshold = 120;
 
-	if (pGameOptionsEx->bEngineExternHPTables) {
+	if (pGameOptionsEx->GetOption("Engine_ExternHPTables")) {
 		m_HPClass.LoadTable(ResRef("HPCLASS"));
 		if (!m_HPClass.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): HPCLASS.2DA not found\r\n";
@@ -258,7 +259,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 		}
 	}
 
-	if (pGameOptionsEx->bEngineExternStealSlots) {
+	if (pGameOptionsEx->GetOption("Engine_ExternStealSlots")) {
 		m_StealSlots.LoadTable(ResRef("SLTSTEAL"));
 		if (!m_StealSlots.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): SLTSTEAL.2DA not found\r\n";
@@ -273,7 +274,7 @@ void CRuleTablesEx::Init(CRuleTables& rule) {
 	m_mpContext.addFunction("band", mpBAnd, MathPresso::MFUNC_F_ARG2);
 	m_mpContext.addFunction("bor", mpBOr, MathPresso::MFUNC_F_ARG2);
 
-	if (pGameOptionsEx->bEngineExternDifficulty) {
+	if (pGameOptionsEx->GetOption("Engine_ExternDifficulty")) {
 		m_DiffMod.LoadTable(ResRef("DIFFMOD"));
 		if (!m_DiffMod.m_2da.bLoaded) {
 			LPCTSTR lpsz = "CRuleTablesEx::Init(): DIFFMOD.2DA not found\r\n";

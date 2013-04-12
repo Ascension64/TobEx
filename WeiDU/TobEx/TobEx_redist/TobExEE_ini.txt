@@ -1,0 +1,51 @@
+//This file contains descriptions for all the hack options found in TobExEE .ini files
+
+Description format:
+-------------------
+
+/////////////////////////////////////// <INI CATEGORY>
+
+-----<designated component number> <hack name> [hack flags]
+(compatibility information)
+Hack description
+
+Options:
+-<value>: <behaviour>
+
+Hack flags:
+[B] - Currently in beta and otherwise unclassified
+[C] - Compatibility issues present
+[D] - Extra debugging information
+[F] - Engine bug fix
+[M] - Adds extra functionality for modder/player use
+[O] - Code optimisation
+[T] - Tweak to engine behaviour (configured in TobEx_ini/TobExTweak.ini)
+[X] - This hack makes use of alterations to game resources outside the executable that are implemented by TobEx
+
+/////////////////////////////////////// DEBUG
+
+-----Log Dialogue Bar [D]
+Logs everything printed to the dialogue/log bar in-game into TobEx_dlg.log
+The in-game timestamp is appended in hexadecimal format before each entry
+
+Options:
+-0: disabled
+-1: enabled
+
+-----Log File Mode [D]
+Determines whether log files created by TobEx are overwritten or appended to each TobEx session
+This applies to both TobEx.log and TobEx_dlg.log
+
+Options:
+-0: overwrites log files each session
+-1: appends to log files each session
+
+-----Verbose Logging [D]
+Prints to console and logs excessive amounts of internal TobEx debug messages
+Do not use this unless you are troubleshooting and need to report TobEx debug messages
+
+Options:
+-0: disabled
+-1: enabled
+
+/////////////////////////////////////// EOF

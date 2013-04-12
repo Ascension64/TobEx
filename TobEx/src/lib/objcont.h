@@ -10,11 +10,11 @@ public:
 
 	int u3d4; //3d4h
 	RECT rectBounds; //3d8h
-	POINT* ptVertexArray; //3e8h (of size 8h elements)
+	CPoint* ptVertexArray; //3e8h (of size 8h elements)
 	short wNumVertices; //3ech
 	IECPtrList m_items; //3eeh
 	short wContainerType; //40ah
-	POINT ptLoc; //40ch
+	CPoint ptLoc; //40ch
 	CVidCell cvcGroundIcons[3]; //414h, for piles
 	char nNumGroundIcons; //696h, for piles
 	char u697;
@@ -30,7 +30,7 @@ public:
 	short wTrapRemovalDifficulty; //6c8h
 	short wIsTrapped; //6cah
 	short wIsTrapDiscovered; //6cch
-	POINT ptTrapSource; //6ceh
+	CPoint ptTrapSource; //6ceh
 	short u6d6; //56h of area container data
 	char u6d8[32]; //58h of area container data
 	ResRef rKey; //6f8h

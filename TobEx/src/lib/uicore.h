@@ -8,7 +8,7 @@ class CEngine;
 class CPanel;
 class CUIControl;
 
-extern void (__cdecl *FormatLabel)(CEngine& engine, CPanel& panel, int nLabelIdx, LPCTSTR szFormat, void* ptr);
+DefineGlobalFuncPtr(void, __cdecl, FormatLabel, (CEngine& engine, CPanel& panel, int nLabelIdx, LPCTSTR szFormat, void* ptr), 0x43B374);
 
 struct CManager { //CAh
 //Constructor: 0x584BE3
@@ -43,8 +43,6 @@ struct CManager { //CAh
 	IECPtrList panels; //aeh
 };
 
-extern CPanel& (CManager::*CManager_GetPanel)(int);
-
 struct CPanel { //Size 122h, in IESDP this is Window
 //Constructor: 0x5828FA
 	CUIControl& GetUIControl(int index);
@@ -53,8 +51,8 @@ struct CPanel { //Size 122h, in IESDP this is Window
 	CManager* pManager; //0h, pointer to parent CEngine.manager
 	IECPtrList controls; //4h
 	int index; //20h
-	POINT pt2; //24h
-	POINT pt1; //2ch
+	CPoint pt2; //24h
+	CPoint pt1; //2ch
 	int width; //34h
 	int height; //38h
 	short u3c; //unknown 0x1a of CHU window, bitfield bit 0 = negated and used, bit 1 = do not load?
@@ -65,13 +63,10 @@ struct CPanel { //Size 122h, in IESDP this is Window
 	bool u104; //set if byte dh of controlInfo == 1
 	char u105;
 	BOOL bVisible; //106h
-	BOOL bActive; //10ah, if 0 greys out the area
+	BOOL m_bActive; //10ah, if 0 greys out the area
 	RECT u10e;
 	int u11e;
 };
-
-extern CUIControl& (CPanel::*CPanel_GetUIControl)(int);
-extern void (CPanel::*CPanel_Redraw)(RECT*);
 
 class CUIControl { //Size 4Ah
 public:
@@ -84,15 +79,15 @@ public:
 	void Deconstruct() {} //dummy
 
 	virtual void SetEnabled(bool b); //v4
-	virtual BOOL OnMouseHover(POINT& pt); //v8
+	virtual BOOL OnMouseHover(CPoint& pt); //v8
 	virtual void OnLoseFocus(); //vc
 	virtual void OnGetFocus(); //v10
-	virtual void OnLMouseDrag(POINT pt); //v14
-	virtual BOOL OnLMouseBtDn(POINT pt); //v18
-	virtual void OnLMouseBtUp(POINT pt); //v1c
-	virtual BOOL OnLMouseDblClk(POINT pt); //v20
-	virtual BOOL OnRMouseBtDn(POINT pt); //v24
-	virtual void OnRMouseBtUp(POINT pt); //v28
+	virtual void OnLMouseDrag(CPoint pt); //v14
+	virtual BOOL OnLMouseBtDn(CPoint pt); //v18
+	virtual void OnLMouseBtUp(CPoint pt); //v1c
+	virtual BOOL OnLMouseDblClk(CPoint pt); //v20
+	virtual BOOL OnRMouseBtDn(CPoint pt); //v24
+	virtual void OnRMouseBtUp(CPoint pt); //v28
 	virtual void OnKeyPress(short wChar); //v2c
 	virtual void ShowTooltip(bool b); //v30
 	virtual STRREF GetTooltip(); //v34
@@ -111,7 +106,7 @@ public:
 	CPanel* pPanel; //6h
 	short index; //ah
 	short uc; //ch
-	POINT pos; //eh
+	CPoint pos; //eh
 	int width; //16h
 	int height; //1ah
 	bool bEnabled; //1eh, 1 = visible and active, 0 = inactive, but may be visible
@@ -128,31 +123,6 @@ public:
 	IECString sHotkeyTemp; //46h, gets full hotkey string
 };
 
-extern CUIControl& (CUIControl::*CUIControl_Construct)(CPanel&, ChuFileControlInfoBase&, BOOL);
-extern void (CUIControl::*CUIControl_Deconstruct)();
-extern void (CUIControl::*CUIControl_SetEnable)(bool);
-extern BOOL (CUIControl::*CUIControl_OnMouseHover)(POINT&);
-extern void (CUIControl::*CUIControl_OnLoseFocus)();
-extern void (CUIControl::*CUIControl_OnGetFocus)();
-extern void (CUIControl::*CUIControl_OnLMouseDrag)(POINT);
-extern BOOL (CUIControl::*CUIControl_OnLMouseBtDn)(POINT);
-extern void (CUIControl::*CUIControl_OnLMouseBtUp)(POINT);
-extern BOOL (CUIControl::*CUIControl_OnLMouseDblClk)(POINT);
-extern BOOL (CUIControl::*CUIControl_OnRMouseBtDn)(POINT);
-extern void (CUIControl::*CUIControl_OnRMouseBtUp)(POINT);
-extern void (CUIControl::*CUIControl_OnKeyPress)(short);
-extern void (CUIControl::*CUIControl_ShowTooltip)(bool);
-extern STRREF (CUIControl::*CUIControl_GetTooltip)();
-extern void (CUIControl::*CUIControl_HideTooltip)();
-extern void (CUIControl::*CUIControl_SetTooltip)(STRREF);
-extern void (CUIControl::*CUIControl_SetTooltipHotkey)(short, short, IECString&);
-extern void (CUIControl::*CUIControl_OnShowTooltip)();
-extern void (CUIControl::*CUIControl_SetRedraw)();
-extern BOOL (CUIControl::*CUIControl_Redraw)(BOOL);
-extern BOOL (CUIControl::*CUIControl_GetVisible)();
-extern void (CUIControl::*CUIControl_SetVisible)(BOOL);
-extern BOOL (CUIControl::*CUIControl_NeedsRedraw)();
-
 class CUILabel : public CUIControl { //Size 554h
 //Constructor: 0x5A0BD7
 public:
@@ -167,6 +137,6 @@ public:
 	char u553; //padding?
 };
 
-extern CUIControl* (__cdecl *CreateUIControl)(CPanel&, ChuFileControlInfoBase&);
+DefineGlobalFuncPtr(CUIControl*, __cdecl, CreateUIControl, (CPanel& panel, ChuFileControlInfoBase& controlInfo), 0x95D5E0);
 
 #endif //UICORE_H

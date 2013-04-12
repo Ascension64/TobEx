@@ -16,12 +16,12 @@ int CUIButtonPriestBook_KnownSpellOffset = 0;
 CUIButtonPriestBookUp::CUIButtonPriestBookUp(CPanel& panel, ChuFileControlInfoBase& controlInfo) : CUIButton(panel, controlInfo, 1, TRUE) {}
 CUIButtonPriestBookUp::~CUIButtonPriestBookUp() {}
 
-void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
+void CUIButtonPriestBookUp::OnLClicked(CPoint pt) {
 	CScreenPriestBook* pPriestSpell = g_pChitin->pPriestSpell;
 	CPanel& panel = pPriestSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
-	Enum e;
+	ENUM e;
 
 	if (pPriestSpell->nActivePlayerIdx < pGame->numInParty) {
 		e = pGame->ePlayersPartyOrder[pPriestSpell->nActivePlayerIdx];
@@ -32,7 +32,7 @@ void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
 	CCreatureObject* pCre;
 	char threadVal;
 	do {
-		threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
+		threadVal = pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
@@ -41,12 +41,12 @@ void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
 		for (int i = 27; i <= 50; i++ ) {
 			CUIButtonPriestBookKnownSpell& control = (CUIButtonPriestBookKnownSpell&)panel.GetUIControl(i);
 			CreFileKnownSpell& kspell = pCre->GetKnownSpellPriest(pPriestSpell->currLevel, i - 27 + CUIButtonPriestBook_KnownSpellOffset);
-			&kspell ? control.SetSpell(kspell.name) : control.SetSpell(ResRef());
+			&kspell ? control.SetSpell(kspell.m_rKnownSpellName) : control.SetSpell(ResRef());
 			control.SetRedraw();
 		}
-		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+		pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
-		LPCTSTR lpsz = "CUIButtonPriestBookUp::OnLClicked(): GetGameObjectShare returned %d\r\n";
+		LPCTSTR lpsz = "CUIButtonPriestBookUp::OnLClicked(): GetShare returned %d\r\n";
 		console.writef(lpsz, threadVal);
 		L.timestamp();
 		L.appendf(lpsz, threadVal);
@@ -58,12 +58,12 @@ void CUIButtonPriestBookUp::OnLClicked(POINT pt) {
 CUIButtonPriestBookDn::CUIButtonPriestBookDn(CPanel& panel, ChuFileControlInfoBase& controlInfo) : CUIButton(panel, controlInfo, 1, TRUE) {}
 CUIButtonPriestBookDn::~CUIButtonPriestBookDn() {}
 
-void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
+void CUIButtonPriestBookDn::OnLClicked(CPoint pt) {
 	CScreenPriestBook* pPriestSpell = g_pChitin->pPriestSpell;
 	CPanel& panel = pPriestSpell->manager.GetPanel(2);
 
 	CInfGame* pGame = g_pChitin->pGame;
-	Enum e;
+	ENUM e;
 
 	if (pPriestSpell->nActivePlayerIdx < pGame->numInParty) {
 		e = pGame->ePlayersPartyOrder[pPriestSpell->nActivePlayerIdx];
@@ -74,7 +74,7 @@ void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
 	CCreatureObject* pCre;
 	char threadVal;
 	do {
-		threadVal = pGame->m_GameObjectArrayHandler.GetGameObjectShare(e, THREAD_ASYNCH, &pCre, INFINITE);
+		threadVal = pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
@@ -89,13 +89,13 @@ void CUIButtonPriestBookDn::OnLClicked(POINT pt) {
 		for (int i = 27; i <= 50; i++ ) {
 			CUIButtonPriestBookKnownSpell& control = (CUIButtonPriestBookKnownSpell&)panel.GetUIControl(i);
 			CreFileKnownSpell& kspell = pCre->GetKnownSpellPriest(pPriestSpell->currLevel, i - 27 + CUIButtonPriestBook_KnownSpellOffset);
-			&kspell ? control.SetSpell(kspell.name) : control.SetSpell(ResRef());
+			&kspell ? control.SetSpell(kspell.m_rKnownSpellName) : control.SetSpell(ResRef());
 			control.SetRedraw();
 		}
 
-		pGame->m_GameObjectArrayHandler.FreeGameObjectShare(e, THREAD_ASYNCH, INFINITE);
+		pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
-		LPCTSTR lpsz = "CUIButtonPriestBookDn::OnLClicked(): GetGameObjectShare returned %d\r\n";
+		LPCTSTR lpsz = "CUIButtonPriestBookDn::OnLClicked(): GetShare returned %d\r\n";
 		console.writef(lpsz, threadVal);
 		L.timestamp();
 		L.appendf(lpsz, threadVal);

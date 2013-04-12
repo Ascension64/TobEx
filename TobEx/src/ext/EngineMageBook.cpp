@@ -3,16 +3,11 @@
 #include "chitin.h"
 #include "UserMageBook.h"
 
-void (CScreenMageBook::*Tramp_CScreenMageBook_SetLevel)(int) =
-	SetFP(static_cast<void (CScreenMageBook::*)(int)>			(&CScreenMageBook::SetLevel),					0x7B7BDC);
-void (CScreenMageBook::*Tramp_CScreenMageBook_ContingencySelectOnLoad)(CPanel&) =
-	SetFP(static_cast<void (CScreenMageBook::*)(CPanel&)>		(&CScreenMageBook::ContingencySelectOnLoad),	0x7BA23B);
-void (CScreenMageBook::*Tramp_CScreenMageBook_ContingencySelectOnUpdate)(int) =
-	SetFP(static_cast<void (CScreenMageBook::*)(int)>			(&CScreenMageBook::ContingencySelectOnUpdate),	0x7BAC41);
-bool (CScreenMageBook::*Tramp_CScreenMageBook_ClearContingencySpell)(char index) =
-	SetFP(static_cast<bool (CScreenMageBook::*)(char)>			(&CScreenMageBook::ClearContingencySpell),		0x7BD516);
-void (CScreenMageBook::*Tramp_CScreenMageBook_CreateContingencySpellList)(char, char) =
-	SetFP(static_cast<void (CScreenMageBook::*)(char, char)>	(&CScreenMageBook::CreateContingencySpellList),	0x7BDCB1);
+DefineTrampMemberFunc(void, CScreenMageBook, SetLevel, (int nLevel), SetLevel, SetLevel, 0x7B7BDC);
+DefineTrampMemberFunc(void, CScreenMageBook, ContingencySelectOnLoad, (CPanel& panel), ContingencySelectOnLoad, ContingencySelectOnLoad, 0x7BA23B);
+DefineTrampMemberFunc(void, CScreenMageBook, ContingencySelectOnUpdate, (int nPanelIdx), ContingencySelectOnUpdate, ContingencySelectOnUpdate, 0x7BAC41);
+DefineTrampMemberFunc(bool, CScreenMageBook, ClearContingencySpell, (char index), ClearContingencySpell, ClearContingencySpell, 0x7BD516);
+DefineTrampMemberFunc(void, CScreenMageBook, CreateContingencySpellList, (char nSpellType, char nLevel), CreateContingencySpellList, CreateContingencySpellList, 0x7BDCB1);
 
 MemSpellContingency::MemSpellContingency() {
 	wMemorizedCount = 0;
@@ -50,7 +45,7 @@ void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 	short wScrollIdx = 0;
 	CInfGame* pGame = g_pChitin->pGame;
 	short wPlayerIdx = (short)nActivePlayerIdx;
-	Enum eChar = wPlayerIdx < pGame->numInParty ? pGame->ePlayersPartyOrder[wPlayerIdx] : ENUM_INVALID_INDEX;
+	ENUM eChar = wPlayerIdx < pGame->numInParty ? pGame->ePlayersPartyOrder[wPlayerIdx] : ENUM_INVALID_INDEX;
 
 	if (m_wContType == 2) {
 		panel.GetUIControl(4).SetEnabled(false);
@@ -70,7 +65,7 @@ void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 	CCreatureObject* pCre = NULL;
 	char threadVal;
 	do {
-		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eChar, THREAD_ASYNCH, &pCre, INFINITE);
+		threadVal = g_pChitin->pGame->m_GameObjectArray.GetShare(eChar, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
@@ -82,7 +77,7 @@ void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 				(
 					(
 						((pCre->GetCurrentObject().HasActiveSubclass(CLASS_MAGE, TRUE) || pCre->GetCurrentObject().HasActiveSubclass(CLASS_BARD, TRUE)) &&
-							pCre->m_MemInfoWizard[m_nCurrContSpellLevel]->nNumSpells == 0) ||
+							pCre->m_MemInfoWizard[m_nCurrContSpellLevel]->m_wMemorizedCount == 0) ||
 						(pCre->GetCurrentObject().HasActiveSubclass(CLASS_SORCERER, TRUE) && pCre->GetNumUniqueMemSpellMage(m_nCurrContSpellLevel + 1, ResRef()) == 0)	
 					) &&
 					m_nCurrContSpellLevel > 0
@@ -95,7 +90,7 @@ void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 				}
 		} else { //priest
 			while (
-				(pCre->m_MemInfoPriest[m_nCurrContSpellLevel]->nNumSpells == 0 && m_nCurrContSpellLevel > 0) ||
+				(pCre->m_MemInfoPriest[m_nCurrContSpellLevel]->m_wMemorizedCount == 0 && m_nCurrContSpellLevel > 0) ||
 				m_nCurrContSpellLevel >= m_nContNumSpellLevels ||
 				m_nCurrContSpellLevel >= 7) {
 				m_nCurrContSpellLevel = max(m_nCurrContSpellLevel - 1, 0);
@@ -229,7 +224,7 @@ void DETOUR_CScreenMageBook::DETOUR_ContingencySelectOnUpdate(int nPanelIdx) {
 			FormatLabel(*this, panel, 0x10000002, "%s", (void*)(LPCTSTR)GetTlkString(0x554C));
 		}
 
-		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eChar, THREAD_ASYNCH, INFINITE);
+		threadVal = g_pChitin->pGame->m_GameObjectArray.FreeShare(eChar, THREAD_ASYNCH, INFINITE);
 		panel.Redraw(NULL);
 	}
 
@@ -270,20 +265,20 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 	CInfGame* pGame = g_pChitin->pGame;
 	short wPlayerIdx = (short)nActivePlayerIdx;
 
-	Enum eChar = wPlayerIdx < pGame->numInParty ? pGame->ePlayersPartyOrder[wPlayerIdx] : ENUM_INVALID_INDEX;
+	ENUM eChar = wPlayerIdx < pGame->numInParty ? pGame->ePlayersPartyOrder[wPlayerIdx] : ENUM_INVALID_INDEX;
 	CCreatureObject* pCre = NULL;
 	char threadVal;
 	do {
-		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectShare(eChar, THREAD_ASYNCH, &pCre, INFINITE);
+		threadVal = g_pChitin->pGame->m_GameObjectArray.GetShare(eChar, THREAD_ASYNCH, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
 		short idx = 0;
-		CreFileMemSpell* pMemSpell = NULL;
+		CreFileMemorizedSpell* pMemSpell = NULL;
 		do {
 			pMemSpell = &(nSpellType ? pCre->GetMemSpellPriest(nLevel, idx) : pCre->GetMemSpellMage(nLevel, idx));
 			if (pMemSpell &&
-				pMemSpell->wFlags & CREMEMSPELL_MEMORIZED) {
+				pMemSpell->m_wFlags & CREFILEMEMORIZEDSPELL_FLAG_MEMORIZED) {
 
 				ResRef rSpellList;
 				BOOL bUseChildSpells = FALSE;
@@ -291,17 +286,17 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 				SplFileAbility* pAbility = NULL;
 				int nAbilityIdx = 0;
 
-				ResSplContainer resSpell = ResSplContainer(pMemSpell->name);
+				ResSplFile resSpell = ResSplFile(pMemSpell->m_rSpellName);
 				resSpell.Demand();
 				short wSpellCastingLevel = pCre->GetSpellCastingLevel(resSpell, TRUE);
 				for (nAbilityIdx = 0; nAbilityIdx < resSpell.GetNumAbilities(); nAbilityIdx++) {
-					if (resSpell.GetSpellAbility(nAbilityIdx).wMinLevel > wSpellCastingLevel) break;
+					if (resSpell.GetSpellAbility(nAbilityIdx).m_wMinCasterLevel > wSpellCastingLevel) break;
 					pAbility = &resSpell.GetSpellAbility(nAbilityIdx);
 				}
 				nAbilityIdx--;
 
 				if (pAbility) { //the ability that would be used if casting now
-					for (int i = 0; i < pAbility->wNumEffects; i++) {
+					for (int i = 0; i < pAbility->m_wEffectCount; i++) {
 						CEffect* pEff = &resSpell.GetAbilityEffect(nAbilityIdx, i, *pCre);
 						if (pEff->effect.nOpcode == CEFFECT_OPCODE_USE_EFF_FILE) {
 							Object o = pCre->o;
@@ -309,24 +304,24 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 							BOOL bMatches = FALSE;
 							switch (pEff->effect.nParam2) {
 							case 2: //EA
-								oCriteria.EnemyAlly = pEff->effect.nParam1;
+								oCriteria.m_cEnemyAlly = pEff->effect.nParam1;
 								if (o.MatchCriteria(oCriteria, FALSE, FALSE, FALSE)) {
 									bMatches = TRUE;
 								}
 								break;
 							case 3: //General
-								if (o.General == pEff->effect.nParam1 ||
+								if (o.m_cGeneral == pEff->effect.nParam1 ||
 									pEff->effect.nParam1 == GENDER_ANY)
 									bMatches = TRUE;
 								break;
 							case 4: //Race
-								if (o.Race == pEff->effect.nParam1 ||
+								if (o.m_cRace == pEff->effect.nParam1 ||
 									pEff->effect.nParam1 == RACE_ANY)
 									bMatches = TRUE;
 								break;
 							case 5: //Class
 								{
-									unsigned char nClass = o.Class;
+									unsigned char nClass = o.m_cClass;
 									unsigned char nClassNew;
 									unsigned char nClassOrg;
 									o.GetDualClasses(&nClassNew, &nClassOrg);
@@ -340,36 +335,36 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 								}
 								break;
 							case 6: //Specific
-								if (o.Specific == pEff->effect.nParam1 ||
+								if (o.m_cSpecific == pEff->effect.nParam1 ||
 									pEff->effect.nParam1 == SPECIFIC_ANY)
 									bMatches = TRUE;
 								break;
 							case 7: //Gender
-								if (o.Gender == pEff->effect.nParam1 ||
+								if (o.m_cGender == pEff->effect.nParam1 ||
 									pEff->effect.nParam1 == GENDER_ANY)
 									bMatches = TRUE;
 								break;
 							case 8: //Align
-								if (o.Alignment == pEff->effect.nParam1 ||
+								if (o.m_cAlignment == pEff->effect.nParam1 ||
 									pEff->effect.nParam1 == ALIGN_ANY)
 									bMatches = TRUE;
 								if (pEff->effect.nParam1 == ALIGN_MASK_GOOD &&
-									o.Alignment & 0xF == ALIGN_MASK_GOOD)
+									o.m_cAlignment & 0xF == ALIGN_MASK_GOOD)
 									bMatches = TRUE;
 								if (pEff->effect.nParam1 == ALIGN_MASK_NEUTRAL &&
-									o.Alignment & 0xF == ALIGN_MASK_NEUTRAL)
+									o.m_cAlignment & 0xF == ALIGN_MASK_NEUTRAL)
 									bMatches = TRUE;
 								if (pEff->effect.nParam1 == ALIGN_MASK_EVIL &&
-									o.Alignment & 0xF == ALIGN_MASK_EVIL)
+									o.m_cAlignment & 0xF == ALIGN_MASK_EVIL)
 									bMatches = TRUE;
 								if (pEff->effect.nParam1 == ALIGN_LAWFUL_MASK &&
-									o.Alignment & 0xF == ALIGN_LAWFUL_MASK)
+									o.m_cAlignment & 0xF == ALIGN_LAWFUL_MASK)
 									bMatches = TRUE;
 								if (pEff->effect.nParam1 == ALIGN_NEUTRAL_MASK &&
-									o.Alignment & 0xF == ALIGN_NEUTRAL_MASK)
+									o.m_cAlignment & 0xF == ALIGN_NEUTRAL_MASK)
 									bMatches = TRUE;
 								if (pEff->effect.nParam1 == ALIGN_CHAOTIC_MASK &&
-									o.Alignment & 0xF == ALIGN_CHAOTIC_MASK)
+									o.m_cAlignment & 0xF == ALIGN_CHAOTIC_MASK)
 									bMatches = TRUE;
 								break;
 							default:
@@ -377,7 +372,7 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 							}
 
 							if (bMatches) {
-								ResEffContainer resEff(pEff->effect.rResource);
+								ResEffFile resEff(pEff->effect.rResource);
 								CEffect& effFile = resEff.CreateCEffect();
 								effFile.effect.ptSource = pEff->effect.ptSource;
 								effFile.eSource = pEff->eSource;
@@ -428,7 +423,7 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 							while (pos != NULL) {
 								pMemSpellCont = (MemSpellContingency*)m_ContSpells.GetAt(pos);
 								if (!strcmpi(pMemSpellCont->rName, (LPCTSTR)sChildSpell) &&
-									!strcmpi(pMemSpellCont->rParentSpell, pMemSpell->name))
+									!strcmpi(pMemSpellCont->rParentSpell, pMemSpell->m_rSpellName))
 									break;
 								m_ContSpells.GetNext(pos);
 							}
@@ -438,12 +433,12 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 							} else {
 								//not found
 								if (IsSpellAllowedInContingency(nLevel, IECString(sChildSpell)) &&
-									IsSpellAllowedInContingency(nLevel, IECString(pMemSpell->name))
+									IsSpellAllowedInContingency(nLevel, IECString(pMemSpell->m_rSpellName))
 								) {
 									MemSpellContingency* pMemSpellContNew = IENew MemSpellContingency();
 									pMemSpellContNew->rName = sChildSpell;
 									pMemSpellContNew->wMemorizedCount = 1;
-									pMemSpellContNew->rParentSpell = pMemSpell->name;
+									pMemSpellContNew->rParentSpell = pMemSpell->m_rSpellName;
 									m_ContSpells.AddTail(pMemSpellContNew);
 								}
 							}
@@ -455,7 +450,7 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 					POSITION pos = m_ContSpells.GetHeadPosition();
 					while (pos != NULL) {
 						pMemSpellCont = (MemSpellContingency*)m_ContSpells.GetAt(pos);
-						if (!strcmpi(pMemSpellCont->rName, pMemSpell->name)) break;
+						if (!strcmpi(pMemSpellCont->rName, pMemSpell->m_rSpellName)) break;
 						m_ContSpells.GetNext(pos);
 					}
 					if (pos) {
@@ -463,9 +458,9 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 						pMemSpellCont->wMemorizedCount++;
 					} else {
 						//not found
-						if (IsSpellAllowedInContingency(nLevel, IECString(pMemSpell->name))) {
+						if (IsSpellAllowedInContingency(nLevel, IECString(pMemSpell->m_rSpellName))) {
 							MemSpellContingency* pMemSpellContNew = IENew MemSpellContingency();
-							pMemSpellContNew->rName = pMemSpell->name;
+							pMemSpellContNew->rName = pMemSpell->m_rSpellName;
 							pMemSpellContNew->wMemorizedCount = 1;
 							m_ContSpells.AddTail(pMemSpellContNew);
 						}
@@ -475,7 +470,7 @@ void DETOUR_CScreenMageBook::DETOUR_CreateContingencySpellList(char nSpellType, 
 			idx++;
 		} while (pMemSpell != NULL);
 
-		threadVal =  g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectShare(eChar, THREAD_ASYNCH, INFINITE);
+		threadVal =  g_pChitin->pGame->m_GameObjectArray.FreeShare(eChar, THREAD_ASYNCH, INFINITE);
 	}
 
 	return;

@@ -53,14 +53,14 @@ public:
 	char u4e2;
 	ResRef rPortraitSmall; //4e3h
 	ResRef rPortraitLarge; //4ebh
-	ColorRangeValues colors; //4f3h
+	CreFileColors colors; //4f3h
 	IECString sClassScript; //4fah
 	ResRef rPortraitSmall2; //4feh
 	ResRef rPortraitLarge2; //506h
 	short m_wSelectedDualClassKit; //50eh, wKit low
 	IECPtrList* m_pSounds; //510h, contains CStrings
 	ResRef rVoiceset; //514h
-	CreFileData* u51c; //m_pTempBaseStats
+	CreFileHeader* u51c; //m_pTempHeader
 	CDerivedStats* u520; //m_pTempDerivedStats
 	int u524;
 	CVidFont u528;
@@ -118,11 +118,5 @@ public:
 	char u151e;
 	char u151f; //pad
 };
-
-extern void (CScreenRecord::*CScreenRecord_MageBookPanelOnLoad)(CCreatureObject&);
-extern void (CScreenRecord::*CScreenRecord_MageBookPanelOnUpdate)(CCreatureObject&);
-extern void (CScreenRecord::*CScreenRecord_UpdatePanel)(int, CCreatureObject&);
-extern CPanel& (CScreenRecord::*CScreenRecord_GetTopPanel)(void);
-extern void (CScreenRecord::*CScreenRecord_UpdateCharacter)(void);
 
 #endif //ENGRECORD_H

@@ -50,7 +50,7 @@ public:
 	//7: before Name
 	int nChargenProgress; //496h
 
-	Enum eChar; //49ah, global enum value of chargen char
+	ENUM eChar; //49ah, global enum value of chargen char
 	int u49e;
 	int u4a2;
 	int nSpellsRemaining; //4a6h
@@ -121,18 +121,5 @@ public:
 	int u1484;
 	IECString u1488;
 };
-
-extern void (CScreenCharGen::*CScreenCharGen_KitPanelOnLoad)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*CScreenCharGen_MageBookPanelOnLoad)(CPanel&, CCreatureObject&);
-extern BOOL (CScreenCharGen::*CScreenCharGen_RollAbilityScore)(CCreatureObject&, IECString&, IECString&, IECString&, char*, char&, char&);
-extern void (CScreenCharGen::*CScreenCharGen_UpdatePanel)(int, CCreatureObject&);
-extern void (CScreenCharGen::*CScreenCharGen_KitPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*CScreenCharGen_MageBookPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*CScreenCharGen_ClassPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*CScreenCharGen_MulticlassPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern void (CScreenCharGen::*CScreenCharGen_MageSchoolPanelOnUpdate)(CPanel&, CCreatureObject&);
-extern int (CScreenCharGen::*CScreenCharGen_RollAbilityDice)(int, int, BOOL);
-extern void (CScreenCharGen::*CScreenCharGen_InitSoundset)(CCreatureObject&);
-extern BOOL (CScreenCharGen::*CScreenCharGen_CanContinue)(CCreatureObject&);
 
 #endif //ENGCHAGEN_H

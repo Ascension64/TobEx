@@ -16,7 +16,7 @@ CUIScrollBarRecMageSpell::CUIScrollBarRecMageSpell(CPanel& panel, ChuFileControl
 }
 
 void CUIScrollBarRecMageSpell::UpdatePanel() {
-	Enum eChar = ENUM_INVALID_INDEX;
+	ENUM eChar = ENUM_INVALID_INDEX;
 	CInfGame* pGame = g_pChitin->pGame;
 	CScreenRecord* pCharacter = g_pChitin->pCharacter;
 	int nPlayerIdx = pCharacter->GetActivePlayerIdx();
@@ -30,12 +30,12 @@ void CUIScrollBarRecMageSpell::UpdatePanel() {
 	char threadNum = THREAD_ASYNCH;
 	char threadVal;
 	do {
-		threadVal = g_pChitin->pGame->m_GameObjectArrayHandler.GetGameObjectDeny(eChar, threadNum, &pCre, INFINITE);
+		threadVal = g_pChitin->pGame->m_GameObjectArray.GetDeny(eChar, threadNum, &pCre, INFINITE);
 	} while (threadVal == OBJECT_SHARING || threadVal == OBJECT_DENYING);
 
 	if (threadVal == OBJECT_SUCCESS) {
 		g_pChitin->pCharacter->UpdatePanel(pPanel->index, *pCre);
-		g_pChitin->pGame->m_GameObjectArrayHandler.FreeGameObjectDeny(eChar, threadNum, INFINITE);
+		g_pChitin->pGame->m_GameObjectArray.FreeDeny(eChar, threadNum, INFINITE);
 	}
 	return;
 }

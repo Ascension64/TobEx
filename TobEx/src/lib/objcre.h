@@ -2,7 +2,6 @@
 #define OBJCRE_H
 
 #include "stdafx.h"
-#include "datatypes.h"
 #include "effcore.h"
 #include "splcore.h"
 #include "objcore.h"
@@ -19,17 +18,18 @@
 #include "uicore.h"
 #include "particle.h"
 
-//Event message ids
-#define EVENTMESSAGE_BACKSTAB_SUCCESS			0x01
-#define EVENTMESSAGE_BACKSTAB_WEAPON_UNSUITABLE	0x1C
-#define EVENTMESSAGE_PICKPOCKET_DISABLED_ARMOR	0x1E
-#define EVENTMESSAGE_PICKPOCKET_FAILED_HOSTILE	0x1F
-#define EVENTMESSAGE_PICKPOCKET_FAILED			0x20
-#define EVENTMESSAGE_PICKPOCKET_NO_ITEMS		0x21
-#define EVENTMESSAGE_PICKPOCKET_INV_FULL		0x22
-#define EVENTMESSAGE_PICKPOCKET_SUCCESS			0x23
-#define EVENTMESSAGE_BACKSTAB_FAIL				0x40
-#define EVENTMESSAGE_SPELLFAILED_INVISIBLE		0x42
+//Feedback IDs
+#define FEEDBACK_BACKSTAB_SUCCESS			0x01
+#define FEEDBACK_BACKSTAB_WEAPON_UNSUITABLE	0x1C
+#define FEEDBACK_PICKPOCKET_DISABLED_ARMOR	0x1E
+#define FEEDBACK_PICKPOCKET_FAILED_HOSTILE	0x1F
+#define FEEDBACK_PICKPOCKET_FAILED			0x20
+#define FEEDBACK_PICKPOCKET_NO_ITEMS		0x21
+#define FEEDBACK_PICKPOCKET_INV_FULL		0x22
+#define FEEDBACK_PICKPOCKET_SUCCESS			0x23
+#define FEEDBACK_BACKSTAB_FAIL				0x40
+#define FEEDBACK_SPELLFAILED_INVISIBLE		0x42
+#define FEEDBACK_CANNOT_TALK_BUSY			0x43
 
 struct CQuickObject { //Size 30h
 //Constructor: see 0x532F23
@@ -101,40 +101,37 @@ public:
 	void Update(CCreatureObject& cre);
 };
 
-extern void (CProtectedSplList::*CProtectedSplList_AddTail)(CEffect&, int, int, CCreatureObject&, BOOL, STRREF, BOOL, BOOL);
-extern void (CProtectedSplList::*CProtectedSplList_Update)(CCreatureObject&);
-
 class CCreatureObject : public CGameSprite { //Size 6774h
 //Constructor: 0x87FB08
 public:
 	CGameObject& SetTarget(Object& o, char type);
 	void GetSpellIdsName(int nSpellIdx, IECString* ptr);
-	CDerivedStats& GetDerivedStats();
+	CDerivedStats& GetActiveStats();
 	ACTIONRESULT CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil);
 	static void RemoveItem(CCreatureObject& cre, int nSlot);
 	CEffectList& GetEquippedEffectsList();
-	CEffectList& GetMainEffectsList();
+	CEffectList& GetTimedEffectList();
 
-	CCreatureObject(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing);
-	CCreatureObject& Construct(void* pFile, unsigned int dwSize, BOOL bHasSpawned, int nTicksTillRemove, int nMaxMvtDistance, int nMaxMvtDistanceToObject, unsigned int nSchedule, int nDestX, int nDestY, int nFacing) { return *this; } //dummy
+	CCreatureObject(void* pFile, unsigned int dwSize, short wCreType, int nExpirationTime, int wHuntingRange, int wFollowRange, unsigned int nTimeOfDayVisible, int nPosStartX, int nPosStartY, int nDirection);
+	CCreatureObject& Construct(void* pFile, unsigned int dwSize, short wCreType, int nExpirationTime, int wHuntingRange, int wFollowRange, unsigned int nTimeOfDayVisible, int nPosStartX, int nPosStartY, int nDirection) { return *this; } //dummy
 
 	void CreateGore(int dwUnused, short wOrient, short wType);
 	void UpdateHPStatusTooltip(CUIControl& control);
-	short GetOrientationTo(POINT& pt);
-	static short CalculateOrientation(POINT& pt1, POINT& pt2);
+	short GetOrientationTo(CPoint& pt);
+	static short CalculateOrientation(CPoint& pt1, CPoint& pt2);
 	void SetAnimationSequence(short wSeq);
 	void StartSpriteEffect(char nEffectType, char nParticleType, int nParticles);
 	CItem& GetFirstEquippedLauncherOfAbility(ItmFileAbility& ability, int* pnSlot);
 	int GetSlotOfEquippedLauncherOfAmmo(short wAmmoSlot, short wAbilityIdx);
 	void UnequipAll(BOOL bKeepEffects);
 	void EquipAll(BOOL bDoNotApplyEffects);
-	void AddKnownSpell(ResRef& name, BOOL bPrintEventMessage);
+	void AddKnownSpell(ResRef& name, BOOL bFeedback);
 	CreFileKnownSpell& GetKnownSpellPriest(int nLevel, int nIndex);
 	CreFileKnownSpell& GetKnownSpellMage(int nLevel, int nIndex);
 	CreFileKnownSpell& GetKnownSpellInnate(int nLevel, int nIndex);
-	CreFileMemSpell& GetMemSpellPriest(int nLevel, int nIndex);
-	CreFileMemSpell& GetMemSpellMage(int nLevel, int nIndex);
-	CreFileMemSpell& GetMemSpellInnate(int nLevel, int nIndex);
+	CreFileMemorizedSpell& GetMemSpellPriest(int nLevel, int nIndex);
+	CreFileMemorizedSpell& GetMemSpellMage(int nLevel, int nIndex);
+	CreFileMemorizedSpell& GetMemSpellInnate(int nLevel, int nIndex);
 	BOOL AddMemSpellPriest(int nLevel, int nIndex, int* pIndex);
 	BOOL AddMemSpellMage(int nLevel, int nIndex, int* pIndex);
 	BOOL AddMemSpellInnate(int nLevel, int nIndex, int* pIndex);
@@ -144,19 +141,19 @@ public:
 	void ApplyClassAbilities(CDerivedStats& cdsOld, BOOL bPrintMsgForSpecAbil);
 	void RemoveClassAbilities(CDerivedStats& cdsTarget);
 	IECString& GetLongName();
-	STRREF GetLongNameStrRef();
-	void SetSpellMemorizedState(ResSplContainer& resSpell, BOOL bState);
+	STRREF GetNameRef();
+	void SetSpellMemorizedState(ResSplFile& resSpell, BOOL bState);
 	void ValidateAttackSequence(char* pSeq);
 	char GetNumUniqueMemSpellMage(int nLevel, ResRef rTemp);
 	BOOL InDialogAction();
-	void SetSaveName(ResRef& rName);
+	void SetResRef(ResRef& rName);
 	unsigned int GetKitUnusableFlag();
-	void PrintEventMessage(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
+	void Feedback(short wEventId, int nParam1, int nParam2, int nParam3, STRREF strrefParam4, BOOL bParam5, IECString& sParam6);
 	short GetProficiencyInItem(CItem& itm);
 	ACTIONRESULT ActionMoveToObject(CGameObject& cgoTarget);
 	ACTIONRESULT ActionPickPockets(CCreatureObject& creTarget);
 	short GetProficiency(int nWeapProfId);
-	short GetSpellCastingLevel(ResSplContainer& resSpell, BOOL bUseWildMagicMod);
+	short GetSpellCastingLevel(ResSplFile& resSpell, BOOL bUseWildMagicMod);
 	ACTIONRESULT ActionJumpToAreaEntranceMove(IECString sArea);
 	void UpdateFaceTalkerTimer();
 
@@ -178,21 +175,20 @@ public:
 
 	short u3d4;
 	short u3d6;
-	ResRef rSaveName; //3d8h, CRE name with * prefix
-	short bHasSpawned; //3e0h
-	int nTicksTillRemove; //3e2h, Arg4
-	short nMaxMvtDistance; //3e6h, Arg5, Actor3C
-	short nMaxMvtDistanceToObject; //3e8h, Arg6, Actor3E
-	int destX; //3eah
-	int destY; //3eeh
-	int timesOfDay; //3f2h, creature schedule
-	CreFileData m_BaseStats; //3f6h
+	ResRef m_rSaveName; //3d8h, CRE name with * prefix
+	short m_wCreType; //3e0h, NORMAL or RANDOM
+	int m_nExpirationTime; //3e2h, nTicksTillRemove
+	short m_wHuntingRange; //3e6h, nMaxMvtDistance
+	short m_wFollowRange; //3e8h, nMaxMvtDistanceToObject
+	CPoint m_posStart; //3ea
+	int m_nTimeOfDayVisible; //3f2h, creature schedule
+	CreFileHeader m_header; //3f6h
 	CKnownSpellList m_KnownSpellsPriest[7]; //65eh
 	CKnownSpellList m_KnownSpellsWizard[9]; //722h
 	CKnownSpellList m_KnownSpellsInnate; //81eh
-	CreFileMemSpellLevel* m_MemInfoPriest[7]; //83ah
-	CreFileMemSpellLevel* m_MemInfoWizard[9]; //856h
-	CreFileMemSpellLevel* m_MemInfoInnate; //87ah
+	CreFileMemorizedSpellLevel* m_MemInfoPriest[7]; //83ah
+	CreFileMemorizedSpellLevel* m_MemInfoWizard[9]; //856h
+	CreFileMemorizedSpellLevel* m_MemInfoInnate; //87ah
 	CMemSpellList m_MemSpellsPriest[7]; //87eh
 	CMemSpellList m_MemSpellsWizard[9]; //942h
 	CMemSpellList m_MemSpellsInnate; //a3eh
@@ -243,9 +239,9 @@ public:
 	CGameObject* pThis; //afeh
 	int ub02;
 	int ub06;
-	CDerivedStats cdsCurrent; //b0ah
-	CDerivedStats cdsPrevious; //13c2h, previous state to restore after effect finishes
-	CDerivedStats cdsDiff; //1c7ah, difference to add to currentState
+	CDerivedStats m_cdsCurrent; //b0ah
+	CDerivedStats m_cdsPrevious; //13c2h, previous state to restore after effect finishes
+	CDerivedStats m_cdsDiff; //1c7ah, difference to add to currentState
 	int u2532;
 	CQuickSlot m_qsWeapons[4]; //2536h
 	CQuickSlot m_qsSpells[3]; //25f6h
@@ -285,10 +281,10 @@ public:
 	int nTimesInteractedWith[24]; //2b8ah, each element associated with NPC.IDS //copied from saved game unknown area under happiness
 	short wHappiness; //2beah
 	Object oInteractee; //2bech, for InteractingWith() trigger
-	Enum u2c00;
-	BOOL bScheduled; //2c04h, not outside 24-hour schedule
-	BOOL bActive; //2c08h, not diseased/deactivated
-	BOOL bFree; //2c0ch, not mazed/imprisoned
+	ENUM u2c00;
+	BOOL m_bActive; //2c04h, GetActive(), not outside 24-hour schedule
+	BOOL m_bActiveAI; //2c08h, GetActiveAI(), not diseased/deactivated
+	BOOL m_bActiveImprisonment; //2c0ch, GetActiveImprisonment(), not mazed/imprisoned
 	int nSelectionState; //2c10h, as per GAM NPC
 	int u2c14;
 	char u2c18;
@@ -312,7 +308,7 @@ public:
 	VidPal m_vpGoreMain; //2e32h
 	int u2e56;
 	RECT rGoreBounds; //2e5ah
-	POINT ptGoreCentre; //2e6a
+	CPoint ptGoreCentre; //2e6a
 	bool u2e72; //assoc gore particle
 	char u2e73;
 	BOOL m_bIsAnimationMovable; //2e74h, 0 = static (ANIMATE.IDS values < 0x1000) or HELD, set to 1 on dying
@@ -350,18 +346,18 @@ public:
 	float u33a4; //radians CCW to North
 	int u33a8;
 	short wCurrentSequenceSimplified; //33ach, used in animation sound selection (see animation sound 2DA files for values)
-	POINT u33ae; //linked to coordinates
-	POINT ptDistanceToMove; //33b6h, towards target at 0x33beh, set on refresh
-	POINT ptTargetToMove; //33beh, next pathfinding node?
-	POINT ptBlur1; //33c6h, copied from 0x6 and 0xa
-	POINT ptBlur2; //33ceh, copied from above
+	CPoint u33ae; //linked to coordinates
+	CPoint ptDistanceToMove; //33b6h, towards target at 0x33beh, set on refresh
+	CPoint ptTargetToMove; //33beh, next pathfinding node?
+	CPoint ptBlur1; //33c6h, copied from 0x6 and 0xa
+	CPoint ptBlur2; //33ceh, copied from above
 	int u33d6;
 	int u33da;
 	int u33de;
 	short u33e2; //assoc with orientations
 	short u33e4; //assoc with orientations
 	short wOrientGoal; //33e6h, orientation to get to
-	short wOrientInstant; //33e8h, instantaneous orientation
+	short m_wDirection; //33e8h, instantaneous orientation
 	int* u33ea; //has to do with pathfinding and search requests
 	short u33ee;
 	CDwordList u33f0;
@@ -383,7 +379,7 @@ public:
 	BOOL u350c; //if set, will set search bitmap bits 1, 2, 3 in foot circle area, else 4, 5, 6
 	char u3510;
 	char u3511; //padding?
-	POINT u3512;
+	CPoint u3512;
 	int u351a;
 	int u351e;
 	int u3522;
@@ -400,10 +396,10 @@ public:
 	BOOL m_bDead; //355ch, set by CEffectInstantDeath
 	BOOL m_bResurrect; //3560h, set by CEffectResurrect
 	CEffectList m_EffectsEquipped; //3564h, for while equipped effects
-	CEffectList m_EffectsMain; //3590h, for all other effects
+	CEffectList m_TimedEffectList; //3590h, for all other effects
 	IECPtrList u35bc; //AAA8FC, CPermRepeatingEffList
 	CPtrArray u35d8;
-	POINT u35ec; //assoc actions, target for pathfinding
+	CPoint u35ec; //assoc actions, target for pathfinding
 	int u35f4;
 	int u35f8; //assoc actions
 	short u35fc; //confusion timer?
@@ -415,7 +411,7 @@ public:
 	int u3610;
 	int u3614;
 	CProjectile* m_currentProjectile; //3618h, once projectile placed in area list, set to NULL
-	ResSplContainer* m_currentSpell; //361ch
+	ResSplFile* m_currentSpell; //361ch
 	CItem* m_currentItem; //3620h, quick item currently being used
 	short m_currentItemSlot; //3624h, slot of m_currentItem
 	short m_currentItemAbility; //3626h, ability of m_currentItem
@@ -450,8 +446,8 @@ public:
 	BOOL m_bForceResetAnimation; //36ech
 	CSelectionCircle cscSelf; //36f0h
 	CSelectionCircle cscTarget; //3714h
-	Enum eTarget; //3738h, the target of actions?
-	POINT ptTarget; //373ch, set by ProtectPoint(), MoveToPoint(), Leader(), cscTarget places here
+	ENUM eTarget; //3738h, the target of actions?
+	CPoint ptTarget; //373ch, set by ProtectPoint(), MoveToPoint(), Leader(), cscTarget places here
 	short u3744;
 	char nQuickSlotSelected; //3746h, copied from af6h
 	char nQuickAbilitySelected; //3747h, copied from af8h
@@ -473,12 +469,12 @@ public:
 	char u628b; //padding?
 	long u628c[2];
 	int m_nLargestCurrentHP; //6294h, set to largest current HP value obtained
-	BOOL m_bMoraleBroken; //6298h, contains char data
+	BOOL m_bMoraleFailure; //6298h, contains char data
 	BOOL m_bIsAttacking; //629ch, in the middle of attack phase of a round
 	short u62a0; //assoc actions
 	int u62a2;
 	int m_nFaceTalkerTimer; //62a6h, countdown timer
-	Enum m_eTalker; //62aah, orients cre to person who is about to talk to them
+	ENUM m_eTalker; //62aah, orients cre to person who is about to talk to them
 	int nSoundLength; //62aeh, in sec
 	char u62b2[3];
 	char u62b5; //padding?
@@ -486,7 +482,7 @@ public:
 	CVidCell u62d2;
 	int u63a8;
 	int nTicksLastRested; //63ach, base time to calculate fatigue = (nGameTime - 63ach) / (4 hours in ticks) - FATIGUE_BONUS
-	int m_bAllowBerserkStage2; //63b0h, updated every AIUpdateActions(), no actual berserk action unless STATE_BERSERK
+	BOOL m_bBerserkActive; //63b0h, updated every AIUpdateActions(), no actual berserk action unless STATE_BERSERK
 	short u63b4;
 	int m_nHPBonusPrev; //63b6h, on previous Refresh()
 	BOOL m_bConstructing; //63bah, TRUE only when object is still being constructed
@@ -495,7 +491,8 @@ public:
 	int u63c6;
 	int m_nTicksLastRefresh; //63cah, gets nGameTime during refresh
 	BOOL m_bLevelUpAvailable; //63ceh
-	char u63d2[2];
+	char m_bAllowDialogInterrupt; //63d2h
+	char u63d3;
 	int nUnselectableVariable; //63d4h
 	ResRef voiceset; //63d8h, from CRE entry in GAM file
 	int u63e0; //m_bStoneSkin?
@@ -519,10 +516,10 @@ public:
 	CVariableMap* m_pLocalVariables; //6420h
 	int m_bUnmarshalling; //6424h, 1 during Unmarshal, 0 when done
 	CProtectedSplList m_ProtectedSpls; //6428h, of CProtectedSpl objects
-	Enum m_eEntrancePoint; //6444h, which entrance point to use when moving between areas
+	ENUM m_eEntrancePoint; //6444h, which entrance point to use when moving between areas
 	int m_nBounceDelay; //6448h, counts down from 25 frames
 	int m_nMoraleAI; //644ch
-	Enum eVisualEffect; //6450h, contains enum of CVisualEffect
+	ENUM eVisualEffect; //6450h, contains enum of CVisualEffect
 	int u6454;
 	CQuickObjectList* pSelectSpellSpells; //6458h
 	CScript* pDreamScript; //645ch
@@ -538,8 +535,8 @@ public:
 
 	short m_wMvtRatePrev; //6542h, on last Refresh()
 	int m_nStateFlagsPrev; //6544h, on last Refresh()
-	CreFileMemSpellLevel m_MemInfoWizPrev[9]; //0x6548, on last Refresh()
-	CreFileMemSpellLevel m_MemInfoPrsPrev[7]; //0x65d8, on last Refresh()
+	CreFileMemorizedSpellLevel m_MemInfoWizPrev[9]; //0x6548, on last Refresh()
+	CreFileMemorizedSpellLevel m_MemInfoPrsPrev[7]; //0x65d8, on last Refresh()
 	BOOL m_bSavedStateOnce; //6648h, set to TRUE when the above is saved for the first time during Refresh()
 
 	bool m_bLevellingUp; //664ch, true when loading LevelUpPanel
@@ -552,7 +549,7 @@ public:
 	int m_nDialoguePosition; //6692h, -1 = none, 1 = listener, 2 = speaker
 	int u6696; //assoc actions
 	BOOL m_bLeavingArea; //669ah
-	Enum ePuppet; //669eh
+	ENUM ePuppet; //669eh
 	BOOL m_bAffectedByTimeStop; //66a2h, temporary use during Refresh() to set bForceRefresh
 	int u66a6;
 	int u66aa;
@@ -584,59 +581,5 @@ public:
 	int m_nSpriteUpdateTimer; //676ch, increments up to 15, then set to 0 on before CMessageSpriteUpdate
 	int u6770; //assoc sprite update timer, 0 = always sprite update when ready, other = sprite update, reset to 0 if timer > 2
 };
-
-extern void (CCreatureObject::*CCreatureObject_GetSpellIdsName)(int, IECString*);
-extern CDerivedStats& (CCreatureObject::*CCreatureObject_GetDerivedStats)();
-extern ACTIONRESULT (CCreatureObject::*CCreatureObject_CastSpell)(ResRef&, CGameObject&, BOOL, STRREF, void*, BOOL, BOOL);
-extern void (*CCreatureObject_RemoveItem)(CCreatureObject&, int);
-extern CEffectList& (CCreatureObject::*CCreatureObject_GetEquippedEffectsList)();
-extern CEffectList& (CCreatureObject::*CCreatureObject_GetMainEffectsList)();
-extern CCreatureObject& (CCreatureObject::*CCreatureObject_Construct_10)(void*, unsigned int, BOOL, int, int, int, unsigned int, int, int, int);
-extern void (CCreatureObject::*CCreatureObject_CreateGore)(int, short, short);
-extern void (CCreatureObject::*CCreatureObject_UpdateHPStatusTooltip)(CUIControl&);
-extern short (CCreatureObject::*CCreatureObject_GetOrientationTo)(POINT&);
-extern short (*CCreatureObject_CalculateOrientation)(POINT&, POINT&);
-extern void (CCreatureObject::*CCreatureObject_SetAnimationSequence)(short);
-extern void (CCreatureObject::*CCreatureObject_StartSpriteEffect)(char, char, int);
-extern CItem& (CCreatureObject::*CCreatureObject_GetFirstEquippedLauncherOfAbility)(ItmFileAbility& ability, int* pnSlot);
-extern int (CCreatureObject::*CCreatureObject_GetSlotOfEquippedLauncherOfAmmo)(short, short);
-extern void (CCreatureObject::*CCreatureObject_UnequipAll)(BOOL);
-extern void (CCreatureObject::*CCreatureObject_EquipAll)(BOOL);
-extern void (CCreatureObject::*CCreatureObject_AddKnownSpell)(ResRef&, BOOL);
-extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellPriest)(int, int);
-extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellMage)(int, int);
-extern CreFileKnownSpell& (CCreatureObject::*CCreatureObject_GetKnownSpellInnate)(int, int);
-extern CreFileMemSpell& (CCreatureObject::*CCreatureObject_GetMemSpellPriest)(int, int);
-extern CreFileMemSpell& (CCreatureObject::*CCreatureObject_GetMemSpellMage)(int, int);
-extern CreFileMemSpell& (CCreatureObject::*CCreatureObject_GetMemSpellInnate)(int, int);
-extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellPriest)(int, int, int*);
-extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellMage)(int, int, int*);
-extern BOOL (CCreatureObject::*CCreatureObject_AddMemSpellInnate)(int, int, int*);
-extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellPriest)(ResRef&, int);
-extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellMage)(ResRef&, int);
-extern BOOL (CCreatureObject::*CCreatureObject_AddKnownSpellInnate)(ResRef&, int);
-extern void (CCreatureObject::*CCreatureObject_ApplyClassAbilities)(CDerivedStats& cdsOld, BOOL bPrintMsgForSpecAbil);
-extern void (CCreatureObject::*CCreatureObject_RemoveClassAbilities)(CDerivedStats& cdsTarget);
-extern IECString& (CCreatureObject::*CCreatureObject_GetLongName)();
-extern STRREF (CCreatureObject::*CCreatureObject_GetLongNameStrRef)();
-extern void (CCreatureObject::*CCreatureObject_SetSpellMemorizedState)(ResSplContainer&, BOOL);
-extern void (CCreatureObject::*CCreatureObject_ValidateAttackSequence)(char*);
-extern char (CCreatureObject::*CCreatureObject_GetNumUniqueMemSpellMage)(int, ResRef);
-extern BOOL (CCreatureObject::*CCreatureObject_InDialogAction)();
-extern void (CCreatureObject::*CCreatureObject_SetSaveName)(ResRef&);
-extern unsigned int (CCreatureObject::*CCreatureObject_GetKitUnusableFlag)();
-extern void (CCreatureObject::*CCreatureObject_PrintEventMessage)(short, int, int, int, STRREF, BOOL, IECString&);
-extern short (CCreatureObject::*CCreatureObject_GetProficiencyInItem)(CItem&);
-extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionMoveToObject)(CGameObject&);
-extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionPickPockets)(CCreatureObject&);
-extern short (CCreatureObject::*CCreatureObject_GetProficiency)(int);
-extern short (CCreatureObject::*CCreatureObject_GetSpellCastingLevel)(ResSplContainer&, BOOL);
-extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ActionJumpToAreaEntranceMove)(IECString);
-extern void (CCreatureObject::*CCreatureObject_UpdateFaceTalkerTimer)();
-
-extern bool (CCreatureObject::*CCreatureObject_NeedsAIUpdate)(bool, int);
-extern BOOL (CCreatureObject::*CCreatureObject_EvaluateTrigger)(Trigger&);
-extern ACTIONRESULT (CCreatureObject::*CCreatureObject_ExecuteAction)();
-extern void (CCreatureObject::*CCreatureObject_SetCurrentAction)(Action&);
 
 #endif //OBJCRE_H

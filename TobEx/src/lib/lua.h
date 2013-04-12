@@ -45,43 +45,40 @@ protected:
 	char u0;
 };
 
-extern void (CLUAConsole::*CLUAConsole_DisplayText)(IECString);
-extern void (CLUAConsole::*CLUAConsole_StartStore)(char*);
-
 //IELua functions
-extern int (__stdcall *IElua_init)();
-extern int (__stdcall *IElua_deinit)();
+DefineGlobalFuncPtr(int, __stdcall, IElua_init, (), 0x5ADD86);
+DefineGlobalFuncPtr(int, __stdcall, IElua_deinit, (), 0x5AE158);
 
 /*error_badself
 -prints an error message that the function funcname has inappropriate self*/
-extern void (__cdecl *IElua_error_badself)(char* funcname);
+DefineGlobalFuncPtr(void, __cdecl, IElua_error_badself, (char* funcname), 0x9864E0);
 
 /*error_badarg
 -prints an error message that the function funcname parameter number is //
  of the wrong type, and should be of type type*/
-extern void (__cdecl *IElua_error_badarg)(char* funcname, int number, char* type);
+DefineGlobalFuncPtr(void, __cdecl, IElua_error_badarg, (char* funcname, int number, char* type), 0x986508);
 
-/*error_badarg
+/*error_badargarray
 -prints an error message that the function funcname parameter number is //
  of the wrong type, and should be an array of type type with dimensions dimensions*/
-extern void (__cdecl *IElua_error_badargarray)(char* funcname, int number, char* type, int dimensions);
+DefineGlobalFuncPtr(void, __cdecl, IElua_error_badargarray, (char* funcname, int number, char* type, int dimensions), 0x986538);
+
+/*error_toomanyargs
+-prints an error message that the function funcname has too many arguments*/
+DefineGlobalFuncPtr(void, __cdecl, IElua_error_toomanyargs, (char* funcname), 0x98656C);
 
 /*createtag
 -if name does not already exist in toLua_tag, creates new IETag //
  and updates toLua_tag and toLua_name //
  initialises default IETag methods
 -if name already exists, returns the found IETag*/
-extern IETag (__cdecl *IElua_createtag)(char* name);
+DefineGlobalFuncPtr(IETag, __cdecl, IElua_createtag, (char* name), 0x9865B7);
 
 /*setparent
 -sets the parent of child
 -technically this sets toLua_parent.child = parent and //
  test_cast.child = usertag(cast, 0)*/
-extern void (__cdecl *IElua_setparent)(IETag child, IETag parent, void* cast);
-
-/*error_toomanyparams
--prints an error message that the function funcname has too many arguments*/
-extern void (__cdecl *IElua_error_toomanyargs)(char* funcname);
+DefineGlobalFuncPtr(void, __cdecl, IElua_setparent, (IETag child, IETag parent, void* cast), 0x9866C2);
 
 /*isvalidtype
 -determines whether o is of the type specified
@@ -90,30 +87,30 @@ extern void (__cdecl *IElua_error_toomanyargs)(char* funcname);
  if tag(o) == 0, the functions returns 1 //
  if tag(o) != type, the parent tag is iteratively obtained from toLua_parent.tag(o) and compared to type
  -returns a non-zero int if valid*/
-extern int (__cdecl *IElua_isvalidtype)(lua_Object o, IETag type);
+DefineGlobalFuncPtr(int, __cdecl, IElua_isvalidtype, (lua_Object o, IETag type), 0x986752);
 
 /*getparam
 -gets the (number)th param and checks the type against tag*/
-extern int (__cdecl *IElua_getparam)(int number, IETag tag);
+DefineGlobalFuncPtr(int, __cdecl, IElua_getparam, (int number, IETag tag), 0x986893);
 
 /*checktable
 -checks that each numerical index of the table of size size is of type type
 -if table is not of type table, returns zero
 -if any field is not of type type, returns zero
 -if size is smaller than the number of elements in the table, returns zero*/
-extern int (__cdecl *IElua_checktable)(lua_Object table, IETag type, int size);
+DefineGlobalFuncPtr(int, __cdecl, IElua_checktable, (lua_Object table, IETag type, int size), 0x9868BA);
 
 /*getstring
 -equivalent to lua_getstring() but aborts if o isnil()*/
-extern char* (__cdecl *IElua_getstring)(lua_Object o);
+DefineGlobalFuncPtr(char*, __cdecl, IElua_getstring, (lua_Object o), 0x98698F);
 
 /*getnumber
 -equivalent to lua_getnumber()*/
-extern real (__cdecl *IElua_getnumber)(lua_Object o);
+DefineGlobalFuncPtr(real, __cdecl, IElua_getnumber, (lua_Object o), 0x9869B4);
 
 /*getuserdata
 -equivalent to lua_getuserdata() but aborts if o isnil()*/
-extern void* (__cdecl *IElua_getuserdata)(lua_Object o);
+DefineGlobalFuncPtr(void*, __cdecl, IElua_getuserdata, (lua_Object o), 0x9869CD);
 
 /*cast
 -tag(userdata) is compared to type //
@@ -124,99 +121,99 @@ extern void* (__cdecl *IElua_getuserdata)(lua_Object o);
 -the value of the final userdata is returned
 -the function is generally used to cast the self parameter of a tag method
 */
-extern void* (__cdecl *IElua_cast)(lua_Object userdata, IETag tag);
+DefineGlobalFuncPtr(void*, __cdecl, IElua_cast, (lua_Object userdata, IETag tag), 0x9869F2);
 
 /*pushstring
 -equivalent to lua_pushstring() but pushnil() if NULL*/
-extern void (__cdecl *IElua_pushstring)(char*);
+DefineGlobalFuncPtr(void, __cdecl, IElua_pushstring, (char* sz), 0x986AE8);
 
 /*pushuserdata
 -pushes userdata(u, -1) on the C2lua stack
 -if tag(userdata) == 0, tag(userdata) is set to tag*/
-extern void (__cdecl *IElua_pushuserdata)(void*, IETag tag);
+DefineGlobalFuncPtr(void, __cdecl, IElua_pushuserdata, (void* userdata, IETag tag), 0x986B06);
 
 /* alloc
 -create a new object and stores as an index so test_alloc.userdata(obj, 0) = 0.0
 -the object is assigned tag IETag and is given a garbage collection method "gc"
 -the object is initialised by copying pData into it
 -the userdata is pushed onto the C2lua stack before return*/
-extern void (__cdecl *IElua_alloc)(void* pData, int size, IETag tag);
+DefineGlobalFuncPtr(void, __cdecl, IElua_alloc, (void* pData, int size, IETag tag), 0x986B65);
 
 /*gettable
 -gets the value table.tag, which should be of type table
 -if this value is not a table, newtable is created and stored in table.tag*/
-extern lua_Object (__cdecl *IElua_gettable)(lua_Object table, IETag tag);
+DefineGlobalFuncPtr(lua_Object, __cdecl, IElua_gettable, (lua_Object table, IETag tag), 0x986C9F);
 
 /*settaggetmethod
 -stores a userdata(u, 0) in test_getref.tag.event
 -the method is invoked in IELua using "tag:event" before a settagmethod method is discovered
 -the method is of type "void method(void* u)" and pushes a value onto the C2lua stack*/
-extern void (__cdecl *IElua_settaggetmethod)(IETag tag, char* event, void* u);
+DefineGlobalFuncPtr(void, __cdecl, IElua_settaggetmethod, (IETag tag, char* event, void* u), 0x986D2B);
 
 /*settagsetmethod
 -stores a userdata(u, 0) in test_setref.tag.event
 -the method is of type void method(void* u, lua_Object value)*/
-extern void (__cdecl *IElua_settagsetmethod)(IETag tag, char* event, void* u);
+DefineGlobalFuncPtr(void, __cdecl, IElua_settagsetmethod, (IETag tag, char* event, void* u), 0x986D7E);
 
 /*settagmethod
 -stores a lua_CFunction in test_getref.tag.event
 -these are invoked in IELua with tag:event after userdata is discovered*/
-extern void (__cdecl *IElua_settagmethod)(IETag tag, char* event, lua_CFunction func);
+DefineGlobalFuncPtr(void, __cdecl, IElua_settagmethod, (IETag tag, char* event, lua_CFunction func), 0x986DD1);
 
 /*createglobaltag
 -creates a new IETag and stores it in the global varname*/
-extern void (__cdecl *IElua_createglobaltag)(char* varname);
+DefineGlobalFuncPtr(void, __cdecl, IElua_createglobaltag, (char* varname), 0x986E22);
 
 /*createtaggetmethod
 -creates a new tag and stores userdata(u, 0) in test_getref.tag.event*/
-extern void (__cdecl *IElua_createtaggetmethod)(char* event, void* u);
+DefineGlobalFuncPtr(void, __cdecl, IElua_createtaggetmethod, (char* event, void* u), 0x986E5D);
 
 /*createtagsetmethod
 -creates a new tag and stores userdata(u, 0) in test_setref.tag.event*/
-extern void (__cdecl *IElua_createtagsetmethod)(char* event, void* u);
+DefineGlobalFuncPtr(void, __cdecl, IElua_createtagsetmethod, (char* event, void* u), 0x986E88);
 
 //Lua 3.0 functions
-extern int (__cdecl *lua_dofile)(char* filename);
-extern int (__cdecl *lua_dostring)(char* str);
-extern lua_Object (__cdecl *lua_pop)();
-extern lua_Object (__cdecl *lua_rawgettable)();
-extern void (__cdecl *lua_error)(char* message);
-extern lua_Object (__cdecl *lua_seterrormethod)();
-extern int (__cdecl *lua_callfunction)(lua_Object function);
-extern lua_Object (__cdecl *lua_gettagmethod)(int tag, char* event);
-extern lua_Object (__cdecl *lua_settagmethod)(int tag, char* event);
-extern lua_Object (__cdecl *lua_gettable)();
-extern void (__cdecl *lua_beginblock)();
-extern void (__cdecl *lua_endblock)();
-extern void (__cdecl *lua_settag)(int tag);
-extern void (__cdecl *lua_settable)();
-extern void (__cdecl *lua_rawsettable)();
-extern lua_Object (__cdecl *lua_createtable)();
-extern lua_Object (__cdecl *lua_lua2C)(int number);
-extern int (__cdecl *lua_isnil)(lua_Object o);
-extern int (__cdecl *lua_istable)(lua_Object o);
-extern int (__cdecl *lua_isuserdata)(lua_Object o);
-extern int (__cdecl *lua_iscfunction)(lua_Object o);
-extern int (__cdecl *lua_isnumber)(lua_Object o);
-extern int (__cdecl *lua_isstring)(lua_Object o);
-extern int (__cdecl *lua_isfunction)(lua_Object o);
-extern real (__cdecl *lua_getnumber)(lua_Object o);
-extern char* (__cdecl *lua_getstring)(lua_Object o);
-extern void* (__cdecl *lua_getuserdata)(lua_Object o);
-extern lua_CFunction (__cdecl *lua_getcfunction)(lua_Object o);
-extern lua_Object (__cdecl *lua_getref)(int ref);
-extern int (__cdecl *lua_ref)(int lock);
-extern lua_Object (__cdecl *lua_getglobal)(char* name);
-extern lua_Object (__cdecl *lua_rawgetglobal)(char* name);
-extern void (__cdecl *lua_setglobal)(char* varname);
-extern void (__cdecl *lua_rawsetglobal)(char* name);
-extern void (__cdecl *lua_pushnil)(void);
-extern void (__cdecl *lua_pushnumber)(real n);
-extern void (__cdecl *lua_pushstring)(char* s);
-extern void (__cdecl *lua_pushcfunction)(lua_CFunction fn);
-extern void (__cdecl *lua_pushusertag)(void* u, int tag);
-extern void (__cdecl *lua_pushobject)(lua_Object o);
-extern int (__cdecl *lua_tag)(lua_Object o);
-extern int (__cdecl *lua_newtag)();
+DefineGlobalFuncPtr(int, __cdecl, lua_dofile, (char* filename), 0xA25380);
+DefineGlobalFuncPtr(int, __cdecl, lua_dostring, (char* str), 0xA25490);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_pop, (), 0xA25D50);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_rawgettable, (), 0xA25F10);
+DefineGlobalFuncPtr(void, __cdecl, lua_error, (char* message), 0xA25FB0);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_seterrormethod, (), 0xA26860);
+DefineGlobalFuncPtr(int, __cdecl, lua_callfunction, (lua_Object function), 0xA266D0);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_gettagmethod, (int tag, char* event), 0xA26740);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_settagmethod, (int tag, char* event), 0xA267D0);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_gettable, (), 0xA26880);
+DefineGlobalFuncPtr(void, __cdecl, lua_beginblock, (), 0xA26980);
+DefineGlobalFuncPtr(void, __cdecl, lua_endblock, (), 0xA269D0);
+DefineGlobalFuncPtr(void, __cdecl, lua_settag, (int tag), 0xA26A30);
+DefineGlobalFuncPtr(void, __cdecl, lua_settable, (), 0xA26A60);
+DefineGlobalFuncPtr(void, __cdecl, lua_rawsettable, (), 0xA26BA0);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_createtable, (), 0xA26BC0);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_lua2C, (int number), 0xA26C50);
+DefineGlobalFuncPtr(int, __cdecl, lua_isnil, (lua_Object o), 0xA26C70);
+DefineGlobalFuncPtr(int, __cdecl, lua_istable, (lua_Object o), 0xA26C90);
+DefineGlobalFuncPtr(int, __cdecl, lua_isuserdata, (lua_Object o), 0xA26CB0);
+DefineGlobalFuncPtr(int, __cdecl, lua_iscfunction, (lua_Object o), 0xA26CD0);
+DefineGlobalFuncPtr(int, __cdecl, lua_isnumber, (lua_Object o), 0xA26CF0);
+DefineGlobalFuncPtr(int, __cdecl, lua_isstring, (lua_Object o), 0xA26D70);
+DefineGlobalFuncPtr(int, __cdecl, lua_isfunction, (lua_Object o), 0xA26D90);
+DefineGlobalFuncPtr(real, __cdecl, lua_getnumber, (lua_Object o), 0xA26DC0);
+DefineGlobalFuncPtr(char*, __cdecl, lua_getstring, (lua_Object o), 0xA26E10);
+DefineGlobalFuncPtr(void*, __cdecl, lua_getuserdata, (lua_Object o), 0xA26F10);
+DefineGlobalFuncPtr(lua_CFunction, __cdecl, lua_getcfunction, (lua_Object o), 0xA26F40);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_getref, (int ref), 0xA26F70);
+DefineGlobalFuncPtr(int, __cdecl, lua_ref, (int lock), 0xA26F90);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_getglobal, (char* name), 0xA26FC0);
+DefineGlobalFuncPtr(lua_Object, __cdecl, lua_rawgetglobal, (char* name), 0xA270E0);
+DefineGlobalFuncPtr(void, __cdecl, lua_setglobal, (char* varname), 0xA27110);
+DefineGlobalFuncPtr(void, __cdecl, lua_rawsetglobal, (char* varname), 0xA27250);
+DefineGlobalFuncPtr(void, __cdecl, lua_pushnil, (), 0xA272A0);
+DefineGlobalFuncPtr(void, __cdecl, lua_pushnumber, (real n), 0xA272D0);
+DefineGlobalFuncPtr(void, __cdecl, lua_pushstring, (char* s), 0xA27310);
+DefineGlobalFuncPtr(void, __cdecl, lua_pushcfunction, (lua_CFunction fn), 0xA27360);
+DefineGlobalFuncPtr(void, __cdecl, lua_pushusertag, (void* u, int tag), 0xA273A0);
+DefineGlobalFuncPtr(void, __cdecl, lua_pushobject, (lua_Object o), 0xA27440);
+DefineGlobalFuncPtr(int, __cdecl, lua_tag, (lua_Object o), 0xA274C0);
+DefineGlobalFuncPtr(int, __cdecl, lua_newtag, (), 0xA28D90);
 
 #endif //LUA_H

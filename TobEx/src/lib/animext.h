@@ -2,7 +2,6 @@
 #define ANIMEXT_H
 
 #include "animcore.h"
-#include "datatypes.h"
 #include "cstringex.h"
 #include "arecore.h"
 
@@ -11,7 +10,7 @@ class CAnimation0000 : public CAnimation { //Size 976h
 public:
 	//AB622C
 	virtual ~CAnimation0000() {} //v0
-	virtual bool CanUseMiddleVertList() { return true; } //v28
+	virtual bool CanLieDown() { return true; } //v28
 
 	CVidCell* m_pCurrentVidCell; //6d8h
 	CVidCell* m_pAnimShadow; //6dch
@@ -64,8 +63,6 @@ public:
 	int u736;
 };
 
-extern LPCTSTR (CAnimation1000::*CAnimation1000_GetWalkingSound)(short);
-
 class CAnimation1200 : public CAnimation { //Size AC6h
 //0x12**, 0x1X**
 //Constructor: 0x82C8AE
@@ -103,15 +100,13 @@ public:
 	char cSuffix2; //ac5h
 };
 
-extern LPCTSTR (CAnimation1200::*CAnimation1200_GetWalkingSound)(short);
-
 class CAnimation1300 : public CAnimation { //Size 7F4h
 //0x13**
 //Constructor: 0x8746B1
 public:
 	//AB7158
 	virtual ~CAnimation1300() {} //v0
-	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
+	virtual bool CanLieDown() { return m_bCanLieDown; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -138,13 +133,11 @@ public:
 	int u7e4;
 	char u7e8;
 	char u7e9;
-	BOOL bCanUseMiddleVertList; //7eah, retrieved as char (set to 1)
+	BOOL m_bCanLieDown; //7eah, retrieved as char (set to 1)
 	int u7ee;
 	char u7f2;
 	char u7f3;
 };
-
-extern LPCTSTR (CAnimation1300::*CAnimation1300_GetWalkingSound)(short);
 
 class CAnimation2000 : public CAnimation { //Size E0Ch
 //Constructor: 0x83D12A
@@ -187,8 +180,6 @@ public:
 	char nOrientations; //e0ah
 	char ue0a; //pad
 };
-
-extern LPCTSTR (CAnimation2000::*CAnimation2000_GetWalkingSound)(short);
 
 class CAnimation3000 : public CAnimation { //Size 1106h
 //Constructor: 0x841063
@@ -233,7 +224,7 @@ class CAnimation4000 : public CAnimation { //Size 7E4h
 public:
 	//AB63F4
 	virtual ~CAnimation4000() {} //v0
-	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
+	virtual bool CanLieDown() { return m_bCanLieDown; } //v28
 
 	CVidCell* m_pCurrentVidCellBase; //6d8h
 	CVidCell* m_pCurrentVidCellExtend; //6dch
@@ -243,7 +234,7 @@ public:
 	short wCurrentAnimationIdx; //7dah
 	short wCurrentOrientation; //7dch
 	BOOL bUseColorRange; //7deh
-	bool bCanUseMiddleVertList; //7e2h
+	bool m_bCanLieDown; //7e2h
 	char u7e3; //pad
 };
 
@@ -252,12 +243,12 @@ class CAnimation5000 : public CAnimation { //Size 16E0h
 //0x5***, 0x6***, except 0x6400-0x6405
 //Constructor: 0x843678
 public:
-	CAnimation5000(unsigned short wAnimId, ColorRangeValues& colors, int nOrientation);
-	CAnimation5000& Construct(unsigned short, ColorRangeValues&, int) { return *this; }
+	CAnimation5000(unsigned short wAnimId, CreFileColors& colors, int nOrientation);
+	CAnimation5000& Construct(unsigned short, CreFileColors&, int nOrientation) { return *this; }
 
 	//AB6F90
 	virtual ~CAnimation5000() {} //v0
-	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
+	virtual bool CanLieDown() { return m_bCanLieDown; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h, C<RACE><SEX>B
@@ -329,7 +320,7 @@ public:
 	char nOrientations; //16cfh
 	char u16d0;
 	bool m_bImmuneToDamage; //16d1h
-	bool m_bCanUseMiddleVertList; //16d2h, only SAREVOK (X404) is false
+	bool m_bCanLieDown; //16d2h, only SAREVOK (X404) is false
 	char u16d3; //armor level suffix char
 	char u16d4; //armor level suffix char
 	char u16d5;
@@ -339,16 +330,13 @@ public:
 	char u16df; //pad
 };
 
-extern CAnimation5000& (CAnimation5000::*CAnimation5000_Construct)(unsigned short, ColorRangeValues&, int);
-extern LPCTSTR (CAnimation5000::*CAnimation5000_GetWalkingSound)(short);
-
 class CAnimation6400 : public CAnimation { //Size 36B0h
 //0x6400-0x6405
 //Constructor: 0x8586AC
 public:
 	//AB7074
 	virtual ~CAnimation6400() {} //v0
-	virtual bool CanUseMiddleVertList() { return m_bCanUseMiddleVertList; } //v28
+	virtual bool CanLieDown() { return m_bCanLieDown; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sMainPrefix; //6d8h, C<RACE><SEX>C, group1
@@ -472,11 +460,9 @@ public:
 	char nOrientations; //36abh
 	char u36ac;
 	char u36ad;
-	bool m_bCanUseMiddleVertList; //36aeh, only SAREVOK (X404) is false
+	bool m_bCanLieDown; //36aeh, only SAREVOK (X404) is false
 	char u36af; //pad
 };
-
-extern LPCTSTR (CAnimation6400::*CAnimation6400_GetWalkingSound)(short);
 
 class CAnimation7000 : public CAnimation { //Size B2Ch
 //0x7[015CE]*[01], 0x72*[0-3], 0x7[47]*[0-2], 0x7[68D]*0, 0x7[9A]*[0-4], 0x7B*[0-6]
@@ -507,20 +493,18 @@ public:
 	char nOrientations; //b2bh
 };
 
-extern LPCTSTR (CAnimation7000::*CAnimation7000_GetWalkingSound)(short);
-
 class CAnimation7300 : public CAnimation { //Size D3Ch
 //0x7300, 0x7703, 0x7F00, all outliers of above
 //Constructor: 0x807184
 public:
 	//AB66A0
 	virtual ~CAnimation7300() {} //v0
-	virtual bool CanUseMiddleVertList() { return bCanUseMiddleVertList; } //v28
+	virtual bool CanLieDown() { return m_bCanLieDown; } //v28
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
-	CVidCell m_pCurrentVidCell; //6dch
-	CVidCell m_pCurrentVidCellBase; //6e0h
+	CVidCell* m_pCurrentVidCell; //6dch
+	CVidCell* m_pCurrentVidCellBase; //6e0h
 	CVidCell m_G1VidCellBase; //6e4h
 	CVidCell m_G2VidCellBase; //7bah
 	VidPal vpColorRangeBase; //890h
@@ -545,7 +529,7 @@ public:
 	int ub6c;
 	char ub70;
 	char nOrientations; //b71h
-	BOOL bCanUseMiddleVertList; //b72h, retrieved as char (always 1)
+	BOOL m_bCanLieDown; //b72h, retrieved as char (always 1)
 	int ub76;
 	int ub7a;
 	char ub7e;
@@ -558,8 +542,6 @@ public:
 	CVidCell m_G1VidCellBase2; //b90h
 	CVidCell m_G2VidCellBase2; //c66h
 };
-
-extern LPCTSTR (CAnimation7300::*CAnimation7300_GetWalkingSound)(short);
 
 class CAnimation8000 : public CAnimation { //Size E02h
 //Constructor: 0x839BE6
@@ -598,8 +580,6 @@ public:
 	IECString udfe; //HB/BW
 };
 
-extern LPCTSTR (CAnimation8000::*CAnimation8000_GetWalkingSound)(short);
-
 class CAnimation9000 : public CAnimation { //Size C1Ah
 //Constructor: 0x828165
 public:
@@ -626,8 +606,6 @@ public:
 	char nOrientations; //c18h
 	char uc19; //pad
 };
-
-extern LPCTSTR (CAnimation9000::*CAnimation9000_GetWalkingSound)(short);
 
 class CAnimationA000 : public CAnimation { //Size C1Ah
 //Constructor: 0x82A22F
@@ -656,8 +634,6 @@ public:
 	char uc19; //pad
 };
 
-extern LPCTSTR (CAnimationA000::*CAnimationA000_GetWalkingSound)(short);
-
 class CAnimationB000 : public CAnimation { //Size 8C2h
 //Constructor: 0x803352
 public:
@@ -680,13 +656,12 @@ public:
 	char u8c1; //pad
 };
 
-
 class CAnimationC000 : public CAnimation { //Size 8CAh
 //Constructor: 0x804D2B
 public:
 	//AB65BC
 	virtual ~CAnimationC000() {} //v0
-	virtual char GetDefaultVertListType() { return nDefaultVertListType; } //v3c
+	virtual char GetListType() { return m_nListType; } //v3c
 	virtual LPCTSTR GetWalkingSound(short wTerrainCode); //v6c
 
 	IECString sPrefix; //6d8h
@@ -703,19 +678,17 @@ public:
 	BOOL bUseColorRange; //8bch
 	int u8c0;
 	int u8c4;
-	char nDefaultVertListType; //8c8h, always LIST_FRONT except for C500 is LIST_BACK
+	char m_nListType; //8c8h, always LIST_FRONT except for C500 is LIST_2
 	char nOrientations; //8c9h
 };
-
-extern LPCTSTR (CAnimationC000::*CAnimationC000_GetWalkingSound)(short);
 
 class CAnimationD000 : public CAnimation { //Size 7E4h
 //Constructor: 0x800D4F
 public:
 	//AB6310
 	virtual ~CAnimationD000() {} //v0
-	virtual bool CanUseMiddleVertList() { return false; } //v28
-	virtual char GetDefaultVertListType() { return LIST_BACK; } //v3c
+	virtual bool CanLieDown() { return false; } //v28
+	virtual char GetListType() { return LIST_2; } //v3c
 
 	CVidCell* m_pCurrentVidCell; //6d8h
 	CVidCell* m_pCurrentVidCellBase; //6dch
@@ -724,7 +697,7 @@ public:
 
 	short wCurrentAnimation; //7dah
 	short wCurrentOrientation; //7dch
-	BOOL bUseColorRange;; //7deh
+	BOOL bUseColorRange; //7deh
 	char nOrientations; //7e2h
 	char u7e3; //pad
 };
@@ -805,7 +778,5 @@ public:
 	char u3276;
 	char nOrientations; //3277h
 };
-
-extern LPCTSTR (CAnimationE000::*CAnimationE000_GetWalkingSound)(short);
 
 #endif //ANIMEXT_H

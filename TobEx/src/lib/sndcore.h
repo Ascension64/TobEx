@@ -142,15 +142,13 @@ struct CSoundMixer { //Size 28DAh
 	int nSavedMusicVolume; //28d6h, stores music volume when a cutscene sounds is played, restored when finished
 };
 
-extern BOOL (CSoundMixer::*CSoundMixer_InitSonglist)(int, char**);
-
 struct SongPosition { //Size Ch
 	int nSong;
 	int nPart;
 	int nCursorPos;
 };
 
-struct ResWavContainer { //Size 10h
+struct ResWavFile { //Size 10h
 	BOOL bLoaded; //0h
 	ResWav* pResWav; //4h
 	ResRef soundName; //8h
@@ -161,7 +159,7 @@ class CSound : CObject { //Size 6Ah
 public:
 	//AB9960
 
-	ResWavContainer wav; //4h
+	ResWavFile wav; //4h
 	BOOL bUsePosition; //14h, uses 24h
 	int nBufferSize; //18h
 	int nFrequency; //1ch (1/500 of Hz)

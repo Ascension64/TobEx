@@ -8,14 +8,27 @@
 #include "resref.h"
 
 //CRuleTables
-extern CRuleTables& (CRuleTables::*Tramp_CRuleTables_Construct)();
-extern void (CRuleTables::*Tramp_CRuleTables_Deconstruct)();
-extern void (CInfGame::*Tramp_CInfGame_InitGame)(int, int);
-extern int (CRuleTables::*Tramp_CRuleTables_CalculateNewHPSubclass)(char, char, CDerivedStats&, CDerivedStats&, int, int);
-extern ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRef)(int, int);
-extern int (CRuleTables::*Tramp_CRuleTables_GetWeapProfMax)(char, char, char, BOOL, int, unsigned int);
-extern BOOL (CRuleTables::*Tramp_CRuleTables_IsMageSchoolAllowed)(unsigned int, unsigned char);
-extern ResRef (CRuleTables::*Tramp_CRuleTables_GetMageSpellRefAutoPick)(char, char);
+DeclareTrampMemberFunc(CRuleTables&, CRuleTables, Construct, (), Construct);
+DeclareTrampMemberFunc(void, CRuleTables, Deconstruct, (), Deconstruct);
+DeclareTrampMemberFunc(int, CRuleTables, CalculateNewHPSubclass, (
+	char nClass,
+	char nSubclass,
+	CDerivedStats& cdsOld,
+	CDerivedStats& cdsNew,
+	int nMinRoll,
+	int nDivisor
+	), CalculateNewHPSubclass);
+DeclareTrampMemberFunc(ResRef, CRuleTables, GetMageSpellRef, (int nSpellLevel, int nIndex), GetMageSpellRef);
+DeclareTrampMemberFunc(int, CRuleTables, GetWeapProfMax, (
+	char nClassId,
+	char nClassPrimary,
+	char nClassSecondary,
+	BOOL bTwoClasses,
+	int nWeapProfId,
+	unsigned int dwKit
+	), GetWeapProfMax);
+DeclareTrampMemberFunc(BOOL, CRuleTables, IsMageSchoolAllowed, (unsigned int dwKit, unsigned char nRace), IsMageSchoolAllowed);
+DeclareTrampMemberFunc(ResRef, CRuleTables, GetMageSpellRefAutoPick, (char nSpellLevel, char nIndex), GetMageSpellRefAutoPick);
 
 class DETOUR_CRuleTables : public CRuleTables {
 public:
@@ -29,7 +42,7 @@ public:
 };
 
 //CMoveAreasList
-extern void (CMoveAreasList::*Tramp_CMoveAreasList_MoveAllTo)(CArea&);
+DeclareTrampMemberFunc(void, CMoveAreasList, MoveAllTo, (CArea& area), MoveAllTo);
 
 class DETOUR_CMoveAreasList : public CMoveAreasList {
 public:
@@ -37,14 +50,15 @@ public:
 
 	struct MoveAreasComparator { //size 14h
 		IECString sCreLongName; //0h
-		POINT ptDest; //4h
+		CPoint ptDest; //4h
 		ResRef rArea; //ch 
 	};
 };
 
 //CInfGame
-extern int (CInfGame::*Tramp_CInfGame_GetNumOfItemInBag)(ResRef&, ResRef&, BOOL);
-extern void (CInfGame::*Tramp_CInfGame_SetLoseCutscene)();
+DeclareTrampMemberFunc(void, CInfGame, InitGame, (int nUnused, int nUnused2), InitGame);
+DeclareTrampMemberFunc(int, CInfGame, GetNumOfItemInBag, (ResRef& rBag, ResRef& rItem, BOOL bIdentifiedOnly), GetNumOfItemInBag);
+DeclareTrampMemberFunc(void, CInfGame, SetLoseCutscene, (), SetLoseCutscene);
 
 class DETOUR_CInfGame : public CInfGame {
 public:

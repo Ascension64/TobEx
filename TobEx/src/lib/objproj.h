@@ -28,9 +28,9 @@ public:
 	char bSparkTrail; //44h, area list to put this object, bit5 not set = 0, bit5 set = 1
 	char u45; //pad?
 	short nSpeed; //46h
-	Enum u48; //a party member (source)
-	Enum eTarget; //4ch
-	Enum u50;
+	ENUM u48; //a party member (source)
+	ENUM eTarget; //4ch
+	ENUM u50;
 	CEffectList effects; //54h, to apply on target affected by this (Preset target effects from SPL)
 	
 	short nSparkleColour; //80h
@@ -48,14 +48,14 @@ public:
 	//11: MAGENTA (10)
 	//12: ORANGE (11)
 
-	POINT u82; //calculation from location of Enum source
-	POINT u8a; //smoke
+	CPoint u82; //calculation from location of ENUM source
+	CPoint u8a; //smoke
 	int u92;
 	int u96;
-	POINT u9a;
-	POINT ua2;
+	CPoint u9a;
+	CPoint ua2;
 	int uaa;
-	POINT uae; //location to travel to (target)
+	CPoint uae; //location to travel to (target)
 	TerrainTable ub6;
 	short uc6;
 	BOOL bShowSparkles; //c8h
@@ -78,7 +78,7 @@ public:
 	char u168;
 	char u169; //pad?
 	IECString VisualEffect; //16ah, value from VEFPROJ.IDS, used in CreateVisualEffect()
-	Enum eVisualEffect; //16eh, once constructed gets enum of visual effect
+	ENUM eVisualEffect; //16eh, once constructed gets enum of visual effect
 };
 
 class CProjectileBAM : public CProjectile { //Size 2B2h
@@ -137,7 +137,7 @@ class CProjectileArea : public CProjectileBAM { //Size 32Eh
 public:
 	//AABF70
 	//v60, return 0
-	//v64, void CProjectileArea::Initialise(pArea, Enum src, Enum target, x, y, z, nSparkleColour)
+	//v64, void CProjectileArea::Initialise(pArea, ENUM src, ENUM target, x, y, z, nSparkleColour)
 	//v68, void CProjectileArea::DoArrivedAtTarget()
 	//v6c, void CProjectile::Purge()
 	//v70, void CProjectile::ApplyEffectsToTarget()
@@ -205,8 +205,8 @@ public:
 	TerrainTable u42;
 	AnimData m_animation; //52h
 	int u58;
-	POINT ptSource; //5ch
-	POINT ptDest; //64h
+	CPoint ptSource; //5ch
+	CPoint ptDest; //64h
 	short u6c;
 	char u6e;
 	char u6f;
@@ -267,7 +267,7 @@ public:
 	int u208;
 	BOOL bConeShaped; //20ch
 	short nConeRadius; //210h
-	POINT u212;
+	CPoint u212;
 	char u21a;
 	char u21b; //pad
 	short u21c;
@@ -282,7 +282,7 @@ public:
 	TerrainTable u42;
 	AnimData m_animation; //52h
 	int u58;
-	POINT u5c;
+	CPoint u5c;
 	int u64;
 	char u68;
 	char u69;

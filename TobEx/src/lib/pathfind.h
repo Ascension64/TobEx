@@ -61,11 +61,11 @@ struct CSearchRequest { //Size 60h
 	TerrainTable tt; //14h
 	BOOL u24; //gets value from Animation v58()
 	int u28;
-	Enum e; //2ch, of owner
+	ENUM e; //2ch, of owner
 	int u30;
 	int u34;
 	int* u38;
-	Enum* u3c; //array of u8 Enum targets
+	ENUM* u3c; //array of u8 ENUM targets
 	int* u40;
 	int u44;
 	int u48;

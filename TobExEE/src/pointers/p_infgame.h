@@ -5,6 +5,7 @@
 #ifdef __2014
 
   #define CINFGAME_GETWORLDTIMER	0X408CD0
+  #define CINFGAME_GETSCRIPTPARSER	0X497AE0
 
 #elif
 #endif

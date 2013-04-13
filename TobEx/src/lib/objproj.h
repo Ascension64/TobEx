@@ -213,7 +213,7 @@ public:
 	CSound sound; //70h
 };
 
-class CSparkle : public CGameObject { //Size 
+class CSparkle : public CGameObject { //Size 9Eh
 //Constructor: 0x5F6CD5
 public:
 	//AABB68

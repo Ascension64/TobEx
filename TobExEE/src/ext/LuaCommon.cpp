@@ -293,8 +293,7 @@ void LUA_PushFunction() {
 Global function
 Pushes the memory address of a sprite onto the Lua stack
 The sprite can be referenced either by its enum (as decimal number of a string containing a hexadecimal number starting with "0x") or scriptname */
-//FIX_ME
-/*void LUA_GetSprite() {
+void LUA_GetSprite() {
 	Object o;
 	ENUM e = ENUM_INVALID_INDEX;
 	void* u = NULL;
@@ -320,14 +319,11 @@ The sprite can be referenced either by its enum (as decimal number of a string c
 
 	CGameSprite* pSprite = NULL;
 	if (e == ENUM_INVALID_INDEX) {
-		e = g_pChitin->pGame->ePlayersJoinOrder[0];
+		e = g_pChitin->GetInfGame().m_ePlayersJoinOrder[0];
 	}
 
 	char nReturnVal;
-	do {
-		nReturnVal = g_pChitin->pGame->m_GameObjectArray.GetShare(e, THREAD_ASYNCH, &pSprite, INFINITE);
-	} while (nReturnVal == OBJECT_SHARING || nReturnVal == OBJECT_DENYING);
-	if (nReturnVal == OBJECT_SUCCESS &&	pSprite) {
+	if (g_pChitin->GetInfGame().m_GameObjectArray.GetObject(e, &pSprite) == OBJECT_SUCCESS && pSprite) {
 		if (o.m_sName.IsEmpty()) {
 			u = pSprite;
 		} else {
@@ -339,13 +335,12 @@ The sprite can be referenced either by its enum (as decimal number of a string c
 		} else {
 			lua_error("Cannot find object");
 		}
-		g_pChitin->pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	} else {
-		lua_error("GetShare failed");
+		lua_error("GetObject failed");
 	}
 
 	return;
-}*/
+}
 
 /* createobject(userdata, [type])
 Global function
@@ -414,7 +409,7 @@ void LUA_InitObjectTagMethods(int tag) {
 	IElua_settagmethod(tag, "getdword", LUA_GetDword);
 	IElua_settagmethod(tag, "getstring", LUA_GetString);
 	IElua_settagmethod(tag, "getlist", LUA_GetList);
-	//IElua_settagmethod(tag, "print", LUA_Print);
+	IElua_settagmethod(tag, "print", LUA_Print);
 	return;
 }
 
@@ -462,7 +457,7 @@ Tag method for TobExObject
 Calls the __cdecl C function 'function', pushing options 'args' onto the stack
 Lua functions and tables are ignored if used as arguments, while nil or non-existent arguments terminate the argument list
 The object is placed into ecx as per __thiscall
-The return value eax is pushed onto the Lua stack as a number */
+The return value eax is pushed onto the Lua stack as a userdata, since pointer return values lose precision from float32 conversions */
 void LUA_CDecl() {
 	unsigned int address_this = 0; //address of this pointer
 	void* f = NULL; //function
@@ -532,7 +527,8 @@ void LUA_CDecl() {
 	_asm add esp, shift;
 	_asm mov r, eax;
 
-	lua_pushnumber(r);
+	//float32 precision is lost when returning pointers, so don't use lua_pushnumber
+	lua_pushusertag((void*)r, 0);
 	return;
 }
 
@@ -542,7 +538,7 @@ Calls the __stdcall C function 'function', pushing options 'args' onto the stack
 Lua functions and tables are ignored if used as arguments, while nil or non-existent arguments terminate the argument list
 The object is placed into ecx as per __thiscall
 If too many or too few arguments are supplied for the function, the stack pointer is corrected
-The return value eax is pushed onto the Lua stack as a number */
+The return value eax is pushed onto the Lua stack as a userdata, since pointer return values lose precision from float32 conversions */
 void LUA_StdCall() {
 	unsigned int address_this = 0; //address of this pointer
 	void* f = NULL; //function
@@ -616,7 +612,8 @@ void LUA_StdCall() {
 		_asm mov esp, EspBefore;
 	}
 
-	lua_pushnumber(r);
+	//float32 precision is lost when returning pointers, so don't use lua_pushnumber
+	lua_pushusertag((void*)r, 0);
 	return;
 }
 
@@ -990,8 +987,7 @@ void LUA_GetList() {
 /* print([to_console])
 Tag method for TobExObject
 Dumps information about the object based on its type onto the dialogue window */
-//FIX_ME
-/*void LUA_Print() {
+void LUA_Print() {
 	void* pObject = NULL;
 	int nType = 0;
 	char* szType = NULL;
@@ -1054,7 +1050,7 @@ Dumps information about the object based on its type onto the dialogue window */
 
 	if (bPrint) {
 		sRight.Format("%s: %X -> %s", szType, (unsigned int)pObject, (LPCTSTR)sDump);
-		g_pChitin->pWorld->PrintToConsole(IECString(), IECString(sRight), -1, 0);
+		g_pChitin->GetWorld().PrintToConsole(IECString(), IECString(sRight), -1, 0);
 	} else {
 		sRight.Format("%s", (LPCTSTR)sDump);
 		lua_pushstring(sRight.GetBuffer(0));
@@ -1062,4 +1058,3 @@ Dumps information about the object based on its type onto the dialogue window */
 
 	return;
 }
-*/

@@ -1,7 +1,7 @@
 #include <windows.h>
 
-#define VER_FILEVERSION			0,27,4,12
-#define VER_FILEVERSION_STR		"0.27.4.12\0"
+#define VER_FILEVERSION			0,27,4,13
+#define VER_FILEVERSION_STR		"0.27.4.13\0"
 
 #define VER_PRODUCTVERSION		0,27,0,0
 #define VER_PRODUCTVERSION_STR	"0.27\0"

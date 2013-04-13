@@ -8,8 +8,9 @@ function creature_getstat(_cre, _n)
     error("expected a stat number (2)")
   end
 
-  local _f = pushcfunction("0x473162") --CDerivedStats::GetStat(idx)
-  local _cds = createobject(_cre:getaddress("0xb0a"), "stats")
+  local _f = pushcfunction(func_CCreatureObject_GetDerivedStats)
+  local _cds = createobject(_cre:stdcall(_f), "stats")
+  _f = pushcfunction(func_CDerivedStats_GetStat)
   p(u2n(_cds:stdcall(_f, _n)))
 end
 
@@ -17,8 +18,11 @@ function creature_liststates(_cre)
   if _cre.type ~= "sprite_creature" then
     error("expected a creature object (1)")
   end
-  
-  local _state = _cre:getdword("0xb0a")
+
+  local _f = pushcfunction(func_CCreatureObject_GetDerivedStats)
+  local _cds = createobject(_cre:stdcall(_f), "stats")
+
+  local _state = _cds:getdword(off_CDerivedStats_GeneralState)
   if (_state ~= 0) then
     p("--State: (" .. dec2hex(_state) .. ")")
     if band(_state, "0x1") ~= 0 then
@@ -126,7 +130,7 @@ function creature_listtriggers(_cre)
   end
 
   p("--Triggers")
-  local _list = _cre:getlist("0x272")
+  local _list = _cre:getlist(off_CGameSprite_Triggers)
   if (_list ~= nil) then
     local _index, _value = nil, nil
     repeat
@@ -145,11 +149,11 @@ function creature_listactions(_cre)
     error("expected a creature object (1)")
   end
 
-  p("--Actions (top action running for " .. tostring(_cre:getword("0x2bc")) .. " ticks]")
-  local _action_c = createobject(_cre:getaddress("0x2be"), "action")
+  p("--Actions (top action running for " .. tostring(_cre:getword(off_CGameSprite_ActionTicksElapsed)) .. " ticks]")
+  local _action_c = createobject(_cre:getaddress(off_CGameSprite_CurrentAction), "action")
   _action_c:print(1)
 
-  local _list = _cre:getlist("0x256")
+  local _list = _cre:getlist(off_CGameSprite_Actions)
   if (_list ~= nil) then
     local _index, _value = nil, nil
     repeat
@@ -169,105 +173,105 @@ function creature_listtriggerobjects(_cre)
   end
 
   p("--Objects")
-  local _object = createobject(_cre:getaddress("0x42"), "object")
+  local _object = createobject(_cre:getaddress(off_CGameSprite_ObjectAttackedBy), "object")
   if (_object:print(0) ~= "") then
     p("last AttackedBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x5a"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectCommandedBy), "object")
   if (_object:print(0) ~= "") then
     p("last CommandedBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x6e"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectProtectedBy), "object")
   if (_object:print(0) ~= "") then
     p("last ProtectedBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x82"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectProtectorOf), "object")
   if (_object:print(0) ~= "") then
     p("last ProtectorOf: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x96"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectTargetedBy), "object")
   if (_object:print(0) ~= "") then
     p("last TargetedBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0xaa"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectHitBy), "object")
   if (_object:print(0) ~= "") then
     p("last HitBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0xbe"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectHelp), "object")
   if (_object:print(0) ~= "") then
     p("last Help shouter: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0xd2"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectTrigger), "object")
   if (_object:print(0) ~= "") then
     p("last Trigger: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0xe6"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectSeenBy), "object")
   if (_object:print(0) ~= "") then
     p("last SeenBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0xfa"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectTalkedToBy), "object")
   if (_object:print(0) ~= "") then
     p("last TalkedToBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x10e"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectHeardBy), "object")
   if (_object:print(0) ~= "") then
     p("last HeardBy: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x122"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_ObjectSummonerOf), "object")
   if (_object:print(0) ~= "") then
     p("last SummonerOf: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x136"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object1), "object")
   if (_object:print(0) ~= "") then
-    p("last 136: " .. _object:print(0))
+    p("last 1: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x14a"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object2), "object")
   if (_object:print(0) ~= "") then
-    p("last 14a: " .. _object:print(0))
+    p("last 2: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x15e"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object3), "object")
   if (_object:print(0) ~= "") then
-    p("last 15e: " .. _object:print(0))
+    p("last 3: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x172"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object4), "object")
   if (_object:print(0) ~= "") then
-    p("last 172: " .. _object:print(0))
+    p("last 4: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x186"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object5), "object")
   if (_object:print(0) ~= "") then
-    p("last 186: " .. _object:print(0))
+    p("last 5: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x19a"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object6), "object")
   if (_object:print(0) ~= "") then
-    p("last 19a: " .. _object:print(0))
+    p("last 6: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x1ae"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object7), "object")
   if (_object:print(0) ~= "") then
-    p("last 1ae: " .. _object:print(0))
+    p("last 7: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x1c2"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object8), "object")
   if (_object:print(0) ~= "") then
-    p("last 1c2: " .. _object:print(0))
+    p("last 8: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x1d6"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object9), "object")
   if (_object:print(0) ~= "") then
-    p("last 1d6: " .. _object:print(0))
+    p("last 9: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x1ea"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object10), "object")
   if (_object:print(0) ~= "") then
-    p("last 1ea: " .. _object:print(0))
+    p("last 10: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x1fe"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object11), "object")
   if (_object:print(0) ~= "") then
-    p("last 1fe: " .. _object:print(0))
+    p("last 11: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x212"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object12), "object")
   if (_object:print(0) ~= "") then
-    p("last 212: " .. _object:print(0))
+    p("last 12: " .. _object:print(0))
   end
-  _object = createobject(_cre:getaddress("0x226"), "object")
+  _object = createobject(_cre:getaddress(off_CGameSprite_Object13), "object")
   if (_object:print(0) ~= "") then
-    p("last 226: " .. _object:print(0))
+    p("last 13: " .. _object:print(0))
   end
 end
 
@@ -278,43 +282,43 @@ function creature_listscripts(_cre)
 
   p("--Scripts")
   local _script, _name
-  if u2n(_cre:getpointer("0x23a")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x23a"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_ScriptOverride)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_ScriptOverride), "script")
     _name = _script:getstring(0, 8)
     p("Override (0): " .. _name)
   end
-  if u2n(_cre:getpointer("0x23e")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x23e"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_Script1)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_Script1), "script")
     _name = _script:getstring(0, 8)
     p("(1): " .. _name)
   end
-  if u2n(_cre:getpointer("0x242")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x242"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_ScriptAreaSpecific)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_ScriptAreaSpecific), "script")
     _name = _script:getstring(0, 8)
     p("Area (2): " .. _name)
   end
-  if u2n(_cre:getpointer("0x246")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x246"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_ScriptClass)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_ScriptClass), "script")
     _name = _script:getstring(0, 8)
     p("Class (3): " .. _name)
   end
-  if u2n(_cre:getpointer("0x24a")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x24a"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_ScriptRace)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_ScriptRace), "script")
     _name = _script:getstring(0, 8)
     p("Race (4): " .. _name)
   end
-  if u2n(_cre:getpointer("0x24e")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x24e"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_ScriptGeneral)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_ScriptGeneral), "script")
     _name = _script:getstring(0, 8)
     p("General (5): " .. _name)
   end
-  if u2n(_cre:getpointer("0x252")) ~= 0 then
-    _script = createobject(_cre:getpointer("0x252"), "script")
+  if u2n(_cre:getpointer(off_CGameSprite_ScriptDefault)) ~= 0 then
+    _script = createobject(_cre:getpointer(off_CGameSprite_ScriptDefault), "script")
     _name = _script:getstring(0, 8)
     p("Default (6): " .. _name)
   end
 
-  p("Current script: Index " .. tostring(_cre:getword("0x2b6"))
-    .. " block #" .. tostring(_cre:getword("0x2b4"))
-    .. " response #" .. tostring(_cre:getword("0x2b2")))
+  p("Current script: Index " .. tostring(_cre:getword(off_CGameSprite_CurrentScriptIndex))
+    .. " block #" .. tostring(_cre:getword(off_CGameSprite_CurrentScriptBlockIndex))
+    .. " response #" .. tostring(_cre:getword(off_CGameSprite_CurrentResponseIndex)))
 end

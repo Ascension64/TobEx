@@ -190,25 +190,25 @@ public:
 	CSoundWrapper m_snd; //78h
 };
 
-class CSparkle : public CGameObject { //Size ?, FIX_ME
-//Constructor: 0x5F6CD5
+class CSparkle : public CGameObject { //Size A8h
 public:
-	//AABB68
-	void* pVideoMode; //42h
-	IECPtrList u46; //AABA88
-	ABGR rgbStart; //62h
-	ABGR rgbFade1; //66h
-	ABGR rgbFade2; //6ah
-	ABGR rgbFade3; //6eh
-	ABGR rgbFade4; //72h
-	int u76;
-	RECT u7a;
-	short u8a;
-	int u8c;
+	CVideo* m_pVideo; //48h
+	IECPtrList u4c; //AABA88
+	ABGR m_rgbStart; //68h
+	ABGR m_rgbFade1; //6ch
+	ABGR m_rgbFade2; //70h
+	ABGR m_rgbFade3; //74h
+	ABGR m_rgbFade4; //78h
+	int u7c;
+	RECT u80;
 	short u90;
-	int u92;
-	int u96;
-	int u9a;
+	char p92[2];
+	int u94;
+	short u98;
+	char p9a[2];
+	int u9c;
+	int ua0;
+	int ua4;
 };
 
 class CFireball3d : public CGameObject { //Size 27Ch

@@ -280,7 +280,9 @@
     <ClInclude Include="src\pointers\p_globals.h" />
     <ClInclude Include="src\pointers\p_infgame.h" />
     <ClInclude Include="src\pointers\p_lua.h" />
+    <ClInclude Include="src\pointers\p_objcore.h" />
     <ClInclude Include="src\pointers\p_resref.h" />
+    <ClInclude Include="src\pointers\p_scrcore.h" />
     <ClInclude Include="src\pointers\p_size.h" />
   </ItemGroup>
   <ItemGroup>

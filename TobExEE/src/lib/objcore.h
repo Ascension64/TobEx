@@ -255,6 +255,8 @@ public:
 };
 
 struct CGameObjectArray { //Size 4h, in BG:EE the object array is global
+	char GetObject(ENUM e, void* ppObject);
+
 	CGameObjectEntry* m_pArray; //0h
 };
 

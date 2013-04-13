@@ -12,7 +12,7 @@
         color: #000;
         background: #e3e3db url('http://spellholdstudios.net/images/sh_bg_main.jpg');
       }
-      
+
       #wrap {
         text-align: left;
         margin: 0 auto;
@@ -647,8 +647,8 @@
             <li><strong>Type:</strong> C function</li>
             <li><strong>Scope:</strong> TobExObject tag method</li>
             <li><strong>Parameters:</strong> f - cfunction; args... (optional) - any type</li>
-            <li><strong>Returns:</strong> Number</li>
-            <li><strong>Behaviour:</strong> Pushes 'args...' onto the C stack, and calls 'f' using the <i>cdecl</i> calling convention. Arguments of type Lua function and table are ignored, and arguments of nil or non-existent arguments terminate the argument list. The TobExObject is placed into the ecx register as per <i>thiscall</i>. The return value in the eax register is pushed onto the Lua stack as a number.</li>
+            <li><strong>Returns:</strong> Userdata</li>
+            <li><strong>Behaviour:</strong> Pushes 'args...' onto the C stack, and calls 'f' using the <i>cdecl</i> calling convention. Arguments of type Lua function and table are ignored, and arguments of nil or non-existent arguments terminate the argument list. The TobExObject is placed into the ecx register as per <i>thiscall</i>. The return value in the eax register is pushed onto the Lua stack as a userdata, since pointer return values lose precision from float32 conversions.</li>
           </ul>
           <hr />
           <a name="lua-createobject" id="lua-createobject"></a><h4>createobject(u, [type])</h4>
@@ -899,8 +899,8 @@
             <li><strong>Type:</strong> C function</li>
             <li><strong>Scope:</strong> TobExObject tag method</li>
             <li><strong>Parameters:</strong> f - cfunction; args... (optional) - any type</li>
-            <li><strong>Returns:</strong> Number</li>
-            <li><strong>Behaviour:</strong> Pushes 'args...' onto the C stack and calls 'f' using the <i>stdcall</i>/<i>thiscall</i> calling convention. Arguments of type Lua function and table are ignored, and arguments of nil or non-existent arguments terminate the argument list. The TobExObject is placed into the ecx register as per <i>thiscall</i>. If too many or too few arguments are supplied for the function, the stack pointer is corrected. The return value in the eax register is pushed onto the Lua stack as a number.</li>
+            <li><strong>Returns:</strong> Userdata</li>
+            <li><strong>Behaviour:</strong> Pushes 'args...' onto the C stack and calls 'f' using the <i>stdcall</i>/<i>thiscall</i> calling convention. Arguments of type Lua function and table are ignored, and arguments of nil or non-existent arguments terminate the argument list. The TobExObject is placed into the ecx register as per <i>thiscall</i>. If too many or too few arguments are supplied for the function, the stack pointer is corrected. The return value in the eax register is pushed onto the Lua stack as a userdata, since pointer return values lose precision from float32 conversions.</li>
           </ul>
           <hr />
           <a name="lua-u2n" id="lua-u2n"></a><h4>u2n(u)</h4>

@@ -26,6 +26,7 @@ public:
 	CBaldurChitin& Construct(int argc, char* argv[]) { return *this; } //dummy
 
 	CInfGame& GetInfGame();
+	CScreenWorld& GetWorld();
 
 	virtual void v0() {}
 	virtual void v4() {} 

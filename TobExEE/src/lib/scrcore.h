@@ -2,6 +2,8 @@
 #ifndef SCRCORE_H
 #define SCRCORE_H
 
+#include "p_scrcore.h"
+
 #include "stdafx.h"
 #include "rescore.h"
 
@@ -35,8 +37,19 @@ struct ResIdsFile { //Size 10h
 };
 
 class Identifiers { //Size 40h
-public:
-	void* vtable; //0h
+	DEFINE_MEMALLOC_FUNC;
+
+	Identifiers();
+	Identifiers& Construct() {return *this;} //dummy
+
+	Identifiers(ResRef rFile);
+	Identifiers& Construct(ResRef rFile) {return *this;} //dummy
+
+	virtual ~Identifiers();
+	void Deconstruct() {} //dummy
+
+	IdsEntry* FindByHead(IECString sValue, BOOL bCaseSensitive);
+
 	ResIdsFile m_ids; //4h
 	IECString u14; //14h
 	IECPtrList m_entries; //18h, IdsEntry objects
@@ -61,6 +74,10 @@ struct CVariableMap { //Size 8h
 };
 
 struct ObjectIds { //Size 5h, FIX_ME
+	ObjectIds();
+
+	unsigned char operator[](unsigned int n);
+
 	//OBJECT.IDS indices
 	unsigned char m_id1;
 	unsigned char m_id2;
@@ -69,9 +86,37 @@ struct ObjectIds { //Size 5h, FIX_ME
 	unsigned char m_id5;
 };
 
-class Object { //Size 14h
-public:
+struct Object { //Size 14h
+	DEFINE_MEMALLOC_FUNC;
+
 	//BCS correlation: OB ea, general, race, class, specific, gender, alignment, id1, id2, id3, id4, id5, name OB
+	Object();
+
+	~Object();
+	void Deconstruct() {} //dummy
+
+	Object(Object& o);
+	Object& Construct(Object& o) {return *this;} //dummy
+
+	Object(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char cSpecific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget, ObjectIds* poids, IECString& sName);
+	Object& Construct(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char cSpecific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget, ObjectIds* poids, IECString& sName) {return *this;} //dummy
+
+	Object(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char Specific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget);
+	Object& Construct(unsigned char cEnemyAlly, unsigned char cGeneral, unsigned char cRace, unsigned char cClass, unsigned char Specific, unsigned char cGender, unsigned char cAlignment, ENUM eTarget) {return *this;} //dummy
+
+	bool MatchCriteria(Object& oCriteria, BOOL bAnyIncludesNonScript, BOOL bExcludeNonScript, BOOL bEAGroupMatch);
+
+	void operator=(Object& o);
+	void OpAssign(Object&) {} //dummy
+
+	void DecodeIdentifiers(CGameSprite& spriteSource);
+	CGameObject& FindTargetOfType(CGameObject& source, char type, BOOL bCheckMiddleList);
+	CGameObject& FindTarget(CGameObject& source, BOOL bCheckMiddleList);
+	void SetIdentifiers(ObjectIds& ids);
+	Object GetOpposingEAObject();
+	void GetDualClasses(unsigned char* pClassNew, unsigned char* pClassOrg);
+	BOOL IsEqualIncludeEnum(Object& o);
+
 	IECString m_sName; //0h
 	unsigned char m_cEnemyAlly; //4h
 	unsigned char m_cGeneral; //5h
@@ -84,15 +129,28 @@ public:
 	unsigned char m_cAlignment; //13h
 };
 
-//FIX_ME
-//Object* const g_poAnything = reinterpret_cast<Object* const>(0xB75AA0); //unused
-//Object* const g_poNonScript = reinterpret_cast<Object* const>(0xB75AB8); //only in CGameObject constructor
-//Object* const g_poNothing = reinterpret_cast<Object* const>(0xB75AD0); //for constructors
-//Object* const g_poAny = reinterpret_cast<Object* const>(0xB75AE8); //for criteria objects
-//Object* const g_poMyself = reinterpret_cast<Object* const>(0xB75B00); //unused
+Object* const g_poAny = reinterpret_cast<Object* const>(G_OBJECT_ANY); //in CCreatureObject constructor
+Object* const g_poAnything = reinterpret_cast<Object* const>(G_OBJECT_ANYTHING); //unused
+Object* const g_poNothing = reinterpret_cast<Object* const>(G_OBJECT_NOTHING); //in CGameSprite constructor
+Object* const g_poNonScript = reinterpret_cast<Object* const>(G_OBJECT_NONSCRIPT); //in CGameObject constructor
+Object* const g_poMyself = reinterpret_cast<Object* const>(G_OBJECT_MYSELF); //unused, uses Construct10
 
 struct Trigger { //Size 30h
+	DEFINE_MEMALLOC_FUNC;
+
 	//BCS correlation: TR opcode, i, dwFlags, i2, u22, sName1, sName2, o TR
+	Trigger();
+
+	Trigger(short wOpcode, Object& o, int i);
+	Trigger& Construct(short wOpcode, Object& o, int i) {return *this;} //dummy
+
+	Trigger(short wOpcode, int i);
+	Trigger& Construct(short wOpcode, int i) {return *this;} //dummy
+
+	Trigger& operator=(Trigger& t);
+	Trigger& OpAssign(Trigger& t) {return *this;} //dummy
+
+	void DecodeIdentifiers(CGameSprite& sprite);
 
 	short m_wOpcode; //0h
 	char p2[2];
@@ -110,10 +168,18 @@ struct Trigger { //Size 30h
 };
 
 struct Action { //Size 60h
-	//BCS correlation: AC opcode, oOverride, oObject, oTarget, i, pt.x, pt.y, i2, i3, sName1, sName2 AC
-
 	DEFINE_MEMALLOC_FUNC;
-public:
+
+	//BCS correlation: AC opcode, oOverride, oObject, oTarget, i, pt.x, pt.y, i2, i3, sName1, sName2 AC
+	Action();
+	Action& Construct() {return *this;} //dummy
+
+	~Action();
+	void Deconstruct() {} //dummy
+
+	void operator=(Action& a);
+	void OpAssign(Action& a) {} //dummy
+
 	short m_wOpcode; //0h (A)
 	char p2[2];
 	Object m_oOverride; //4h (O)
@@ -129,6 +195,15 @@ public:
 };
 
 struct Response { //Size 24h
+	Response();
+	Response& Construct() {return *this;} //dummy
+
+	~Response();
+	void Deconstruct() {} //dummy
+
+	void operator=(Response& r);
+	void OpAssign(Response& r) {} //dummy
+
 	short m_wProbability; //0h
 	short m_wResponseIdx; //2h, if chosen, gets response block # in the response list
 	short m_wScriptBlockIdx; //4h, if chosen, gets script block # in the script
@@ -143,6 +218,9 @@ public:
 };
 
 struct CScriptBlock { //Size 3Ch, FIX_ME
+	BOOL Evaluate(CTriggerList& triggers, CGameSprite& sprite);
+	BOOL EvaluateTrigger(Trigger& t, CTriggerList& triggers, CGameSprite& sprite);
+
 	CTriggerList m_lTriggers; //0h
 	CResponseList m_lResponses; //1ch
 };
@@ -154,6 +232,16 @@ struct CScript { //Size 28h
 };
 
 struct CScriptParser { //Size F0h
+	short GetTriggerOpcode(IECString sName);
+	int GetOpcode(IECString sValue, IECString sIdsName);
+	void SetError(IECString s);
+	Object ParseObject(IECString& sArg);
+	IECString SpanBefore(IECString s, char c);
+	IECString SpanAfter(IECString s, char c);
+	IECString GetArgText(int nArgIdx, IECString sFuncDesc);
+	IECString GetIdsValue(Identifiers& ids, IECString& sName);
+	IECString GetArgTextIdsName(IECString sArgText);
+
 	short m_wMode; //0h, 0 = outside IF...END, 1 = in Trigger, 2 = in Action
 	char p2[2];
 	int m_nLineNumber; //4h

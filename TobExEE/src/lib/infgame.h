@@ -275,6 +275,7 @@ public:
 class CInfGame : public CRuleTables { //Size 5004h (5100h)
 public:
 	CWorldTimer& GetWorldTimer();
+	CScriptParser& GetScriptParser();
 
 	CWorldTimer m_WorldTimer; //1fa8h
 	BOOL m_bGameRunning; //1fb0h

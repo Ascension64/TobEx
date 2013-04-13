@@ -6,7 +6,7 @@
 
 class CStaticObject : public CGameObject { //Size 230h
 public:
-	AreFileStaticObject m_static; //48h
+	AreFileStaticObject m_staticObject; //48h
 	CVidCell u94;
 	int u158;
 	IECPtrList u15c;

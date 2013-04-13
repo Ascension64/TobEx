@@ -1,5 +1,6 @@
 //TobExEE
 #include "LuaCore.h"
+#include "p_lua.h"
 
 #include "chitin.h"
 
@@ -7,10 +8,15 @@
 #include "LuaDump.h"
 
 //global
-DefineTrampGlobalFuncPtr(int, __stdcall, IElua_init, (), 0x5ADD86);
+DefineTrampGlobalFuncPtr(int, __stdcall, IElua_init, (), IELUA_INIT);
 
 int __stdcall DETOUR_IElua_init() {
 	int r = Tramp_IElua_init();
+
+	//this was removed by BG:EE
+	lua_pushcfunction(IElua_GetBaldurChitin);
+	lua_setglobal("GetBaldurChitin");
+
 	g_TagObjects = IElua_createtag("TobExObject"); //init functions available for objects
 	
 	LUA_InitObjectTagMethods(g_TagObjects);
@@ -52,9 +58,10 @@ int __stdcall DETOUR_IElua_init() {
 	lua_pushcfunction(LUA_CreateObject);
 	lua_setglobal("createobject");
 	
-	//lua_pushcfunction(LUA_GetSprite);
-	//lua_setglobal("getsprite");
+	lua_pushcfunction(LUA_GetSprite);
+	lua_setglobal("getsprite");
 
 	lua_dofile("TobEx_ini/TobEx.lua");
+
 	return r;
 }

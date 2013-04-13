@@ -460,7 +460,7 @@ Tag method for TobExObject
 Calls the __cdecl C function 'function', pushing options 'args' onto the stack
 Lua functions and tables are ignored if used as arguments, while nil or non-existent arguments terminate the argument list
 The object is placed into ecx as per __thiscall
-The return value eax is pushed onto the Lua stack as a number */
+The return value eax is pushed onto the Lua stack as a userdata, since pointer return values lose precision from float32 conversions */
 void LUA_CDecl() {
 	unsigned int address_this = 0; //address of this pointer
 	void* f = NULL; //function
@@ -530,7 +530,8 @@ void LUA_CDecl() {
 	_asm add esp, shift;
 	_asm mov r, eax;
 
-	lua_pushnumber(r);
+	//float32 precision is lost when returning pointers, so don't use lua_pushnumber
+	lua_pushusertag((void*)r, 0);
 	return;
 }
 
@@ -540,7 +541,7 @@ Calls the __stdcall C function 'function', pushing options 'args' onto the stack
 Lua functions and tables are ignored if used as arguments, while nil or non-existent arguments terminate the argument list
 The object is placed into ecx as per __thiscall
 If too many or too few arguments are supplied for the function, the stack pointer is corrected
-The return value eax is pushed onto the Lua stack as a number */
+The return value eax is pushed onto the Lua stack as a userdata, since pointer return values lose precision from float32 conversions */
 void LUA_StdCall() {
 	unsigned int address_this = 0; //address of this pointer
 	void* f = NULL; //function
@@ -614,7 +615,8 @@ void LUA_StdCall() {
 		_asm mov esp, EspBefore;
 	}
 
-	lua_pushnumber(r);
+	//float32 precision is lost when returning pointers, so don't use lua_pushnumber
+	lua_pushusertag((void*)r, 0);
 	return;
 }
 

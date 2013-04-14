@@ -8,6 +8,7 @@
 #include "ChitinCore.h"
 #include "EngineWorld.h"
 #include "LuaCore.h"
+#include "UserCore.h"
 
 void InitHooks() {
 	DetourTransactionBegin();
@@ -23,6 +24,9 @@ void InitHooks() {
 		DetourMemberFunction(Tramp_CScreenWorld_PrintToConsole6, DETOUR_CScreenWorld::DETOUR_PrintToConsoleColor)
 		DetourMemberFunction(Tramp_CScreenWorld_PrintToConsole4, DETOUR_CScreenWorld::DETOUR_PrintToConsole)
 	}
+
+	//UI
+	DetourFunction(Tramp_CreateUIControl, DETOUR_CreateUIControl);
 
 	DetourTransactionCommit();
 	return;

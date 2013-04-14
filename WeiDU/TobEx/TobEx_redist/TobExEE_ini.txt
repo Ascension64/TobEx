@@ -63,4 +63,16 @@ Options:
 -0: disabled
 -1: enabled
 
+/////////////////////////////////////// UI
+
+-----Custom Dialogue Bar Buffer Size [M]
+Allows you to customise the number of lines the dialogue/log bar displays before text is lost from the top
+256 is the default value and is also the recommended minimum value
+Warning: values less than 32 are unsafe, as clipped dialogue will crash the game
+Warning: very large values may slow the game down over time
+
+Options:
+-0: disabled
+-32-32767: sets the number of lines equivalent to this value
+
 /////////////////////////////////////// EOF

@@ -11,5 +11,8 @@ void InitOptions() {
 	pGameOptionsEx->SetOption("Debug_LogMissingRes", "Debug", "Log Missing Resources");
 	pGameOptionsEx->SetOption("Debug_Verbose", "Debug", "Verbose Logging");
 
+	pGameOptionsEx->SetOption("User_CustomDlgBarSize", "UI", "Custom Dialogue Bar Buffer Size");
+	pGameOptionsEx->GetMap()["User_CustomDlgBarSize"] = max(pGameOptionsEx->GetMap()["User_CustomDlgBarSize"], 0);
+
 	return;
 }

@@ -3,6 +3,8 @@
 #define UICORE_H
 
 #include "stdafx.h"
+#include "p_uicore.h"
+
 #include "vidcore.h"
 
 class CEngine;
@@ -126,5 +128,7 @@ public:
 	char u552; //to do with colors
 	char u553; //padding?
 };
+
+DefineGlobalFuncPtr(CUIControl*, __cdecl, CreateUIControl, (CPanel& panel, ChuFileControlInfoBase& controlInfo), _CREATEUICONTROL);
 
 #endif //UICORE_H

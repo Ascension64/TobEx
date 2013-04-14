@@ -25,7 +25,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 		if (rManager = "GUICG") {
 			switch (panel.index) {
 			case 7:
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 31:
 					if (pGameOptionsEx->GetOption("User_ChargenMageSpellScroll")) {
 						pControl = new CUIScrollBarChargenMageSpell(panel, controlInfo);
@@ -36,7 +36,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 22:
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 15:
 					if (pGameOptionsEx->GetOption("User_ChargenKitSelectScroll")) {
 						pControl = new CUIScrollBarChargenKit(panel, controlInfo);
@@ -60,7 +60,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 		if (rManager = "GUIMG") {
 			switch (panel.index) {
 			case 2:
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 65:
 					if (pGameOptionsEx->GetOption("User_MageBookScroll")) {
 						pControl = new CUIButtonMageBookUp(panel, controlInfo);
@@ -84,7 +84,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 		if (rManager = "GUIPR") {
 			switch (panel.index) {
 			case 2:
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 62:
 					if (pGameOptionsEx->GetOption("User_PriestBookScroll")) {
 						pControl = new CUIButtonPriestBookUp(panel, controlInfo);
@@ -108,7 +108,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 		if (rManager = "GUIREC") {
 			switch (panel.index) {
 			case 8:
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 24:
 					if (pGameOptionsEx->GetOption("User_RecordMageSpellScroll")) {
 						pControl = IENew CUICheckButtonRecMageSpell(panel, controlInfo);
@@ -141,7 +141,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 			rManager == "GUIW20") {
 			switch (panel.index) {
 			case 4: //small log bar
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 3:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -152,7 +152,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 7: //large log bar
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -163,7 +163,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 12: //medium log bar
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -174,7 +174,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 13: //dialog3
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -185,7 +185,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 14: //dialog2
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -196,7 +196,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 18: //large log bar (MP)/dialogue panel (MP)
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -207,7 +207,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 22: //medium log bar (MP)
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -218,7 +218,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 29: //dialog panel
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -229,7 +229,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 30: //dialog3 (MP)
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");
@@ -240,7 +240,7 @@ CUIControl* __cdecl DETOUR_CreateUIControl(CPanel& panel, ChuFileControlInfoBase
 				}
 				break;
 			case 31: //dialog2 (MP)
-				switch (controlInfo.id) {
+				switch (controlInfo.m_nId) {
 				case 1:
 					if (pGameOptionsEx->GetOption("User_CustomDlgBarSize")) {
 						((CUITextArea*)pControl)->wRowsMax = pGameOptionsEx->GetOption("User_CustomDlgBarSize");

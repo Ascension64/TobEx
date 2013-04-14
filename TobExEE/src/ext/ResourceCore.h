@@ -1,3 +1,4 @@
+//TobExEE
 #ifndef RESOURCECORE_H
 #define RESOURCECORE_H
 

@@ -5,13 +5,13 @@
 #include "resref.h"
 
 struct ChuFileControlInfoBase { //Size Eh
-	int id; //0h
-	short posX; //4h
-	short posY; //6h
-	short width; //8h
-	short height; //ah
-	char type; //ch
-	char ud; //dh
+	int m_nId; //0h
+	short m_wPosX; //4h
+	short m_wPosY; //6h
+	short m_wWidth; //8h
+	short m_wHeight; //ah
+	char m_cType; //ch
+	char pd;
 };
 
 #endif //FILECHU_H

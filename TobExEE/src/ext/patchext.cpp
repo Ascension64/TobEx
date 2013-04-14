@@ -40,6 +40,30 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->GetOption("Eff_DropInvDisintegrate")) {
+		char bytes[] = {0x00};
+		vDataList.push_back( Data(PATCH_FX_DROPINVDISINTEGRATE_CEFFECTINSTANTDEATH_APPLYEFFECT, 1, bytes) );
+	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->GetOption("Eff_DropInvFrozenDeath")) {
+		char bytes[] = {0x00};
+		vDataList.push_back( Data(PATCH_FX_DROPINVFROZENDEATH_CEFFECTINSTANTDEATH_APPLYEFFECT, 1, bytes) );
+	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->GetOption("Eff_DropInvStoneDeath")) {
+		char bytes[] = {0x00};
+		vDataList.push_back( Data(PATCH_FX_DROPINVSTONEDEATH_CEFFECTINSTANTDEATH_APPLYEFFECT, 1, bytes) );
+	
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	if (pGameOptionsEx->GetOption("Engine_AllowEquipArmorCombat")) {
 		//CRuleTables::TryModifyEquipslot(): always jmp on combat counter check
 		char bytes[] = {0xEB};
@@ -55,10 +79,18 @@ void InitPatches() {
 		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_INIT, 1, bytes) );
 		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_DEINIT, 1, bytes) );
 
-		//CScreenInventory::?(): always skip check to display PAUSED text
+		//CScreenInventory::UpdatePauseStatus(): always skip check to display PAUSED text
 		char bytes2[] = {0x90, 0x90};
-		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_, 2, bytes2) );
+		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_UPDATEPAUSESTATUS, 2, bytes2) );
 
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->GetOption("Engine_AutoPauseAllSP")) {
+		//CCreatureObject::SetAutoPauseInfo(): never skip auto pause info
+		char bytes[] = {0xEB};
+		vDataList.push_back( Data(PATCH_ENGINE_AUTOPAUSEALLSP_CCREATUREOBJECT_SETAUTOPAUSEINFO, 1, bytes) );
 		vPatchList.push_back( Patch(vDataList) );
 		vDataList.clear();
 	}

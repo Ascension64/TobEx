@@ -16,6 +16,8 @@ struct CAnimationSound { //Size Ch
 
 class CAnimationSoundList : public IECPtrList { //Size 28h
 public:
+	BOOL PlayPrimedSound(int dwFrame, CCreatureObject& cre);
+
 	POSITION m_posPrimedSound; //1ch
 	BOOL m_bIgnorePrime; //20h
 	unsigned int m_dwChannel; //24h
@@ -27,9 +29,11 @@ public:
 	CAnimation();
 	CAnimation& Construct() { return *this; } //dummy
 
+	void PlayCurrentSequenceSound(CCreatureObject& cre);
+
 	//FIX_ME
 	virtual ~CAnimation() {} //v0
-	/*virtual void GetCurrentFrameDimensions(RECT* pFrame, CPoint* pCentre, int zPos) {} //v4
+	virtual void GetCurrentFrameDimensions(RECT* pFrame, CPoint* pCentre, int zPos) {} //v4
 	virtual void v8() {} //? void GetBoundsRect(RECT* pBounds, CPoint* ppt1, CPoint* ppt2, zPos, width, height)
 	virtual BOOL SetOrientation(short wOrient) { return TRUE; } //vc
 	virtual void SetArmor(char cArmorLevel, CreFileColors& colors) {} //v10
@@ -65,7 +69,7 @@ public:
 	virtual void v88() {} //BOOL, 0 args, another cycle related thing
 	virtual void DeleteCurrentVidCell() {} //v8c
 	virtual void DecrementFrame() {} //v90
-	virtual BOOL BltToBack(CInfinity& infinity, CVideoMode& vidmode) { return FALSE; } //v94
+	virtual BOOL BltToBack(CInfinity& infinity, CVideo& vid) { return FALSE; } //v94
 	virtual void DeinitColor(char nGroupRangeID) {} //v98
 	virtual void DeinitAllColors() {} //v9c
 	virtual void InitColor(int nColorGroup, int nGroupRangeId, ABGR rgbColor, char n) {} //va0
@@ -85,7 +89,7 @@ public:
 	virtual void vd8() {} //void, 1 arg (pPt)
 	virtual bool GetCurrentCycleAndFrame(short& wCycle, short& wFrame); //vdc
 	virtual bool GetAnimationResRefs(IECString& s1, IECString& s2, IECString& s3, IECString& s4) { return false; } //ve0, specific animations only?
-	*/
+	
 	unsigned short m_wAnimId; //4h
 	unsigned char m_nMovementRateDefault; //6h
 	unsigned char m_nMovementRateCurrent; //7h, modified by effects

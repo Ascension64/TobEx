@@ -112,10 +112,12 @@
     <ClCompile Include="..\MathPresso\MathPresso_Parser.cpp" />
     <ClCompile Include="..\MathPresso\MathPresso_Tokenizer.cpp" />
     <ClCompile Include="..\MathPresso\MathPresso_Util.cpp" />
+    <ClCompile Include="src\ext\AnimationCore.cpp" />
     <ClCompile Include="src\ext\ChitinCore.cpp" />
     <ClCompile Include="src\ext\EngineInventory.cpp" />
     <ClCompile Include="src\ext\EngineWorld.cpp" />
     <ClCompile Include="src\ext\hook.cpp" />
+    <ClCompile Include="src\ext\InfGameCore.cpp" />
     <ClCompile Include="src\ext\LuaCommon.cpp" />
     <ClCompile Include="src\ext\LuaCore.cpp" />
     <ClCompile Include="src\ext\LuaDump.cpp" />
@@ -200,10 +202,12 @@
     <ClInclude Include="..\MathPresso\MathPresso_Parser_p.h" />
     <ClInclude Include="..\MathPresso\MathPresso_Tokenizer_p.h" />
     <ClInclude Include="..\MathPresso\MathPresso_Util_p.h" />
+    <ClInclude Include="src\ext\AnimationCore.h" />
     <ClInclude Include="src\ext\ChitinCore.h" />
     <ClInclude Include="src\ext\EngineInventory.h" />
     <ClInclude Include="src\ext\EngineWorld.h" />
     <ClInclude Include="src\ext\hook.h" />
+    <ClInclude Include="src\ext\InfGameCore.h" />
     <ClInclude Include="src\ext\LuaCommon.h" />
     <ClInclude Include="src\ext\LuaCore.h" />
     <ClInclude Include="src\ext\LuaDump.h" />
@@ -278,6 +282,7 @@
     <ClInclude Include="src\include\rule.h" />
     <ClInclude Include="src\ext\debug.h" />
     <ClInclude Include="src\ext\main.h" />
+    <ClInclude Include="src\pointers\p_animcore.h" />
     <ClInclude Include="src\pointers\p_chitin.h" />
     <ClInclude Include="src\pointers\p_cmapss.h" />
     <ClInclude Include="src\pointers\p_cptrlist.h" />

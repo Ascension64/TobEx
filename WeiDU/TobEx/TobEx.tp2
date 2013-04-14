@@ -142,7 +142,6 @@ COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
 
 BEGIN @116 DESIGNATED 116 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Sound:Enable Animation Attack Sounds=0~ ~Sound:Enable Animation Attack Sounds=1~
 
@@ -354,25 +353,21 @@ COPY_EXISTING ~clsrcreq.2da~ ~override/clsrcreq.2da~
 
 BEGIN @120 DESIGNATED 120 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Disintegrate=0~ ~Effect Opcodes:Drop Inventory on Disintegrate=1~
 
 BEGIN @121 DESIGNATED 121 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Frozen Death=0~ ~Effect Opcodes:Drop Inventory on Frozen Death=1~
 
 BEGIN @122 DESIGNATED 122 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Drop Inventory on Stone Death=0~ ~Effect Opcodes:Drop Inventory on Stone Death=1~
 
 BEGIN @123 DESIGNATED 123 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Enable Auto-Pause On All Screens=0~ ~Engine:Enable Auto-Pause On All Screens=1~
 

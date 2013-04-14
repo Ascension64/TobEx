@@ -16,3 +16,4 @@ DefineLibMemberFunc(void, CWorldTimer, UnpauseGame, (), UnpauseGame, UnpauseGame
 //CInfGame
 DefineLibMemberFunc(CWorldTimer&, CInfGame, GetWorldTimer, (), GetWorldTimer, GetWorldTimer, (), CINFGAME_GETWORLDTIMER);
 DefineLibMemberFunc(CScriptParser&, CInfGame, GetScriptParser, (), GetScriptParser, GetScriptParser, (), CINFGAME_GETSCRIPTPARSER);
+DefineLibMemberFunc(void, CInfGame, SetLoseCutscene, (), SetLoseCutscene, SetLoseCutscene, (), CINFGAME_SETLOSECUTSCENE);

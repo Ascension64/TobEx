@@ -1,3 +1,9 @@
 Effect Opcodes:Disable Stoneskin Grey Colour=0
 Engine:Allow Equipping Armor in Combat=0
 Engine:Disable Force Inventory Pause=0
+Sound:Enable Animation Attack Sounds=0
+Effect Opcodes:Drop Inventory on Disintegrate=0
+Effect Opcodes:Drop Inventory on Frozen Death=0
+Effect Opcodes:Drop Inventory on Stone Death=0
+Engine:Disable End On Player1 Dead=0
+Engine:Enable Auto-Pause On All Screens=0

@@ -47,7 +47,7 @@ Options:
 -0: overwrites log files each session
 -1: appends to log files each session
 
------890 Log Missing Resources [D]
+-----Log Missing Resources [D]
 Prints to console and logs to TobEx.log when a resource is not found
 If the game attempts to find a string reference out of bounds of dialog.tlk, spurious missing .WAV resources are logged that look like <text>.wav
 
@@ -58,6 +58,68 @@ Options:
 -----Verbose Logging [D]
 Prints to console and logs excessive amounts of internal TobEx debug messages
 Do not use this unless you are troubleshooting and need to report TobEx debug messages
+
+Options:
+-0: disabled
+-1: enabled
+
+/////////////////////////////////////// EFFECT OPCODES
+
+-----Disable Stoneskin Grey Colour [T]
+Removes grey colour change of character applied the stoneskin opcode
+
+Options:
+-0: disabled
+-1: enabled
+
+-----Drop Inventory On Disintegrate/Frozen Death/Stone Death [T]
+Alters the instant death opcode to make the creature drop all non-critical items on disintegrate, frozen death, and/or stone death
+
+Options:
+-0: disabled
+-1: enabled
+
+/////////////////////////////////////// ENGINE
+
+-----Allow Equipping Armor in Combat [T]
+Allows the equipment in the armor slot to be changed during combat.
+
+Options:
+-0: disabled
+-1: enabled
+
+-----Disable End On Player1 Dead [T]
+Disables the ending cutscene when the protagonist dies
+
+Options:
+-0: disabled
+-1: enabled
+
+-----Disable Force Inventory Pause [T]
+In single player, entering the inventory screen with the game unpaused does not pause the game
+If the game is first paused and the user enters the inventory screen, the game will still pause
+
+Limitations: similar to the area map, if the user enters the inventory screen with the game unpaused, and then changes to a different screen (e.g. menu, mage book, priest book, journal), the game will remain unpaused
+
+Options:
+-0: disabled
+-1: enabled
+
+-----Enable Auto-Pause On All Screens [T]
+In single player, auto-pause will work on any screen, not just the game screen
+Used by itself, this tweak will generally have effect on the map screen, because all other screens pause the game automatically
+Changing to a different screen from the map screen with the game unpaused keeps the game unpaused, so auto-pause will also work in these situations
+
+When combined with the Disable Force Inventory Pause hack, this tweak will also have effect in the inventory screen
+
+Options:
+-0: disabled
+-1: enabled
+
+/////////////////////////////////////// SOUND
+
+-----Enable Animation Attack Sounds [M, T]
+Enables the SLASH, BACKSLASH, and JAB sounds in animation soundset 2DA files
 
 Options:
 -0: disabled

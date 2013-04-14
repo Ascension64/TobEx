@@ -73,7 +73,6 @@ COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
 
 BEGIN @104 DESIGNATED 104 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Effect Opcodes:Disable Stoneskin Grey Colour=0~ ~Effect Opcodes:Disable Stoneskin Grey Colour=1~
 
@@ -97,7 +96,6 @@ COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
 
 BEGIN @108 DESIGNATED 108 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Allow Equipping Armor in Combat=0~ ~Engine:Allow Equipping Armor in Combat=1~
 
@@ -109,7 +107,6 @@ COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
 
 BEGIN @110 DESIGNATED 110 GROUP @100
 REQUIRE_PREDICATE (FILE_EXISTS ~TobEx_ini/TobExVer.txt~) @1
-REQUIRE_PREDICATE ENGINE_IS ~tob~ @2
 COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
   REPLACE_TEXTUALLY ~Engine:Disable Force Inventory Pause=0~ ~Engine:Disable Force Inventory Pause=1~
 

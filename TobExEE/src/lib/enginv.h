@@ -7,6 +7,8 @@
 
 class CScreenInventory : public CEngine { //Size 834h
 public:
+	virtual void Init(); //v18
+
 	CItem* m_pItemGrabbed; //d0h
 	int ud4;
 	int ud8;

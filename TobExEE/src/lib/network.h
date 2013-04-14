@@ -118,6 +118,8 @@ struct CNetworkWindow { //Size 98h
 
 class CNetwork { //Size 1014h (=>FFCh)
 public:
+	bool GetSessionOpen();
+
 	RECT u0;
 	char u10;
 	char u11;

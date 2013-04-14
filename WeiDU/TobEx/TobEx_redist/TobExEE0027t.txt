@@ -1,0 +1,3 @@
+Effect Opcodes:Disable Stoneskin Grey Colour=0
+Engine:Allow Equipping Armor in Combat=0
+Engine:Disable Force Inventory Pause=0

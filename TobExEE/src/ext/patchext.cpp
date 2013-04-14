@@ -32,6 +32,37 @@ void InitPatches() {
 		vDataList.clear();
 	}
 
+	if (pGameOptionsEx->GetOption("Eff_StoneskinDisableColour")) {
+		//CEffectStoneskin::ApplyEffect: modify for condition to i <= 0
+		char bytes[] = {0x00};
+		vDataList.push_back( Data(PATCH_FX_STONESKINDISABLECOLOUR_CEFFECTSTONESKIN_APPLYEFFECT, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->GetOption("Engine_AllowEquipArmorCombat")) {
+		//CRuleTables::TryModifyEquipslot(): always jmp on combat counter check
+		char bytes[] = {0xEB};
+		vDataList.push_back( Data(PATCH_ENGINE_ALLOWEQUIPARMORCOMBAT_CRULETABLES_TRYMODIFYEQUIPSLOT, 1, bytes) );
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
+	if (pGameOptionsEx->GetOption("Engine_DisableInvPauseSP")) {
+		//CScreenInventory::Init(): always skip check for pause state
+		//CScreenInventory::DeInit()
+		char bytes[] = {0xEB};
+		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_INIT, 1, bytes) );
+		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_DEINIT, 1, bytes) );
+
+		//CScreenInventory::?(): always skip check to display PAUSED text
+		char bytes2[] = {0x90, 0x90};
+		vDataList.push_back( Data(PATCH_ENGINE_DISABLEINVPAUSESP_CSCREENINVENTORY_, 2, bytes2) );
+
+		vPatchList.push_back( Patch(vDataList) );
+		vDataList.clear();
+	}
+
 	InitUserPatches(&vPatchList, &vDataList);
 
 	for (vPatchItr = vPatchList.begin(); vPatchItr != vPatchList.end(); vPatchItr++) {

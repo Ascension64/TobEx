@@ -23,8 +23,10 @@ struct Res2daFile { //Size 10h
 };
 
 struct CWorldTimer { //Size 8h
-	unsigned int m_nGameTime; //0h (1dd0h), current game time (in ticks)
-	char m_bRun; //4h (1dd4h), 0 = paused, 1 = unpaused
+	void UnpauseGame();
+
+	unsigned int m_nGameTime; //0h, current game time (in ticks)
+	bool m_bRun; //4h, 0 = paused, 1 = unpaused
 	unsigned char m_nPartsOfHour; //5h, during dawn/dusk hour, is the part of the hour out of 255 (1dd5h)
 	char p6[2];
 };

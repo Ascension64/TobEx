@@ -3,6 +3,7 @@
 #include "p_infgame.h"
 
 //CWorldTimer
+DefineLibMemberFunc(void, CWorldTimer, UnpauseGame, (), UnpauseGame, UnpauseGame, (), CWORLDTIMER_UNPAUSEGAME);
 
 //CPartySelection
 

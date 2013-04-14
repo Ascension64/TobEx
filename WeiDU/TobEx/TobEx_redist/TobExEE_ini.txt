@@ -1,28 +1,35 @@
-//This file contains descriptions for all the hack options found in TobExEE .ini files
+//This file contains descriptions for all the options found in TobExEE .ini files
 
 Description format:
 -------------------
 
 /////////////////////////////////////// <INI CATEGORY>
 
------<designated component number> <hack name> [hack flags]
-(compatibility information)
-Hack description
+-----<Name> [Flags]
+(Compatibility information)
+Description
 
 Options:
 -<value>: <behaviour>
 
-Hack flags:
-[B] - Currently in beta and otherwise unclassified
+Flags:
+[B] - Beta or otherwise unclassified
 [C] - Compatibility issues present
-[D] - Extra debugging information
+[D] - Debugging information
 [F] - Engine bug fix
-[M] - Adds extra functionality for modder/player use
+[M] - Extra functionality for modder/player use
 [O] - Code optimisation
 [T] - Tweak to engine behaviour (configured in TobEx_ini/TobExTweak.ini)
-[X] - This hack makes use of alterations to game resources outside the executable that are implemented by TobEx
+[X] - Makes use of alterations to game resources outside the executable that are implemented by TobEx
 
 /////////////////////////////////////// DEBUG
+
+-----Expanded LUA Console [D]
+Greatly expands the in-game LUA console to provide more debugging features
+
+Options:
+-0: disabled
+-1: enabled
 
 -----Log Dialogue Bar [D]
 Logs everything printed to the dialogue/log bar in-game into TobEx_dlg.log
@@ -39,6 +46,14 @@ This applies to both TobEx.log and TobEx_dlg.log
 Options:
 -0: overwrites log files each session
 -1: appends to log files each session
+
+-----890 Log Missing Resources [D]
+Prints to console and logs to TobEx.log when a resource is not found
+If the game attempts to find a string reference out of bounds of dialog.tlk, spurious missing .WAV resources are logged that look like <text>.wav
+
+Options:
+-0: disabled
+-1: enabled
 
 -----Verbose Logging [D]
 Prints to console and logs excessive amounts of internal TobEx debug messages

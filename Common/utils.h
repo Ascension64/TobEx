@@ -11,6 +11,8 @@ const char* const days[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 	__asm mov Eip, eax							\
 }
 
+#define GetThis(pThis) __asm mov pThis, ecx;
+
 #define SetVT(obj, vt) (*(unsigned int*)obj = vt)
 #define IENew new(0)
 #define IENewA new[](0)

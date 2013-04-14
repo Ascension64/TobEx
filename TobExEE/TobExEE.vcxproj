@@ -120,6 +120,7 @@
     <ClCompile Include="src\ext\LuaDump.cpp" />
     <ClCompile Include="src\ext\optionsext.cpp" />
     <ClCompile Include="src\ext\patchext.cpp" />
+    <ClCompile Include="src\ext\ResourceCore.cpp" />
     <ClCompile Include="src\lib\animext.cpp" />
     <ClCompile Include="src\lib\chitin.cpp" />
     <ClCompile Include="src\lib\cmapstrstrex.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="src\ext\LuaDump.h" />
     <ClInclude Include="src\ext\optionsext.h" />
     <ClInclude Include="src\ext\patchext.h" />
+    <ClInclude Include="src\ext\ResourceCore.h" />
     <ClInclude Include="src\include\crcexe.h" />
     <ClInclude Include="src\include\datacons.h" />
     <ClInclude Include="src\lib\cmapstrstrex.h" />
@@ -281,6 +283,7 @@
     <ClInclude Include="src\pointers\p_infgame.h" />
     <ClInclude Include="src\pointers\p_lua.h" />
     <ClInclude Include="src\pointers\p_objcore.h" />
+    <ClInclude Include="src\pointers\p_patch.h" />
     <ClInclude Include="src\pointers\p_resref.h" />
     <ClInclude Include="src\pointers\p_scrcore.h" />
     <ClInclude Include="src\pointers\p_size.h" />

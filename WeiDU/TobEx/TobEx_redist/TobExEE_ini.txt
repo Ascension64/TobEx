@@ -22,6 +22,71 @@ Flags:
 [T] - Tweak to engine behaviour (configured in TobEx_ini/TobExTweak.ini)
 [X] - Makes use of alterations to game resources outside the executable that are implemented by TobEx
 
+/////////////////////////////////////// ACTION
+
+-----1230 Expanded Actions [M]
+Enables the use of new actions
+
+Descriptions
+352 LoseGame()
+Plays the ending cutscene as if the protagonist died. If the action is used in a pausing dialogue, the ending cutscene will play after the dialogue ends. This action does nothing in the arenas game type.
+
+353 DialogueSetGlobal(S:Name*,S:Area*,I:Value*)
+Sets the variable 'Name' in the scope 'Area' to 'Value' immediately instead of being added through the dialogue owner's action queue. This allows variables to be set instantaneously and checked immediately afterwards in the same dialogue. ActionOverride() is supported. If used outside dialogue, this action behaves exactly as SetGlobal().
+Limitations: Variables become set asynchronously to the order in which the action is present on the script block. This can cause issues when an action is purposely sandwiched between two modifications of the same variable.
+
+354 DialogueIncrementGlobal(S:Name*,S:Area*,I:Value*)
+Increments the variable 'Name' in the scope 'Area' by 'Value' immediately instead of being added through the dialogue owner's action queue. This allows variables to be set instantaneously and checked immediately afterwards in the same dialogue. ActionOverride() is supported. If used outside dialogue, this action behaves exactly as IncrementGlobal().
+Limitations: Variables become set asynchronously to the order in which the action is present on the script block. This can cause issues when an action is purposely sandwiched between two modifications of the same variable.
+
+355 DialogueSG(S:Name*,I:Num*)
+Sets the global variable 'Name' to 'Num' immediately instead of being added through the dialogue owner's action queue. This allows variables to be set instantaneously and checked immediately afterwards in the same dialogue. ActionOverride() is supported. If used outside dialogue, this action behaves exactly as SG().
+Limitations: Variables become set asynchronously to the order in which the action is present on the script block. This can cause issues when an action is purposely sandwiched between two modifications of the same variable.
+
+356 Assign(S:Statement*,I:Type*ArgType,I:Local*)
+356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)
+Assigns a value determined by Statement of the type Type from ARGTYPE.IDS (INT integer, or STR string) to a local action block variable.
+The general form of Statement is "prefix[params]".
+If Object is specified, the value of Statement is determined relative to Object instead of the object that owns the script.
+This action is ignored by prior Eval() actions.
+The general form of Statement is "prefix[params]"
+-"prefix" can be:
+* 'c' - assigns a constant value; params is a number, e.g. c[1], or string, e.g. c[FOO]
+* 'e' - assigns the value of an expression; params is an expression, e.g. e[6 + 7]; see 0x411B Eval() for the format of Expression
+* 'id' - assigns the index of a IDS file value; params is file.value, e.g. id[EA.CHARMED]
+* 's' - assigns the value of the stat specified of the current object; params is the stat name, e.g. s[LEVEL]
+* 'sp' - assigns a special value specified; params is the special name from ASGNSPEC.IDS, e.g. sp[SPRITE_POS_X]
+* 'tn' - assigns the value of a 2DA file value by coordinates; params is file.x.y, e.g. tn[IMPORT01.0.0]
+* 'ts' - assigns the value of a 2DA file value by column and row name; params is file.column.row, e.g. tn[IMPORT01.ITEMS.1]
+* 'v' - assigns the value of a variable; params is name.scope, e.g. [foo.GLOBAL]
+-"params" values containing #<num> and @<num> are replaced by the integer and string values, respectively, stored in local action block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
+
+357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)
+Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next action with the value returned by Expression.
+To replace point X and point Y, use a Loc value of 4 and 5, respectively.
+This action skips subsequent Assign() and Eval() actions when determining in which action to overwrite a value.
+This action does not overwrite values of actions beyond ClearBlockVariables() actions.
+-Expression is a math expression that can use the following symbols:
+=+-*/%^()
+min(x, y), max(x, y), avg(x, y)
+ceil(x), floor(x), round(x)
+abs(x)
+reciprocal(x)
+sqrt(x), pow(x, y)
+log(x), log10(x)
+sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)
+Custom: and(x, y), or(x, y), band(x, y), bor(x, y)
+-Any text in Expression of form #<num> and @<num> is replaced by the integer and string values, respectively, stored in local action block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
+
+358 ClearBlockVariables()
+Sets all action block integer variables to 0 and empties all actions block string variables.
+
+Options:
+-0: disabled
+-1: enabled
+
 /////////////////////////////////////// DEBUG
 
 -----Expanded LUA Console [D]
@@ -120,6 +185,113 @@ Options:
 
 -----Enable Animation Attack Sounds [M, T]
 Enables the SLASH, BACKSLASH, and JAB sounds in animation soundset 2DA files
+
+Options:
+-0: disabled
+-1: enabled
+
+/////////////////////////////////////// TRIGGER
+
+-----1000 Expanded Triggers [M]
+Enables the use of new triggers
+
+New Trigger Descriptions
+0x4100 NextTriggerObject(O:Object*)
+Defines the object that the next trigger will be evaluated in reference to
+This trigger itself does not evaluate and does not count as a trigger in an OR() block
+This trigger does not count as a trigger modified by Eval*()
+If the object cannot be found, the next trigger will evaluate to false
+
+0x4101 MovementRate(O:Object*,I:Value*)
+0x4102 MovementRateGT(O:Object*,I:Value*)
+0x4103 MovementRateLT(O:Object*,I:Value*)
+Compares the animation movement rate of the target creature specified by Object to Value. This is not affected by slow or haste, but is affected if the Object is entangled, webbed, etc.
+
+0x4104 NumMirrorImages(O:Object*,I:Value*)
+0x4105 NumMirrorImagesGT(O:Object*,I:Value*)
+0x4106 NumMirrorImagesLT(O:Object*,I:Value*)
+Compares the number of mirror images present on the target creature specified by Object to Value.
+
+0x4107 BouncingSpellLevel(O:Object*,I:Level*)
+Returns true if the target creature specified by Object is bouncing spells of power Level.
+This returns true for both Bounce Spell Level (199) and Decrementing Bounce Spells (200) effects.
+
+0x4108 NumBouncingSpellLevel(O:Object*,I:Level*,I:Amount*)
+0x4109 NumBouncingSpellLevelGT(O:Object*,I:Level*,I:Amount*)
+0x410A NumBouncingSpellLevelLT(O:Object*,I:Level*,I:Amount*)
+Compares the number of spell bounces remaining on the target creature specified by Object at the power Level to Amount.
+If Object has the Bounce Spell Level (199) opcode, then the number of spell bounces is unsigned 0xFFFFFFFF.
+
+0x410B ImmuneToSpellLevel(O:Object*,I:Level*)
+Returns true if the target creature specified by Object is protected from spells of power Level.
+This returns true for both Protection from Spell Levels (102) and Decrementing Spell Immunity (201) effects.
+
+0x410C NumImmuneToSpellLevel(O:Object*,I:Level*,I:Amount*)
+0x410D NumImmuneToSpellLevelGT(O:Object*,I:Level*,I:Amount*)
+0x410E NumImmuneToSpellLevelLT(O:Object*,I:Level*,I:Amount*)
+Compares the number of spell protections remaining on the target creature specified by Object at the power Level to Amount.
+If Object has the Protection from Spell Levels (102) opcode, then the number of spell protections is unsigned 0xFFFFFFFF.
+
+0x410F TimeStopCounter(I:Number*)
+0x4110 TimeStopCounterGT(I:Number*)
+0x4111 TimeStopCounterLT(I:Number*)
+Compares the number of ticks left of time stop to Number.
+
+0x4112 TimeStopObject(O:Object*)
+Returns true if the the target sprite specified by Object is the caster of time stop (and is exempt from the effect).
+
+0x4113 NumTrappingSpellLevel(O:Object*,I:Level*,I:Amount*)
+0x4114 NumTrappingSpellLevelGT(O:Object*,I:Level*,I:Amount*)
+0x4115 NumTrappingSpellLevelLT(O:Object*,I:Level*,I:Amount*)
+Compares the number of spell traps remaining on the target creature specified by Object at the power Level to Amount.
+
+0x4116 OriginalClass(O:Object*,I:Class*Class)
+Returns true if the target creature specified by Object is dual-classed and the original class matches Class.
+
+0x4117 HPLost(O:Object*,I:Hit Points*)
+0x4118 HPLostGT(O:Object*,I:Hit Points*)
+0x4119 HPLostLT(O:Object*,I:Hit Points*)
+Compares the absolute number of hit points short of maximum hit points on the target creature specified by Object to Amount.
+
+0x411A Assign(S:Statement*,I:Type*ArgType,I:Local*)
+Assigns a value determined by Statement of the type Type from ARGTYPE.IDS (INT integer, or STR string) to a local trigger block variable.
+The general form of Statement is "prefix[params]".
+This trigger does not evaluate and does not count as a trigger in an OR() block.
+-"prefix" can be:
+* 'c' - assigns a constant value; params is a number, e.g. c[1], or string, e.g. c[FOO]
+* 'e' - assigns the value of an expression; params is an expression, e.g. e[6 + 7]; see 0x411B Eval() for the format of Expression
+* 'id' - assigns the index of a IDS file value; params is file.value, e.g. id[EA.CHARMED]
+* 's' - assigns the value of the stat specified of the current object; params is the stat name, e.g. s[LEVEL]
+* 'sp' - assigns a special value specified; params is the special name from ASGNSPEC.IDS, e.g. sp[SPRITE_POS_X]
+* 'tn' - assigns the value of a 2DA file value by coordinates; params is file.x.y, e.g. tn[IMPORT01.0.0]
+* 'ts' - assigns the value of a 2DA file value by column and row name; params is file.column.row, e.g. tn[IMPORT01.ITEMS.1]
+* 'v' - assigns the value of a variable; params is name.scope, e.g. [foo.GLOBAL]
+-"params" values containing #<num> and @<num> are replaced by the integer and string values, respectively, stored in local trigger block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
+
+0x411B Eval(S:Expression*,I:Type*ArgType,I:Loc*)
+Overwrites the (Loc)th argument of type Type from ARGTYPE.IDS (INT integer, or STR string) in the next trigger with the value returned by Expression.
+This trigger does not evaluate and does not count as a trigger in an OR() block.
+This trigger does not overwrite values of the Assign(), NextTriggerObject() and OR() triggers.
+The NextTriggerObject() trigger ignores this trigger.
+-Expression is a math expression that can use the following symbols:
+=+-*/%^()
+min(x, y), max(x, y), avg(x, y)
+ceil(x), floor(x), round(x)
+abs(x)
+reciprocal(x)
+sqrt(x), pow(x, y)
+log(x), log10(x)
+sin(x), cos(x), tan(x), sinh(x), cosh(x), tanh(x), asin(x), acos(x), atan(x), atan2(x)
+Custom: and(x, y), or(x, y), band(x, y), bor(x, y)
+-Any text in Expression of form #<num> and @<num> is replaced by the integer and string values, respectively, stored in local trigger block variables of index "num".
+Avoid using integer variables in expressions of string type. Avoid using string variables in expressions of integer type. The range of "num" is 0 to 24.
+
+0x411C E(I:Num1*,I:Num2*)
+0x411D GT(I:Num1*,I:Num2*)
+0x411E LT(I:Num1*,I:Num2*)
+Compares "Num1" to "Num2", where E is equals, GT is greater than, and LT is less than.
+To make use of these triggers, the 0x411B Eval() trigger should be used prior to this trigger.
 
 Options:
 -0: disabled

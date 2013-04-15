@@ -9,8 +9,19 @@ DefineLibNoRetFunc(void, Identifiers, ~Identifiers, (), Deconstruct, Deconstruct
 DefineLibMemberFunc(IdsEntry*, Identifiers, FindByHead, (IECString sValue, BOOL bCaseSensitive), FindByHead, FindByHead, (sValue, bCaseSensitive), IDENTIFIERS_FINDBYHEAD);
 
 //CVariable
+DefineLibMemberFunc(void, CVariable, SetName, (IECString s), SetName, SetName, (s), CVARIABLE_SETNAME);
+DefineLibNoRetFunc(CVariable&, CVariable, CVariable, (), Construct, Construct, (), CVARIABLE_CONSTRUCT);
+DefineLibMemberFunc(CVariable&, CVariable, operator=, (CVariable& var), OpAssign, OpAssign, (var), CVARIABLE_OPASSIGN);
+DefineLibMemberFunc(IECString, CVariable, GetName, (), GetName, GetName, (), CVARIABLE_GETNAME);
 
 //CVariableMap
+DefineLibNoRetFunc(CVariableMap&, CVariableMap, CVariableMap, (int nSize), Construct, Construct, (nSize), CVARIABLEMAP_CONSTRUCT);
+DefineLibNoRetFunc(void, CVariableMap, ~CVariableMap, (), Deconstruct, Deconstruct, (), CVARIABLEMAP_DECONSTRUCT);
+DefineLibMemberFunc(BOOL, CVariableMap, Add, (CVariable& var), Add, Add, (var), CVARIABLEMAP_ADD);
+DefineLibMemberFunc(CVariable&, CVariableMap, Find, (IECString sVar), Find, Find, (sVar), CVARIABLEMAP_FIND);
+DefineLibMemberFunc(unsigned int, CVariableMap, GetHash, (IECString sVar), GetHash, GetHash, (sVar), CVARIABLEMAP_GETHASH);
+DefineLibMemberFunc(void, CVariableMap, Empty, (), Empty, Empty, (), CVARIABLEMAP_EMPTY);
+DefineLibMemberFunc(void, CVariableMap, SetSize, (int nSize), SetSize, SetSize, (nSize), CVARIABLEMAP_SETSIZE);
 
 //ObjectIds
 ObjectIds::ObjectIds() {

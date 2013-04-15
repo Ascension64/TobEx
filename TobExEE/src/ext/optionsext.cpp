@@ -6,6 +6,8 @@ CGameOptionsEx* pGameOptionsEx = NULL;
 void InitOptions() {
 	pGameOptionsEx = new CGameOptionsEx();
 
+	pGameOptionsEx->SetOption("Action_ExpandedActions", "Action", "Expanded Actions");
+
 	pGameOptionsEx->SetOption("Debug_ExpandedLUAConsole", "Debug", "Expanded LUA Console");
 	pGameOptionsEx->SetOption("Debug_LogDialogueBar", "Debug", "Log Dialogue Bar");
 	pGameOptionsEx->SetOption("Debug_LogMissingRes", "Debug", "Log Missing Resources");
@@ -22,6 +24,8 @@ void InitOptions() {
 	pGameOptionsEx->SetOption("Engine_AutoPauseAllSP", "Tweak","Engine:Enable Auto-Pause On All Screens");
 
 	pGameOptionsEx->SetOption("Sound_AnimAttackSounds", "Tweak", "Sound:Enable Animation Attack Sounds");
+
+	pGameOptionsEx->SetOption("Trigger_ExpandedTriggers", "Trigger", "Expanded Triggers");
 
 	pGameOptionsEx->SetOption("User_CustomDlgBarSize", "UI", "Custom Dialogue Bar Buffer Size");
 	pGameOptionsEx->GetMap()["User_CustomDlgBarSize"] = max(pGameOptionsEx->GetMap()["User_CustomDlgBarSize"], 0);

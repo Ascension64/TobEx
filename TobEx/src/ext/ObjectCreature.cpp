@@ -156,7 +156,7 @@ void __stdcall CCreatureObject_GetClassAbilities(CCreatureObject& cre, unsigned 
 	}
 
 	wStartLevel = 0;
-	pcds = &cre.GetActiveStats();
+	pcds = &cre.GetDerivedStats();
 	cSubclassLevel = pcds->GetSubclassLevel(cre.o.GetClass(), cClass);
 	if (nLevels != -1) {
 		wStartLevel = cSubclassLevel - nLevels;
@@ -637,7 +637,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		creTarget.m_bActiveImprisonment == FALSE)
 		return ACTIONRESULT_ERROR;
 
-	if (this->GetActiveStats().ButtonDisable[1]) {
+	if (this->GetDerivedStats().ButtonDisable[1]) {
 		Feedback(FEEDBACK_PICKPOCKET_DISABLED_ARMOR, 0, 0, 0, -1, 0, IECString(""));
 		return ACTIONRESULT_ERROR;
 	}
@@ -662,7 +662,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 	}
 
 	if (!pGameOptionsEx->GetOption("Action_PickpocketRemainHidden") &&
-		this->GetActiveStats().stateFlags & STATE_INVISIBLE) {
+		this->GetDerivedStats().stateFlags & STATE_INVISIBLE) {
 		ItmFileEffect eff;
 		CEffect::ClearItemEffect(eff, 0x88);
 		eff.m_cTiming = TIMING_INSTANT_PERMANENT;
@@ -682,8 +682,8 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 	int nDieRoll = IERand(100) + 1;
 
 	if (nDieRoll == 100 ||
-		nDieRoll >= this->GetActiveStats().pickPockets - creTarget.GetActiveStats().pickPockets ||
-		creTarget.GetActiveStats().pickPockets == 0x0FF
+		nDieRoll >= this->GetDerivedStats().pickPockets - creTarget.GetDerivedStats().pickPockets ||
+		creTarget.GetDerivedStats().pickPockets == 0x0FF
 	) {
 		//failed
 		Feedback(FEEDBACK_PICKPOCKET_FAILED, 0, 0, 0, -1, 0, IECString(""));
@@ -717,7 +717,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		}
 
 		if (pGameOptionsEx->GetOption("Action_PickpocketRemainHidden") &&
-			this->GetActiveStats().stateFlags & STATE_INVISIBLE) {
+			this->GetDerivedStats().stateFlags & STATE_INVISIBLE) {
 			ItmFileEffect eff;
 			CEffect::ClearItemEffect(eff, 0x88);
 
@@ -765,7 +765,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 
 			IECString sValue = *((pRuleEx->m_StealSlots.pDataArray) + (pRuleEx->m_StealSlots.nCols * iRow + nCol));
 			int nValue = atoi((LPCTSTR)sValue);
-			if (nValue == 0 || nValue > this->GetActiveStats().pickPockets) bNotStealableArray[iRow] = 1;
+			if (nValue == 0 || nValue > this->GetDerivedStats().pickPockets) bNotStealableArray[iRow] = 1;
 		}
 
 		IECString sRowName("SLOT_EQUIPPED");
@@ -773,7 +773,7 @@ ACTIONRESULT DETOUR_CCreatureObject::DETOUR_ActionPickPockets(CCreatureObject& c
 		IECString sValue(pRuleEx->m_StealSlots.GetValue(sColName, sRowName));
 		int nValue = atoi((LPCTSTR)sValue);
 
-		if (nValue == 0 || nValue > this->GetActiveStats().pickPockets) {
+		if (nValue == 0 || nValue > this->GetDerivedStats().pickPockets) {
 			bNotStealableArray[creTarget.m_Inventory.nSlotSelected] = 1;
 
 			short nSlotEquippedLauncher = creTarget.GetSlotOfEquippedLauncherOfAmmo(creTarget.m_Inventory.nSlotSelected, creTarget.m_Inventory.nAbilitySelected);
@@ -953,7 +953,7 @@ BOOL __stdcall CCreatureObject_ApplyDamage_TryBackstab(CCreatureObject& creSourc
 	if (0) IECString("CCreatureObject_ApplyDamage_TryBackstab");
 
 	/* original code
-    CDerivedStats& cds = creSource.GetActiveStats();
+    CDerivedStats& cds = creSource.GetDerivedStats();
 
     if ((abilMain.attackType != ITEMABILITYATTACKTYPE_RANGED) &&
         (cds.stateFlags & STATE_INVISIBLE || cds.m_BackstabEveryHit) &&
@@ -968,7 +968,7 @@ BOOL __stdcall CCreatureObject_ApplyDamage_TryBackstab(CCreatureObject& creSourc
 				return FALSE;
 			}
 
-			if (creTarget.GetActiveStats().m_BackstabImmunity) {
+			if (creTarget.GetDerivedStats().m_BackstabImmunity) {
 				creSource.Feedback(FEEDBACK_BACKSTAB_FAIL, 0, 0, 0, -1, FALSE, IECString());
 				return FALSE;
 			}
@@ -985,7 +985,7 @@ BOOL __stdcall CCreatureObject_ApplyDamage_TryBackstab(CCreatureObject& creSourc
 
     return FALSE;*/
 	
-	CDerivedStats& cds = creSource.GetActiveStats();
+	CDerivedStats& cds = creSource.GetDerivedStats();
 
 	BOOL bToggleBackstab = FALSE;
 	BOOL bIgnoreInvisible = cds.m_BackstabEveryHit;
@@ -1014,7 +1014,7 @@ BOOL __stdcall CCreatureObject_ApplyDamage_TryBackstab(CCreatureObject& creSourc
 			return FALSE;
 		}
 
-		if (creTarget.GetActiveStats().m_BackstabImmunity) {
+		if (creTarget.GetDerivedStats().m_BackstabImmunity) {
 			creSource.Feedback(FEEDBACK_BACKSTAB_FAIL, 0, 0, 0, -1, FALSE, IECString());
 			return FALSE;
 		}
@@ -1042,58 +1042,58 @@ int __stdcall CCreatureObject_ApplyDamage_CalculateDamageBonus(CCreatureObject& 
 
 	switch (abilMain.m_wDamageType) {
 	case 1: //piercing
-		wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
+		wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
 		break;
 	case 2: //crushing
-		wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
+		wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
 		break;
 	case 3: //slashing
-		wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_SLASHINGDAMAGEBONUS) / 100;
+		wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_SLASHINGDAMAGEBONUS) / 100;
 		break;
 	case 4: //missile
-		wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_MISSILEDAMAGEBONUS) / 100;
+		wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_MISSILEDAMAGEBONUS) / 100;
 		break;
 	case 5: //stunning
-		wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_STUNNINGDAMAGEBONUS) / 100;
+		wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_STUNNINGDAMAGEBONUS) / 100;
 		break;
 	case 6: //piercing/crushing
 		if (&creTarget != NULL) {
-			if (creTarget.GetActiveStats().resistPiercing > creTarget.GetActiveStats().resistCrushing) {
-				wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
+			if (creTarget.GetDerivedStats().resistPiercing > creTarget.GetDerivedStats().resistCrushing) {
+				wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
 			} else {
-				wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
+				wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
 			}
 		} else {
-			wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
+			wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
 		}
 		break;
 	case 7: //piercing/slashing
 		if (&creTarget != NULL) {
-			if (creTarget.GetActiveStats().resistPiercing > creTarget.GetActiveStats().resistSlashing) {
-				wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_SLASHINGDAMAGEBONUS) / 100;
+			if (creTarget.GetDerivedStats().resistPiercing > creTarget.GetDerivedStats().resistSlashing) {
+				wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_SLASHINGDAMAGEBONUS) / 100;
 			} else {
-				wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
+				wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
 			}
 		} else {
-			wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
+			wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_PIERCINGDAMAGEBONUS) / 100;
 		}
 		break;
 	case 8: //crushing/slashing
 		if (&creTarget != NULL) {
-			if (creTarget.GetActiveStats().resistCrushing > creTarget.GetActiveStats().resistSlashing) {
-				wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
+			if (creTarget.GetDerivedStats().resistCrushing > creTarget.GetDerivedStats().resistSlashing) {
+				wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
 			} else {
-				wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_SLASHINGDAMAGEBONUS) / 100;
+				wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_SLASHINGDAMAGEBONUS) / 100;
 			}
 		} else {
-			wDamageBonus = *pwDamage * creSource.GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
+			wDamageBonus = *pwDamage * creSource.GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_CRUSHINGDAMAGEBONUS) / 100;
 		}
 		break;
 	default:
 		break;
 	}
 
-	wDamageBonus += creSource.GetActiveStats().damageBonus;
+	wDamageBonus += creSource.GetDerivedStats().damageBonus;
 	*pwDamage += wDamageBonus;
 	return wDamageBonus;
 }
@@ -1166,14 +1166,14 @@ BOOL __stdcall CCreatureObject_Spell_IsOverrideInvisible(CCreatureObject& creSou
 	}
 
 	if (!creSource.CanSeeInvisible()) {
-		if (creTarget.GetActiveStats().stateFlags & STATE_INVISIBLE ||
-			creTarget.GetActiveStats().stateFlags & STATE_IMPROVEDINVISIBILITY) {
+		if (creTarget.GetDerivedStats().stateFlags & STATE_INVISIBLE ||
+			creTarget.GetDerivedStats().stateFlags & STATE_IMPROVEDINVISIBILITY) {
 			return FALSE;
 		}
 	}
 
 	if (!creSource.CanSeeInvisible()) {
-		if (creTarget.GetActiveStats().sanctuary) {
+		if (creTarget.GetDerivedStats().sanctuary) {
 			return FALSE;
 		}
 	}
@@ -1185,7 +1185,7 @@ BOOL __stdcall CCreatureObject_IsDeadInFrontVerticalList(CCreatureObject& cre) {
 	if (0) IECString("CCreatureObject_IsDeadInFrontVerticalList");
 
 	if (cre.GetVertListType() == LIST_FRONT) {
-		CDerivedStats& cds = cre.GetActiveStats();
+		CDerivedStats& cds = cre.GetDerivedStats();
 		if (cds.stateFlags & STATE_DEAD) {
 			CAnimation* pAnimation = cre.m_animation.pAnimation;
 			if (pAnimation == NULL) {
@@ -1236,7 +1236,7 @@ LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject
 	if (0) IECString("CCreatureObject_DoSpellCasting_GetGenderLetter");
 
 	if (pGameOptionsEx->GetOption("Spells_UnvoicedConfig") &&
-		creSource.GetActiveStats().stateFlags & STATE_SILENCED &&
+		creSource.GetDerivedStats().stateFlags & STATE_SILENCED &&
 		resSpell.GetSpellFlags() & SPELL_FLAGS_NO_VOICE)
 		return "S";
 
@@ -1244,7 +1244,7 @@ LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject
 		unsigned char gender = creSource.o.m_cGender;
 		unsigned char sex = creSource.m_header.m_cSex;
 
-		if (ability.m_wSpeedFactor - creSource.GetActiveStats().mentalSpeed < 3) return "S";
+		if (ability.m_wSpeedFactor - creSource.GetDerivedStats().mentalSpeed < 3) return "S";
 
 		switch (gender) {
 		case GENDER_MALE:
@@ -1276,7 +1276,7 @@ LPCTSTR __stdcall CCreatureObject_DoSpellCasting_GetGenderLetter(CCreatureObject
 short __stdcall CCreatureObject_DoSpellCasting_GetCastingSpeed(CCreatureObject& creSource, SplFileAbility& ability) {
 	if (0) IECString("CCreatureObject_DoSpellCasting_GetCastingSpeed");
 
-	return max(0, ability.m_wSpeedFactor - creSource.GetActiveStats().mentalSpeed) * 100 / 10;
+	return max(0, ability.m_wSpeedFactor - creSource.GetDerivedStats().mentalSpeed) * 100 / 10;
 }
 
 BOOL __stdcall CCreatureObject_UseItem_CannotTargetInvisible(CCreatureObject& creSource, CCreatureObject& creTarget) {
@@ -1287,9 +1287,9 @@ BOOL __stdcall CCreatureObject_UseItem_CannotTargetInvisible(CCreatureObject& cr
 	ItmFileAbility itmAbility = creSource.m_currentItem->GetAbility(creSource.m_currentItemAbility);
 	if (itmAbility.m_dwAbilityFlags & ITEM_FLAGS_NO_TARGET_INVIS) {
 		if (!creSource.CanSeeInvisible()) {
-			if (creTarget.GetActiveStats().stateFlags & STATE_INVISIBLE ||
-				creTarget.GetActiveStats().stateFlags & STATE_IMPROVEDINVISIBILITY ||
-				creTarget.GetActiveStats().sanctuary) {
+			if (creTarget.GetDerivedStats().stateFlags & STATE_INVISIBLE ||
+				creTarget.GetDerivedStats().stateFlags & STATE_IMPROVEDINVISIBILITY ||
+				creTarget.GetDerivedStats().sanctuary) {
 				creSource.Feedback(FEEDBACK_SPELLFAILED_INVISIBLE, 0, 0, 0, -1, 0, IECString());
 				return TRUE;
 			}
@@ -1339,7 +1339,7 @@ BOOL __stdcall CCreatureObject_AttackOnce_DoHalfAttack(CCreatureObject& creSourc
 
 	const char cInRoundOffset = 9;
 	int nthAttack = cInRoundIdx - 9;
-	CDerivedStats* pcds = &creSource.GetActiveStats();
+	CDerivedStats* pcds = &creSource.GetDerivedStats();
 	int nAttacks = pcds->numAttacks - 5;
 
 	if (nthAttack < nAttacks) { //full attack

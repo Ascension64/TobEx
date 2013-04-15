@@ -174,6 +174,9 @@ public:
 	virtual void DoPostAction(Action& a) {} //vb4, for every ACTIONRESULT except no action taken
 	virtual void vb8() {} //vb8
 
+	Action& GetTopAction(Action* pAction);
+	void QueueActions(Response& r, BOOL bSkipIfAlreadyQueued, BOOL bClearActionQueue);
+
 	Object m_oAttacker; //48h, for AttackedBy() trigger, for LastAttackerOf triggerid
 		
 	int m_nAttackedType; //5ch
@@ -211,14 +214,14 @@ public:
 	CScript* m_pScriptRace; //250h
 	CScript* m_pScriptGeneral; //254h
 	CScript* m_pScriptDefault; //258h
-	CActionList m_actions; //25ch, checked in ActionListEmpty()
-	CTriggerList m_triggers; //278h
+	CActionList m_lActions; //25ch, checked in ActionListEmpty()
+	CTriggerList m_lTriggers; //278h
 	//Triggers 0x0*** are checked here with == only
 	//Triggers 0x4*** are checked more sophisticatedly
 
 	int m_nTimeFree; //294h, countup, time free (i.e. not mazed/imprisoned)
 	int u298; //countup timer
-	CTimerList m_timers; //29ch
+	CTimerList m_lTimers; //29ch
 	short m_nCurrResponseIdx; //2b8h, gets Response.u2
 	short m_nCurrScriptBlockIdx; //2bah, gets Response.u4
 	short m_nCurrScriptIdx; //2bch, gets Response.u6

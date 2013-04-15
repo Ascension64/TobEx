@@ -18,8 +18,8 @@ public:
 	virtual BOOL Unmarshal(void* pData, int* dwSize) {return FALSE;} //v14
 	virtual void DoMessage() {return;} //v18
 
-	ENUM m_eTarget; //0x4
-	ENUM m_eSource; //0x8
+	ENUM m_eTarget; //4h
+	ENUM m_eSource; //8h
 };
 
 //CMessageDisplayDialogue
@@ -29,6 +29,23 @@ public:
 #define STRREF_PARTYSLOT_3	-5
 #define STRREF_PARTYSLOT_4	-6
 #define STRREF_PARTYSLOT_5	-7
+
+//CMessageModifyVariable
+class CMessageModifyVariable : public CMessage { //Size 1Ch
+	DEFINE_MEMALLOC_FUNC;
+public:
+	CMessageModifyVariable(IECString& sVariable, IECString& sScope, int nValue, unsigned char cType, ENUM eSource, ENUM eTarget);
+	CMessageModifyVariable& Construct(IECString& sVariable, IECString& sScope, int nValue, unsigned char cType, ENUM eSource, ENUM eTarget) {return *this;} //dummy
+
+	virtual ~CMessageModifyVariable(); //v0
+	void Deconstruct() {} //dummy
+
+	IECString m_sScope; //ch
+	IECString m_sVariable; //10h
+	int m_nValue; //14h
+	unsigned char m_cBehaviour; //18h, 0 = set, 1 = sum
+	char p19[3];
+};
 
 //CMessageOverlay param
 #define CMESSAGEOVERLAY_BLUR					0 //off/on
@@ -151,6 +168,8 @@ struct CRemoteMessageHandler { //Size F8h
 
 class CMessageHandler : public IECPtrList { //Size 20h
 public:
+	short AddMessage(CMessage& msg, BOOL bForceAddToQueue);
+
 	char u1c; //gets a value from CMultiplayerSettings
 	char p1d[3];
 };

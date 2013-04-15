@@ -102,11 +102,16 @@ public:
 
 class CCreatureObject : public CGameSprite { //Size 3968h
 public:
+	virtual BOOL EvaluateTrigger(Trigger& t); //v60
+	virtual ACTIONRESULT ExecuteAction(); //v80
+
 	//vbc, void CCreatureObject::SetObjects(o, bSetDerived, bSetBase)
 	//vc8, void RefreshObjects(), 1c = 3698 (identical), 3684 = 3698 (except general)
 	//vcc, void ProcessScriptsOnce(BOOL bOverrideOnly)
 	//...
 	//etc. to v??
+
+	CDerivedStats& GetDerivedStats();
 
 	short u390;
 	short u392;

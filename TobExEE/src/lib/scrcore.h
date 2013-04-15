@@ -17,8 +17,7 @@ typedef IECPtrList CActionList;
 typedef IECPtrList CTriggerList;
 typedef IECPtrList CScriptBlockList;
 
-//FIX_ME
-//static Action* g_pActionTemp = reinterpret_cast<Action*>(0xB79300);
+static Action* g_pActionTemp = reinterpret_cast<Action*>(G_PACTIONTEMP);
 
 //ACTIONRESULT
 const ACTIONRESULT ACTIONRESULT_NEG3			= -3; //?, loads next action
@@ -38,7 +37,7 @@ struct ResIdsFile { //Size 10h
 
 class Identifiers { //Size 40h
 	DEFINE_MEMALLOC_FUNC;
-
+public:
 	Identifiers();
 	Identifiers& Construct() {return *this;} //dummy
 
@@ -59,6 +58,14 @@ class Identifiers { //Size 40h
 };
 
 struct CVariable { //Size 54h
+	CVariable();
+	CVariable& Construct() { return *this; } //dummy
+
+	void SetName(IECString s);
+	CVariable& operator=(CVariable& var);
+	CVariable& OpAssign(CVariable& var) { return *this; } //dummy
+	IECString GetName();
+
 	SCRIPTNAME m_szName; //0h
 	WORD m_wType; //20h, unused
 	WORD m_wResRefType; //22h, unused
@@ -69,6 +76,18 @@ struct CVariable { //Size 54h
 };
 
 struct CVariableMap { //Size 8h
+	CVariableMap(int nSize);
+	CVariableMap& Construct(int nSize) { return *this; } //dummy
+
+	~CVariableMap();
+	void Deconstruct() {} //dummy
+
+	BOOL Add(CVariable& var);
+	CVariable& Find(IECString sVar);
+	unsigned int GetHash(IECString sVar);
+	void Empty();
+	void SetSize(int nSize);
+
 	CVariable* m_pArray; //0h
 	unsigned int m_nArraySize; //4h
 };

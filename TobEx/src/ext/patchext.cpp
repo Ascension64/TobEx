@@ -1396,7 +1396,7 @@ void InitPatches() {
 		//jmp 4BA4E3
 		//nop
 		//mov ecx,dword ptr ss:[ebp-5c]
-		//call CCreatureObject::GetActiveStats()
+		//call CCreatureObject::GetDerivedStats()
 		//nop
 		//mov dword ptr ss:[ebp-ac],eax
 		char bytes3[] = {0x85, 0xC0,
@@ -1432,7 +1432,7 @@ void InitPatches() {
 		//jmp 4BA968
 		//nop
 		//mov ecx,dword ptr ss:[ebp-5c]
-		//call CCreatureObject::GetActiveStats()
+		//call CCreatureObject::GetDerivedStats()
 		//nop
 		//mov dword ptr ss:[ebp-ac],eax
 		char bytes6[] = {0x85, 0xC0,
@@ -2097,7 +2097,7 @@ void InitPatches() {
 		//3. CCreatureObject::SpellPoint() - check if casting allowed
 
 		//mov edx,dword ptr ss:[ebp-5D0]
-		//call CCreatureObject::GetActiveStats()
+		//call CCreatureObject::GetDerivedStats()
 		//mov dword ptr ss:[ebp-418],eax
 		//mov ecx,dword ptr ds:[eax]
 		//and ecx,1000

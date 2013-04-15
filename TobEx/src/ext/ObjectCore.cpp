@@ -80,7 +80,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (pCre == NULL) break;
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
-		bResult = pCre->GetActiveStats().BounceSplLvl[tTemp.i] || pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn;
+		bResult = pCre->GetDerivedStats().BounceSplLvl[tTemp.i] || pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn;
 		}
 		break;
 	case TRIGGER_NUM_BOUNCING_SPELL_LEVEL:
@@ -90,11 +90,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumBounce = 0;
-		if (pCre->GetActiveStats().BounceSplLvl[tTemp.i]) {
+		if (pCre->GetDerivedStats().BounceSplLvl[tTemp.i]) {
 			nNumBounce = UINT_MAX;
 		} else {
-			if (pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn)
-				nNumBounce = pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn)
+				nNumBounce = pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumBounce == tTemp.i2;
 		}
@@ -106,11 +106,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumBounce = 0;
-		if (pCre->GetActiveStats().BounceSplLvl[tTemp.i]) {
+		if (pCre->GetDerivedStats().BounceSplLvl[tTemp.i]) {
 			nNumBounce = UINT_MAX;
 		} else {
-			if (pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn)
-				nNumBounce = pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn)
+				nNumBounce = pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumBounce > (unsigned int)tTemp.i2;
 		}
@@ -122,11 +122,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumBounce = 0;
-		if (pCre->GetActiveStats().BounceSplLvl[tTemp.i]) {
+		if (pCre->GetDerivedStats().BounceSplLvl[tTemp.i]) {
 			nNumBounce = UINT_MAX;
 		} else {
-			if (pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].bOn)
-				nNumBounce = pCre->GetActiveStats().BounceSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].bOn)
+				nNumBounce = pCre->GetDerivedStats().BounceSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumBounce < (unsigned int)tTemp.i2;
 		}
@@ -137,7 +137,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (pCre == NULL) break;
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
-		bResult = pCre->GetActiveStats().ProtSplLvl[tTemp.i] || pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn;
+		bResult = pCre->GetDerivedStats().ProtSplLvl[tTemp.i] || pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn;
 		}
 		break;
 	case TRIGGER_NUM_IMMUNE_SPELL_LEVEL:
@@ -147,11 +147,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumProt = 0;
-		if (pCre->GetActiveStats().ProtSplLvl[tTemp.i]) {
+		if (pCre->GetDerivedStats().ProtSplLvl[tTemp.i]) {
 			nNumProt = UINT_MAX;
 		} else {
-			if (pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn)
-				nNumProt = pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn)
+				nNumProt = pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumProt == tTemp.i2;
 		}
@@ -163,11 +163,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumProt = 0;
-		if (pCre->GetActiveStats().ProtSplLvl[tTemp.i]) {
+		if (pCre->GetDerivedStats().ProtSplLvl[tTemp.i]) {
 			nNumProt = UINT_MAX;
 		} else {
-			if (pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn)
-				nNumProt = pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn)
+				nNumProt = pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumProt > (unsigned int)tTemp.i2;
 		}
@@ -179,11 +179,11 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumProt = 0;
-		if (pCre->GetActiveStats().ProtSplLvl[tTemp.i]) {
+		if (pCre->GetDerivedStats().ProtSplLvl[tTemp.i]) {
 			nNumProt = UINT_MAX;
 		} else {
-			if (pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].bOn)
-				nNumProt = pCre->GetActiveStats().ProtSplLvlDec[tTemp.i].nCount;
+			if (pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].bOn)
+				nNumProt = pCre->GetDerivedStats().ProtSplLvlDec[tTemp.i].nCount;
 		}
 		bResult = nNumProt < (unsigned int)tTemp.i2;
 		}
@@ -210,8 +210,8 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumTrap = 0;
-		if (pCre->GetActiveStats().SplTrapLvl[tTemp.i].bOn)
-			nNumTrap = pCre->GetActiveStats().SplTrapLvl[tTemp.i].nCount;
+		if (pCre->GetDerivedStats().SplTrapLvl[tTemp.i].bOn)
+			nNumTrap = pCre->GetDerivedStats().SplTrapLvl[tTemp.i].nCount;
 		bResult = nNumTrap == tTemp.i2;
 		}
 		break;
@@ -222,8 +222,8 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumTrap = 0;
-		if (pCre->GetActiveStats().SplTrapLvl[tTemp.i].bOn)
-			nNumTrap = pCre->GetActiveStats().SplTrapLvl[tTemp.i].nCount;
+		if (pCre->GetDerivedStats().SplTrapLvl[tTemp.i].bOn)
+			nNumTrap = pCre->GetDerivedStats().SplTrapLvl[tTemp.i].nCount;
 		bResult = nNumTrap > (unsigned int)tTemp.i2;
 		}
 		break;
@@ -234,8 +234,8 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		if (tTemp.i < 0) break;
 		if (tTemp.i > 9) break;
 		unsigned int nNumTrap = 0;
-		if (pCre->GetActiveStats().SplTrapLvl[tTemp.i].bOn)
-			nNumTrap = pCre->GetActiveStats().SplTrapLvl[tTemp.i].nCount;
+		if (pCre->GetDerivedStats().SplTrapLvl[tTemp.i].bOn)
+			nNumTrap = pCre->GetDerivedStats().SplTrapLvl[tTemp.i].nCount;
 		bResult = nNumTrap < (unsigned int)tTemp.i2;
 		}
 		break;
@@ -289,7 +289,7 @@ BOOL DETOUR_CGameSprite::DETOUR_EvaluateTrigger(Trigger& t) {
 		{
 		nFindTargetResult = FindTargetCreature(tTemp, &pCre);
 		if (pCre == NULL) break;
-		bResult = (BOOL)(pCre->GetActiveStats().GetStat(tTemp.i2) & tTemp.i);
+		bResult = (BOOL)(pCre->GetDerivedStats().GetStat(tTemp.i2) & tTemp.i);
 		break;
 		}
 	default:

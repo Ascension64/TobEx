@@ -1,3 +1,4 @@
+//TobExEE
 #include "ScriptCommon.h"
 
 #include "chitin.h"
@@ -104,13 +105,13 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			CVariable* pVar = NULL;
 
 			if (!sScope.Compare("GLOBAL")) {
-				pVar = &g_pChitin->pGame->m_GlobalVariables.Find(sVariable);
+				pVar = &g_pChitin->GetInfGame().m_GlobalVariables.Find(sVariable);
 			} else if (!sScope.Compare("LOCALS") && sprite.GetType() == CGAMEOBJECT_TYPE_CREATURE) {
 				pVar = &((CCreatureObject&)sprite).m_pLocalVariables->Find(sVariable);
 			} else {
-				if (!sScope.Compare("MYAREA")) sScope = sprite.pArea->rAreaName.FormatToString();
-				CArea& area = g_pChitin->pGame->GetLoadedArea(sScope);
-				if (&area != NULL) pVar = &area.m_AreaVariables.Find(sVariable);
+				if (!sScope.Compare("MYAREA")) sScope = sprite.m_pArea->m_rAreaName.FormatToString();
+				CArea& area = g_pChitin->GetInfGame().GetLoadedArea(sScope);
+				if (&area != NULL) pVar = &area.m_mapAreaVariables.Find(sVariable);
 			}
 			vars.SetInt(nIndex, pVar ? pVar->m_nValue : 0);
 		
@@ -145,8 +146,8 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			int nValue = 0;
 
 			rule.LoadTable(ResRef((LPCTSTR)sTable));
-			if (rule.m_2da.bLoaded) {
-				sValue = rule.GetValue(sCol, sRow);
+			if (rule.m_2da.m_bLoaded) {
+				sValue = rule.GetStrValue(sCol, sRow);
 				sscanf_s((LPCTSTR)sValue, "%d", &nValue);
 			}
 
@@ -182,8 +183,8 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 			int nValue = 0;
 
 			rule.LoadTable(ResRef((LPCTSTR)sTable));
-			if (rule.m_2da.bLoaded) {
-				sValue = rule.GetValue(pt);
+			if (rule.m_2da.m_bLoaded) {
+				sValue = rule.GetStrValue(pt);
 				sscanf_s((LPCTSTR)sValue, "%d", &nValue);
 			}
 			if (nType == ARGTYPE_INT) {
@@ -230,7 +231,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 
 			Identifiers ids(ResRef((LPCTSTR)sIdsName));
 			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
-			int nValue = pIE ? pIE->nOpcode : 0;
+			int nValue = pIE ? pIE->m_nOpcode : 0;
 			vars.SetInt(nIndex, nValue);
 
 		} else if (sType.CompareNoCase("c") == 0) {
@@ -257,7 +258,7 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 
 			Identifiers ids(ResRef("STATS"));
 			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
-			int nStat = pIE ? pIE->nOpcode : 0;
+			int nStat = pIE ? pIE->m_nOpcode : 0;
 			int nValue = 0;
 			if (nStat) nValue = ((CCreatureObject&)sprite).GetDerivedStats().GetStat(nStat);
 			vars.SetInt(nIndex, nValue);
@@ -273,14 +274,14 @@ void ParseStatement(unsigned int nIndex, int nType, IECString s, CGameSprite& sp
 
 			Identifiers ids(ResRef("ASGNSPEC"));
 			IdsEntry* pIE = ids.FindByHead(sValue, FALSE);
-			int nSpecial = pIE ? pIE->nOpcode : 0;
+			int nSpecial = pIE ? pIE->m_nOpcode : 0;
 			int nValue = 0;
 			switch (nSpecial) {
 			case 1: //SPRITE_PT_X
-				nValue = sprite.m_currentLoc.x;
+				nValue = sprite.m_ptCurrent.x;
 				break;
 			case 2: //SPRITE_PT_Y
-				nValue = sprite.m_currentLoc.y;
+				nValue = sprite.m_ptCurrent.y;
 				break;
 			default:
 				break;

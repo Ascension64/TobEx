@@ -14,7 +14,7 @@
 #include "stocore.h"
 #include "itmcore.h"
 
-typedef IECPtrList CPartyLocationList; //AAB968
+typedef IECPtrList CPartyLocationList;
 
 struct Res2daFile { //Size 10h
 	BOOL m_bLoaded; //0h
@@ -39,6 +39,24 @@ struct CPartySelection { //Size 24h
 };
 
 struct CRuleTable { //Size 24h
+	DEFINE_MEMALLOC_FUNC;
+
+	CRuleTable();
+	CRuleTable& Construct() {return *this;} //dummy
+
+	~CRuleTable();
+	void Deconstruct() {} //dummy
+
+	void LoadTable(ResRef& r);
+	IECString& GetStrValue(IECString& sColName, IECString& sRowName);
+	bool FindString(IECString& s, POSITION* ppos, BOOL bCheckHeaders);
+	IECString GetDefaultValue();
+	IECString& GetStrValue(CPoint& ptColRow);
+	IECString& GetIntValue(CPoint& ptColRow);
+
+	IECString& GetRowName(int nRow);
+	IECString& GetColName(int nCol);
+
 	Res2daFile m_2da; //0h
 	IECString* m_pColHeaderArray; //10h
 	IECString* m_pRowHeaderArray; //14h
@@ -54,8 +72,13 @@ struct IdsEntry { //Size Ch
 	IECString m_sHead; //i.e. function name only
 };
 
-class CRuleTables { //Size 1FA8h
-public:
+struct CRuleTables { //Size 1FA8h
+	CRuleTables();
+	CRuleTables& Construct() {return *this;} //dummy
+
+	~CRuleTables();
+	void Deconstruct() {} //dummy
+
 	CRuleTable m_RMODCHR; //0h
 	CRuleTable m_RMODREP; //24h
 	CRuleTable m_REPUTATI; //48h
@@ -278,6 +301,9 @@ class CInfGame : public CRuleTables { //Size 5004h (5100h)
 public:
 	CWorldTimer& GetWorldTimer();
 	CScriptParser& GetScriptParser();
+	void InitGame(int nUnused, int nUnused2);
+	short GetCharacterPortraitNum(ENUM e);
+	CArea& GetLoadedArea(IECString sAreaName);
 	void SetLoseCutscene();
 
 	CWorldTimer m_WorldTimer; //1fa8h

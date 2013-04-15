@@ -11,6 +11,9 @@
 #include "EngineWorld.h"
 #include "InfGameCore.h"
 #include "LuaCore.h"
+#include "ObjectCore.h"
+#include "ObjectCreature.h"
+#include "ScriptCore.h"
 #include "UserCore.h"
 
 void InitHooks() {
@@ -19,6 +22,17 @@ void InitHooks() {
 	//General
 	DetourMemberFunction(Tramp_CBaldurChitin_Construct, DETOUR_CBaldurChitin::DETOUR_Construct); //get g_pChitin
 	DetourMemberFunction(Tramp_CBaldurChitin_DoExit, DETOUR_CBaldurChitin::DETOUR_DoExit); //delete TobEx globals
+	DetourMemberFunction(Tramp_CRuleTables_Construct, DETOUR_CRuleTables::DETOUR_Construct);
+	DetourMemberFunction(Tramp_CRuleTables_Deconstruct, DETOUR_CRuleTables::DETOUR_Deconstruct);
+
+	//Action
+	if (pGameOptionsEx->GetOption("Action_ExpandedActions")) {
+		DetourMemberFunction(Tramp_CInfGame_InitGame, DETOUR_CInfGame::DETOUR_InitGame);
+		DetourMemberFunction(Tramp_CGameSprite_QueueActions, DETOUR_CGameSprite::DETOUR_QueueActions);
+		DetourMemberFunction(Tramp_CGameSprite_ClearAllActions, DETOUR_CGameSprite::DETOUR_ClearAllActions);
+		DetourMemberFunction(Tramp_CGameSprite_ExecuteAction, DETOUR_CGameSprite::DETOUR_ExecuteAction);
+		DetourMemberFunction(Tramp_CCreatureObject_ExecuteAction, DETOUR_CCreatureObject::DETOUR_ExecuteAction);
+	}
 
 	//Debug
 	if (pGameOptionsEx->GetOption("Debug_ExpandedLUAConsole"))
@@ -37,6 +51,13 @@ void InitHooks() {
 	//Sound
 	if (pGameOptionsEx->GetOption("Sound_AnimAttackSounds"))
 		DetourMemberFunction(Tramp_CAnimation_PlayCurrentSequenceSound, DETOUR_CAnimation::DETOUR_PlayCurrentSequenceSound);
+
+	//tRIGGER
+	if (pGameOptionsEx->GetOption("Trigger_ExpandedTriggers")) {
+		DetourMemberFunction(Tramp_CScriptBlock_Evaluate, DETOUR_CScriptBlock::DETOUR_Evaluate);
+		DetourMemberFunction(Tramp_CCreatureObject_EvaluateTrigger, DETOUR_CCreatureObject::DETOUR_EvaluateTrigger);
+		DetourMemberFunction(Tramp_CGameSprite_EvaluateTrigger, DETOUR_CGameSprite::DETOUR_EvaluateTrigger);
+	}
 
 	//UI
 	DetourFunction(Tramp_CreateUIControl, DETOUR_CreateUIControl);

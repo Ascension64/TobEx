@@ -264,6 +264,8 @@ END
 
 ACTION_IF (%tobex_installed_version% < 18) BEGIN
   ACTION_IF (ENGINE_IS ~bgee~) BEGIN
+    INCLUDE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobExEE0027.tpa"
+
     COPY "TobEx_ini/TobExTweak.ini" "TobEx_ini/TobExTweak.ini"
       APPEND_FILE "%TOBEX_MOD_DIRECTORY%/TobEx_redist/TobExEE0027t.txt"
   END

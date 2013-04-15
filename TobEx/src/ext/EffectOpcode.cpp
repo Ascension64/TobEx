@@ -1664,7 +1664,7 @@ BOOL DETOUR_CEffectDispel::DETOUR_ApplyEffect(CCreatureObject& creTarget) {
 				break;
 			case 2:
 			default:
-				CDerivedStats& cds = creTarget.GetActiveStats();
+				CDerivedStats& cds = creTarget.GetDerivedStats();
 				int nItemLevel = max(
 					cds.GetEffectiveMageLevel(creTarget.o.GetClass()),
 					cds.GetEffectiveClericLevel(creTarget.o.GetClass())

@@ -72,8 +72,8 @@ BOOL DETOUR_CButtonArray::DETOUR_CheckButtonEnabled(int nIdx) {
 	if (nResult != OBJECT_SUCCESS) return TRUE;
 
 	BOOL bButtonAllowed = TRUE;
-	if (wStatBtIdx < 14) bButtonAllowed = !pCre->GetActiveStats().ButtonDisable[wStatBtIdx];
-	if (wStatBtIdx == 14) bButtonAllowed = !pCre->GetActiveStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_BUTTONDISABLEFINDTRAPS);
+	if (wStatBtIdx < 14) bButtonAllowed = !pCre->GetDerivedStats().ButtonDisable[wStatBtIdx];
+	if (wStatBtIdx == 14) bButtonAllowed = !pCre->GetDerivedStats().GetStat(CDERIVEDSTATSEX_BASE + CDERIVEDSTATSEX_BUTTONDISABLEFINDTRAPS);
 
 	g_pChitin->pGame->m_GameObjectArray.FreeShare(e, THREAD_ASYNCH, INFINITE);
 	return bButtonAllowed;

@@ -428,6 +428,35 @@ struct CDerivedStatsTemplate { //Size 2B4h
 };
 
 struct CDerivedStats : public CDerivedStatsTemplate { //Size 8BCh
+	CDerivedStats();
+	CDerivedStats& Construct() {return *this;} //dummy
+
+	void Init(CreFileHeader& stats, CreFileMemorizedSpellLevel* memArrayMage, CreFileMemorizedSpellLevel* memArrayPriest);
+	
+	CDerivedStats& operator=(CDerivedStats& cds);
+	CDerivedStats& OpAssign(CDerivedStats&) {return *this;} //dummy
+
+	void ClearStats();
+	
+	CDerivedStats& operator+(CDerivedStats& cds);
+	CDerivedStats& OpAdd(CDerivedStats&) {return *this;} //dummy
+
+	void LimitStats();
+	int GetStat(short nOpcode);
+	char GetSubclassLevel(char nClass, char nSubclass);
+	short GetMeanLevel(char nClass);
+	unsigned char GetFighterClassLevel(unsigned char cClass);
+	unsigned char GetMageClassLevel(unsigned char cClass);
+	unsigned char GetThiefClassLevel(unsigned char cClass);
+	unsigned char GetClericClassLevel(unsigned char cClass);
+	void MarshalTemplate(CDerivedStatsTemplate** ppcdst, int* pnSize);
+	void UnmarshalTemplate(CDerivedStatsTemplate& cds, int nSize);
+	char GetEffectiveClericLevel(unsigned char nClass);
+	char GetEffectiveMageLevel(unsigned char nClass);
+
+	~CDerivedStats();
+	void Deconstruct() {} //dummy
+
 	IECPtrList m_lProtProjId; //2b4h, holds DWORDS of PROJECTL.IDS Idx
 	IECPtrList m_lProtEff; //2d0h, CEffects
 	CObjectList m_lObjectProtections; //2ech

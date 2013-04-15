@@ -106,7 +106,7 @@ class CCreatureObject : public CGameSprite { //Size 6774h
 public:
 	CGameObject& SetTarget(Object& o, char type);
 	void GetSpellIdsName(int nSpellIdx, IECString* ptr);
-	CDerivedStats& GetActiveStats();
+	CDerivedStats& GetDerivedStats();
 	ACTIONRESULT CastSpell(ResRef& rResource, CGameObject& cgoTarget, BOOL bPrintStrref, STRREF strref, void* pMod, BOOL bPrintEventMsg, BOOL bDoNotApplySplAbil);
 	static void RemoveItem(CCreatureObject& cre, int nSlot);
 	CEffectList& GetEquippedEffectsList();

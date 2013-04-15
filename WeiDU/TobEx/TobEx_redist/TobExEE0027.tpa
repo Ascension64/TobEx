@@ -1,0 +1,57 @@
+//Incremental update for TobExEE beta 0027
+
+//Expanded Triggers
+APPEND "trigger.ids" "0x4100 NextTriggerObject(O:Object*)" UNLESS "0x4100 NextTriggerObject(O:Object*)"
+APPEND "trigger.ids" "0x4101 MovementRate(O:Object*,I:Value*)" UNLESS "0x4101 MovementRate(O:Object*,I:Value*)"
+APPEND "trigger.ids" "0x4102 MovementRateGT(O:Object*,I:Value*)" UNLESS "0x4102 MovementRateGT(O:Object*,I:Value*)"
+APPEND "trigger.ids" "0x4103 MovementRateLT(O:Object*,I:Value*)" UNLESS "0x4103 MovementRateLT(O:Object*,I:Value*)"
+APPEND "trigger.ids" "0x4104 NumMirrorImages(O:Object*,I:Value*)" UNLESS "0x4104 NumMirrorImages(O:Object*,I:Value*)"
+APPEND "trigger.ids" "0x4105 NumMirrorImagesGT(O:Object*,I:Value*)" UNLESS "0x4105 NumMirrorImagesGT(O:Object*,I:Value*)"
+APPEND "trigger.ids" "0x4106 NumMirrorImagesLT(O:Object*,I:Value*)" UNLESS "0x4106 NumMirrorImagesLT(O:Object*,I:Value*)"
+APPEND "trigger.ids" "0x4107 BouncingSpellLevel(O:Object*,I:Level*)" UNLESS "0x4107 BouncingSpellLevel(O:Object*,I:Level*)"
+APPEND "trigger.ids" "0x4108 NumBouncingSpellLevel(O:Object*,I:Level*,I:Amount*)" UNLESS "0x4108 NumBouncingSpellLevel(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x4109 NumBouncingSpellLevelGT(O:Object*,I:Level*,I:Amount*)" UNLESS "0x4109 NumBouncingSpellLevelGT(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x410A NumBouncingSpellLevelLT(O:Object*,I:Level*,I:Amount*)" UNLESS "0x410A NumBouncingSpellLevelLT(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x410B ImmuneToSpellLevel(O:Object*,I:Level*)" UNLESS "0x410B ImmuneToSpellLevel(O:Object*,I:Level*)"
+APPEND "trigger.ids" "0x410C NumImmuneToSpellLevel(O:Object*,I:Level*,I:Amount*)" UNLESS "0x410C NumImmuneToSpellLevel(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x410D NumImmuneToSpellLevelGT(O:Object*,I:Level*,I:Amount*)" UNLESS "0x410D NumImmuneToSpellLevelGT(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x410E NumImmuneToSpellLevelLT(O:Object*,I:Level*,I:Amount*)" UNLESS "0x410E NumImmuneToSpellLevelLT(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x410F TimeStopCounter(I:Number*)" UNLESS "0x410F TimeStopCounter(I:Number*)"
+APPEND "trigger.ids" "0x4110 TimeStopCounterGT(I:Number*)" UNLESS "0x4110 TimeStopCounterGT(I:Number*)"
+APPEND "trigger.ids" "0x4111 TimeStopCounterLT(I:Number*)" UNLESS "0x4111 TimeStopCounterLT(I:Number*)"
+APPEND "trigger.ids" "0x4112 TimeStopObject(O:Object*)" UNLESS "0x4112 TimeStopObject(O:Object*)"
+APPEND "trigger.ids" "0x4113 NumTrappingSpellLevel(O:Object*,I:Level*,I:Amount*)" UNLESS "0x4113 NumTrappingSpellLevel(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x4114 NumTrappingSpellLevelGT(O:Object*,I:Level*,I:Amount*)" UNLESS "0x4114 NumTrappingSpellLevelGT(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x4115 NumTrappingSpellLevelLT(O:Object*,I:Level*,I:Amount*)" UNLESS "0x4115 NumTrappingSpellLevelLT(O:Object*,I:Level*,I:Amount*)"
+APPEND "trigger.ids" "0x4116 OriginalClass(O:Object*,I:Class*Class)" UNLESS "0x4116 OriginalClass(O:Object*,I:Class*Class)"
+APPEND "trigger.ids" "0x4117 HPLost(O:Object*,I:Hit Points*)" UNLESS "0x4117 HPLost(O:Object*,I:Hit Points*)"
+APPEND "trigger.ids" "0x4118 HPLostGT(O:Object*,I:Hit Points*)" UNLESS "0x4118 HPLostGT(O:Object*,I:Hit Points*)"
+APPEND "trigger.ids" "0x4119 HPLostLT(O:Object*,I:Hit Points*)" UNLESS "0x4119 HPLostLT(O:Object*,I:Hit Points*)"
+APPEND "trigger.ids" "0x411A Assign(S:Statement*,I:Type*ArgType,I:Local*)" UNLESS "0x411A Assign(S:Statement*,I:Type*ArgType,I:Local*)"
+APPEND "trigger.ids" "0x411B Eval(S:Expression*,I:Type*ArgType,I:Loc*)" UNLESS "0x411B Eval(S:Expression*,I:Type*ArgType,I:Loc*)"
+APPEND "trigger.ids" "0x411C E(I:Num1*,I:Num2*)" UNLESS "0x411C E(I:Num1*,I:Num2*)"
+APPEND "trigger.ids" "0x411D GT(I:Num1*,I:Num2*)" UNLESS "0x411D GT(I:Num1*,I:Num2*)"
+APPEND "trigger.ids" "0x411E LT(I:Num1*,I:Num2*)" UNLESS "0x411E LT(I:Num1*,I:Num2*)"
+
+//Expanded Actions
+APPEND "action.ids" "353 DialogueSetGlobal(S:Name*,S:Area*,I:Value*)" UNLESS "353 DialogueSetGlobal(S:Name*,S:Area*,I:Value*)"
+APPEND "action.ids" "354 DialogueIncrementGlobal(S:Name*,S:Area*,I:Value*)" UNLESS "354 DialogueIncrementGlobal(S:Name*,S:Area*,I:Value*)"
+APPEND "action.ids" "355 DialogueSG(S:Name*,I:Num*)" UNLESS "355 DialogueSG(S:Name*,I:Num*)"
+APPEND "action.ids" "356 Assign(S:Statement*,I:Type*ArgType,I:Local*)" UNLESS "356 Assign(S:Statement*,I:Type*ArgType,I:Local*)"
+APPEND "action.ids" "356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)" UNLESS "356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)"
+APPEND "action.ids" "357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)" UNLESS "357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)"
+APPEND "action.ids" "358 ClearBlockVariables()" UNLESS "358 ClearBlockVariables()"
+
+APPEND "actsleep.ids" "356 Assign(S:Statement*,I:Type*ArgType,I:Local*)" UNLESS "356 Assign(S:Statement*,I:Type*ArgType,I:Local*)"
+APPEND "actsleep.ids" "356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)" UNLESS "356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)"
+APPEND "actsleep.ids" "357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)" UNLESS "357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)"
+APPEND "actsleep.ids" "358 ClearBlockVariables()" UNLESS "358 ClearBlockVariables()"
+
+APPEND "instant.ids" "356 Assign(S:Statement*,I:Type*ArgType,I:Local*)" UNLESS "356 Assign(S:Statement*,I:Type*ArgType,I:Local*)"
+APPEND "instant.ids" "356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)" UNLESS "356 AssignFromObject(S:Statement*,O:Object*,I:Type*ArgType,I:Local*)"
+APPEND "instant.ids" "357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)" UNLESS "357 Eval(S:Expression*,I:Type*ArgType,I:Loc*)"
+APPEND "instant.ids" "358 ClearBlockVariables()" UNLESS "358 ClearBlockVariables()"
+
+//Common for Expanded Actions and Expanded Triggers
+LAF tobex_copy STR_VAR file = "argtype.ids" END
+

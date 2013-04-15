@@ -16,7 +16,7 @@ DefineLibMemberFunc(void, CProtectedSplList, Update, (CCreatureObject& cre), Upd
 //CCreatureObject
 DefineLibMemberFunc(CGameObject&, CCreatureObject, SetTarget, (Object& o, char type), SetTarget, SetTarget, (o, type), 0x48D519);
 DefineLibMemberFunc(void, CCreatureObject, GetSpellIdsName, (int nSpellIdx, IECString* ptr), GetSpellIdsName, GetSpellIdsName, (nSpellIdx, ptr), 0x48FE60);
-DefineLibMemberFunc(CDerivedStats&, CCreatureObject, GetActiveStats, (), GetActiveStats, GetActiveStats, (), 0x495630);
+DefineLibMemberFunc(CDerivedStats&, CCreatureObject, GetDerivedStats, (), GetDerivedStats, GetDerivedStats, (), 0x495630);
 DefineLibMemberFunc(ACTIONRESULT, CCreatureObject, CastSpell, (
 	ResRef& rResource,
 	CGameObject& cgoTarget,

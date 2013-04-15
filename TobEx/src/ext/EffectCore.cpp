@@ -186,22 +186,22 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 	short wSaveRollTotal = 0;
 	BOOL bPrintMsg = FALSE;
 	STRREF srSuccessSave;
-	CDerivedStats& cdsTarget = creTarget.GetActiveStats();
+	CDerivedStats& cdsTarget = creTarget.GetDerivedStats();
 
 	//Mirror images and stone skins ignore checking saves
 	//Unless poison effects
 	if (effect.nOpcode == CEFFECT_OPCODE_POISON) {
 		if (creTarget.m_nMirrorImages > 0 ||
-			creTarget.GetActiveStats().m_nStoneSkins > 0 ||
-			creTarget.GetActiveStats().m_StoneSkinGolem > 0) {
+			creTarget.GetDerivedStats().m_nStoneSkins > 0 ||
+			creTarget.GetDerivedStats().m_StoneSkinGolem > 0) {
 			return FALSE;
 		}
 	}
 	if (effect.nOpcode == CEFFECT_OPCODE_DISPLAY_ICON &&
 		effect.nParam2 == 6) { //ICON_POISONED
 		if (creTarget.m_nMirrorImages > 0 ||
-			creTarget.GetActiveStats().m_nStoneSkins > 0 ||
-			creTarget.GetActiveStats().m_StoneSkinGolem > 0) {
+			creTarget.GetDerivedStats().m_nStoneSkins > 0 ||
+			creTarget.GetDerivedStats().m_StoneSkinGolem > 0) {
 			return FALSE;
 		}
 	}
@@ -330,7 +330,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 		} while (returnVal == OBJECT_SHARING || returnVal == OBJECT_DENYING);
 		if (returnVal == OBJECT_SUCCESS) {
 			if (pCreSource->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
-				wSaveRollTotal += creTarget.GetActiveStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
+				wSaveRollTotal += creTarget.GetDerivedStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
 
 				//improved invis saving throw bonus inserted here
 				if (!pCreSource->CanSeeInvisible() &&
@@ -433,7 +433,7 @@ BOOL DETOUR_CEffect::DETOUR_CheckNotSaved(CCreatureObject& creTarget, char& roll
 		} while (returnVal == OBJECT_SHARING || returnVal == OBJECT_DENYING);
 		if (returnVal == OBJECT_SUCCESS) {
 			if (pCreSource->GetType() == CGAMEOBJECT_TYPE_CREATURE) {
-				wSaveRollTotal += creTarget.GetActiveStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
+				wSaveRollTotal += creTarget.GetDerivedStats().m_SaveBonusVsObject.GetModValue(pCreSource->GetCurrentObject());
 			}
 			returnVal = g_pChitin->pGame->m_GameObjectArray.FreeShare(eSource, THREAD_ASYNCH, INFINITE);
 		}
